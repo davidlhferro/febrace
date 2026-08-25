@@ -122,8 +122,10 @@ def executar_analise_estatistica(df):
     
     return resumo
 
-def gerar_graficos_publicacao_plotly(df, output_dir=r"C:\codigos\FEBRACE"):
+def gerar_graficos_publicacao_plotly(df, output_dir=None):
     """Gera graficos interativos e publicaveis com Plotly"""
+    if output_dir is None:
+        output_dir = os.path.dirname(os.path.abspath(__file__))
     os.makedirs(output_dir, exist_ok=True)
     
     # 1. Boxplot Interativo do Ganho de Hake
@@ -166,10 +168,11 @@ def gerar_graficos_publicacao_plotly(df, output_dir=r"C:\codigos\FEBRACE"):
     print(f"[OK] Grafico 2 (Plotly HTML) salvo: {fig2_html}")
 
 if __name__ == '__main__':
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     df = gerar_dados_experimentais(n_por_grupo=25)
-    csv_path = r"C:\codigos\FEBRACE\dados_experimentais_febrace.csv"
+    csv_path = os.path.join(base_dir, "dados_experimentais_febrace.csv")
     df.to_csv(csv_path, index=False, encoding='utf-8-sig')
     print(f"[OK] Base de dados salva em: {csv_path}")
     
     executar_analise_estatistica(df)
-    gerar_graficos_publicacao_plotly(df)
+    gerar_graficos_publicacao_plotly(df, output_dir=base_dir)

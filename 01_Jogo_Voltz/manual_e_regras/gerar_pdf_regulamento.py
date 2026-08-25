@@ -67,7 +67,8 @@ class NumberedCanvas(canvas.Canvas):
 
 
 def build_pdf(filename="Regulamento_Oficial_Voltz_FEBRACE.pdf"):
-    pdf_path = os.path.join(r"C:\codigos\FEBRACE", filename)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    pdf_path = os.path.join(base_dir, filename)
     try:
         doc = SimpleDocTemplate(
             pdf_path,
@@ -78,7 +79,7 @@ def build_pdf(filename="Regulamento_Oficial_Voltz_FEBRACE.pdf"):
             bottomMargin=2.2 * cm
         )
     except Exception:
-        pdf_path = os.path.join(r"C:\codigos\FEBRACE", "Regulamento_Oficial_Voltz_FEBRACE_v2.pdf")
+        pdf_path = os.path.join(base_dir, "Regulamento_Oficial_Voltz_FEBRACE_v2.pdf")
         doc = SimpleDocTemplate(
             pdf_path,
             pagesize=A4,

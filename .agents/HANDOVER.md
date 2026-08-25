@@ -1,36 +1,33 @@
 # 📌 Handoff Briefing — VOLTZ: Circuit Break (FEBRACE 2026)
 
-- **Última Atualização:** 2026-08-25T11:00:00-03:00
-- **Projeto:** VOLTZ: Circuit Break (Jogo 2 do David para a FEBRACE 2026)
-- **Status:** Baralho, Regulamento e Manuais Refinados pós-LLM Council. PDF Oficial Compilado.
+- **Última Atualização:** 2026-08-25T11:42:00-03:00
+- **Projeto:** VOLTZ: Circuit Break / Remediação Ativa em Eletrodinâmica (FEBRACE 2026)
+- **Status:** Repositório reestruturado em pastas modulares (Jogo, Pesquisa FEBRACE, Relatórios Council e Agente).
 
 ---
 
-## 🎯 Objetivo Ativo
-Executar o plano de ação validado pelo **LLM Council** para o jogo "VOLTZ: Circuit Break":
-1. **Ajustes de Design Pedagógico Realizados**:
-   - Meta Pronta (🎯 X blocos) removida das cartas de equipamentos para forçar dedução real de divisor de tensão ($V_{out} = V_{in} \cdot \frac{R_{equip}}{R_{total}}$).
-   - Tabela de Conversão Proporcional centralizada no Guia Rápido de Mesa (Player Aid).
-   - Uso da carta de Cabo Terra (GND) passa a gastar 1 Ação de Turno para evitar exploits de tentativa e erro sem custo.
-   - Adicionada a Ação de Descarte Ativo (descartar até 2 cartas para renovar a mão) para prevenir travamentos (deadlock).
-2. **Arquivos Atualizados & Verificados**:
-   - `baralho_cartas_jogo2.md`: Catálogo completo das 54 cartas para impressão.
-   - `cartas_print_visual.html`: Interface visual A4 (grid 3x3) pronta para impressão/PDF.
-   - `manual_jogo2_cooperativo.md` e `manual_ilustrado_febrace.html`: Regras completas e guia do jogador.
-   - `gerar_pdf_regulamento.py`: Script de compilação em ReportLab executado com sucesso.
-   - `Regulamento_Oficial_Voltz_FEBRACE_Refinado.pdf`: PDF oficial gerado e pronto para entrega.
+## 🎯 Estrutura Modular das Pastas
+```
+C:\codigos\FEBRACE\
+├── 📁 01_Jogo_Voltz/                  # Cartas A4 (54 cartas vetoriais), manuais e regulamento PDF
+├── 📁 02_Febrace_Pesquisa/           # Artigo (DIRECT/Hake), diário, termos TCLE/TALE, pôster 90x120, slides 16:9, dados estatísticos
+├── 📁 03_Relatorios_Council/         # Auditorias completas do LLM Council
+├── 📁 .agents/                       # Handoff e memória do agente
+├── 📁 .llms/                         # Planos e histórico de decisões
+└── README.md                         # Índice mestre de navegação
+```
 
 ---
 
 ## 🚀 Próximos Passos Imediatos
-1. **Impressão do Protótipo (Couchê 250g)**: Imprimir 1 baralho A4 via `cartas_print_visual.html` (ou salvar PDF pelo navegador) e 1 Guia de Mesa plastificado.
-2. **Blind Playtest Cronometrado**: Realizar 1 teste cego de 25 minutos com 4 estudantes/colegas sem intervenção das regras faladas.
-3. **Ajustes de Ambiguidades**: Refinar o texto do Guia de Mesa com base no feedback do playtest.
-4. **Vídeo Demonstrativo (60s)**: Gravar a execução de 1 turno real de jogo para a banca e estande da FEBRACE.
+1. **Impressão do Baralho de 54 Cartas**: Abrir `01_Jogo_Voltz/cartas/cartas_print_visual.html` no navegador e imprimir em papel Couchê 250g/300g.
+2. **Impressão do Pôster**: Abrir `02_Febrace_Pesquisa/apresentacao_e_poster/poster_febrace.html` para impressão em 90×120cm.
+3. **Aplicação com a Turma**: Executar o protocolo de 50 minutos com as turmas do 3º ano com o pré/pós-teste DIRECT e coleta dos termos TCLE/TALE.
+4. **Diário de Bordo**: Registrar as fotos datadas das sessões na pasta `02_Febrace_Pesquisa/diario_de_bordo_e_professores/guia_professor_diario.md`.
 
 ---
 
 ## 🔒 Decisões Trancadas & Racional Pedagógico
-* **Meta estampada na carta**: PROIBIDA. Estampar a meta mata o raciocínio físico da Lei de Ohm/Divisor de Tensão, reduzindo o jogo a simples soma de números primários.
-* **Custo do Terra (GND)**: SEMPRE consome 1 Ação. Impede a tática dominante de testar terras aleatórios sem gastar turno.
-* **Papel Sulfite 75g**: INVIÁVEL. Usar couchê 250g/300g ou sleeves plásticos para durabilidade em sala de aula.
+* **Meta estampada na carta**: PROIBIDA. Estampar a meta mata o raciocínio físico do divisor de tensão.
+* **Custo do Terra (GND)**: SEMPRE consome 1 Ação para evitar exploits de tentativa e erro.
+* **Estética Unslop**: Emojis eliminados em favor de vetores SVG no padrão IEC/IEEE.
