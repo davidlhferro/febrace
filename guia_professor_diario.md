@@ -1,62 +1,98 @@
-# 📘 Guia do Professor & Caderno do Diário de Bordo (FEBRACE)
+# 📘 Guia do Professor, Termos Éticos (TCLE/TALE) & Diário de Bordo (FEBRACE)
+
+Este documento contém o protocolo completo de aplicação pedagógica, os modelos formais de conformidade ética exigidos pelo Comitê de Revisão Científica (SRC) da FEBRACE/ISEF e as diretrizes para manutenção do Diário de Bordo da equipe.
 
 ---
 
-## PART 1: GUIA DE APLICAÇÃO DO PROFESSOR (TEACHER'S GUIDE)
-**Destinado a**: Professores de Física do Ensino Médio de Escolas Públicas
+## PARTE 1: GUIA DO PROFESSOR (TEACHER'S PROTOCOL)
+**Público-Alvo**: Professores de Física do 3º Ano do Ensino Médio  
+**Tempo de Aplicação**: 1 aula de 50 minutos  
+**Infraestrutura Necessária**: 1 kit de baralho VOLTZ (54 cartas) + 1 Guia de Mesa para cada grupo de 4 a 5 alunos.
 
-### 🎯 1. Objetivos Pedagógicos
-* **Conceito Chave**: Compreensão qualitativa e quantitativa da associação de resistores em série, leis de circuitos e divisão de tensão em uma fonte de $12\text{V}$.
-* **Tempo de Aplicação**: 1 aula (50 minutos).
-* **Organização**: Turma dividida em grupos de 3 a 4 alunos por mesa.
+### ⏱️ Roteiro Cronometrado da Sessão (50 Minutos)
 
-### ⏱️ 2. Roteiro da Aula (Passo a Passo)
-
-| Tempo | Atividade | Ação do Professor |
+| Minuto | Etapa | Descrição das Ações |
 | :--- | :--- | :--- |
-| **00 - 05 min** | Introdução & Setup da Mesa | Entregar 1 baralho do jogo **VOLTZ: CIRCUIT BREAK** por grupo. |
-| **05 - 10 min** | Rodada Tutorial Guiada (2 min) | Orientar os alunos a lerem a seção "Aprendendo em 2 Minutos" do manual. |
-| **10 - 35 min** | Partidas Cooperativas (2 partidas) | Alunos jogam em equipe para salvar os 4 setores da cidade. |
-| **35 - 50 min** | Discussão de Fechamento (Debriefing) | O professor relaciona a regra dos blocos `[ ■ ]` com a fórmula do Divisor de Tensão ($V_x = 12 \cdot \frac{R_x}{R_{tot}}$). |
+| **00 - 08 min** | **Diagnóstico Inicial (Pré-Teste DIRECT)** | Alunos respondem individualmente ao pré-teste de 8 itens conceituais sem consulta. |
+| **08 - 12 min** | **Distribuição & Tutorial Rápido (2 min)** | O professor entrega os baralhos e orienta os grupos a lerem a seção do manual ilustrado. |
+| **12 - 38 min** | **Partidas Cooperativas (Gameplay Supervisionado)** | Grupos jogam colaborativamente para salvar os 4 setores da cidade ($V_{in} = 12\text{V}$). O professor apenas atua como facilitador de dúvidas de regras, sem dar respostas de física. |
+| **38 - 46 min** | **Avaliação Pós-Intervenção (Pós-Teste & Far Transfer)** | Alunos respondem individualmente ao pós-teste DIRECT e à questão de identificação em protoboard real. |
+| **46 - 50 min** | **Fechamento Coletivo & Formalização (Debriefing)** | O professor correlaciona a mecânica dos blocos [ ■ ] com a equação formal do divisor de tensão: $V_x = 12\text{V} \cdot \frac{R_x}{R_{eq}}$. |
 
 ---
 
-## PART 2: MODELO PADRONIZADO DO DIÁRIO DE BORDO (EXIGÊNCIA FEBRACE)
+## PARTE 2: CONFORMIDADE ÉTICA (MODELOS TCLE & TALE — NORMAS SRC/FEBRACE)
 
-> ⚠️ **Nota FEBRACE**: O Diário de Bordo é o registro diário, manuscrito e sequencial de todas as reuniões, ideias, testes, falhas e correções da equipe.
+> ⚠️ **Importante**: Conforme exigência das feiras afiliadas à ISEF e da FEBRACE, pesquisas com seres humanos menores de idade exigem a guarda dos termos assinados no Diário de Bordo.
 
-### Modelo de Ficha de Registro de Diário de Bordo:
+### 📄 Modelo 1: Termo de Consentimento Livre e Esclarecido (TCLE - Para Pais/Responsáveis)
 
 ```markdown
-# 📓 DIÁRIO DE BORDO — REGISTRO Nº: ____
+TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO (TCLE)
+Projeto de Pesquisa: Remediação Ativa em Eletrodinâmica através de Jogos Cooperativos
+Instituição: [Nome da Escola Estadual] — Equipe FEBRACE 2026
 
-- **Data**: ____/____/2026   | **Horário**: ___:___ às ___:___
-- **Integrantes Presentes**: [ ] David   [ ] João Vitor   [ ] Parceiro 3
-- **Local de Trabalho**: [ ] Laboratório de Física  [ ] Sala de Aula  [ ] Casa
+Prezado(a) Responsável,
+Seu(sua) filho(a) está sendo convidado(a) a participar voluntariamente de uma pesquisa educacional que visa avaliar o impacto de jogos didáticos no aprendizado de circuitos elétricos. A atividade ocorrerá durante o horário regular de aula de Física e consistirá no preenchimento de um questionário diagnóstico e em uma sessão lúdica com o jogo VOLTZ.
 
----
+1. Sigilo e Privacidade: A identidade do estudante será mantida em estrito sigilo. Os dados serão tratados de forma anônima e codificada, em conformidade com a LGPD (Lei nº 13.709/2018).
+2. Voluntariedade: A participação é voluntária, sem qualquer penalidade ou prejuízo acadêmico em caso de não participação.
 
-### 1. OBJETIVO DO DIA:
-(Descreva em 1 ou 2 frases o que a equipe se propôs a testar ou produzir hoje)
+Eu, ____________________________________________________, portador do RG ____________________,
+autorizo a participação do(a) estudante ________________________________________________ no projeto.
 
-### 2. O QUE FOI FEITO:
-(Registre os testes do protótipo, reuniões com orientador, impressões de cartas, etc.)
+Data: ____/____/2026 | Assinatura do Responsável: _________________________________________
+```
 
-### 3. PROBLEMAS / ERROS ENCONTRADOS:
-(Descreva se algum aluno teve dúvida nas regras, se faltou carta no baralho ou se algum cálculo deu errado)
+### 📄 Modelo 2: Termo de Assentimento Livre e Esclarecido (TALE - Para o Aluno)
 
-### 4. SOLUÇÕES E DECISÕES TOMADAS:
-(Ex: "Decidimos adicionar o ícone de blocos [ ■ ] nas cartas para simplificar a contagem de voltagem em 3 segundos")
+```markdown
+TERMO DE ASSENTIMENTO LIVRE E ESCLARECIDO (TALE)
+(Linguagem Direta para o Estudante do Ensino Médio)
 
----
-Assinatura do Responsável do Dia: _____________________________________
+Olá, estudante!
+Nós somos uma equipe de estudantes desenvolvendo uma pesquisa para a FEBRACE sobre como tornar o aprendizado de física de circuitos mais intuitivo e cooperativo. Você está convidado(a) a jogar o VOLTZ com seus colegas e responder a algumas perguntas sobre o tema.
+
+Sua participação não vale nota e suas respostas serão totalmente anônimas. Você pode desistir a qualquer momento se desejar.
+
+Nome do Estudante: ____________________________________________________ Turma: _______
+[ ] Sim, concordo em participar da atividade e responder aos questionários.
+
+Data: ____/____/2026 | Assinatura do Estudante: ___________________________________________
 ```
 
 ---
 
-## PART 3: RECOMENDAÇÕES PARA A BANCA AVALIADORA DA FEBRACE
+## PARTE 3: MODELO OFICIAL DO DIÁRIO DE BORDO DA FEBRACE
 
-Ao apresentar o projeto aos avaliadores no estande da FEBRACE:
-1. **Tenha o Diário de Bordo físico em mãos**: Mostre o caderno com todas as datas e assinaturas.
-2. **Demonstre uma jogada rápida no estande**: Convide o avaliador para aterrar um circuito com a carta de **Terra (GND)** e contar os blocos em 3 segundos!
-3. **Destaque os dados estatísticos do artigo**: Apresente o gráfico de Ganho Relativo de Aprendizagem de Hake ($g$) demonstrando a eficácia pedagógica.
+```markdown
+# 📓 REGISTRO DE DIÁRIO DE BORDO Nº: ________
+
+- **Data**: ____/____/2026 | **Horário de Início**: ___:___ | **Término**: ___:___
+- **Local**: [ ] Laboratório de Física  [ ] Sala de Aula  [ ] Biblioteca
+- **Integrantes Presentes**: [ ] David   [ ] João Vitor   [ ] Parceiro 3
+- **Orientador Presente**: [ ] Sim   [ ] Não
+
+---
+
+### 1. OBJETIVO DA SESSÃO:
+(Ex: Aplicação do protocolo com 25 alunos da Turma 3C - Grupo Experimental VOLTZ)
+
+### 2. REGISTRO FOTOGRÁFICO & EVIDÊNCIAS DE CAMPO:
+[ Espaço reservado para colar foto datada da turma ou do protótipo em mesa ]
+
+### 3. DADOS QUANTITATIVOS COLETADOS:
+- Total de Estudantes: N = ______
+- Média do Pré-Teste: ______% | Média do Pós-Teste: ______%
+- Ganho Normalizado de Hake da Sessão: <g> = ______
+
+### 4. OBSERVAÇÕES COMPORTAMENTAIS & FEEDBACK QUALITATIVO:
+(Descreva como os alunos reagiram ao Cabo Terra GND e ao divisor de tensão)
+
+### 5. DIFICULDADES ENCONTRADAS E SOLUÇÕES ADOTADAS:
+(Ex: "Um grupo tentou ligar 2 terras; reforçamos no manual que o terra fecha o circuito individualmente")
+
+---
+Assinatura do Responsável do Dia: _______________________________________________
+Visto do Professor Orientador: __________________________________________________
+```

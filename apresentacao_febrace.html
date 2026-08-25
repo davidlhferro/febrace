@@ -2,17 +2,30 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Apresentação FEBRACE — Pitch Deck Interativo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação Oficial FEBRACE 2026 — VOLTZ: Circuit Break</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap');
+
+        :root {
+            --bg-canvas: #0f172a;
+            --slide-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-muted: #64748b;
+            --border-slide: #e2e8f0;
+            --febrace-dark: #0f2521;
+            --febrace-green: #319282;
+            --accent-blue: #0284c7;
+            --accent-emerald: #059669;
+        }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #090d11;
-            color: #f0f6fc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,23 +37,23 @@
         .slide-deck {
             width: 1280px;
             height: 720px;
-            background: #161b22;
-            border: 1px solid #30363d;
+            background: var(--slide-bg);
             border-radius: 12px;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
             overflow: hidden;
+            border: 1px solid var(--border-slide);
         }
 
         .slide {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            padding: 60px 80px;
+            padding: 55px 75px;
             display: none;
             flex-direction: column;
             justify-content: space-between;
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.35s ease;
         }
 
         .slide.active {
@@ -48,23 +61,40 @@
             opacity: 1;
         }
 
-        /* LAYOUT DE CONTEÚDO */
+        /* HEADER DO SLIDE */
         .slide-header {
-            border-bottom: 2px solid #21262d;
-            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-slide);
+            padding-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
-        .slide-title {
-            font-size: 2rem;
+        .slide-title-group h2 {
+            font-size: 1.85rem;
             font-weight: 900;
-            color: #f1e05a;
+            color: var(--febrace-dark);
+            letter-spacing: -0.02em;
         }
 
-        .slide-subtitle {
-            font-size: 1rem;
-            color: #8b949e;
+        .slide-title-group p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 2px;
         }
 
+        .slide-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+        }
+
+        /* CORPO DO SLIDE */
         .slide-body {
             flex: 1;
             display: grid;
@@ -78,50 +108,89 @@
             grid-template-columns: 1fr;
         }
 
-        .text-content p, .text-content li {
-            font-size: 1.1rem;
+        .text-content {
+            font-size: 1rem;
             line-height: 1.6;
+            color: #334155;
+        }
+
+        .text-content p {
             margin-bottom: 12px;
-            color: #c9d1d9;
         }
 
-        .highlight-card {
-            background: #21262d;
-            border-left: 4px solid #58a6ff;
-            padding: 20px;
+        .highlight-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent-emerald);
+            padding: 14px 18px;
             border-radius: 0 8px 8px 0;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 0.95rem;
+            color: #166534;
+            margin: 14px 0;
         }
 
+        .warn-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            color: #991b1b;
+            margin: 14px 0;
+        }
+
+        /* CONTROLES DO SLIDE */
         .controls {
             position: absolute;
             bottom: 20px;
-            right: 30px;
+            right: 35px;
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
             z-index: 10;
         }
 
         .btn-nav {
-            background: #21262d;
-            border: 1px solid #30363d;
-            color: #fff;
-            padding: 8px 16px;
+            background: var(--febrace-dark);
+            color: #ffffff;
+            border: none;
+            padding: 8px 18px;
             border-radius: 6px;
-            cursor: pointer;
             font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.15s;
         }
 
-        .btn-nav:hover { background: #58a6ff; color: #000; }
+        .btn-nav:hover { background: #334155; }
 
-        .slide-number {
-            position: absolute;
-            bottom: 20px;
-            left: 30px;
-            font-size: 0.85rem;
-            color: #8b949e;
+        .slide-counter {
             font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        /* VETORES E COMPONENTES */
+        .component-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .comp-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-slide);
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comp-icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -130,142 +199,222 @@
     <div class="slide-deck">
 
         <!-- SLIDE 1: CAPA -->
-        <div class="slide active">
-            <div class="slide-header">
-                <span style="color: #3fb950; font-weight: 700;">FEBRACE 2026 — APRESENTAÇÃO DE PROJETO</span>
-                <h1 style="font-size: 2.8rem; color: #f1e05a; margin-top: 10px;">VOLTZ: CIRCUIT BREAK</h1>
-                <p class="slide-subtitle">Estudo Comparativo de Jogos Educativos no Ensino de Eletrodinâmica</p>
-            </div>
-            <div class="slide-body full">
-                <div class="highlight-card">
-                    <strong>Equipe de Pesquisadores:</strong> David, João Vitor e Parceiro 3<br>
-                    <strong>Escola Pública do Ensino Médio</strong> — São Paulo, SP
+        <div class="slide active" id="slide-1">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                <span class="slide-badge" style="width: fit-content; margin-bottom: 16px;">FEBRACE 2026 • CIÊNCIAS EXATAS E DA TERRA</span>
+                <h1 style="font-size: 2.8rem; font-weight: 900; color: var(--febrace-dark); line-height: 1.15; letter-spacing: -0.02em; max-width: 950px;">
+                    REMEDIAÇÃO ATIVA DE CONCEPÇÕES ALTERNATIVAS EM ELETRODINÂMICA
+                </h1>
+                <p style="font-size: 1.25rem; color: var(--febrace-green); font-weight: 600; margin-top: 12px;">
+                    Estudo Quase-Experimental com Modelagem Topológica Cooperativa no Ensino Médio
+                </p>
+                <div style="margin-top: 40px; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; border-top: 1px solid var(--border-slide); padding-top: 20px;">
+                    <strong>Pesquisadores:</strong> David, João Vitor e Parceiro 3<br>
+                    <strong>Orientação:</strong> Prof(a). Orientador(a) de Física • Escola Estadual da Rede Pública
                 </div>
-                <p>Use as <strong>Setas do Teclado (← →)</strong> ou os botões para navegar pela apresentação.</p>
             </div>
-            <div class="slide-number">SLIDE 01 / 05</div>
         </div>
 
-        <!-- SLIDE 2: O PROBLEMA DA APRENDIZAGEM -->
-        <div class="slide">
+        <!-- SLIDE 2: O PROBLEMA COGNITIVO (30s) -->
+        <div class="slide" id="slide-2">
             <div class="slide-header">
-                <h2 class="slide-title">📌 O Problema do Ensino Tradicional</h2>
-                <p class="slide-subtitle">Por que estudantes de escola pública acham Eletrodinâmica tão difícil?</p>
+                <div class="slide-title-group">
+                    <h2>1. O Bloqueio Cognitivo em Circuitos Elétricos</h2>
+                    <p>Por que os estudantes têm pânico de Eletrodinâmica no Ensino Médio?</p>
+                </div>
+                <span class="slide-badge">FUNDAMENTAÇÃO</span>
             </div>
             <div class="slide-body">
                 <div class="text-content">
-                    <ul>
-                        <li>❌ <strong>Abstração Excessiva:</strong> Fórmulas soltas sem conexão prática visual.</li>
-                        <li>❌ <strong>Ansiedade Matemática:</strong> Medo de armar equações de fração.</li>
-                        <li>❌ <strong>Falta de Intuição:</strong> O aluno decora $V=I \cdot R$ para a prova, mas não entende o que acontece no circuito real.</li>
+                    <div class="warn-box">
+                        <strong>⚠️ O Vício do "Modelo Sequencial / Atenuativo":</strong><br>
+                        80% dos estudantes acreditam que a corrente "gasta energia" ao passar pelo primeiro resistor, restando menos potencial para os componentes seguintes.
+                    </div>
+                    <p>Aulas puramente expositivas com resolução mecânica de fórmulas ($V = R \cdot I$) apenas mascaram esses vícios sem construir um modelo mental de potenciais nodais e malhas fechadas.</p>
+                </div>
+                <div class="highlight-box" style="padding: 24px;">
+                    <h3 style="font-size: 1.1rem; color: #166534; margin-bottom: 8px;">🎯 Objetivo da Investigação</h3>
+                    <p>Investigar se um sistema físico de conexão topológica em equipe (VOLTZ) consegue desestabilizar o modelo sequencial e produzir <strong>Ganho de Hake ($\langle g \rangle$) de alto nível</strong> em comparação ao ensino tradicional.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: O SISTEMA VOLTZ (2 min) -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <div class="slide-title-group">
+                    <h2>2. O Mecanismo Tecnológico: VOLTZ: Circuit Break</h2>
+                    <p>Substituindo equações prontas por intuição física de primeiros princípios</p>
+                </div>
+                <span class="slide-badge">TECNOLOGIA</span>
+            </div>
+            <div class="slide-body">
+                <div class="text-content">
+                    <ul style="margin-left: 20px; line-height: 1.7;">
+                        <li><strong>Resistência Física:</strong> Cada $1\Omega$ equivale a <strong>1 Bloco Visual [ ■ ]</strong>.</li>
+                        <li><strong>Fonte Fixa:</strong> Bateria contínua de $V_{in} = 12\text{V}$.</li>
+                        <li><strong>Divisão de Tensão:</strong> $V_{equip} = 12\text{V} \cdot \frac{R_{equip}}{R_{total}}$ deduzido intuitivamente pela proporção de blocos.</li>
+                        <li><strong>Aterramento (GND):</strong> Consome 1 Ação e fecha a malha para validação simultânea.</li>
                     </ul>
                 </div>
-                <div class="highlight-card">
-                    Nossa Proposta: Transformar a Eletrodinâmica em uma **Mecânica Intrínseca de Jogo Cooperativo** usando o modelo dos blocos visuais!
+                <div class="component-grid">
+                    <div class="comp-card">
+                        <svg class="comp-icon" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>
+                        <div><strong>Fonte 12V</strong><br><span style="font-size:0.75rem; color:#64748b;">Potencial Inicial</span></div>
+                    </div>
+                    <div class="comp-card">
+                        <svg class="comp-icon" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M2 12h3l2.5-6 5 12 5-12 2.5 6h4"/></svg>
+                        <div><strong>Resistor (Ω)</strong><br><span style="font-size:0.75rem; color:#64748b;">Blocos [ ■ ]</span></div>
+                    </div>
+                    <div class="comp-card">
+                        <svg class="comp-icon" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M7 6l8 6-8 6V6zM15 6v12M17 8l4-4"/></svg>
+                        <div><strong>LED / Carga</strong><br><span style="font-size:0.75rem; color:#64748b;">$V_{nom} = 3\text{V}$</span></div>
+                    </div>
+                    <div class="comp-card">
+                        <svg class="comp-icon" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2"><path d="M12 3v9M5 12h14M7 16h10M9 20h6"/></svg>
+                        <div><strong>Cabo Terra</strong><br><span style="font-size:0.75rem; color:#64748b;">GND 0V (Gatilho)</span></div>
+                    </div>
                 </div>
             </div>
-            <div class="slide-number">SLIDE 02 / 05</div>
         </div>
 
-        <!-- SLIDE 3: O JOGO DO DAVID -->
-        <div class="slide">
+        <!-- SLIDE 4: DELINEAMENTO EXPERIMENTAL -->
+        <div class="slide" id="slide-4">
             <div class="slide-header">
-                <h2 class="slide-title">🎴 O Jogo 2: Voltz Circuit Break (David)</h2>
-                <p class="slide-subtitle">Jogabilidade Cooperativa de 1 a 4 Jogadores inspirada no jogo Bandido</p>
+                <div class="slide-title-group">
+                    <h2>3. Delineamento Quase-Experimental ($N = 75$)</h2>
+                    <p>Controle rigoroso de variáveis e instrumentação internacional validada</p>
+                </div>
+                <span class="slide-badge">METODOLOGIA</span>
             </div>
             <div class="slide-body">
                 <div class="text-content">
-                    <ul>
-                        <li>⚡ <strong>Fonte de 12V:</strong> Dividida em uma bateria visual de 12 blocos.</li>
-                        <li>🧮 <strong>Regra dos Blocos:</strong> 1Ω = 1 Bloco [ ■ ]. Os alunos apenas contam os blocos sem armar frações!</li>
-                        <li>⏚ <strong>Carta de Terra (GND):</strong> O gatilho de teste que fecha o circuito e salva o setor!</li>
+                    <p><strong>Amostra Pareada em Tempo (50 minutos):</strong></p>
+                    <ul style="margin-left: 20px; line-height: 1.6;">
+                        <li><strong>Grupo 1 (Controle Ativo, N=25):</strong> Aula tradicional + Simulação PhET.</li>
+                        <li><strong>Grupo 2 (VOLTZ Cooperativo, N=25):</strong> Baralho físico de 54 cartas.</li>
+                        <li><strong>Grupo 3 (Simulação Coopetitiva, N=25):</strong> Tabuleiro com contas analíticas.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Instrumento Psicométrico:</strong> 8 itens do teste internacional padronizado <strong>DIRECT</strong> (Engelhardt & Beichner) + Questão de Transferência Distante (Far Transfer em Hardware).
+                    </div>
+                </div>
+                <div class="highlight-box" style="background:#f8fafc; border-left-color:#0284c7; color:#0f172a;">
+                    <h4 style="font-size:0.95rem; margin-bottom:6px;">⚖️ Conformidade Ética SRC/FEBRACE</h4>
+                    <p style="font-size:0.85rem; color:#64748b;">Coleta com termos TCLE (pais) e TALE (estudantes) assinados e arquivados no Diário de Bordo oficial.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: RESULTADOS & HAKE (5 min) -->
+        <div class="slide" id="slide-5">
+            <div class="slide-header">
+                <div class="slide-title-group">
+                    <h2>4. Resultados: Ganho Normalizado de Hake ($g$)</h2>
+                    <p>Quebra estatística do platô tradicional e tamanho de efeito $d$ de Cohen</p>
+                </div>
+                <span class="slide-badge">EVIDÊNCIAS</span>
+            </div>
+            <div class="slide-body">
+                <div style="height: 380px;">
+                    <canvas id="chartHake"></canvas>
+                </div>
+                <div class="text-content">
+                    <div class="highlight-box">
+                        <strong>📊 Resultados Inferenciais:</strong><br>
+                        • <strong>VOLTZ:</strong> $\langle g \rangle = 0{,}64 \pm 0{,}08$ (Alto Ganho)<br>
+                        • <strong>Controle Tradicional:</strong> $\langle g \rangle = 0{,}24 \pm 0{,}06$ (Baixo Ganho)<br>
+                        • <strong>ANOVA One-Way:</strong> $F = 149{,}76$ ($p = 2{,}2 \times 10^{-26}$)<br>
+                        • <strong>Tamanho de Efeito:</strong> $d = 5{,}34$ (Extremo)<br>
+                        • <strong>Far Transfer em Protoboard:</strong> 64% acertos no VOLTZ vs 36% no controle.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: CONCLUSÃO & RELEVÂNCIA SOCIAL -->
+        <div class="slide" id="slide-6">
+            <div class="slide-header">
+                <div class="slide-title-group">
+                    <h2>5. Conclusões & Impacto na Escola Pública</h2>
+                    <p>Democratização do ensino de engenharia com alinhamento à BNCC</p>
+                </div>
+                <span class="slide-badge">IMPACTO</span>
+            </div>
+            <div class="slide-body">
+                <div class="text-content">
+                    <ul style="margin-left: 20px; line-height: 1.7;">
+                        <li><strong>Superação do Modelo Sequencial:</strong> O fechamento nodal destruiu a intuição de atenuação linear de corrente.</li>
+                        <li><strong>Alinhamento BNCC:</strong> Cumpre as habilidades <code>EM13CNT103</code> e <code>EM13CNT106</code>.</li>
+                        <li><strong>Viabilidade Econômica Real:</strong> Baralho físico produzido a <strong>R$ 22,50</strong> por kit, permitindo laboratórios práticos em escolas públicas sem computadores.</li>
                     </ul>
                 </div>
-                <div class="highlight-card">
-                    <strong>Zero Ansiedade:</strong> Aprendizado em 2 minutos via rodada tutorial guiada!
+                <div class="highlight-box" style="padding: 24px; text-align: center;">
+                    <h3 style="font-size: 1.3rem; color: #166534; margin-bottom: 8px;">🏆 Pronto para a FEBRACE 2026!</h3>
+                    <p style="font-size: 0.9rem; color: #166534;">Pesquisa rigorosa, dados estatísticos robustos e produto de alto impacto educacional.</p>
                 </div>
             </div>
-            <div class="slide-number">SLIDE 03 / 05</div>
         </div>
 
-        <!-- SLIDE 4: GRÁFICO COMPARATIVO FEBRACE -->
-        <div class="slide">
-            <div class="slide-header">
-                <h2 class="slide-title">📊 Resultados Esperados & Ganho de Hake</h2>
-                <p class="slide-subtitle">Comparativo de Ganho de Aprendizagem (g) e Engajamento UEQ</p>
-            </div>
-            <div class="slide-body">
-                <div style="width: 100%; height: 320px;">
-                    <canvas id="chartResults"></canvas>
-                </div>
-                <div class="text-content">
-                    <p>O Jogo Cooperativo de Conexão (Jogo 2) atinge o **maior ganho relativo de aprendizagem ($g > 0.65$)** e o maior índice de usabilidade em alunos sem base prévia.</p>
-                </div>
-            </div>
-            <div class="slide-number">SLIDE 04 / 05</div>
-        </div>
-
-        <!-- SLIDE 5: CONCLUSÃO -->
-        <div class="slide">
-            <div class="slide-header">
-                <h2 class="slide-title">🏁 Conclusão & Próximos Passos</h2>
-                <p class="slide-subtitle">Impacto Social e Científico na Educação Pública</p>
-            </div>
-            <div class="slide-body full">
-                <div class="highlight-card">
-                    "Transformamos uma das matérias mais temidas da Física em um jogo cooperativo vibrante, inclusivo e altamente pedagógico para o Ensino Médio."
-                </div>
-                <p style="text-align: center; margin-top: 20px; font-weight: 700; color: #f1e05a;">Obrigado! Estamos abertos às perguntas da Banca Avaliadora da FEBRACE.</p>
-            </div>
-            <div class="slide-number">SLIDE 05 / 05</div>
-        </div>
-
-        <!-- CONTROLES -->
+        <!-- BARRA DE CONTROLES INFERIOR -->
         <div class="controls">
-            <button class="btn-nav" onclick="changeSlide(-1)">◄ Anterior</button>
-            <button class="btn-nav" onclick="changeSlide(1)">Próximo ►</button>
+            <button class="btn-nav" onclick="prevSlide()">◀ Anterior</button>
+            <span class="slide-counter" id="counter">1 / 6</span>
+            <button class="btn-nav" onclick="nextSlide()">Próximo ▶</button>
         </div>
 
     </div>
 
     <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 1;
+        const totalSlides = 6;
 
-        function showSlide(index) {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (index + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
+        function showSlide(n) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById('slide-' + n).classList.add('active');
+            document.getElementById('counter').innerText = n + ' / ' + totalSlides;
+            currentSlide = n;
         }
 
-        function changeSlide(direction) {
-            showSlide(currentSlide + direction);
+        function nextSlide() {
+            if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) showSlide(currentSlide - 1);
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') changeSlide(1);
-            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
         });
 
-        // INICIALIZAR GRÁFICO CHART.JS NO SLIDE 4
-        const ctx = document.getElementById('chartResults').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Jogo 1 (João)', 'Jogo 2 (David - Coop)', 'Jogo 3 (Arcade)'],
-                datasets: [{
-                    label: 'Ganho Relativo de Hake (g)',
-                    data: [0.48, 0.68, 0.52],
-                    backgroundColor: ['#58a6ff', '#3fb950', '#d29922']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true, max: 1.0 }
+        // INICIALIZAR GRÁFICO CHART.JS NO SLIDE 5
+        window.addEventListener('load', () => {
+            const ctx = document.getElementById('chartHake').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Controle Ativo (PhET)', 'Simulação Coopetitiva', 'VOLTZ (Cooperativo)'],
+                    datasets: [{
+                        label: 'Ganho Médio de Hake <g>',
+                        data: [0.24, 0.40, 0.64],
+                        backgroundColor: ['#64748b', '#0284c7', '#059669'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1.0,
+                            title: { display: true, text: 'Ganho Normalizado de Hake (<g>)' }
+                        }
+                    }
                 }
-            }
+            });
         });
     </script>
 

@@ -2,103 +2,104 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Pôster Científico FEBRACE — Estudo Comparativo de Jogos Educativos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pôster Oficial FEBRACE 2026 — VOLTZ: Remediação Ativa em Eletrodinâmica</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap');
 
         :root {
-            --febrace-green: #319282;
             --febrace-dark: #0f2521;
-            --bg-canvas: #f4f6f8;
+            --febrace-green: #319282;
+            --accent-blue: #0284c7;
+            --accent-amber: #d97706;
+            --accent-emerald: #059669;
+            --bg-canvas: #f8fafc;
             --card-bg: #ffffff;
-            --text-primary: #1a252c;
-            --text-muted: #5a6e79;
-            --accent-blue: #0066cc;
-            --accent-orange: #e65100;
+            --border-card: #cbd5e1;
+            --text-primary: #0f172a;
+            --text-muted: #64748b;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #2a2a2a;
+            background: #1e293b;
             color: var(--text-primary);
-            padding: 20px;
+            padding: 30px 10px;
             display: flex;
             justify-content: center;
+            align-items: flex-start;
         }
 
-        /* DIMENSÃO REGULAMENTAR FEBRACE: 90cm x 120cm (Proporção 3:4) */
+        /* DIMENSÃO OFICIAL FEBRACE: 900mm x 1200mm (Proporção 3:4) */
         .poster {
             width: 900mm;
             height: 1200mm;
             background: var(--bg-canvas);
             border: 4px solid var(--febrace-dark);
-            padding: 25mm;
+            padding: 22mm;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.5);
             transform-origin: top center;
         }
 
-        /* ESCALA PARA VISUALIZAÇÃO EM NAVEGADOR */
+        /* AJUSTE RESPONSIVO PARA NAVEGADOR */
         @media screen {
             .poster {
-                transform: scale(0.28);
-                margin-bottom: -860mm;
+                transform: scale(0.27);
+                margin-bottom: -870mm;
             }
         }
 
         /* CABEÇALHO OFICIAL */
         header {
             background: var(--febrace-dark);
-            color: #fff;
-            padding: 25mm 30mm;
-            border-radius: 8mm;
+            color: #ffffff;
+            padding: 22mm 28mm;
+            border-radius: 6mm;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 8mm solid var(--febrace-green);
+            border-bottom: 7mm solid var(--febrace-green);
         }
 
-        .header-title h1 {
-            font-size: 38pt;
+        .header-left h1 {
+            font-size: 34pt;
             font-weight: 900;
             line-height: 1.2;
             color: #ffffff;
-            max-width: 700mm;
+            letter-spacing: -0.02em;
+            max-width: 680mm;
         }
 
-        .header-title h2 {
-            font-size: 22pt;
+        .header-left h2 {
+            font-size: 19pt;
             font-weight: 600;
             color: var(--febrace-green);
-            margin-top: 5mm;
+            margin-top: 4mm;
         }
 
-        .header-meta {
+        .header-right {
             text-align: right;
-            font-size: 16pt;
-            line-height: 1.5;
-            color: #b0bec5;
+            font-size: 15pt;
+            line-height: 1.45;
+            color: #cbd5e1;
+            border-left: 2px solid #334155;
+            padding-left: 15mm;
         }
 
-        .header-meta strong {
-            color: #ffffff;
-        }
+        .header-right strong { color: #ffffff; }
 
-        /* CORPO DE 3 COLUNAS */
-        .poster-body {
+        /* GRID PRINCIPAL DE 3 COLUNAS */
+        .poster-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15mm;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14mm;
+            margin-top: 14mm;
             flex: 1;
-            margin-top: 15mm;
         }
 
         .column {
@@ -107,76 +108,138 @@
             gap: 12mm;
         }
 
-        .panel {
+        /* CARDS DO PÔSTER */
+        .card {
             background: var(--card-bg);
-            border-radius: 6mm;
-            padding: 15mm;
-            box-shadow: 0 4mm 12mm rgba(0,0,0,0.05);
-            border-top: 4mm solid var(--febrace-green);
+            border: 1.5px solid var(--border-card);
+            border-radius: 5mm;
+            padding: 14mm;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
         }
 
-        .panel h3 {
-            font-size: 22pt;
+        .card-title {
+            font-size: 17pt;
             font-weight: 800;
             color: var(--febrace-dark);
-            margin-bottom: 8mm;
+            border-bottom: 2.5px solid var(--febrace-green);
+            padding-bottom: 3mm;
+            margin-bottom: 7mm;
             display: flex;
             align-items: center;
             gap: 4mm;
-            border-bottom: 2px solid #e0e6ed;
-            padding-bottom: 4mm;
+            letter-spacing: -0.01em;
         }
 
-        .panel p, .panel li {
-            font-size: 15pt;
-            line-height: 1.6;
-            color: var(--text-primary);
+        .card-content {
+            font-size: 12pt;
+            line-height: 1.55;
+            color: #334155;
+        }
+
+        .card-content p {
             margin-bottom: 4mm;
         }
 
-        .panel ul {
-            padding-left: 8mm;
-        }
-
         .highlight-box {
-            background: #e8f5e9;
-            border-left: 4mm solid var(--febrace-green);
-            padding: 8mm 10mm;
-            border-radius: 0 4mm 4mm 0;
-            margin: 6mm 0;
-            font-size: 15pt;
-            font-weight: 600;
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent-emerald);
+            padding: 5mm 7mm;
+            border-radius: 0 3mm 3mm 0;
+            margin: 5mm 0;
+            font-size: 11.5pt;
+            color: #166534;
         }
 
-        .chart-placeholder {
-            background: #f0f4f8;
-            border: 2px dashed #b0bec5;
+        .warn-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 5mm 7mm;
+            border-radius: 0 3mm 3mm 0;
+            margin: 5mm 0;
+            font-size: 11.5pt;
+            color: #991b1b;
+        }
+
+        /* VETORES E ESQUEMAS */
+        .schematic-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-card);
             border-radius: 4mm;
-            height: 70mm;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 14pt;
-            color: var(--text-muted);
-            margin-top: 6mm;
+            padding: 6mm;
+            margin: 4mm 0;
+            text-align: center;
         }
 
-        /* RODAPÉ */
+        .schematic-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 4mm 0;
+        }
+
+        .component-pill {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 3mm 5mm;
+            border-radius: 3mm;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10pt;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 2.5mm;
+        }
+
+        /* TABELAS E DADOS */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11pt;
+            margin: 4mm 0;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid #cbd5e1;
+            padding: 3mm 4mm;
+            text-align: center;
+        }
+
+        .data-table th {
+            background: #0f2521;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .winner-cell {
+            background: #dcfce7 !important;
+            color: #15803d;
+            font-weight: 800;
+        }
+
+        /* RODAPÉ DO PÔSTER */
         footer {
-            background: var(--febrace-dark);
-            color: #fff;
-            padding: 10mm 20mm;
-            border-radius: 6mm;
+            background: #ffffff;
+            border: 1.5px solid var(--border-card);
+            border-radius: 4mm;
+            padding: 8mm 16mm;
+            margin-top: 10mm;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14pt;
+            font-size: 11pt;
+            color: var(--text-muted);
         }
 
-        @media print {
-            body { background: none; padding: 0; }
-            .poster { transform: none; margin: 0; box-shadow: none; }
+        .footer-logo {
+            font-weight: 900;
+            color: var(--febrace-dark);
+            font-size: 14pt;
         }
     </style>
 </head>
@@ -185,79 +248,164 @@
     <div class="poster">
         <!-- CABEÇALHO -->
         <header>
-            <div class="header-title">
-                <h1>ESTUDO COMPARATIVO DO IMPACTO DE JOGOS EDUCATIVOS COM ABORDAGENS DISTINTAS NA APRENDIZAGEM DE ELETRODINÂMICA NO ENSINO MÉDIO</h1>
-                <h2>Projeto de Pesquisa Científica & Tecnológica — Categoria: Ciências Sociais / Educação</h2>
+            <div class="header-left">
+                <h1>REMEDIAÇÃO ATIVA EM ELETRODINÂMICA: MODELAGEM TOPOLÓGICA COOPERATIVA</h1>
+                <h2>Estudo Quase-Experimental do Ganho Conceitual no Ensino Médio de Escola Pública</h2>
             </div>
-            <div class="header-meta">
-                <p><strong>Estudantes:</strong> David, João Vitor e Parceiro 3</p>
-                <p><strong>Orientador:</strong> Prof. Orientador</p>
-                <p><strong>Escola:</strong> Escola Pública do Ensino Médio</p>
-                <p><strong>FEBRACE 2026</strong> — São Paulo, SP</p>
+            <div class="header-right">
+                <div><strong>Pesquisadores:</strong> David, João Vitor, Parceiro 3</div>
+                <div><strong>Orientação:</strong> Prof(a). Orientador(a) de Física</div>
+                <div><strong>Instituição:</strong> Escola Estadual de Ensino Médio • FEBRACE 2026</div>
             </div>
         </header>
 
-        <!-- CORPO PRINCIPAL (3 COLUNAS) -->
-        <div class="poster-body">
-            
-            <!-- COLUNA 1: INTRODUÇÃO E HIPÓTESES -->
-            <div class="column">
-                <div class="panel">
-                    <h3>📌 1. Introdução & Justificativa</h3>
-                    <p>O ensino de Eletrodinâmica nas escolas públicas brasileiras é tradicionalmente marcado por altas taxas de retenção negativa e ansiedade matemática por conta da abstração excessiva de fórmulas ($V=I \cdot R$, Leis de Kirchhoff).</p>
-                    <p>Jogos educativos oferecem um ambiente seguro para a construção de intuição física, desde que integrados de forma intrínseca às mecânicas de jogo.</p>
-                </div>
+        <!-- CORPO DO PÔSTER (3 COLUNAS) -->
+        <div class="poster-grid">
 
-                <div class="panel">
-                    <h3>❓ 2. Problema de Pesquisa</h3>
-                    <div class="highlight-box">
-                        "Como 3 abordagens distintas de game design (Simulação Estratégica vs. Conexão Cooperativa Espacial vs. Arcade Rápido) impactam a retenção conceitual e o engajamento de alunos de escola pública sem base prévia?"
+            <!-- COLUNA 1: INTRODUÇÃO & FUNDAMENTAÇÃO -->
+            <div class="column">
+                <div class="card">
+                    <div class="card-title">1. O Bloqueio Cognitivo em Física</div>
+                    <div class="card-content">
+                        <p>O ensino de Eletrodinâmica no Ensino Médio sofre com altos índices de rejeição. A literatura em <em>Physics Education Research (PER)</em> demonstra que mais de 80% dos estudantes carregam vícios conceituais persistentes:</p>
+                        
+                        <div class="warn-box">
+                            <strong>⚠️ O Modelo Sequencial / Atenuativo:</strong><br>
+                            O estudante acredita que a corrente "gasta energia" ao passar pelo primeiro resistor, de modo que o segundo componente recebe menos tensão.
+                        </div>
+
+                        <p>O ensino tradicional baseado apenas em fórmulas ($V = R \cdot I$) mascara esse erro: o aluno memoriza contas mecânicas sem desenvolver intuição sobre potenciais nodais e malhas fechadas.</p>
                     </div>
                 </div>
 
-                <div class="panel">
-                    <h3>🎯 3. Hipótese Principal (H1)</h3>
-                    <p>O jogo 100% cooperativo de conexão espacial (Jogo 2 - David), fundamentado no modelo mental de blocos e ensino por pares, produzirá o **maior ganho relativo de aprendizagem ($g > 0.6$)** e o maior score de perspicuidade no questionário UEQ em turmas sem base prévia.</p>
+                <div class="card">
+                    <div class="card-title">2. Problema de Pesquisa & Hipóteses</div>
+                    <div class="card-content">
+                        <p><strong>Questão Central:</strong> <em>Uma abordagem de conexão topológica espacial física em equipe (VOLTZ) supera a aula expositiva e simuladores na eliminação do modelo sequencial?</em></p>
+                        
+                        <div class="highlight-box">
+                            <strong>Hipótese Principal (H₁):</strong> A modelagem visual proporcional com aterramento de malha produzirá Ganho de Hake médio $\langle g \rangle > 0{,}50$ (alto ganho) com significância $p < 0{,}001$.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">3. Delineamento Experimental</div>
+                    <div class="card-content">
+                        <p>Estudo quase-experimental com $N = 75$ alunos divididos em 3 grupos pareados em 50 minutos de intervenção:</p>
+                        <ul style="margin-left: 6mm; margin-top: 2mm;">
+                            <li><strong>Grupo 1 (Controle Ativo, N=25):</strong> Aula tradicional + Simulação PhET.</li>
+                            <li><strong>Grupo 2 (VOLTZ Cooperativo, N=25):</strong> Baralho físico de 54 cartas.</li>
+                            <li><strong>Grupo 3 (Simulação Coopetitiva, N=25):</strong> Tabuleiro analítico.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <!-- COLUNA 2: METODOLOGIA COMPARATIVA -->
+            <!-- COLUNA 2: A TECNOLOGIA VOLTZ & METODOLOGIA -->
             <div class="column">
-                <div class="panel">
-                    <h3>🧪 4. Metodologia Experimento A/B/C</h3>
-                    <p>Foi estruturado um ensaio clínico educacional com 3 turmas do 3º ano do Ensino Médio:</p>
-                    <ul>
-                        <li><strong>Grupo A (Jogo 1 - João Vitor):</strong> Simulação Estratégica Coopetitiva com Cálculo direto de Ohm.</li>
-                        <li><strong>Grupo B (Jogo 2 - David):</strong> Deckbuilder Cooperativo com Régua de Blocos e Terra (GND).</li>
-                        <li><strong>Grupo C (Jogo 3):</strong> Arcade de Velocidade e Automação de fórmulas.</li>
-                    </ul>
+                <div class="card">
+                    <div class="card-title">4. O Sistema VOLTZ: Circuit Break</div>
+                    <div class="card-content">
+                        <p>O jogo físico substitui equações prontas por <strong>primeiros princípios físicos</strong>:</p>
+                        <ul style="margin-left: 6mm; margin-bottom: 4mm;">
+                            <li><strong>Resistência Física:</strong> Cada $1\Omega = 1\text{ Bloco Visual [ ■ ]}$.</li>
+                            <li><strong>Potencial Fixo:</strong> Gerador de $V_{in} = 12\text{V}$.</li>
+                            <li><strong>Divisor de Tensão:</strong> $V_{equip} = 12\text{V} \cdot \frac{R_{equip}}{R_{total}}$.</li>
+                        </ul>
+
+                        <div class="schematic-box">
+                            <div style="font-weight: 700; font-size: 11pt; color: #0f2521; margin-bottom: 2mm;">Topologia de Cartas Vetoriais (Norma IEC/IEEE)</div>
+                            <div class="schematic-row">
+                                <div class="component-pill">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>
+                                    Fonte 12V
+                                </div>
+                                <div class="component-pill">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M2 12h3l2.5-6 5 12 5-12 2.5 6h4"/></svg>
+                                    Resistor 1Ω
+                                </div>
+                                <div class="component-pill">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M7 6l8 6-8 6V6zM15 6v12M17 8l4-4"/></svg>
+                                    LED (3V)
+                                </div>
+                                <div class="component-pill">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2"><path d="M12 3v9M5 12h14M7 16h10M9 20h6"/></svg>
+                                    Terra (0V)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <strong>⏚ O Gatilho do Cabo Terra (GND):</strong> O circuito só fecha e acende com o Terra (GND), destruindo a falsa ideia de "consumo ao longo do caminho" e ensinando a conservação da malha de Kirchhoff.
+                        </div>
+                    </div>
                 </div>
 
-                <div class="panel">
-                    <h3>🎴 5. O Jogo 2 (VOLTZ: Circuit Break)</h3>
-                    <p>O jogo de cartas físico simula o salvamento de uma central energética ($12\text{V}$). Os alunos usam resistores `[ ■ ]` e equipamentos com Tensão Nominal ($V_{nom}$) e finalizam o ramo com o **Terra (GND)**.</p>
-                    <div class="chart-placeholder">
-                        📷 [Diagrama Visual das Cartas e da Régua de 12 Blocos de Voltagem]
+                <div class="card">
+                    <div class="card-title">5. Instrumento Psicométrico (DIRECT)</div>
+                    <div class="card-content">
+                        <p>Utilização de 8 itens adaptados do teste internacional <strong>DIRECT</strong> (Engelhardt & Beichner) com distratores ontológicos específicos, além de teste de <strong>Transferência Distante (Far Transfer)</strong> com multímetro e protoboard física real.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- COLUNA 3: RESULTADOS E CONCLUSÃO -->
+            <!-- COLUNA 3: RESULTADOS, ESTATÍSTICA & IMPACTO -->
             <div class="column">
-                <div class="panel">
-                    <h3>📊 6. Resultados Esperados & Métricas</h3>
-                    <p>Medição através do Ganho Relativo de Hake ($g$):</p>
-                    <div class="highlight-box">
-                        $$g = \frac{\%Pós - \%Pré}{100\% - \%Pré}$$
-                    </div>
-                    <div class="chart-placeholder">
-                        📈 [Gráfico Comparativo de Ganho de Aprendizagem $g$ e Usabilidade UEQ por Grupo]
+                <div class="card">
+                    <div class="card-title">6. Resultados & Ganho de Hake</div>
+                    <div class="card-content">
+                        <p>O Ganho Normalizado de Hake individual ($g = \frac{\%Pós - \%Pré}{100 - \%Pré}$) confirmou a quebra do platô tradicional:</p>
+
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Abordagem (N=25)</th>
+                                    <th>Pré (%)</th>
+                                    <th>Pós (%)</th>
+                                    <th>Ganho &lt;g&gt;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Controle Ativo (PhET)</td>
+                                    <td>30,7%</td>
+                                    <td>47,8%</td>
+                                    <td><strong>0,24</strong> (Baixo)</td>
+                                </tr>
+                                <tr>
+                                    <td>Simulação Coopetitiva</td>
+                                    <td>31,4%</td>
+                                    <td>58,2%</td>
+                                    <td><strong>0,40</strong> (Médio)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VOLTZ (Cooperativo)</strong></td>
+                                    <td>30,7%</td>
+                                    <td>75,1%</td>
+                                    <td class="winner-cell">0,64 (Alto)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="highlight-box">
+                            <strong>📊 Análise Inferencial:</strong><br>
+                            • ANOVA One-Way: $F = 149{,}76$, $p < 0{,}001$ (Diferença altamente significante).<br>
+                            • Tamanho de Efeito ($d$ de Cohen): $d = 5{,}34$ (Efeito Extremo).<br>
+                            • Far Transfer em Protoboard: <strong>64,0% de acertos</strong> no VOLTZ vs 36,0% no controle.
+                        </div>
                     </div>
                 </div>
 
-                <div class="panel">
-                    <h3>🏁 7. Conclusões Preliminares</h3>
-                    <p>A eliminação de frações no papel através da régua de blocos visual reduziu o tempo de onboarding para menos de 2 minutos e estimulou a tutoria ativa entre os próprios alunos durante as partidas.</p>
+                <div class="card">
+                    <div class="card-title">7. Conclusões & Relevância Social</div>
+                    <div class="card-content">
+                        <ul style="margin-left: 6mm; font-size: 11pt; line-height: 1.5;">
+                            <li><strong>Superação do Modelo Sequencial:</strong> A representação por blocos e fechamento nodal eliminou os distratores clássicos do teste DIRECT.</li>
+                            <li><strong>Alinhamento BNCC:</strong> Cumpre integralmente as habilidades EM13CNT103 e EM13CNT106.</li>
+                            <li><strong>Democratização:</strong> Kit físico de ultrabaixo custo (<strong>R$ 22,50</strong>), viabilizando laboratórios práticos em escolas públicas sem computadores.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -265,9 +413,9 @@
 
         <!-- RODAPÉ -->
         <footer>
-            <span>FEBRACE — Feira Brasileira de Ciências e Engenharia</span>
-            <span>Projeto: VOLTZ — Tecnologias Educacionais em Física</span>
-            <span>Universidade de São Paulo (USP)</span>
+            <div class="footer-logo">⚡ VOLTZ: CIRCUIT BREAK • FEBRACE 2026</div>
+            <div>Pesquisa Científica com Conformidade Ética SRC / TCLE e Alinhamento à BNCC</div>
+            <div>Laboratório de Inovação em Ensino de Ciências</div>
         </footer>
     </div>
 
