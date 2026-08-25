@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Council Report — Avaliação Science Fair Material (FEBRACE / ISEF)</title>
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-primary: #0284c7;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-amber: #f59e0b;
+            --accent-purple: #8b5cf6;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .meta-bar {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        .question-box {
+            background: #f1f5f9;
+            border-left: 4px solid var(--accent-primary);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 16px;
+            font-size: 0.95rem;
+            color: #334155;
+            font-style: italic;
+        }
+
+        /* VERDICT HERO CARD */
+        .verdict-card {
+            background: var(--bg-card);
+            border: 2px solid #0284c7;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .verdict-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .verdict-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .score-badge {
+            background: #dcfce7;
+            color: #15803d;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            border: 1px solid #bbf7d0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        .subcard {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .subcard-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .title-agree { color: #16a34a; }
+        .title-clash { color: #dc2626; }
+        .title-blind { color: #d97706; }
+        .title-action { color: #0284c7; }
+
+        ul.styled-list {
+            padding-left: 20px;
+            font-size: 0.9rem;
+            color: #334155;
+        }
+
+        ul.styled-list li {
+            margin-bottom: 8px;
+        }
+
+        /* ONE THING HERO */
+        .one-thing-card {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #ffffff;
+            padding: 20px 24px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+
+        .one-thing-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #bae6fd;
+            margin-bottom: 6px;
+        }
+
+        .one-thing-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* SPECTRUM VISUAL */
+        .visual-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .advisor-chips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .chip {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .chip-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; }
+        .chip-role { font-size: 0.75rem; color: var(--text-muted); }
+        .chip-stance { font-size: 0.8rem; font-weight: 700; margin-top: 6px; }
+
+        .stance-strict { color: #dc2626; }
+        .stance-deep { color: #7c3aed; }
+        .stance-vision { color: #0284c7; }
+        .stance-user { color: #059669; }
+        .stance-ops { color: #d97706; }
+
+        /* DETAILS / COLLAPSIBLE */
+        details {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        details[open] {
+            box-shadow: var(--shadow-sm);
+            border-color: #cbd5e1;
+        }
+
+        summary {
+            padding: 14px 18px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background: #ffffff;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        summary:hover {
+            background: #f8fafc;
+        }
+
+        .details-body {
+            padding: 16px 20px;
+            background: #f8fafc;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: #334155;
+            line-height: 1.55;
+        }
+
+        /* 4-PILLAR ACTION PLAN */
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .pillar-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            border-top: 4px solid var(--accent-primary);
+        }
+
+        .pillar-num { font-weight: 900; font-size: 1.1rem; color: var(--accent-primary); margin-bottom: 4px; }
+        .pillar-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
+        .pillar-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+        <span class="tag-pill">🏛️ LLM Council Synthesis — FEBRACE 2026</span>
+        <h1>Avaliação do Projeto: "Science Fair Material" de Ponta</h1>
+        <div class="meta-bar">
+            <div><strong>Projeto:</strong> VOLTZ: Circuit Break & Estudo Comparativo</div>
+            <div><strong>Data:</strong> 25 de Agosto de 2026</div>
+            <div><strong>Metodologia:</strong> Andrej Karpathy LLM Council (5 Conselheiros + Peer Review)</div>
+        </div>
+        <div class="question-box">
+            "Avaliação rigorosa do design, organização, lógica e rigor científico do projeto. O projeto possui calibre para FEBRACE e credenciamento ISEF? Quais são as falhas que a banca vai atacar e como blindar o projeto?"
+        </div>
+    </header>
+
+    <!-- VERDICT HERO -->
+    <div class="verdict-card">
+        <div class="verdict-header">
+            <div class="verdict-title">
+                <span>⚖️ Veredito do Conselho</span>
+            </div>
+            <div class="score-badge">Calibre: Potencial de Premiação com Ressalvas Metodológicas</div>
+        </div>
+
+        <p style="font-size: 0.95rem; color: #334155; margin-bottom: 16px;">
+            O projeto possui excelente apelo prático, relevância para escolas públicas e design de jogo sólido. No entanto, corre o risco grave de ser avaliado como <strong>"desenvolvimento lúdico com testes anedóticos"</strong> se não blindar o isolamento de variáveis, o grupo de controle ativo e a comprovação de transferência para circuitos físicos reais (*Far Transfer*).
+        </p>
+
+        <div class="grid-2">
+            <div class="subcard">
+                <div class="subcard-title title-agree">🤝 Onde o Conselho Convergiu</div>
+                <ul class="styled-list">
+                    <li><strong>Tangibilidade do Baralho:</strong> A mecânica de blocos espaciais [ ■ ] é o ponto mais forte e atrativo para a banca.</li>
+                    <li><strong>Métricas Quantitativas:</strong> O Ganho $g$ de Hake e UEQ são obrigatórios e conferem rigor quando comparados a uma base sólida.</li>
+                    <li><strong>Risco de Ilusão Pedagógica:</strong> A banca vai exigir prova de que o aluno aprendeu física real, não apenas as regras do jogo.</li>
+                </ul>
+            </div>
+
+            <div class="subcard">
+                <div class="subcard-title title-clash">⚔️ Onde Houve Conflito</div>
+                <ul class="styled-list">
+                    <li><strong>Complexidade Tecnológica (CV/SPICE):</strong> O Expansionist propôs visão computacional e biometria; todos os outros 4 conselheiros rejeitaram por excesso de ruído, custo e inviabilidade operacional.</li>
+                    <li><strong>Comparação de 3 Jogos vs 1 Jogo com Controle:</strong> O Contrarian exigiu grupo de controle tradicional (PhET/aula), enquanto o modelo original comparava apenas 3 jogos entre si.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 16px;">
+            <div class="subcard">
+                <div class="subcard-title title-blind">👁️ Pontos Cegos Revelados no Peer Review</div>
+                <ul class="styled-list">
+                    <li><strong>Comitê de Ética em Pesquisa (CEP/SRC):</strong> Aplicação com menores de idade exige TCLE/TALE formal para evitar desclassificação no credenciamento da FEBRACE/ISEF.</li>
+                    <li><strong>Alinhamento Curricular com a BNCC:</strong> Enquadramento explícito nas habilidades de Ciências da Natureza (EM13CNT103/106).</li>
+                    <li><strong>Retenção Longitudinal:</strong> Pós-teste tardio (2-4 semanas) para descartar o efêmero Efeito Hawthorne.</li>
+                </ul>
+            </div>
+
+            <div class="subcard">
+                <div class="subcard-title title-action">🛡️ Blindagem Metodológica Mandatória</div>
+                <ul class="styled-list">
+                    <li><strong>Teste DIRECT:</strong> Instrumento internacional padronizado para diagnóstico de modelos mentais em circuitos.</li>
+                    <li><strong>Grupo de Controle Ativo:</strong> Turma com simulação PhET/aula tradicional pareada em 50 minutos.</li>
+                    <li><strong>Far Transfer em Hardware:</strong> Questão de teste com foto de multímetro/protoboard real.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="one-thing-card">
+            <div class="one-thing-label">🎯 O Único Passo a Fazer Primeiro:</div>
+            <div class="one-thing-text">
+                Travar o formulário de Pré/Pós-Teste padronizado (DIRECT) com questão de transferência física e obter o termo de autorização escolar (TCLE/TALE) para aplicação com N ≥ 60 alunos!
+            </div>
+        </div>
+    </div>
+
+    <!-- SPECTRUM VISUAL -->
+    <div class="visual-card">
+        <div class="section-title">📊 Matriz de Posicionamento dos 5 Conselheiros</div>
+        <div class="advisor-chips">
+            <div class="chip">
+                <div class="chip-name">Contrarian</div>
+                <div class="chip-role">Rigor & Falhas</div>
+                <div class="chip-stance stance-strict">Exige Controle Ativo & Far Transfer</div>
+            </div>
+            <div class="chip">
+                <div class="chip-name">First Principles</div>
+                <div class="chip-role">Epistemologia Física</div>
+                <div class="chip-stance stance-deep">Foca no Teste DIRECT & Modelo Mental</div>
+            </div>
+            <div class="chip">
+                <div class="chip-name">Expansionist</div>
+                <div class="chip-role">Escala & ISEF</div>
+                <div class="chip-stance stance-vision">Plataforma Phygital (Rejeitado)</div>
+            </div>
+            <div class="chip">
+                <div class="chip-name">Outsider</div>
+                <div class="chip-role">Pitch & Clareza</div>
+                <div class="chip-stance stance-user">Elimina Jargões & Foca no Humano</div>
+            </div>
+            <div class="chip">
+                <div class="chip-name">Executor</div>
+                <div class="chip-role">Operações</div>
+                <div class="chip-stance stance-ops">Amostra N=60-75 & Pipeline Python</div>
+            </div>
+        </div>
+
+        <div class="section-title" style="margin-top: 24px;">🚀 Plano de Soluções em 4 Pilares</div>
+        <div class="pillar-grid">
+            <div class="pillar-card">
+                <div class="pillar-num">01</div>
+                <div class="pillar-name">Design & Lógica</div>
+                <div class="pillar-desc">Preservar a ausência da meta estampada na carta e manter a dedução por tabela de mesa para reforçar a Lei de Ohm genuína.</div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">02</div>
+                <div class="pillar-name">Rigor Científico</div>
+                <div class="pillar-desc">Adicionar Grupo Controle Ativo (PhET/Bancada), teste psicométrico DIRECT e cálculo de tamanho de efeito (d de Cohen).</div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">03</div>
+                <div class="pillar-name">Apresentação & Pitch</div>
+                <div class="pillar-desc">Pitch em 30s sem jargões. Pôster com infográfico em 3 passos: Dor do Aluno → Mecânica Lúdica → Comprovação Estatística.</div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">04</div>
+                <div class="pillar-name">Operação & Ética</div>
+                <div class="pillar-desc">Termos TCLE/TALE colhidos previamente, diário de bordo com fotos datadas e roteiro fechado de 50 min em sala.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COLLAPSIBLE SECTIONS: FULL ADVISOR TAKES -->
+    <div class="section-title">📂 Análises Individuais Detalhadas (Fase 1)</div>
+
+    <details>
+        <summary>
+            <span>😈 1. The Contrarian — Furos Críticos e Armadilhas da Banca</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir ▼</span>
+        </summary>
+        <div class="details-body">
+            <strong>Veredito:</strong> O projeto hoje corre risco de parecer desenvolvimento de jogo disfarçado de ciência.<br><br>
+            <strong>1. Confusão de Variáveis:</strong> Comparar 3 jogos distintos não isola a causa do aprendizado (foi o deckbuilder, o tempo de jogo ou a dinâmica cooperativa?).<br>
+            <strong>2. Ausência de Far Transfer:</strong> Se o teste apenas repete o que está nas cartas, o resultado é circular. É imperativo incluir teste de transferência para circuitos físicos reais em protoboard.<br>
+            <strong>3. Falta de Grupo de Controle Ativo:</strong> Comparar jogos entre si não prova eficácia pedagógica contra o ensino padrão.
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>🧩 2. The First Principles Thinker — Reconstrução Epistemológica</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir ▼</span>
+        </summary>
+        <div class="details-body">
+            <strong>O Problema Ontológico:</strong> Alunos erram circuitos porque operam no "modelo sequencial/atenuativo" (a corrente vai gastando energia pelo caminho). Se o jogo tratar tensão como recurso que se gasta passo a passo, ele cristaliza o erro cognitivo em vez de curá-lo.<br><br>
+            <strong>Solução:</strong> Usar o instrumento internacional <strong>DIRECT</strong> (Engelhardt & Beichner) para medir se a mecânica do VOLTZ ajuda o aluno a raciocinar em potenciais nodais e equilíbrio global de Kirchhoff.
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>🚀 3. The Expansionist — Potencial de Escala e ISEF</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir ▼</span>
+        </summary>
+        <div class="details-body">
+            Proposta de transformação em ecossistema phygital inteligente: visão computacional para leitura automática das cartas na mesa, simulação SPICE no backend e rastreamento de olhar (eye-tracking) para telemetria de ansiedade.<br>
+            <em>Nota do Conselho: Avaliado no Peer Review como tecnologicamente atrativo, porém com risco proibitivo de dispersão de escopo para o cronograma atual.</em>
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>👁️ 4. The Outsider — Storytelling, Usabilidade e Pitch</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir ▼</span>
+        </summary>
+        <div class="details-body">
+            <strong>Curse of Knowledge:</strong> Cuidado com o uso precoce de termos como "Ganho de Hake", "UEQ" e "Deckbuilder". Traduzir para "ganho real de aprendizado", "satisfação do usuário" e "jogo colaborativo".<br><br>
+            <strong>Layout do Pôster:</strong> Eliminar regras longas de jogo no banner. Usar infografia direta de 3 passos para capturar jurados generalistas em 30 segundos.
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>🛠️ 5. The Executor — Plano Tático Operacional</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir ▼</span>
+        </summary>
+        <div class="details-body">
+            <strong>Amostragem Necessária:</strong> N = 60 a 75 estudantes (20 a 25 por grupo experimental).<br>
+            <strong>Rotina:</strong> 10 min de TCLE/Pré-teste → 55 min de gameplay supervisionado → 25 min de Pós-teste e UEQ.<br>
+            <strong>Pipeline Estatístico:</strong> Script em Python (SciPy/Pingouin) para cálculo do ganho normalizado g, teste de normalidade Shapiro-Wilk, Kruskal-Wallis/ANOVA e geração de boxplots no Seaborn.
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>🔍 Síntese da Revisão por Pares (Peer Review Anônimo)</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir ▼</span>
+        </summary>
+        <div class="details-body">
+            Os 5 revisores votaram unanimemente no <strong>Contrarian</strong> e no <strong>First Principles Thinker</strong> como as análises mais vitais para aprovação em banca científica.<br><br>
+            Rejeitaram a expansão excessiva de hardware/software da proposta do Expansionist, mantendo o foco no baralho acessível (R$ 20) com rigor psicométrico e experimental irrefutável.
+        </div>
+    </details>
+
+    <!-- FOOTER -->
+    <footer>
+        Relatório gerado pelo sistema LLM Council (Andrej Karpathy Framework) • FEBRACE 2026 • VOLTZ: Circuit Break
+    </footer>
+
+</div>
+
+</body>
+</html>
