@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>VOLTZ: Circuit Break — Baralho Completo para Impressão A4</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
+        :root {
+            --bg-dark: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            
+            --volts-yellow: #f1e05a;
+            --ohms-blue: #58a6ff;
+            --ohms-green: #3fb950;
+            --ohms-orange: #d29922;
+            --alert-red: #f85149;
+            --purple-tech: #bc8cff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1e1e1e;
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .no-print-bar {
+            background: #2d333b;
+            width: 100%;
+            max-width: 1000px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .no-print-bar h1 { font-size: 1.2rem; color: var(--volts-yellow); }
+
+        .btn-print {
+            background: var(--ohms-blue);
+            color: #000;
+            font-weight: 700;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.1s;
+        }
+
+        .btn-print:hover { transform: scale(1.03); }
+
+        .a4-page {
+            width: 210mm;
+            height: 297mm;
+            background: #000;
+            padding: 10mm;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            display: grid;
+            grid-template-columns: repeat(3, 63mm);
+            grid-template-rows: repeat(3, 88mm);
+            gap: 2mm;
+            justify-content: center;
+            align-content: center;
+            position: relative;
+            page-break-after: always;
+        }
+
+        .card {
+            width: 63mm;
+            height: 88mm;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            padding: 4mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2mm;
+        }
+
+        .card-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-type-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-weight: 700;
+        }
+
+        .tag-central { background: var(--volts-yellow); color: #000; }
+        .tag-resistor { background: var(--ohms-blue); color: #000; }
+        .tag-equip { background: var(--purple-tech); color: #000; }
+        .tag-gnd { background: var(--ohms-green); color: #000; }
+
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2mm 0;
+        }
+
+        .card-icon { font-size: 2rem; margin-bottom: 2mm; }
+
+        .block-display { display: flex; gap: 3px; margin: 2mm 0; }
+
+        .block {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            background: var(--border-color);
+        }
+
+        .block.filled-1 { background: var(--ohms-green); box-shadow: 0 0 5px var(--ohms-green); }
+        .block.filled-2 { background: var(--ohms-blue); box-shadow: 0 0 5px var(--ohms-blue); }
+        .block.filled-3 { background: var(--ohms-orange); box-shadow: 0 0 5px var(--ohms-orange); }
+
+        .target-gauge {
+            background: #21262d;
+            border: 1px solid var(--purple-tech);
+            padding: 2mm 3mm;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            color: var(--purple-tech);
+            font-weight: 700;
+            width: 100%;
+            margin-top: 2mm;
+        }
+
+        .card-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2mm;
+            font-size: 0.58rem;
+            color: var(--text-muted);
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .no-print-bar { display: none; }
+            .a4-page { margin: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-bar">
+        <h1>🎴 VOLTZ: Circuit Break — Baralho de Impressão (54 Cartas)</h1>
+        <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Salvar em PDF</button>
+    </div>
+
+    <!-- PÁGINA 1: GERADOR & RESISTORES -->
+    <div class="a4-page">
+        <div class="card" style="border-color: var(--volts-yellow);">
+            <div class="card-header"><span class="card-title">Gerador Central</span><span class="card-type-tag tag-central">GER-01</span></div>
+            <div class="card-body">
+                <div class="card-icon">⚡</div>
+                <div style="font-size: 0.8rem; font-weight: 900; color: var(--volts-yellow);">Vin = 12 VOLTS</div>
+                <div class="target-gauge" style="border-color: var(--volts-yellow); color: var(--volts-yellow);">BATERIA DE 12 BLOCOS</div>
+            </div>
+            <div class="card-footer">Fornece 12V para os 4 setores da cidade.</div>
+        </div>
+
+        <div class="card"><div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-type-tag tag-resistor">1 Ω</span></div><div class="card-body"><div class="card-icon">⬛</div><div class="block-display"><div class="block filled-1"></div></div><div style="font-size: 0.7rem; font-weight: 700;">+1 Bloco [ ■ ]</div></div><div class="card-footer">Adiciona 1Ω ao ramo.</div></div>
+        <div class="card"><div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-type-tag tag-resistor">1 Ω</span></div><div class="card-body"><div class="card-icon">⬛</div><div class="block-display"><div class="block filled-1"></div></div><div style="font-size: 0.7rem; font-weight: 700;">+1 Bloco [ ■ ]</div></div><div class="card-footer">Adiciona 1Ω ao ramo.</div></div>
+        <div class="card"><div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-type-tag tag-resistor">1 Ω</span></div><div class="card-body"><div class="card-icon">⬛</div><div class="block-display"><div class="block filled-1"></div></div><div style="font-size: 0.7rem; font-weight: 700;">+1 Bloco [ ■ ]</div></div><div class="card-footer">Adiciona 1Ω ao ramo.</div></div>
+        <div class="card"><div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-type-tag tag-resistor">1 Ω</span></div><div class="card-body"><div class="card-icon">⬛</div><div class="block-display"><div class="block filled-1"></div></div><div style="font-size: 0.7rem; font-weight: 700;">+1 Bloco [ ■ ]</div></div><div class="card-footer">Adiciona 1Ω ao ramo.</div></div>
+        <div class="card"><div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-type-tag tag-resistor">1 Ω</span></div><div class="card-body"><div class="card-icon">⬛</div><div class="block-display"><div class="block filled-1"></div></div><div style="font-size: 0.7rem; font-weight: 700;">+1 Bloco [ ■ ]</div></div><div class="card-footer">Adiciona 1Ω ao ramo.</div></div>
+        <div class="card"><div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-type-tag tag-resistor">1 Ω</span></div><div class="card-body"><div class="card-icon">⬛</div><div class="block-display"><div class="block filled-1"></div></div><div style="font-size: 0.7rem; font-weight: 700;">+1 Bloco [ ■ ]</div></div><div class="card-footer">Adiciona 1Ω ao ramo.</div></div>
+        <div class="card"><div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-type-tag tag-resistor">1 Ω</span></div><div class="card-body"><div class="card-icon">⬛</div><div class="block-display"><div class="block filled-1"></div></div><div style="font-size: 0.7rem; font-weight: 700;">+1 Bloco [ ■ ]</div></div><div class="card-footer">Adiciona 1Ω ao ramo.</div></div>
+        <div class="card"><div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-type-tag tag-resistor">1 Ω</span></div><div class="card-body"><div class="card-icon">⬛</div><div class="block-display"><div class="block filled-1"></div></div><div style="font-size: 0.7rem; font-weight: 700;">+1 Bloco [ ■ ]</div></div><div class="card-footer">Adiciona 1Ω ao ramo.</div></div>
+    </div>
+
+    <!-- PÁGINA 2: EQUIPAMENTOS SEM META STAMPADA -->
+    <div class="a4-page">
+        <!-- LED PILOTO (3V) -->
+        <div class="card" style="border-color: var(--purple-tech);">
+            <div class="card-header"><span class="card-title">LED Piloto</span><span class="card-type-tag tag-equip">3 VOLTS</span></div>
+            <div class="card-body">
+                <div class="card-icon">💡</div>
+                <div style="font-size: 0.7rem; font-weight: 700;">Energia Exigida: Vnom = 3V</div>
+                <div class="target-gauge">Resistência Base: 1Ω [ ■ ]</div>
+            </div>
+            <div class="card-footer">Consulte a proporção de blocos no Guia de Mesa.</div>
+        </div>
+
+        <div class="card" style="border-color: var(--purple-tech);">
+            <div class="card-header"><span class="card-title">Servidor Central</span><span class="card-type-tag tag-equip">4 VOLTS</span></div>
+            <div class="card-body">
+                <div class="card-icon">🖥️</div>
+                <div style="font-size: 0.7rem; font-weight: 700;">Energia Exigida: Vnom = 4V</div>
+                <div class="target-gauge">Resistência Base: 1Ω [ ■ ]</div>
+            </div>
+            <div class="card-footer">Consulte a proporção de blocos no Guia de Mesa.</div>
+        </div>
+
+        <div class="card" style="border-color: var(--purple-tech);">
+            <div class="card-header"><span class="card-title">Sirene Alarme</span><span class="card-type-tag tag-equip">6 VOLTS</span></div>
+            <div class="card-body">
+                <div class="card-icon">🚨</div>
+                <div style="font-size: 0.7rem; font-weight: 700;">Energia Exigida: Vnom = 6V</div>
+                <div class="target-gauge">Resistência Base: 1Ω [ ■ ]</div>
+            </div>
+            <div class="card-footer">Consulte a proporção de blocos no Guia de Mesa.</div>
+        </div>
+
+        <div class="card" style="border-color: var(--purple-tech);">
+            <div class="card-header"><span class="card-title">Motor de Bomba</span><span class="card-type-tag tag-equip">6 VOLTS</span></div>
+            <div class="card-body">
+                <div class="card-icon">⚙️</div>
+                <div style="font-size: 0.7rem; font-weight: 700;">Energia Exigida: Vnom = 6V</div>
+                <div class="target-gauge">Resistência Base: 2Ω [ ■ ■ ]</div>
+            </div>
+            <div class="card-footer">Consulte a proporção de blocos no Guia de Mesa.</div>
+        </div>
+
+        <div class="card" style="border-color: var(--purple-tech);">
+            <div class="card-header"><span class="card-title">Tomógrafo UTI</span><span class="card-type-tag tag-equip">12 VOLTS</span></div>
+            <div class="card-body">
+                <div class="card-icon">🏥</div>
+                <div style="font-size: 0.7rem; font-weight: 700;">Energia Exigida: Vnom = 12V</div>
+                <div class="target-gauge">Resistência Base: 4Ω [ ■ ■ ■ ■ ]</div>
+            </div>
+            <div class="card-footer">Liga direto na fonte de 12V!</div>
+        </div>
+
+        <!-- CABO TERRA (GND) -->
+        <div class="card" style="border-color: var(--ohms-green);">
+            <div class="card-header"><span class="card-title">Cabo Terra</span><span class="card-type-tag tag-gnd">GND - 0V</span></div>
+            <div class="card-body">
+                <div class="card-icon">⏚</div>
+                <div style="font-size: 0.75rem; font-weight: 900; color: var(--ohms-green);">GATILHO DE TESTE</div>
+                <div class="target-gauge" style="border-color: var(--ohms-green); color: var(--ohms-green);">🛑 GASTA 1 AÇÃO</div>
+            </div>
+            <div class="card-footer">Fecha a malha e dispara o teste de blocos.</div>
+        </div>
+
+        <div class="card" style="border-color: var(--ohms-green);"><div class="card-header"><span class="card-title">Cabo Terra</span><span class="card-type-tag tag-gnd">GND - 0V</span></div><div class="card-body"><div class="card-icon">⏚</div><div style="font-size: 0.75rem; font-weight: 900; color: var(--ohms-green);">GATILHO DE TESTE</div><div class="target-gauge" style="border-color: var(--ohms-green); color: var(--ohms-green);">🛑 GASTA 1 AÇÃO</div></div><div class="card-footer">Dispara a verificação.</div></div>
+        <div class="card" style="border-color: var(--ohms-green);"><div class="card-header"><span class="card-title">Cabo Terra</span><span class="card-type-tag tag-gnd">GND - 0V</span></div><div class="card-body"><div class="card-icon">⏚</div><div style="font-size: 0.75rem; font-weight: 900; color: var(--ohms-green);">GATILHO DE TESTE</div><div class="target-gauge" style="border-color: var(--ohms-green); color: var(--ohms-green);">🛑 GASTA 1 AÇÃO</div></div><div class="card-footer">Dispara a verificação.</div></div>
+        <div class="card"><div class="card-header"><span class="card-title">Conector Y</span><span class="card-type-tag tag-resistor">PARALELO</span></div><div class="card-body"><div class="card-icon">🔀</div><div style="font-size: 0.7rem; font-weight: 700;">Abre 2 Ramos de 12V</div></div><div class="card-footer">Ambos os ramos mantêm 12V.</div></div>
+    </div>
+
+</body>
+</html>

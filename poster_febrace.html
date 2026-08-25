@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Pôster Científico FEBRACE — Estudo Comparativo de Jogos Educativos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@700&display=swap');
+
+        :root {
+            --febrace-green: #319282;
+            --febrace-dark: #0f2521;
+            --bg-canvas: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-primary: #1a252c;
+            --text-muted: #5a6e79;
+            --accent-blue: #0066cc;
+            --accent-orange: #e65100;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #2a2a2a;
+            color: var(--text-primary);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* DIMENSÃO REGULAMENTAR FEBRACE: 90cm x 120cm (Proporção 3:4) */
+        .poster {
+            width: 900mm;
+            height: 1200mm;
+            background: var(--bg-canvas);
+            border: 4px solid var(--febrace-dark);
+            padding: 25mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            transform-origin: top center;
+        }
+
+        /* ESCALA PARA VISUALIZAÇÃO EM NAVEGADOR */
+        @media screen {
+            .poster {
+                transform: scale(0.28);
+                margin-bottom: -860mm;
+            }
+        }
+
+        /* CABEÇALHO OFICIAL */
+        header {
+            background: var(--febrace-dark);
+            color: #fff;
+            padding: 25mm 30mm;
+            border-radius: 8mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 8mm solid var(--febrace-green);
+        }
+
+        .header-title h1 {
+            font-size: 38pt;
+            font-weight: 900;
+            line-height: 1.2;
+            color: #ffffff;
+            max-width: 700mm;
+        }
+
+        .header-title h2 {
+            font-size: 22pt;
+            font-weight: 600;
+            color: var(--febrace-green);
+            margin-top: 5mm;
+        }
+
+        .header-meta {
+            text-align: right;
+            font-size: 16pt;
+            line-height: 1.5;
+            color: #b0bec5;
+        }
+
+        .header-meta strong {
+            color: #ffffff;
+        }
+
+        /* CORPO DE 3 COLUNAS */
+        .poster-body {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15mm;
+            flex: 1;
+            margin-top: 15mm;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 12mm;
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border-radius: 6mm;
+            padding: 15mm;
+            box-shadow: 0 4mm 12mm rgba(0,0,0,0.05);
+            border-top: 4mm solid var(--febrace-green);
+        }
+
+        .panel h3 {
+            font-size: 22pt;
+            font-weight: 800;
+            color: var(--febrace-dark);
+            margin-bottom: 8mm;
+            display: flex;
+            align-items: center;
+            gap: 4mm;
+            border-bottom: 2px solid #e0e6ed;
+            padding-bottom: 4mm;
+        }
+
+        .panel p, .panel li {
+            font-size: 15pt;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 4mm;
+        }
+
+        .panel ul {
+            padding-left: 8mm;
+        }
+
+        .highlight-box {
+            background: #e8f5e9;
+            border-left: 4mm solid var(--febrace-green);
+            padding: 8mm 10mm;
+            border-radius: 0 4mm 4mm 0;
+            margin: 6mm 0;
+            font-size: 15pt;
+            font-weight: 600;
+        }
+
+        .chart-placeholder {
+            background: #f0f4f8;
+            border: 2px dashed #b0bec5;
+            border-radius: 4mm;
+            height: 70mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 14pt;
+            color: var(--text-muted);
+            margin-top: 6mm;
+        }
+
+        /* RODAPÉ */
+        footer {
+            background: var(--febrace-dark);
+            color: #fff;
+            padding: 10mm 20mm;
+            border-radius: 6mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14pt;
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .poster { transform: none; margin: 0; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster">
+        <!-- CABEÇALHO -->
+        <header>
+            <div class="header-title">
+                <h1>ESTUDO COMPARATIVO DO IMPACTO DE JOGOS EDUCATIVOS COM ABORDAGENS DISTINTAS NA APRENDIZAGEM DE ELETRODINÂMICA NO ENSINO MÉDIO</h1>
+                <h2>Projeto de Pesquisa Científica & Tecnológica — Categoria: Ciências Sociais / Educação</h2>
+            </div>
+            <div class="header-meta">
+                <p><strong>Estudantes:</strong> David, João Vitor e Parceiro 3</p>
+                <p><strong>Orientador:</strong> Prof. Orientador</p>
+                <p><strong>Escola:</strong> Escola Pública do Ensino Médio</p>
+                <p><strong>FEBRACE 2026</strong> — São Paulo, SP</p>
+            </div>
+        </header>
+
+        <!-- CORPO PRINCIPAL (3 COLUNAS) -->
+        <div class="poster-body">
+            
+            <!-- COLUNA 1: INTRODUÇÃO E HIPÓTESES -->
+            <div class="column">
+                <div class="panel">
+                    <h3>📌 1. Introdução & Justificativa</h3>
+                    <p>O ensino de Eletrodinâmica nas escolas públicas brasileiras é tradicionalmente marcado por altas taxas de retenção negativa e ansiedade matemática por conta da abstração excessiva de fórmulas ($V=I \cdot R$, Leis de Kirchhoff).</p>
+                    <p>Jogos educativos oferecem um ambiente seguro para a construção de intuição física, desde que integrados de forma intrínseca às mecânicas de jogo.</p>
+                </div>
+
+                <div class="panel">
+                    <h3>❓ 2. Problema de Pesquisa</h3>
+                    <div class="highlight-box">
+                        "Como 3 abordagens distintas de game design (Simulação Estratégica vs. Conexão Cooperativa Espacial vs. Arcade Rápido) impactam a retenção conceitual e o engajamento de alunos de escola pública sem base prévia?"
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>🎯 3. Hipótese Principal (H1)</h3>
+                    <p>O jogo 100% cooperativo de conexão espacial (Jogo 2 - David), fundamentado no modelo mental de blocos e ensino por pares, produzirá o **maior ganho relativo de aprendizagem ($g > 0.6$)** e o maior score de perspicuidade no questionário UEQ em turmas sem base prévia.</p>
+                </div>
+            </div>
+
+            <!-- COLUNA 2: METODOLOGIA COMPARATIVA -->
+            <div class="column">
+                <div class="panel">
+                    <h3>🧪 4. Metodologia Experimento A/B/C</h3>
+                    <p>Foi estruturado um ensaio clínico educacional com 3 turmas do 3º ano do Ensino Médio:</p>
+                    <ul>
+                        <li><strong>Grupo A (Jogo 1 - João Vitor):</strong> Simulação Estratégica Coopetitiva com Cálculo direto de Ohm.</li>
+                        <li><strong>Grupo B (Jogo 2 - David):</strong> Deckbuilder Cooperativo com Régua de Blocos e Terra (GND).</li>
+                        <li><strong>Grupo C (Jogo 3):</strong> Arcade de Velocidade e Automação de fórmulas.</li>
+                    </ul>
+                </div>
+
+                <div class="panel">
+                    <h3>🎴 5. O Jogo 2 (VOLTZ: Circuit Break)</h3>
+                    <p>O jogo de cartas físico simula o salvamento de uma central energética ($12\text{V}$). Os alunos usam resistores `[ ■ ]` e equipamentos com Tensão Nominal ($V_{nom}$) e finalizam o ramo com o **Terra (GND)**.</p>
+                    <div class="chart-placeholder">
+                        📷 [Diagrama Visual das Cartas e da Régua de 12 Blocos de Voltagem]
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUNA 3: RESULTADOS E CONCLUSÃO -->
+            <div class="column">
+                <div class="panel">
+                    <h3>📊 6. Resultados Esperados & Métricas</h3>
+                    <p>Medição através do Ganho Relativo de Hake ($g$):</p>
+                    <div class="highlight-box">
+                        $$g = \frac{\%Pós - \%Pré}{100\% - \%Pré}$$
+                    </div>
+                    <div class="chart-placeholder">
+                        📈 [Gráfico Comparativo de Ganho de Aprendizagem $g$ e Usabilidade UEQ por Grupo]
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>🏁 7. Conclusões Preliminares</h3>
+                    <p>A eliminação de frações no papel através da régua de blocos visual reduziu o tempo de onboarding para menos de 2 minutos e estimulou a tutoria ativa entre os próprios alunos durante as partidas.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RODAPÉ -->
+        <footer>
+            <span>FEBRACE — Feira Brasileira de Ciências e Engenharia</span>
+            <span>Projeto: VOLTZ — Tecnologias Educacionais em Física</span>
+            <span>Universidade de São Paulo (USP)</span>
+        </footer>
+    </div>
+
+</body>
+</html>

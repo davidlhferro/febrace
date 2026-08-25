@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual Oficial de Regras — VOLTZ: Circuit Break</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .booklet {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            max-width: 850px;
+            width: 100%;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #f1e05a;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        header p { color: #8b949e; font-size: 1.1rem; margin-top: 5px; }
+
+        .tag-banner {
+            display: inline-block;
+            background: #238636;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 15px;
+        }
+
+        h2 {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 8px;
+        }
+
+        .box-highlight {
+            background: #21262d;
+            border-left: 4px solid #58a6ff;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .table-cheat {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9rem;
+        }
+
+        .table-cheat th, .table-cheat td {
+            border: 1px solid #30363d;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table-cheat th { background: #21262d; color: #f1e05a; }
+
+        .step-card {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: #58a6ff;
+            color: #000;
+            font-weight: 900;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #8b949e;
+            margin-top: 50px;
+            border-top: 1px solid #21262d;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="booklet">
+        <header>
+            <h1>⚡ VOLTZ: CIRCUIT BREAK</h1>
+            <p>Manual Oficial de Instruções — Jogo Cooperativo de Eletrodinâmica</p>
+            <span class="tag-banner">PROJETO CIENTÍFICO FEBRACE</span>
+        </header>
+
+        <h2>⚡ 1. Visão Geral da Missão</h2>
+        <p>A central de energia da cidade sofreu uma sobrecarga e liberou uma **Tensão de 12 Volts (Bateria de 12 Blocos)** por 4 setores expostos. A equipe de 2 a 4 engenheiros precisa dimensionar os caminhos com resistores e equipamentos (Servidores, Motores, Hospitais e LEDs) e conectar o **Cabo Terra (GND - 0V)** no final de cada ramo para salvar a cidade!</p>
+
+        <div class="box-highlight">
+            <strong>🤝 Regra Cooperativa:</strong> Todos vencem juntos ao fechar e salvar os 4 setores com o Terra (GND), ou todos perdem juntos se o baralho de suprimentos acabar!
+        </div>
+
+        <h2>🔄 2. O Turno do Jogador (4 Passos)</h2>
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <div><strong>COMPRAR:</strong> Compra 2 cartas do baralho de suprimentos para sua mão.</div>
+        </div>
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <div><strong>DEBATER:</strong> Discuta a estratégia com a equipe (sem revelar números exatos da mão).</div>
+        </div>
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <div><strong>CONSTRUIR OU DESCARTAR:</strong> Baixe até 2 cartas na mesa OU use 1 Ação para descartar até 2 cartas para renovar a mão.</div>
+        </div>
+        <div class="step-card">
+            <div class="step-number">4</div>
+            <div><strong>ATERRAR (Consome 1 Ação):</strong> Conecte a carta de Cabo Terra (GND) no final do ramo para disparar o teste!</div>
+        </div>
+
+        <h2>📋 3. Tabela de Conversão de Blocos de Mesa (Cheat Sheet)</h2>
+        <p>Cada $1\Omega$ de resistência equivale a **1 Bloco Visual [ ■ ]**. Para acender o equipamento, consulte a Meta do Ramo na Tabela de Mesa:</p>
+
+        <table class="table-cheat">
+            <thead>
+                <tr>
+                    <th>Equipamento</th>
+                    <th>Voltagem (Vnom)</th>
+                    <th>Resistência Base</th>
+                    <th>Meta do Ramo (🎯 Target)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🚨 Sirene de Alerta</td>
+                    <td>6 Volts</td>
+                    <td>1 Bloco [ ■ ]</td>
+                    <td><strong>🎯 2 Blocos Totais</strong></td>
+                </tr>
+                <tr>
+                    <td>🖥️ Servidor Central</td>
+                    <td>4 Volts</td>
+                    <td>1 Bloco [ ■ ]</td>
+                    <td><strong>🎯 3 Blocos Totais</strong></td>
+                </tr>
+                <tr>
+                    <td>💡 LED Piloto</td>
+                    <td>3 Volts</td>
+                    <td>1 Bloco [ ■ ]</td>
+                    <td><strong>🎯 4 Blocos Totais</strong></td>
+                </tr>
+                <tr>
+                    <td>⚙️ Motor de Bomba</td>
+                    <td>6 Volts</td>
+                    <td>2 Blocos [ ■ ■ ]</td>
+                    <td><strong>🎯 4 Blocos Totais</strong></td>
+                </tr>
+                <tr>
+                    <td>🏥 Tomógrafo UTI</td>
+                    <td>12 Volts</td>
+                    <td>4 Blocos [ ■ ■ ■ ■ ]</td>
+                    <td><strong>🎯 4 Blocos Totais</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>⏚ 4. Diagnóstico do Cabo Terra (GND)</h2>
+        <p>Ao conectar o Terra no final do caminho (gastando 1 Ação), compare o total de blocos da linha com a Meta da Tabela:</p>
+
+        <ul>
+            <li>🟢 <strong>Total de Blocos == Meta (🎯)</strong> ──► <strong>SUCESSO!</strong> O equipamento acende e o setor é salvo!</li>
+            <li>💥 <strong>Total de Blocos &lt; Meta (🎯)</strong> ──► <strong>SOBRETENSÃO!</strong> Passou energia demais e o equipamento queima!</li>
+            <li>⚪ <strong>Total de Blocos &gt; Meta (🎯)</strong> ──► <strong>SUBTENSÃO!</strong> Pouca energia, o equipamento não liga (Ação é gasta, Terra volta pra mão).</li>
+        </ul>
+
+        <div class="footer-note">
+            Projeto de Pesquisa FEBRACE — Desenvolvido por David, João Vitor e Parceiro 3 (2026)
+        </div>
+    </div>
+
+</body>
+</html>

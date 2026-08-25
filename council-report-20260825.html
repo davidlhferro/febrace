@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>LLM Council Verdict — VOLTZ: Circuit Break (FEBRACE 2026)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700&display=swap');
+
+        :root {
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --accent-green: #059669;
+            --accent-red: #dc2626;
+            --accent-blue: #2563eb;
+            --accent-yellow: #d97706;
+            --accent-purple: #7c3aed;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 960px;
+            width: 100%;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f2521 0%, #1e3a34 100%);
+            color: #fff;
+            padding: 35px 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #f1e05a;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #cbd5e1;
+            font-size: 1rem;
+        }
+
+        .verdict-card {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .verdict-card h2 {
+            font-size: 1.4rem;
+            color: var(--accent-green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verdict-section {
+            margin-bottom: 25px;
+        }
+
+        .verdict-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .verdict-section ul {
+            padding-left: 20px;
+        }
+
+        .verdict-section li {
+            margin-bottom: 8px;
+        }
+
+        .action-box {
+            background: #ecfdf5;
+            border-left: 5px solid var(--accent-green);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            font-weight: 700;
+            color: #065f46;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* MATRIZ DE ACORDO DOS CONSELHEIROS */
+        .advisors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .advisor-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .advisor-card h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag-contrarian { color: var(--accent-red); }
+        .tag-first { color: var(--accent-purple); }
+        .tag-expansion { color: var(--accent-blue); }
+        .tag-outsider { color: var(--accent-yellow); }
+        .tag-executor { color: var(--accent-green); }
+
+        details {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 15px 20px;
+            font-weight: 700;
+            cursor: pointer;
+            background: #f1f5f9;
+            user-select: none;
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid var(--border-color);
+            background: #e2e8f0;
+        }
+
+        .details-content {
+            padding: 20px;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>🏛️ LLM Council Verdict</h1>
+            <p>Avaliação Brutalmente Honesta do Jogo <strong>VOLTZ: Circuit Break</strong> (FEBRACE 2026)</p>
+        </header>
+
+        <!-- VEREDITO DO PRESIDENTE -->
+        <div class="verdict-card">
+            <h2>🏆 Veredito do Conselho do LLM (Chairman Synthesis)</h2>
+
+            <div class="verdict-section">
+                <h3>🤝 Onde o Conselho Concorda (Sinais de Alta Confiança)</h3>
+                <ul>
+                    <li><strong>Mecânica Espacial é Campeã:</strong> O estilo de colocação de trilhas conectadas (inspirado em <i>Bandido</i>) é excelente, elimina a barreira inicial e engaja os alunos instantaneamente.</li>
+                    <li><strong>Modo 100% Cooperativo é Obrigatório:</strong> Evita a humilhação de alunos de escola pública sem base prévia e estimula a Tutoria por Pares (*Peer Instruction*).</li>
+                    <li><strong>Papel Sulfite é Proibido:</strong> Sulfite de 75g rasga em 2 partidas. As cartas PRECISAM ser impressas em papel couchê 250g ou protegidas com sleeves plásticos de Magic.</li>
+                </ul>
+            </div>
+
+            <div class="verdict-section">
+                <h3>⚔️ Onde o Conselho Conflitou (Furos & Debates)</h3>
+                <ul>
+                    <li><strong>A 'Meta Estampada' (🎯 4 Blocos) vs. Raciocínio de Física:</strong>
+                        <br><em>O Contrarian e o First Principles alertaram:</em> Estampar a meta pronta ("Meta: 4 blocos") transforma o jogo em uma adição primária ($3+1=4$). A banca de Física da FEBRACE vai criticar como "falsa física".
+                        <br><em>A Resolução do Conselho:</em> <strong>Remover a Meta Pronta da Carta de Equipamento</strong> (manter impresso apenas $V_{nom} = 3\text{V}$ e $R_{equip} = 1\Omega$). Manter a Régua de Conversão de Blocos no <strong>Guia Rápido de Mesa (Player Aid)</strong>. Assim, o aluno deduz a voltagem necessária sem trapacear!
+                    </li>
+                    <li><strong>Exploit do Terra (GND) Sem Custo:</strong> O Contrarian notou que retornar o Terra à mão na subtensão sem custo gera um jogo de tentativa e erro cega (brute-force).
+                        <br><em>Solução:</em> Baixar a carta de Terra consome 1 Ação. Se o teste falhar por subtensão, o Terra volta pra mão, mas o jogador gasta sua ação.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="verdict-section">
+                <h3>👁️ Pontos Cegos Capturados pela Revisão dos Pares</h3>
+                <ul>
+                    <li><strong>Jargão Pedante vs. Linguagem Jovem:</strong> Termos como $V_{nom}$, "Resistência Nativa" e "GND" soam pedantes. Usar termos amigáveis nas cartas ("Energia Necessária", "Custo da Peça", "Cabo Terra") com notação formal em subscrito.</li>
+                    <li><strong>Ação de Descarte Ativo:</strong> Criar a regra de descartar até 2 cartas para renovar a mão, evitando travamentos por má sorte de compra (*deadlock*).</li>
+                    <li><strong>Isca Visual no Estande da FEBRACE:</strong> Deixar 1 circuito montado pela metade na mesa do estande para os jurados jogarem um turno de 40 segundos.</li>
+                </ul>
+            </div>
+
+            <div class="action-box">
+                🎯 A ÚNICA COISA A FAZER PRIMEIRO (PLANO DE AÇÃO IMEDIATO):<br>
+                Imprimir 1 baralho em Papel Couchê 250g (com a remoção da meta pronta e inclusão da regra de descarte) e realizar 1 teste cego (sem falar nada, apenas com os alunos lendo o manual) nesta terça-feira!
+            </div>
+        </div>
+
+        <!-- PARECERES DOS 5 CONSELHEIROS -->
+        <h3 style="margin-bottom: 15px;">🔍 Posições Individuais dos 5 Conselheiros</h3>
+        
+        <div class="advisors-grid">
+            <div class="advisor-card">
+                <h4 class="tag-contrarian">😈 The Contrarian</h4>
+                <p>Alertou que a meta estampada destrói o cálculo de divisor de tensão e expõe o jogo a críticas da FEBRACE como "falsa física de adição".</p>
+            </div>
+            <div class="advisor-card">
+                <h4 class="tag-first">🧩 First Principles</h4>
+                <p>Propôs manter a razão proporcional $V_{out} = 12 \cdot R_x / R_{tot}$ visível no Player Aid e incluir um debriefing de Kirchhoff ao final.</p>
+            </div>
+            <div class="advisor-card">
+                <h4 class="tag-expansion">🚀 The Expansionist</h4>
+                <p>Propôs escala nacional PNLD (R$ 20/kit), App Companion de Realidade Aumentada e estudo $N > 200$ para credenciar o projeto à ISEF.</p>
+            </div>
+            <div class="advisor-card">
+                <h4 class="tag-outsider">👁️ The Outsider</h4>
+                <p>Criticou o jargão pedante ($V_{nom}$, GND) e defendeu estética comercial limpa e linguagem jovem sem jargão intimidador.</p>
+            </div>
+            <div class="advisor-card">
+                <h4 class="tag-executor">🛠️ The Executor</h4>
+                <p>Traçou a logística de sala (7 mesas) e o plano de ação dia-a-dia de segunda a sexta para produção e estande na feira.</p>
+            </div>
+        </div>
+
+        <!-- SEÇÕES COLAPSÁVEIS COM ÍNTEGRA -->
+        <details>
+            <summary>📄 Ler a íntegra da análise do Contrarian</summary>
+            <div class="details-content">
+                A 'Meta Estampada' mata a física. Ao imprimir a meta direta (🎯 4 blocos), o jogo destrói a dedução de divisor de tensão. O aluno não raciocina física nem circuitos; vira um jogo de soma aritmética primária (3+1=4). Avaliadores de Engenharia/Física vão apontar a ilusão pedagógica. Além disso, o Terra sem custo na subtensão permite tentativa e erro cega.
+            </div>
+        </details>
+
+        <details>
+            <summary>📄 Ler a íntegra da análise do Executor</summary>
+            <div class="details-content">
+                Sulfite cru de 75g é inviável em sala de aula (rasga em 2 partidas). Use papel couchê 250g em gráfica rápida (R$ 3 a 5 por baralho). Monte o estande na FEBRACE com 1 circuito montado pela metade como isca visual para convidar os jurados a jogarem 1 turno de 40 segundos!
+            </div>
+        </details>
+
+        <footer>
+            LLM Council Synthesis System — Adaptado da metodologia de Andrej Karpathy (2026)
+        </footer>
+
+    </div>
+
+</body>
+</html>
