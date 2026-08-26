@@ -1,0 +1,15 @@
+{
+  "name": "voltz-circuit-break-multiplayer",
+  "version": "1.0.0",
+  "description": "Versão Digital Web Multiplayer do jogo de cartas VOLTZ: Circuit Break",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["boardgame", "stem", "education", "multiplayer", "webrtc"],
+  "author": "Equipe VOLTZ",
+  "license": "CC-BY-NC-SA-4.0",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

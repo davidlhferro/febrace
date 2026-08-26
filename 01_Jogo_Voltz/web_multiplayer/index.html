@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLTZ: Circuit Break — Jogo Digital Multiplayer</title>
+    <link rel="stylesheet" href="css/voltz_web.css">
+    <!-- Biblioteca PeerJS para WebRTC P2P Serverless -->
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+
+    <!-- CABEÇALHO GLOBAL -->
+    <header class="game-header">
+        <div class="brand-logo">
+            <span style="font-size: 1.3rem;">⚡</span>
+            <h1>VOLTZ: <span>CIRCUIT BREAK</span></h1>
+        </div>
+        <div class="header-status">
+            <div id="header-room-tag" class="room-badge" style="display: none;">SALA: <span id="header-room-code">---</span></div>
+            <button class="btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 0.75rem;" onclick="App.openPlayerAidModal()">📖 Tabela de Mesa</button>
+        </div>
+    </header>
+
+    <!-- ========================================================================= -->
+    <!-- 1. TELA DE LOBBY / ENTRADA NA SALA                                        -->
+    <!-- ========================================================================= -->
+    <div id="screen-lobby" class="lobby-container">
+        <div class="lobby-hero">⚡🔌</div>
+        <h2>SALA DE CONTINGÊNCIA ELÉTRICA</h2>
+        <p>Jogue online com sua equipe (2 a 4 jogadores) em tempo real pelo navegador. Restabeleçam a energia da metrópole!</p>
+
+        <!-- ETAPA 1: ESCOLHER CRIAR OU ENTRAR -->
+        <div id="lobby-step-initial">
+            <div class="form-group">
+                <label>Seu Nome ou Apelido de Engenheiro:</label>
+                <input type="text" id="input-player-name" class="form-input" placeholder="Ex: David, João, Maria..." value="David">
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 16px;">
+                <button class="btn-primary" onclick="App.createRoom()">⚡ Criar Nova Sala</button>
+            </div>
+
+            <div style="margin: 20px 0; display: flex; align-items: center; gap: 10px;">
+                <div style="flex: 1; height: 1px; background: #334155;"></div>
+                <span style="font-size: 0.75rem; color: #64748b; font-weight: 700;">OU ENTRE EM UMA SALA</span>
+                <div style="flex: 1; height: 1px; background: #334155;"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Código da Sala (Ex: VOLT-2026):</label>
+                <input type="text" id="input-room-code" class="form-input" placeholder="Digite o código da sala...">
+            </div>
+            <button class="btn-secondary" onclick="App.joinRoom()">🔗 Entrar na Sala</button>
+        </div>
+
+        <!-- ETAPA 2: SALA DE ESPERA (JOGADORES CONECTADOS) -->
+        <div id="lobby-step-waiting" style="display: none;">
+            <div style="background: #1e293b; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">CÓDIGO DE ACESSO DA SALA:</span>
+                <h3 id="display-room-code" style="font-size: 1.6rem; color: #38bdf8; font-family: 'JetBrains Mono', monospace; margin: 4px 0;">VOLT-XXXX</h3>
+                <span style="font-size: 0.72rem; color: #64748b;">Compartilhe este código com seus colegas de equipe!</span>
+            </div>
+
+            <label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; text-align: left; margin-bottom: 8px;">EQUIPE DE ENGENHEIROS (2 a 4 Jogadores):</label>
+            <div id="lobby-players-list" class="players-list">
+                <!-- Jogadores injetados dinamicamente -->
+            </div>
+
+            <button id="btn-start-game" class="btn-primary" onclick="App.startGame()" style="display: none;">🚀 Iniciar Partida Agora</button>
+            <p id="waiting-host-msg" style="font-size: 0.8rem; color: #94a3b8; margin-top: 12px; display: none;">Aguardando o líder da sala iniciar a partida...</p>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. TELA PRINCIPAL DO JOGO (SHARED BOARD + HAND + LOG)                     -->
+    <!-- ========================================================================= -->
+    <div id="screen-game" class="game-layout" style="display: none;">
+        
+        <!-- ÁREA CENTRAL: MESA DOS 4 SETORES E GERADOR 12V -->
+        <div class="main-board-area">
+            <div class="board-container">
+                
+                <!-- SETOR 1: HOSPITAL UTI (12V) -->
+                <div id="sector-box-hospital" class="sector-track-box">
+                    <div class="sector-header">
+                        <div class="sector-title" style="color: #dc2626;">🏥 SETOR 1: HOSPITAL REGIONAL</div>
+                        <span id="badge-sector-hospital" class="sector-badge-status blackout">🔴 APAGÃO</span>
+                    </div>
+                    <div style="font-size: 0.7rem; color: #94a3b8;">🎯 Meta: Tomógrafo UTI (12V / 4Ω) • Liga Direto em 12V (4 Blocos)</div>
+                    <div id="line-sector-hospital" class="sector-cards-line">
+                        <div class="generator-node">⚡ GERADOR<br/>PORTA N</div>
+                        <!-- Cartas jogadas no hospital entram aqui -->
+                    </div>
+                </div>
+
+                <!-- SETOR 2: CENTRAL DE DADOS (4V) -->
+                <div id="sector-box-dados" class="sector-track-box">
+                    <div class="sector-header">
+                        <div class="sector-title" style="color: #2563eb;">🖥️ SETOR 2: CENTRAL DE DADOS</div>
+                        <span id="badge-sector-dados" class="sector-badge-status blackout">🔴 APAGÃO</span>
+                    </div>
+                    <div style="font-size: 0.7rem; color: #94a3b8;">🎯 Meta: Servidor Central (4V / 1Ω) • Exige 3 Blocos Totais (12V / 3 = 4V)</div>
+                    <div id="line-sector-dados" class="sector-cards-line">
+                        <div class="generator-node">⚡ GERADOR<br/>PORTA L</div>
+                        <!-- Cartas jogadas em dados entram aqui -->
+                    </div>
+                </div>
+
+                <!-- SETOR 3: TRATAMENTO DE ÁGUA (6V) -->
+                <div id="sector-box-agua" class="sector-track-box">
+                    <div class="sector-header">
+                        <div class="sector-title" style="color: #059669;">⚙️ SETOR 3: TRATAMENTO DE ÁGUA</div>
+                        <span id="badge-sector-agua" class="sector-badge-status blackout">🔴 APAGÃO</span>
+                    </div>
+                    <div style="font-size: 0.7rem; color: #94a3b8;">🎯 Meta: Motor de Bomba (6V / 2Ω) • Exige 4 Blocos Totais (12V · 2/4 = 6V)</div>
+                    <div id="line-sector-agua" class="sector-cards-line">
+                        <div class="generator-node">⚡ GERADOR<br/>PORTA S</div>
+                        <!-- Cartas jogadas na água entram aqui -->
+                    </div>
+                </div>
+
+                <!-- SETOR 4: REDE RESIDENCIAL (3V / 6V) -->
+                <div id="sector-box-residencial" class="sector-track-box">
+                    <div class="sector-header">
+                        <div class="sector-title" style="color: #7c3aed;">💡 SETOR 4: REDE RESIDENCIAL</div>
+                        <span id="badge-sector-residencial" class="sector-badge-status blackout">🔴 APAGÃO</span>
+                    </div>
+                    <div style="font-size: 0.7rem; color: #94a3b8;">🎯 Meta: LED Piloto (3V / 1Ω / 4 Blocos) ou Sirene (6V / 1Ω / 2 Blocos)</div>
+                    <div id="line-sector-residencial" class="sector-cards-line">
+                        <div class="generator-node">⚡ GERADOR<br/>PORTA O</div>
+                        <!-- Cartas jogadas no residencial entram aqui -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- GAVETA INFERIOR: MÃO PRIVADA DO JOGADOR -->
+            <div class="player-hand-drawer">
+                <div>
+                    <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 800; text-transform: uppercase;">SUA MÃO PRIVADA DE CARTAS:</span>
+                    <div id="player-hand-cards" class="hand-cards-container" style="margin-top: 6px;">
+                        <!-- Cartas da mão do jogador -->
+                    </div>
+                </div>
+
+                <div class="hand-meta-box">
+                    <div id="turn-status-text" class="turn-indicator">Vez de: ---</div>
+                    <div class="actions-badge">Ações Restantes: <span id="actions-count-display" style="color: var(--primary); font-weight: 900;">2</span> de 2</div>
+                    <div style="display: flex; gap: 8px; margin-top: 6px;">
+                        <button class="btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 0.75rem;" onclick="App.openDiscardModal()">🗑️ Descarte Ativo</button>
+                        <button class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.75rem;" onclick="App.passTurn()">⏩ Passar Turno</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA LATERAL: LOG DE AÇÕES & STATUS DA EQUIPE -->
+        <div class="sidebar-panel">
+            <div class="sidebar-tab-header">
+                <span>📜 HISTÓRICO DE AÇÕES</span>
+                <span id="deck-remaining-count" style="color: #38bdf8; font-family: 'JetBrains Mono', monospace;">Baralho: 53</span>
+            </div>
+            <div id="action-logs-container" class="action-log-list">
+                <!-- Logs em tempo real -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 3. MODAIS DE INTERAÇÃO (ESCOLHER SETOR, GND, TABELA DE MESA)              -->
+    <!-- ========================================================================= -->
+
+    <!-- MODAL 1: SELECIONAR SETOR PARA JOGAR CARTA -->
+    <div id="modal-sector-picker" class="modal-backdrop" style="display: none;">
+        <div class="modal-content">
+            <h3 id="sector-picker-title">⚡ Onde deseja conectar esta carta?</h3>
+            <p>Selecione um dos 4 setores da metrópole para estender a trilha de circuito:</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+                <button class="btn-secondary" style="border-color: #dc2626; color: #f87171;" onclick="App.confirmPlayCard('sector_hospital')">🏥 Setor 1: Hospital (12V)</button>
+                <button class="btn-secondary" style="border-color: #2563eb; color: #60a5fa;" onclick="App.confirmPlayCard('sector_dados')">🖥️ Setor 2: Dados (4V)</button>
+                <button class="btn-secondary" style="border-color: #059669; color: #34d399;" onclick="App.confirmPlayCard('sector_agua')">⚙️ Setor 3: Água (6V)</button>
+                <button class="btn-secondary" style="border-color: #7c3aed; color: #c084fc;" onclick="App.confirmPlayCard('sector_residencial')">💡 Setor 4: Residencial (3V/6V)</button>
+            </div>
+            <button class="btn-secondary" onclick="App.closeModal('modal-sector-picker')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: DIAGNÓSTICO DO CABO TERRA (GND) -->
+    <div id="modal-gnd-result" class="modal-backdrop" style="display: none;">
+        <div class="modal-content">
+            <div id="gnd-modal-icon" style="font-size: 2.5rem; margin-bottom: 6px;">⚡</div>
+            <h3 id="gnd-modal-title" style="color: #34d399;">🟢 SUCESSO! SETOR ENERGIZADO!</h3>
+            <div id="gnd-modal-math" style="background: #1e293b; padding: 10px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin: 12px 0; color: #38bdf8;">
+                V = 12V · (1Ω / 3Ω) = 4.0V
+            </div>
+            <p id="gnd-modal-message">Mensagem de diagnóstico detalhada...</p>
+            <button class="btn-primary" onclick="App.closeModal('modal-gnd-result')">Continuar Partida</button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: TABELA DE MESA (PLAYER AID) -->
+    <div id="modal-player-aid" class="modal-backdrop" style="display: none;">
+        <div class="modal-content" style="max-width: 620px; text-align: left;">
+            <h3 style="color: var(--primary);">📖 Guia Rápido de Mesa (Player Aid)</h3>
+            <p style="margin-bottom: 12px;">Consulta de cálculo dos 4 equipamentos da metrópole (Fonte 12V):</p>
+            
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 16px;">
+                <thead>
+                    <tr style="background: #0f172a; color: #38bdf8; border-bottom: 1px solid #334155;">
+                        <th style="padding: 6px; text-align: left;">EQUIPAMENTO</th>
+                        <th style="padding: 6px;">VNOM</th>
+                        <th style="padding: 6px;">R BASE</th>
+                        <th style="padding: 6px;">🎯 META DE BLOCOS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #1e293b;">
+                        <td style="padding: 6px;">💡 LED Piloto</td><td>3V</td><td>1Ω [■]</td><td style="color:#34d399; font-weight:900;">4 Blocos Totais (12V / 4 = 3V)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #1e293b;">
+                        <td style="padding: 6px;">🖥️ Servidor Central</td><td>4V</td><td>1Ω [■]</td><td style="color:#34d399; font-weight:900;">3 Blocos Totais (12V / 3 = 4V)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #1e293b;">
+                        <td style="padding: 6px;">🚨 Sirene de Alarme</td><td>6V</td><td>1Ω [■]</td><td style="color:#34d399; font-weight:900;">2 Blocos Totais (12V / 2 = 6V)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #1e293b;">
+                        <td style="padding: 6px;">⚙️ Motor de Bomba</td><td>6V</td><td>2Ω [■■]</td><td style="color:#34d399; font-weight:900;">4 Blocos Totais (12V · 2/4 = 6V)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px;">🏥 Tomógrafo UTI</td><td>12V</td><td>4Ω [■■■■]</td><td style="color:#34d399; font-weight:900;">4 Blocos (Liga Direto em 12V)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="btn-primary" onclick="App.closeModal('modal-player-aid')">Fechar Guia</button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS DO JOGO -->
+    <script src="js/voltz_cards_data.js"></script>
+    <script src="js/voltz_engine.js"></script>
+    <script src="js/voltz_render.js"></script>
+    <script src="js/voltz_multiplayer.js"></script>
+
+    <!-- CONTROLADOR PRINCIPAL DA APLICAÇÃO -->
+    <script>
+        const App = {
+            engine: new VoltzEngine(),
+            net: null,
+            myPlayerId: 'p_' + Math.random().toString(36).substr(2, 6),
+            selectedCardUid: null,
+            selectedCardAction: null,
+
+            init() {
+                // Instancia a camada de rede com callbacks
+                this.net = new VoltzMultiplayer({
+                    onPeerReady: (roomId, isHost) => {
+                        document.getElementById('display-room-code').innerText = roomId;
+                        document.getElementById('header-room-code').innerText = roomId;
+                        document.getElementById('header-room-tag').style.display = 'block';
+
+                        document.getElementById('lobby-step-initial').style.display = 'none';
+                        document.getElementById('lobby-step-waiting').style.display = 'block';
+
+                        if (isHost) {
+                            // Host adiciona a si mesmo na engine
+                            const name = document.getElementById('input-player-name').value || 'Host';
+                            this.engine.addPlayer(this.net.myPlayerId, name, true);
+                            document.getElementById('btn-start-game').style.display = 'block';
+                            this.updateLobbyPlayersList();
+                        } else {
+                            document.getElementById('waiting-host-msg').style.display = 'block';
+                        }
+                    },
+                    onHostReceiveAction: (msg, conn) => {
+                        this.handleHostAction(msg, conn);
+                    },
+                    onStateSync: (gameState) => {
+                        this.engine.gameState = gameState;
+                        this.renderGame();
+                    },
+                    onGNDModal: (diag) => {
+                        this.showGNDModal(diag);
+                    }
+                });
+            },
+
+            createRoom() {
+                const name = document.getElementById('input-player-name').value || 'Host';
+                this.net.createRoom(name);
+            },
+
+            joinRoom() {
+                const name = document.getElementById('input-player-name').value || 'Jogador';
+                const code = document.getElementById('input-room-code').value;
+                if (!code) return alert('Por favor, informe o código da sala.');
+                this.net.joinRoom(name, code);
+            },
+
+            handleHostAction(msg, conn) {
+                try {
+                    if (msg.type === 'JOIN_REQUEST') {
+                        this.engine.addPlayer(msg.playerId, msg.playerName, false);
+                        this.updateLobbyPlayersList();
+                        this.net.broadcastState(this.engine.gameState);
+                    } else if (msg.type === 'ACTION_PLAY_CARD') {
+                        this.engine.playCard(msg.playerId, msg.cardUid, msg.sectorId);
+                        this.net.broadcastState(this.engine.gameState);
+                        if (this.engine.gameState.lastGNDDiagnostic) {
+                            this.net.broadcastGNDModal(this.engine.gameState.lastGNDDiagnostic);
+                            this.showGNDModal(this.engine.gameState.lastGNDDiagnostic);
+                        }
+                        this.renderGame();
+                    } else if (msg.type === 'ACTION_PASS_TURN') {
+                        this.engine.endTurn(msg.playerId);
+                        this.net.broadcastState(this.engine.gameState);
+                        this.renderGame();
+                    } else if (msg.type === 'ACTION_DISCARD') {
+                        this.engine.activeDiscard(msg.playerId, msg.cardUids);
+                        this.net.broadcastState(this.engine.gameState);
+                        this.renderGame();
+                    }
+                } catch (e) {
+                    console.error('[Host Action Error]:', e);
+                    alert(e.message);
+                }
+            },
+
+            updateLobbyPlayersList() {
+                const list = document.getElementById('lobby-players-list');
+                list.innerHTML = '';
+                for (const p of this.engine.gameState.players) {
+                    const item = document.createElement('div');
+                    item.className = 'player-item';
+                    item.innerHTML = `
+                        <span>👤 <b>${p.name}</b> ${p.isHost ? '<span style="color:var(--primary); font-size:0.7rem;">(Líder)</span>' : ''}</span>
+                        <span style="color:#34d399; font-size:0.75rem; font-family:'JetBrains Mono';">● Conectado</span>
+                    `;
+                    list.appendChild(item);
+                }
+            },
+
+            startGame() {
+                try {
+                    this.engine.startGame();
+                    document.getElementById('screen-lobby').style.display = 'none';
+                    document.getElementById('screen-game').style.display = 'flex';
+                    this.net.broadcastState(this.engine.gameState);
+                    this.renderGame();
+                } catch (e) {
+                    alert(e.message);
+                }
+            },
+
+            renderGame() {
+                const gs = this.engine.gameState;
+                if (gs.status === 'playing') {
+                    document.getElementById('screen-lobby').style.display = 'none';
+                    document.getElementById('screen-game').style.display = 'flex';
+                }
+
+                // Renderiza os 4 Setores
+                for (const [sectorKey, sector] of Object.entries(gs.board.sectors)) {
+                    const lineEl = document.getElementById(`line-${sectorKey.replace('sector_', 'sector-')}`);
+                    const badgeEl = document.getElementById(`badge-${sectorKey.replace('sector_', 'sector-')}`);
+                    const boxEl = document.getElementById(`sector-box-${sectorKey.replace('sector_', '')}`);
+
+                    if (badgeEl) {
+                        badgeEl.className = `sector-badge-status ${sector.status}`;
+                        badgeEl.innerText = sector.status === 'energized' ? '🟢 ENERGIZADO!' : '🔴 APAGÃO';
+                    }
+                    if (boxEl) {
+                        boxEl.className = `sector-track-box status-${sector.status}`;
+                    }
+
+                    if (lineEl) {
+                        let html = `<div class="generator-node">⚡ GERADOR<br/>PORTA</div>`;
+                        for (const card of sector.cards) {
+                            html += VoltzRender.renderCardHTML(card, { isHand: false });
+                        }
+                        lineEl.innerHTML = html;
+                    }
+                }
+
+                // Renderiza a mão do jogador atual
+                const myPlayer = gs.players.find(p => p.id === this.net.myPlayerId) || gs.players[0];
+                const handContainer = document.getElementById('player-hand-cards');
+                if (handContainer && myPlayer) {
+                    let handHtml = '';
+                    const isMyTurn = gs.players[gs.currentTurnPlayerIndex]?.id === myPlayer.id;
+                    for (const card of myPlayer.hand) {
+                        handHtml += VoltzRender.renderCardHTML(card, { isHand: true, showActions: isMyTurn });
+                    }
+                    handContainer.innerHTML = handHtml || '<div style="color:#64748b; font-size:0.8rem;">Sua mão está vazia.</div>';
+                }
+
+                // Renderiza os dados do turno
+                const currPlayer = gs.players[gs.currentTurnPlayerIndex];
+                if (currPlayer) {
+                    const isMe = currPlayer.id === (myPlayer ? myPlayer.id : '');
+                    document.getElementById('turn-status-text').innerHTML = `Vez de: <b>${currPlayer.name}</b> ${isMe ? '<span style="color:#34d399;">(VOCÊ!)</span>' : ''}`;
+                    document.getElementById('actions-count-display').innerText = gs.actionsRemaining;
+                }
+
+                // Renderiza logs de ação
+                const logContainer = document.getElementById('action-logs-container');
+                if (logContainer) {
+                    logContainer.innerHTML = gs.actionLogs.map(l => `
+                        <div class="log-item">
+                            <span class="time">${l.time}</span> ${l.message}
+                        </div>
+                    `).join('');
+                }
+
+                // Contador de cartas do baralho
+                document.getElementById('deck-remaining-count').innerText = `Baralho: ${gs.deck.length}`;
+            },
+
+            openSectorPicker(cardUid, action) {
+                this.selectedCardUid = cardUid;
+                this.selectedCardAction = action;
+                document.getElementById('modal-sector-picker').style.display = 'flex';
+            },
+
+            confirmPlayCard(sectorId) {
+                this.closeModal('modal-sector-picker');
+                if (this.net.isHost) {
+                    try {
+                        this.engine.playCard(this.net.myPlayerId, this.selectedCardUid, sectorId);
+                        this.net.broadcastState(this.engine.gameState);
+                        if (this.engine.gameState.lastGNDDiagnostic) {
+                            this.showGNDModal(this.engine.gameState.lastGNDDiagnostic);
+                            this.net.broadcastGNDModal(this.engine.gameState.lastGNDDiagnostic);
+                        }
+                        this.renderGame();
+                    } catch (e) {
+                        alert(e.message);
+                    }
+                } else {
+                    this.net.sendToHost({
+                        type: 'ACTION_PLAY_CARD',
+                        playerId: this.net.myPlayerId,
+                        cardUid: this.selectedCardUid,
+                        sectorId: sectorId
+                    });
+                }
+            },
+
+            passTurn() {
+                if (this.net.isHost) {
+                    try {
+                        this.engine.endTurn(this.net.myPlayerId);
+                        this.net.broadcastState(this.engine.gameState);
+                        this.renderGame();
+                    } catch (e) {
+                        alert(e.message);
+                    }
+                } else {
+                    this.net.sendToHost({
+                        type: 'ACTION_PASS_TURN',
+                        playerId: this.net.myPlayerId
+                    });
+                }
+            },
+
+            openDiscardModal() {
+                const myPlayer = this.engine.gameState.players.find(p => p.id === this.net.myPlayerId);
+                if (!myPlayer || myPlayer.hand.length === 0) return alert('Você não tem cartas na mão para descartar.');
+                const card = myPlayer.hand[0];
+                if (confirm(`Deseja descartar [${card.name}] e comprar uma nova carta?`)) {
+                    if (this.net.isHost) {
+                        this.engine.activeDiscard(this.net.myPlayerId, [card.uid]);
+                        this.net.broadcastState(this.engine.gameState);
+                        this.renderGame();
+                    } else {
+                        this.net.sendToHost({
+                            type: 'ACTION_DISCARD',
+                            playerId: this.net.myPlayerId,
+                            cardUids: [card.uid]
+                        });
+                    }
+                }
+            },
+
+            showGNDModal(diag) {
+                if (!diag) return;
+                document.getElementById('gnd-modal-title').innerText = diag.title;
+                document.getElementById('gnd-modal-title').style.color = diag.color || '#34d399';
+                document.getElementById('gnd-modal-message').innerText = diag.message;
+                document.getElementById('gnd-modal-math').innerText = `V = 12V · (${diag.rEquip}Ω / ${diag.rTotal}Ω) = ${diag.vCalculated}V (Vnom = ${diag.vNom}V)`;
+                document.getElementById('modal-gnd-result').style.display = 'flex';
+            },
+
+            openPlayerAidModal() {
+                document.getElementById('modal-player-aid').style.display = 'flex';
+            },
+
+            closeModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+        };
+
+        window.onload = () => {
+            App.init();
+        };
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
-# 📖 Manual de Instruções Oficial — VOLTZ: CIRCUIT BREAK (Versão Refinada LLM Council)
+# 📖 Manual de Instruções Oficial — VOLTZ: CIRCUIT BREAK
 **Jogo de Cartas Cooperativo com Linguagem Acessível e Divisores de Tensão**
-*Desenvolvido para o Projeto de Pesquisa FEBRACE*
+*Edição Oficial Print-and-Play • Licença CC BY-NC-SA 4.0*
 
 ---
 

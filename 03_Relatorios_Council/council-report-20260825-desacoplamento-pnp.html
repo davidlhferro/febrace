@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Council Report — Desacoplamento do Jogo VOLTZ e FEBRACE</title>
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-primary: #0284c7;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-amber: #f59e0b;
+            --accent-purple: #8b5cf6;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* VERDICT / HIGHLIGHT BOX */
+        .verdict-card {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .verdict-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .verdict-badge {
+            background: #0284c7;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .verdict-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #0c4a6e;
+        }
+
+        .verdict-section {
+            margin-bottom: 20px;
+        }
+
+        .verdict-section h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verdict-section p, .verdict-section ul {
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .verdict-section ul {
+            padding-left: 20px;
+            margin-top: 6px;
+        }
+
+        .verdict-section li {
+            margin-bottom: 6px;
+        }
+
+        .action-box {
+            background: #f0fdf4;
+            border: 1.5px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .action-box h4 {
+            color: #166534;
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .action-box p {
+            color: #15803d;
+            font-size: 0.92rem;
+            margin: 0;
+        }
+
+        /* MATRIX / SPECTRUM */
+        .matrix-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .matrix-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .advisor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+        }
+
+        .advisor-badge {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            background: #fafafa;
+        }
+
+        .advisor-name {
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-bottom: 4px;
+        }
+
+        .advisor-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .advisor-vote {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .vote-agree { background: #dcfce7; color: #15803d; }
+        .vote-warn { background: #fef3c7; color: #b45309; }
+        .vote-expand { background: #ede9fe; color: #6d28d9; }
+
+        /* COLLAPSIBLE DETAILS */
+        details {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            padding: 14px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary:hover {
+            background: #f8fafc;
+        }
+
+        .details-content {
+            padding: 18px;
+            border-top: 1px solid var(--border);
+            font-size: 0.92rem;
+            color: #334155;
+            background: #fafafa;
+        }
+
+        .details-content p {
+            margin-bottom: 10px;
+        }
+
+        .details-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+        <div class="tag-pill">🏛️ Relatório Oficial do LLM Council</div>
+        <h1>Avaliação de Desacoplamento: Jogo VOLTZ vs. FEBRACE</h1>
+        <div class="subtitle">Análise de arquitetura de produto, eliminação de atrito Print-and-Play (PNP) e preservação do rigor científico da pesquisa.</div>
+    </header>
+
+    <!-- VERDICT -->
+    <div class="verdict-card">
+        <div class="verdict-header">
+            <span class="verdict-badge">Veredito do Chairman</span>
+            <div class="verdict-title">Separação Radical e Pacote PNP Autônomo com Zero Código</div>
+        </div>
+
+        <div class="verdict-section">
+            <h3>✅ Onde o Conselho Concorda (Sinais de Alta Confiança)</h3>
+            <ul>
+                <li><strong>O Erro Categórico Atual:</strong> Misturar marcas da feira (<code>PROJETO FEBRACE 2026</code>) e exigir scripts Python para ver o manual afasta 100% dos jogadores e passa uma impressão condescendente de "dever de escola amador", mascarando falhas reais de jogabilidade.</li>
+                <li><strong>Atrito Zero para o Usuário Final:</strong> Quem quer jogar ou ensinar precisa apenas de 2 arquivos PDF finais pré-compilados: <code>VOLTZ_Manual_de_Regras.pdf</code> e <code>VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf</code>. Nenhum usuário final deve precisar rodar código.</li>
+                <li><strong>Fonte Única de Verdade (Anti-Forking):</strong> O jogo é o núcleo agnóstico e soberano. O projeto FEBRACE é a camada externa de pesquisa científica que avalia o jogo. O dossiê da FEBRACE anexa o manual do VOLTZ como especificação técnica, eliminando o risco de manter dois conjuntos de regras desalinhados.</li>
+            </ul>
+        </div>
+
+        <div class="verdict-section">
+            <h3>⚔️ Onde o Conselho Divergiu</h3>
+            <p><strong>Visão Comercial Global vs. Foco Operacional Imediato:</strong> O <em>Expansionist</em> propôs antecipar campanhas no Kickstarter, expansões temáticas e cadastros no BoardGameGeek. O <em>Contrarian</em> e o <em>Executor</em> demonstraram que o foco imediato deve ser fechar o pipeline de impressão A4 (marcas de corte, sangria) e realizar o teste piloto de 50 min na escola pública. A resolução é desacoplar o pacote PNP imediatamente para compartilhamento sem atrito, mantendo as ambições comerciais para após a feira.</p>
+        </div>
+
+        <div class="verdict-section">
+            <h3>💡 Pontos Cegos Capturados pelo Peer Review</h3>
+            <ul>
+                <li><strong>Ponte de Telemetria Invisível:</strong> Inclusão de um QR Code discreto na contracapa do manual (<em>"💬 Dúvidas de Regras & Envie o Relato da sua Partida"</em>) para coletar dados empíricos de jogadores voluntários e enriquecer a pesquisa científica sem poluir a imersão.</li>
+                <li><strong>Proteção de Autoria e Propriedade Intelectual:</strong> Adição de nota de copyright e licença Creative Commons (CC BY-NC 4.0) nos créditos do manual, salvaguardando a autoria dos estudantes antes de distribuir o PDF publicamente.</li>
+            </ul>
+        </div>
+
+        <div class="verdict-section">
+            <h3>🎯 Recomendação Final</h3>
+            <p>Criar a pasta de distribuição limpa <code>01_Jogo_Voltz/dist_print_and_play/</code> com os PDFs mestres pré-compilados prontos para download e impressão em A4, transferindo todos os scripts e ferramentas para o ambiente interno de desenvolvimento.</p>
+        </div>
+
+        <div class="action-box">
+            <h4>🚀 A ÚNICA COISA A FAZER PRIMEIRO:</h4>
+            <p>Gerar e salvar na pasta <code>01_Jogo_Voltz/dist_print_and_play/</code> os arquivos <strong><code>VOLTZ_Manual_de_Regras.pdf</code></strong> e <strong><code>VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf</code></strong> 100% livres de marcas acadêmicas e prontos para compartilhamento imediato.</p>
+        </div>
+    </div>
+
+    <!-- SPECTRUM / MATRIX -->
+    <div class="matrix-card">
+        <div class="matrix-title">Posicionamento dos 5 Conselheiros</div>
+        <div class="advisor-grid">
+            <div class="advisor-badge">
+                <div class="advisor-name">The Contrarian</div>
+                <div class="advisor-role">Risco & Anti-Forking</div>
+                <span class="advisor-vote vote-warn">Alerta de Forking</span>
+            </div>
+            <div class="advisor-badge">
+                <div class="advisor-name">First Principles</div>
+                <div class="advisor-role">Separação de Domínios</div>
+                <span class="advisor-vote vote-agree">Atrito Zero</span>
+            </div>
+            <div class="advisor-badge">
+                <div class="advisor-name">The Expansionist</div>
+                <div class="advisor-role">Escala & Ecossistema</div>
+                <span class="advisor-vote vote-expand">Franquia Global</span>
+            </div>
+            <div class="advisor-badge">
+                <div class="advisor-name">The Outsider</div>
+                <div class="advisor-role">Experiência do Usuário</div>
+                <span class="advisor-vote vote-warn">Ruído Escolar</span>
+            </div>
+            <div class="advisor-badge">
+                <div class="advisor-name">The Executor</div>
+                <div class="advisor-role">Plano Prático</div>
+                <span class="advisor-vote vote-agree">PDFs Pré-Compilados</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- COLLAPSIBLE RESPONSES -->
+    <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 12px;">Pareceres Individuais dos Conselheiros</h2>
+
+    <details>
+        <summary>
+            <span>🔴 The Contrarian — O perigo de forking e falsos PnPs</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir</span>
+        </summary>
+        <div class="details-content">
+            <p>Carimbar "PROJETO FEBRACE 2026" em manuais e depender de scripts Python destrói a usabilidade. Playtesters entram em complacência ("muito bom para um projeto de feira"), mascarando falhas reais de balanceamento.</p>
+            <p>Criar uma versão "FEBRACE" e outra "Jogo Puro" é um pesadelo de manutenção garantido (forking). O jogo em si deve ser 100% agnóstico e profissional, enquanto a fundamentação científica reside estritamente no dossiê de submissão.</p>
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>🔵 The First Principles Thinker — O produto real vs. Instrumento de validação</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir</span>
+        </summary>
+        <div class="details-content">
+            <p>O que é fundamentalmente o produto? Um sistema de regras e cartas que ensina eletrodinâmica por indução lúdica. Quem quer jogar busca atrito zero.</p>
+            <p>Misturar marcas institucionais confunde o artefato operacional com seu instrumento de validação científica. O jogo é o núcleo; a FEBRACE é a camada externa de pesquisa que o estuda.</p>
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>🟣 The Expansionist — Potencial de franquia e tração como trunfo da feira</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir</span>
+        </summary>
+        <div class="details-content">
+            <p>Desacoplar o VOLTZ é a transição de um trabalho escolar com prazo de validade para um ecossistema global com expansões modulares (AC, Portas Lógicas, Alta Tensão).</p>
+            <p>Chegar à banca da FEBRACE/ISEF com tração real de mercado (downloads orgânicos e reviews reais) coloca o projeto em uma categoria inalcançável para concorrentes acadêmicos.</p>
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>🟠 The Outsider — O olhar de quem recebe o arquivo no WhatsApp</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir</span>
+        </summary>
+        <div class="details-content">
+            <p>Receber arquivos com <code>.py</code> ou cabeçalho "FEBRACE 2026" faz a pessoa pensar: <em>"Isso não é um jogo, é o trabalho escolar de alguém."</em></p>
+            <p>Gera sensação de tarefa burocrática, medo de ter que programar e quebra a imersão. O usuário espera apenas dois PDFs diretos: Manual e Cartas para Imprimir.</p>
+        </div>
+    </details>
+
+    <details>
+        <summary>
+            <span>🟢 The Executor — Roteiro prático em 4 passos</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir</span>
+        </summary>
+        <div class="details-content">
+            <p>1) Criar pasta de saída <code>01_Jogo_Voltz/dist_print_and_play/</code>.<br>
+            2) Recompilar manual via ReportLab sem timbres acadêmicos, gerando o PDF limpo.<br>
+            3) Ajustar CSS de cartas para A4 3x3 com linhas de corte e compilar o PDF de cartas.<br>
+            4) Disponibilizar o pacote final pré-compilado sem exigir que o usuário final execute código.</p>
+        </div>
+    </details>
+
+    <!-- PEER REVIEW SECTION -->
+    <details style="margin-top: 16px;">
+        <summary>
+            <span>🔍 Destaques do Peer Review Anônimo</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Expandir</span>
+        </summary>
+        <div class="details-content">
+            <p><strong>Resposta mais forte eleita:</strong> The Contrarian (apontou o risco fatal de bifurcação de regras e a necessidade de tolerâncias de corte reais no PnP).</p>
+            <p><strong>Maior ponto cego identificado:</strong> The Expansionist (focou excessivamente em comercialização e crowdfunding antes de resolver a compilação técnica imediata).</p>
+            <p><strong>Descobertas Coletivas:</strong> Necessidade de QR Code para telemetria voluntária de dados e licença Creative Commons (CC BY-NC 4.0) para blindar a autoria.</p>
+        </div>
+    </details>
+
+    <!-- FOOTER -->
+    <footer>
+        LLM Council Engine • Metodologia Karpathy/AGY • 2026-08-25 • Sessão: Desacoplamento VOLTZ / FEBRACE
+    </footer>
+
+</div>
+
+</body>
+</html>

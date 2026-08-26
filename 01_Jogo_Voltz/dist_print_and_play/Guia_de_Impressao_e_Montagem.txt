@@ -1,0 +1,72 @@
+================================================================================
+⚡ VOLTZ: CIRCUIT BREAK — GUIA RÁPIDO DE IMPRESSÃO E MONTAGEM (PNP) ⚡
+================================================================================
+
+Obrigado por jogar VOLTZ: Circuit Break!
+Este pacote Print-and-Play (PNP) contém todos os arquivos necessários para você
+montar o jogo físico modular com trilhas contínuas de circuito (estilo Bandido/PCB)
+na sua casa, escola ou gráfica rápida em poucos minutos.
+
+--------------------------------------------------------------------------------
+📦 CONTEÚDO DO PACOTE PRINT-AND-PLAY:
+--------------------------------------------------------------------------------
+1. [VOLTZ_Manual_de_Regras.pdf]
+   -> Manual oficial com Tabela de Mesa (Player Aid), Fluxo do Turno, Diagnóstico
+      do Cabo Terra (GND), Modo Tutorial de 2 minutos e Regras de Conexão.
+
+2. [VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf]
+   -> As 54 cartas oficiais diagramadas em 6 páginas A4 (grade 3x3 Poker Size 63x88mm),
+      com trilhas condutoras borda a borda e terminais de cobre para encaixe contínuo.
+
+3. [VOLTZ_Tabuleiro_Guia_Mesa_A4.pdf] (Opcional / Bônus)
+   -> Folha de apoio para o centro da mesa com o slot do Gerador 12V e as 4 rotas
+      dos setores da metrópole (Hospital, Dados, Água, Residencial).
+
+4. [Guia_de_Impressao_e_Montagem.txt]
+   -> Este guia de orientações práticas.
+
+--------------------------------------------------------------------------------
+🖨️ 1. COMO IMPRIMIR AS CARTAS (OPÇÕES RECOMENDADAS):
+--------------------------------------------------------------------------------
+
+⭐ OPÇÃO 1: Impressão Doméstica Econômica (Papel Sulfite A4 + Sleeves)
+- Imprima as 6 páginas do baralho em papel sulfite comum A4 (75g ou 90g).
+- Dica de ouro: Compre um pacote de "Sleeves / Protetores de Cartas Padrão Magic/Poker"
+  (tamanho 63.5 x 88 mm) e coloque uma carta comum de baralho tradicional ou papel
+  cartão por trás de cada carta impressa para dar firmeza tátil!
+
+⭐ OPÇÃO 2: Gráfica Rápida / Impressão Profissional (Melhor Custo-Benefício)
+- Leve o arquivo `VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf` a uma gráfica rápida.
+- Peça impressão colorida a laser em papel Couchê Fosco ou Brilho de 250g a 300g
+  (ou papel Offset / Opaline 240g).
+- A paleta de cores do VOLTZ foi desenhada no padrão "Toner-Safe" com fundo claro,
+  garantindo baixo consumo de tinta e zero risco de borrões.
+
+--------------------------------------------------------------------------------
+✂️ 2. COMO CORTAR AS CARTAS:
+--------------------------------------------------------------------------------
+- As cartas possuem marcas de corte milimétricas nos cantos e espaçamento de 2.5mm.
+- Utilize uma régua de metal e um estilete sobre uma base de corte (ou tesoura bem afiada).
+- Dica: As trilhas condutoras tocam exatamente as bordas laterais a 44mm de altura.
+  Ao cortar, a linha de cobre se estende de borda a borda!
+
+--------------------------------------------------------------------------------
+🔌 3. COMO MONTAR O CIRCUITO NA MESA (O "EFEITO BANDIDO"):
+--------------------------------------------------------------------------------
+- Coloque a carta do **Gerador 12V** no centro da mesa (ou sobre o Tabuleiro A4).
+- Cada jogador, no seu turno, joga cartas alinhando as trilhas condutoras horizontais:
+  [ Gerador 12V ] === [ Resistor ] === [ Equipamento / Carga ] === [ ⏚ Cabo Terra GND ]
+- Quando as cartas se tocam lado a lado, os terminais de cobre se unem e formam uma
+  placa de circuito impresso gigante e contínua sobre a mesa!
+
+--------------------------------------------------------------------------------
+📄 4. LICENÇA E COMPARTILHAMENTO:
+--------------------------------------------------------------------------------
+O VOLTZ: Circuit Break é distribuído sob a licença:
+Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional (CC BY-NC-SA 4.0).
+
+Você pode compartilhar livremente este arquivo com seus amigos, familiares,
+professores e turmas de estudantes!
+
+Bom jogo e restabeleça a energia da metrópole! ⚡
+================================================================================

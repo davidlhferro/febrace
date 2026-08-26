@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Oficial de Instruções — VOLTZ: Circuit Break</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap');
+
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-card: #e2e8f0;
+            --border-dark: #0f172a;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #0284c7;
+            --accent-green: #059669;
+            --accent-amber: #d97706;
+            --accent-red: #dc2626;
+            --accent-indigo: #4f46e5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .booklet {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            max-width: 860px;
+            width: 100%;
+            padding: 48px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 1.5px solid var(--border-card);
+            padding-bottom: 28px;
+            margin-bottom: 36px;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            margin-bottom: 12px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--text-main);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        h2 {
+            color: var(--text-main);
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-card);
+            padding-bottom: 8px;
+        }
+
+        .box-highlight {
+            background: #f0fdf4;
+            border-left: 4px solid var(--accent-green);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            font-size: 0.92rem;
+            color: #166534;
+        }
+
+        .box-rule {
+            background: #f8fafc;
+            border: 1px solid var(--border-card);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .table-cheat {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.88rem;
+        }
+
+        .table-cheat th, .table-cheat td {
+            border: 1px solid var(--border-card);
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        .table-cheat th {
+            background: #f1f5f9;
+            color: #1e293b;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 18px 0;
+        }
+
+        @media (max-width: 650px) {
+            .step-grid { grid-template-columns: 1fr; }
+            .booklet { padding: 24px; }
+        }
+
+        .step-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-card);
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background: var(--text-main);
+            color: #ffffff;
+            font-weight: 800;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            font-size: 0.88rem;
+            color: #334155;
+        }
+
+        .step-title {
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .ohm-block {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #2563eb;
+            border-radius: 2px;
+            vertical-align: middle;
+            margin: 0 1px;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 40px;
+            border-top: 1px solid var(--border-card);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="booklet">
+        <header>
+            <span class="tag-pill">Manual Oficial de Engenharia • FEBRACE 2026</span>
+            <h1>VOLTZ: CIRCUIT BREAK</h1>
+            <p>Guia de Operações e Regulamento Técnico de Eletrodinâmica Cooperativa</p>
+        </header>
+
+        <h2>1. Visão Geral da Missão</h2>
+        <p>A central elétrica municipal liberou uma <strong>Bateria de 12 Blocos de Tensão ($V_{in} = 12\text{V}$)</strong> por 4 setores expostos da cidade. A equipe de 2 a 4 engenheiros de contingência deve dimensionar os caminhos com resistores e equipamentos de carga (LEDs, Servidores, Alarmes, Motores e Tomógrafos) e fechar o circuito com a carta de <strong>Cabo Terra (GND - 0V)</strong> no final de cada ramo.</p>
+
+        <div class="box-highlight">
+            <strong>Objetivo Cooperativo:</strong> Todos vencem juntos se energizarem com sucesso os 4 setores da cidade com a voltagem exata requerida ($V_{nom}$) antes que o baralho de suprimentos se esgote!
+        </div>
+
+        <h2>2. O Turno do Engenheiro (4 Etapas)</h2>
+        <div class="step-grid">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <div class="step-title">COMPRA DE COMPONENTES</div>
+                    Compre 2 cartas do baralho de suprimentos para sua mão.
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <div class="step-title">DEBATE ESTRATÉGICO</div>
+                    Discuta com a equipe qual ramo necessita de resistores para atingir a proporção de divisão de tensão.
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <div class="step-title">CONSTRUÇÃO OU DESCARTE (2 Ações)</div>
+                    Baixe até 2 cartas na mesa (Resistores, Nós Y ou Equipamentos) <em>OU</em> gaste 1 ação para descartar até 2 cartas e renovar a mão.
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <div class="step-title">ATERRAMENTO GND (Gasta 1 Ação)</div>
+                    Coloque a carta de Cabo Terra (GND) no terminal do ramo para disparar a verificação de malha!
+                </div>
+            </div>
+        </div>
+
+        <h2>3. Tabela de Conversão e Metas de Mesa (Player Aid)</h2>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;">
+            Cada $1\Omega$ de resistência equivale a <strong>1 Bloco Visual [ <span class="ohm-block"></span> ]</strong>. A voltagem nominal no equipamento é dada pela equação do divisor de tensão: $V_{equip} = 12\text{V} \cdot \frac{R_{equip}}{R_{total}}$.
+        </p>
+
+        <table class="table-cheat">
+            <thead>
+                <tr>
+                    <th>Equipamento</th>
+                    <th>Voltagem Nominal (Vnom)</th>
+                    <th>Resistência Base (Requip)</th>
+                    <th>Meta do Ramo (Rtotal)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Sirene de Alarme</strong></td>
+                    <td>6 Volts</td>
+                    <td>1Ω [ <span class="ohm-block"></span> ]</td>
+                    <td><strong>2 Blocos Totais (12V / 2 = 6V)</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Servidor Central</strong></td>
+                    <td>4 Volts</td>
+                    <td>1Ω [ <span class="ohm-block"></span> ]</td>
+                    <td><strong>3 Blocos Totais (12V / 3 = 4V)</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>LED Piloto</strong></td>
+                    <td>3 Volts</td>
+                    <td>1Ω [ <span class="ohm-block"></span> ]</td>
+                    <td><strong>4 Blocos Totais (12V / 4 = 3V)</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Motor de Bomba</strong></td>
+                    <td>6 Volts</td>
+                    <td>2Ω [ <span class="ohm-block"></span> <span class="ohm-block"></span> ]</td>
+                    <td><strong>4 Blocos Totais (12V · 2/4 = 6V)</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Tomógrafo UTI</strong></td>
+                    <td>12 Volts</td>
+                    <td>4Ω [ <span class="ohm-block"></span> <span class="ohm-block"></span> <span class="ohm-block"></span> <span class="ohm-block"></span> ]</td>
+                    <td><strong>4 Blocos Totais (Liga direto em 12V)</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>4. Diagnóstico e Verificação do Cabo Terra (GND)</h2>
+        <div class="box-rule">
+            Ao conectar o Cabo Terra (GND) no terminal do ramo (consumindo 1 Ação de Turno), compare o total de blocos da linha com a Meta da Tabela:
+            <ul style="margin: 12px 0 0 20px; font-size: 0.88rem; color: #334155;">
+                <li style="margin-bottom: 6px;"><strong>Total de Blocos == Meta da Tabela:</strong> 🟢 <em>SUCESSO!</em> O equipamento acende com a tensão exata e o setor é salvo permanentemente!</li>
+                <li style="margin-bottom: 6px;"><strong>Total de Blocos &lt; Meta da Tabela:</strong> 💥 <em>SOBRETENSÃO!</em> A resistência foi insuficiente, a corrente excedeu o limite e o equipamento queima (a menos que haja um Fusível).</li>
+                <li><strong>Total de Blocos &gt; Meta da Tabela:</strong> ⚪ <em>SUBTENSÃO!</em> Tensão insuficiente para acionamento. O Cabo Terra retorna à mão do jogador, mas a Ação do turno foi gasta.</li>
+            </ul>
+        </div>
+
+        <h2>5. Modo Treinamento: Tutorial Rápido de 2 Minutos</h2>
+        <div class="box-rule" style="background: #ffffff;">
+            <p><strong>Exemplo Prático (LED Piloto 3V):</strong></p>
+            <ol style="margin: 10px 0 0 20px; font-size: 0.88rem; color: #334155;">
+                <li>Conecte à Fonte de 12V um <strong>Resistor de 3Ω</strong> (3 blocos) em série com o <strong>LED Piloto de 1Ω</strong> (1 bloco).</li>
+                <li>Conecte o <strong>Cabo Terra (GND)</strong> no final.</li>
+                <li><strong>Cálculo:</strong> $3\Omega + 1\Omega = 4\Omega$ no total. Tensão no LED: $V = 12\text{V} \cdot \frac{1}{4} = 3\text{V}$.</li>
+                <li>O LED recebe seus 3V exatos e acende com segurança!</li>
+            </ol>
+        </div>
+
+        <div class="footer-note">
+            Manual Oficial de Instruções e Especificação Técnica • VOLTZ: Circuit Break • Licença CC BY-NC-SA 4.0
+        </div>
+    </div>
+
+</body>
+</html>
