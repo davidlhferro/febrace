@@ -311,46 +311,32 @@ body {
 /* 3. CARTAS VISUAIS (POKER SIZE COMPACTO EM MESA E MÃO)                   */
 /* ========================================================================= */
 .voltz-card {
-    width: 90px;
-    height: 126px;
-    background: #0b101b;
-    border: 1.5px solid #1e293b;
-    border-radius: 6px;
-    padding: 3.5px;
+    width: 80px;
+    height: 114px;
+    background: #ffffff;
+    border: 1.5px solid #0f172a;
+    border-radius: 5px;
+    padding: 3px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     transition: transform 0.15s ease;
 }
 
 .voltz-card:hover {
     transform: translateY(-4px);
     z-index: 10;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.4);
 }
-
-.web-gold-finger-left, .web-gold-finger-right {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 5px;
-    height: 18px;
-    background: linear-gradient(90deg, #fef08a, #f59e0b, #d97706);
-    border: 1px solid #020617;
-    z-index: 6;
-    box-shadow: 0 0 5px rgba(245, 158, 11, 0.6);
-}
-.web-gold-finger-left { left: 0; border-radius: 0 2px 2px 0; }
-.web-gold-finger-right { right: 0; border-radius: 2px 0 0 2px; }
 
 .web-poker-badge {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 900;
-    font-size: 0.55rem;
+    font-size: 0.52rem;
 }
 
 .voltz-card.card-gen { border-top: 3.5px solid var(--c-gen); }
@@ -365,15 +351,16 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 2px;
+    border-bottom: 0.5px solid #cbd5e1;
+    padding-bottom: 1px;
     z-index: 5;
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .voltz-card .card-head .title {
-    font-size: 0.48rem;
+    font-size: 0.45rem;
     font-weight: 900;
-    color: #f8fafc;
+    color: #0f172a;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -389,27 +376,21 @@ body {
     border-radius: 2px;
 }
 
-.web-hero-art {
-    width: 100%;
-    height: 52px;
-    border-radius: 3px;
-    overflow: hidden;
-    border: 1px solid #1e293b;
-    margin: 2px 0;
-    background: #020617;
-}
-
-.web-hero-art img {
+.voltz-card .schematic-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
+    z-index: 2;
+    pointer-events: none;
 }
 
 .voltz-card .card-foot {
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 2px;
+    border-top: 0.5px solid #cbd5e1;
+    padding-top: 1px;
     z-index: 5;
+    background: rgba(255, 255, 255, 0.95);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -418,26 +399,26 @@ body {
 
 .voltz-card .blocks-indicator {
     display: flex;
-    gap: 2px;
+    gap: 1.5px;
 }
 
 .voltz-card .ohm-cube {
-    width: 7px;
-    height: 7px;
-    border: 1px solid #020617;
-    border-radius: 1.5px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid #0f172a;
+    border-radius: 1px;
 }
 .voltz-card .ohm-cube.c-r1 { background: var(--c-r1); }
 .voltz-card .ohm-cube.c-r2 { background: var(--c-r2); }
 .voltz-card .ohm-cube.c-r3 { background: var(--c-r3); }
 .voltz-card .ohm-cube.c-load { background: var(--c-load); }
-.voltz-card .ohm-cube.c-gen { background: var(--c-gold); }
+.voltz-card .ohm-cube.c-gen { background: var(--c-copper); }
 
 .voltz-card .foot-text {
     font-size: 0.38rem;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
-    color: #94a3b8;
+    color: #475569;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
