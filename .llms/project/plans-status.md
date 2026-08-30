@@ -11,3 +11,5 @@
 | `circuito-visivel-alta-clareza` | Arquitetura Schematic-First com trilhas de cobre de 10mm, esquemas fundidos no fio e setas de corrente (Bandido / Circuit Maze) | `done` | Baralho de 54 cartas com alta clareza e PDFs atualizados em dist_print_and_play/ | 2026-08-26 |
 | `versao-digital-multiplayer` | Versão digital web multiplayer (WebRTC/Socket) com 100% de fidelidade canônica às regras para playtests online com a equipe | `done` | Versão web SPA, motor de regras testado e documentação concluídos em web_multiplayer/ | 2026-08-26 |
 | `arte-editorial-e-verso-cartas` | Arte editorial rica de alta fidelidade (estilo Netrunner/Radlands) nas 54 cartas e Verso Oficial 100% simétrico anti-cheat | `done` | Frente e Verso oficial compilados em PDF A4 e integrados no PNP ZIP | 2026-08-29 |
+| `neo-risograph-e-council` | Criação da identidade visual Neo-Risograph Editorial Suíço e julgamento completo pelo LLM Council com 5 conselheiros e peer review | `done` | Relatório HTML, transcrição do conselho e PDFs compilados em dist_print_and_play/ | 2026-08-30 |
+
