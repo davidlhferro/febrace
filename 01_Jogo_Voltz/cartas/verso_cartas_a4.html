@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f1f5f9;
+            background: #050811;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -21,7 +21,7 @@
         }
 
         .no-print-bar {
-            background: #ffffff;
+            background: #0f172a;
             width: 100%;
             max-width: 900px;
             padding: 16px 24px;
@@ -30,20 +30,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            border: 1px solid #1e293b;
         }
 
         .no-print-bar h1 {
             font-size: 1.15rem;
             font-weight: 800;
-            color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .no-print-bar p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 2px;
         }
 
         .btn-print {
-            background: #0f172a;
-            color: #ffffff;
-            font-weight: 700;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #0f172a;
+            font-weight: 800;
             padding: 10px 22px;
             border: none;
             border-radius: 8px;
@@ -58,7 +64,7 @@
             background: #ffffff;
             padding: 8mm 6mm;
             margin-bottom: 20mm;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             border: 1px solid #e2e8f0;
             display: grid;
             grid-template-columns: repeat(3, 63mm);
@@ -80,8 +86,8 @@
             justify-content: space-between;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.55rem;
-            color: #94a3b8;
-            border-bottom: 0.5px solid #e2e8f0;
+            color: #64748b;
+            border-bottom: 0.5px solid #cbd5e1;
             padding-bottom: 1mm;
         }
 
@@ -90,20 +96,19 @@
             width: 63mm;
             height: 88mm;
             background: #090d16;
-            border: 1.8px solid #0f172a;
+            border: 1.8px solid #020617;
             border-radius: 3.5mm;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .back-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .card-back img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         @page {
@@ -130,7 +135,7 @@
     <div class="no-print-bar">
         <div>
             <h1>⚡ VOLTZ: Circuit Break — Verso Oficial do Baralho (Card Back Anti-Cheat)</h1>
-            <p>Grade 3x3 para impressão no verso das 6 folhas • Simetria Rotacional de 180° Totalmente Opaca</p>
+            <p>Grade 3x3 para impressão no verso das 6 folhas • Simetria Rotacional de 180° com Arte Hiper-Detalhada</p>
         </div>
         <button class="btn-print" onclick="window.print()">Imprimir Verso em A4</button>
     </div>
@@ -138,108 +143,17 @@
     <!-- FOLHA DE VERSO A4 COM 9 CARTAS -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // VERSO OFICIAL ANTI-CHEAT</span>
+            <span>VOLTZ: CIRCUIT BREAK // VERSO OFICIAL ANTI-CHEAT (180° SYMMETRY)</span>
             <span>FOLHA PADRÃO PARA IMPRESSÃO FRENTE-E-VERSO (63mm x 88mm)</span>
         </div>
 
-        <!-- REPETE 9 VEZES O VERSO CANÔNICO 100% SIMÉTRICO -->
-        <!-- CARD BACK 1 a 9 -->
         <script>
-            // Gera o SVG do Verso 100% simétrico
-            const svgCardBack = `
-            <svg class="back-svg" viewBox="0 0 238 332" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <!-- Gradientes Metálicos e de Profundidade -->
-                    <radialGradient id="bgGlow" cx="50%" cy="50%" r="60%">
-                        <stop offset="0%" stop-color="#1e293b"/>
-                        <stop offset="60%" stop-color="#0f172a"/>
-                        <stop offset="100%" stop-color="#090d16"/>
-                    </radialGradient>
-                    <linearGradient id="goldCopper" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#fbbf24"/>
-                        <stop offset="50%" stop-color="#d97706"/>
-                        <stop offset="100%" stop-color="#92400e"/>
-                    </linearGradient>
-                    <linearGradient id="cyanTrace" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#38bdf8"/>
-                        <stop offset="100%" stop-color="#0284c7"/>
-                    </linearGradient>
-                    <!-- Padrão Micro-Grid de Circuito -->
-                    <pattern id="microGrid" width="12" height="12" patternUnits="userSpaceOnUse">
-                        <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#1e293b" stroke-width="0.8" stroke-opacity="0.6"/>
-                        <circle cx="0" cy="0" r="0.9" fill="#334155"/>
-                    </pattern>
-                </defs>
-
-                <!-- Fundo Escuro com Micro-Grid -->
-                <rect width="238" height="332" fill="url(#bgGlow)"/>
-                <rect width="238" height="332" fill="url(#microGrid)"/>
-
-                <!-- Moldura Externa Dupla Blindada com Cantos Chanfrados -->
-                <rect x="8" y="8" width="222" height="316" rx="10" fill="none" stroke="#334155" stroke-width="1.5"/>
-                <rect x="13" y="13" width="212" height="306" rx="8" fill="none" stroke="url(#goldCopper)" stroke-width="2" stroke-opacity="0.85"/>
-                <rect x="17" y="17" width="204" height="298" rx="6" fill="none" stroke="#0f172a" stroke-width="1"/>
-
-                <!-- Vias de Canto com Anéis Dourados (4 Cantos) -->
-                <circle cx="24" cy="24" r="5" fill="#090d16" stroke="url(#goldCopper)" stroke-width="1.8"/>
-                <circle cx="24" cy="24" r="2" fill="#38bdf8"/>
-                <circle cx="214" cy="24" r="5" fill="#090d16" stroke="url(#goldCopper)" stroke-width="1.8"/>
-                <circle cx="214" cy="24" r="2" fill="#38bdf8"/>
-                <circle cx="24" cy="308" r="5" fill="#090d16" stroke="url(#goldCopper)" stroke-width="1.8"/>
-                <circle cx="24" cy="308" r="2" fill="#38bdf8"/>
-                <circle cx="214" cy="308" r="5" fill="#090d16" stroke="url(#goldCopper)" stroke-width="1.8"/>
-                <circle cx="214" cy="308" r="2" fill="#38bdf8"/>
-
-                <!-- Trilhas de Circuito Labirínticas Simétricas (180° de Rotação Perfeita) -->
-                <g stroke="url(#goldCopper)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <!-- Trilha Norte / Sul -->
-                    <path d="M 119 17 L 119 65 L 70 65 L 70 95 L 45 95 L 45 135 L 75 135"/>
-                    <path d="M 119 315 L 119 267 L 168 267 L 168 237 L 193 237 L 193 197 L 163 197"/>
-                    
-                    <!-- Trilha Leste / Oeste -->
-                    <path d="M 119 17 L 119 65 L 168 65 L 168 95 L 193 95 L 193 135 L 163 135"/>
-                    <path d="M 119 315 L 119 267 L 70 267 L 70 237 L 45 237 L 45 197 L 75 197"/>
-
-                    <!-- Barramentos de Entrada e Saída -->
-                    <line x1="17" y1="166" x2="60" y2="166" stroke-width="3.5"/>
-                    <line x1="221" y1="166" x2="178" y2="166" stroke-width="3.5"/>
-                </g>
-
-                <!-- Trilhas Secundárias em Ciano Tecnológico -->
-                <g stroke="url(#cyanTrace)" stroke-width="1.2" fill="none" stroke-opacity="0.75" stroke-linecap="round">
-                    <path d="M 30 70 L 50 70 L 50 110 L 35 110"/>
-                    <path d="M 208 262 L 188 262 L 188 222 L 203 222"/>
-                    <path d="M 208 70 L 188 70 L 188 110 L 203 110"/>
-                    <path d="M 30 262 L 50 262 L 50 222 L 35 222"/>
-                </g>
-
-                <!-- MEDALHÃO CENTRAL POLÍGONO CHANFRADO (SIMETRIA PURA 180°) -->
-                <g transform="translate(119, 166)">
-                    <!-- Halo de Energia -->
-                    <circle cx="0" cy="0" r="54" fill="#0f172a" stroke="url(#goldCopper)" stroke-width="2.5"/>
-                    <circle cx="0" cy="0" r="48" fill="#090d16" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3,3"/>
-
-                    <!-- Octógono de Aço -->
-                    <polygon points="-38,-20 -20,-38 20,-38 38,-20 38,20 20,38 -20,38 -38,20" fill="#1e293b" stroke="url(#goldCopper)" stroke-width="2"/>
-
-                    <!-- Símbolo do Raio Duplo Simétrico -->
-                    <path d="M 0 -24 L 7 -6 L -2 -6 L 4 10 L -7 -2 L 2 -2 Z" fill="url(#goldCopper)" stroke="#090d16" stroke-width="1"/>
-                    
-                    <!-- Tipografia Simétrica de Alta Legibilidade -->
-                    <text x="0" y="22" font-family="Inter, sans-serif" font-weight="900" font-size="7.5" fill="#f8fafc" letter-spacing="1.5" text-anchor="middle">VOLTZ</text>
-                    <text x="0" y="-27" font-family="JetBrains Mono, monospace" font-weight="800" font-size="4.5" fill="#38bdf8" letter-spacing="1" text-anchor="middle">CIRCUIT BREAK</text>
-                </g>
-
-                <!-- Vias de Solda Microscópicas Decorativas Centrais -->
-                <circle cx="95" cy="142" r="2.5" fill="#d97706" stroke="#090d16" stroke-width="0.8"/>
-                <circle cx="143" cy="190" r="2.5" fill="#d97706" stroke="#090d16" stroke-width="0.8"/>
-                <circle cx="143" cy="142" r="2.5" fill="#d97706" stroke="#090d16" stroke-width="0.8"/>
-                <circle cx="95" cy="190" r="2.5" fill="#d97706" stroke="#090d16" stroke-width="0.8"/>
-            </svg>
-            `;
-
             for (let i = 0; i < 9; i++) {
-                document.write(`<div class="card-back">${svgCardBack}</div>`);
+                document.write(`
+                <div class="card-back">
+                    <img src="assets_art/card_back.jpg" alt="VOLTZ Card Back">
+                </div>
+                `);
             }
         </script>
     </div>
