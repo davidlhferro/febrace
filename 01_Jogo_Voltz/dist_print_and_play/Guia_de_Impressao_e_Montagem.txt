@@ -16,31 +16,34 @@ na sua casa, escola ou gráfica rápida em poucos minutos.
 
 2. [VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf]
    -> As 54 cartas oficiais diagramadas em 6 páginas A4 (grade 3x3 Poker Size 63x88mm),
-      com trilhas condutoras borda a borda e terminais de cobre para encaixe contínuo.
+      com ilustrações técnicas 3D ricas, índices de poker e trilhas de cobre contínuas.
 
-3. [VOLTZ_Tabuleiro_Guia_Mesa_A4.pdf] (Opcional / Bônus)
+3. [VOLTZ_Verso_Oficial_A4.pdf] (NOVO / ANTI-CHEAT)
+   -> Folha A4 com 9 versos simétricos de labirinto de circuito dourado e azul escuro
+      com simetria de 180°, garantindo que ninguém descubra sua carta na mão!
+
+4. [VOLTZ_Tabuleiro_Guia_Mesa_A4.pdf] (Opcional / Bônus)
    -> Folha de apoio para o centro da mesa com o slot do Gerador 12V e as 4 rotas
       dos setores da metrópole (Hospital, Dados, Água, Residencial).
 
-4. [Guia_de_Impressao_e_Montagem.txt]
+5. [Guia_de_Impressao_e_Montagem.txt]
    -> Este guia de orientações práticas.
 
 --------------------------------------------------------------------------------
-🖨️ 1. COMO IMPRIMIR AS CARTAS (OPÇÕES RECOMENDADAS):
+🖨️ 1. COMO IMPRIMIR AS CARTAS E O VERSO (OPÇÕES RECOMENDADAS):
 --------------------------------------------------------------------------------
 
 ⭐ OPÇÃO 1: Impressão Doméstica Econômica (Papel Sulfite A4 + Sleeves)
-- Imprima as 6 páginas do baralho em papel sulfite comum A4 (75g ou 90g).
-- Dica de ouro: Compre um pacote de "Sleeves / Protetores de Cartas Padrão Magic/Poker"
-  (tamanho 63.5 x 88 mm) e coloque uma carta comum de baralho tradicional ou papel
-  cartão por trás de cada carta impressa para dar firmeza tátil!
+- Imprima as 6 páginas da frente em papel sulfite comum A4 (75g ou 90g).
+- Imprima 6 cópias do `VOLTZ_Verso_Oficial_A4.pdf`.
+- Corte a frente e o verso e coloque ambos dentro de "Sleeves / Protetores de Cartas Padrão Magic/Poker"
+  (tamanho 63.5 x 88 mm), com um papel cartão ou carta comum no meio para firmeza tátil!
 
-⭐ OPÇÃO 2: Gráfica Rápida / Impressão Profissional (Melhor Custo-Benefício)
-- Leve o arquivo `VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf` a uma gráfica rápida.
-- Peça impressão colorida a laser em papel Couchê Fosco ou Brilho de 250g a 300g
+⭐ OPÇÃO 2: Gráfica Rápida Frente-e-Verso (Melhor Custo-Benefício e Acabamento Comercial)
+- Leve os arquivos `VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf` e `VOLTZ_Verso_Oficial_A4.pdf` a uma gráfica rápida.
+- Peça impressão colorida a laser frente-e-verso em papel Couchê Fosco de 250g a 300g
   (ou papel Offset / Opaline 240g).
-- A paleta de cores do VOLTZ foi desenhada no padrão "Toner-Safe" com fundo claro,
-  garantindo baixo consumo de tinta e zero risco de borrões.
+- O alinhamento milimétrico da grade 3x3 garante que o corte saia perfeito em ambos os lados!
 
 --------------------------------------------------------------------------------
 ✂️ 2. COMO CORTAR AS CARTAS:

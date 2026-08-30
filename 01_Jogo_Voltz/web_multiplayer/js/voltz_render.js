@@ -1,6 +1,6 @@
 /**
  * VOLTZ: CIRCUIT BREAK — Renderizador Visual Vetorial (SVG / HTML)
- * Renderiza as cartas e a mesa com trilhas de cobre de 10mm e esquemas inline.
+ * Renderiza as cartas e a mesa com arte editorial rica de alta fidelidade e índices de poker.
  */
 
 const VoltzRender = {
@@ -9,7 +9,6 @@ const VoltzRender = {
         if (!card) return '<div class="card-empty-slot">Vazio</div>';
 
         const isHand = options.isHand || false;
-        const selectable = options.selectable || false;
         const selected = options.selected || false;
         const showActions = options.showActions || false;
 
@@ -24,7 +23,7 @@ const VoltzRender = {
                 <span class="badge" style="background: ${card.badgeColor || '#0f172a'};">${card.badge || ''}</span>
             </div>
 
-            <!-- SVG ESQUEMÁTICO INLINE DE ALTO IMPACTO (Trilha de Cobre de 10mm) -->
+            <!-- SVG ESQUEMÁTICO INLINE DE ALTO IMPACTO (Arte Editorial 3D) -->
             ${this.getCardSVG(card)}
 
             <!-- RODAPÉ DA CARTA -->
@@ -39,7 +38,7 @@ const VoltzRender = {
         `;
     },
 
-    // Gera o SVG monolítico de acordo com a categoria da carta
+    // Gera o SVG com ilustrações ricas, gradientes e índices de canto
     getCardSVG(card) {
         const id = card.id || '';
 
@@ -47,200 +46,239 @@ const VoltzRender = {
         if (id === 'gen_12v') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="100" y="0" width="38" height="85" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#b45309">⚡12V</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#b45309" text-anchor="end">⚡12V</text>
+                
+                <rect x="100" y="0" width="38" height="85" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
                 <polygon points="119,25 110,40 128,40" fill="#0f172a"/>
-                <rect x="100" y="247" width="38" height="85" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+                <rect x="100" y="247" width="38" height="85" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
                 <polygon points="119,307 110,292 128,292" fill="#0f172a"/>
-                <rect x="0" y="147" width="85" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+                <rect x="0" y="147" width="85" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
                 <polygon points="25,166 40,157 40,175" fill="#0f172a"/>
-                <rect x="153" y="147" width="85" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+                <rect x="153" y="147" width="85" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
                 <polygon points="213,166 198,157 198,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="54" fill="#ffffff" stroke="#0f172a" stroke-width="4"/>
-                <circle cx="119" cy="166" r="46" fill="#fffbeb" stroke="#f59e0b" stroke-width="3"/>
-                <line x1="90" y1="152" x2="148" y2="152" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
-                <line x1="102" y1="166" x2="136" y2="166" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
-                <line x1="90" y1="180" x2="148" y2="180" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
-                <text x="119" y="132" font-family="Inter, sans-serif" font-weight="900" font-size="14" fill="#b45309" text-anchor="middle">FONTE 12V</text>
+
+                <circle cx="119" cy="166" r="54" fill="#1e293b" stroke="#0f172a" stroke-width="3.5"/>
+                <circle cx="119" cy="166" r="46" fill="#fffbeb" stroke="#d97706" stroke-width="3"/>
+                
+                <rect x="92" y="148" width="54" height="7" rx="2" fill="#0f172a"/>
+                <rect x="100" y="160" width="38" height="5" rx="1.5" fill="#b45309"/>
+                <rect x="92" y="170" width="54" height="7" rx="2" fill="#0f172a"/>
+                <rect x="100" y="182" width="38" height="5" rx="1.5" fill="#b45309"/>
+
+                <text x="119" y="128" font-family="Inter, sans-serif" font-weight="900" font-size="12" fill="#b45309" text-anchor="middle">FONTE 12V</text>
             </svg>
             `;
         }
 
-        // 2. RESISTOR 1Ω
-        if (id === 'res_1ohm') {
+        // 2. RESISTORES (1Ω, 2Ω, 3Ω)
+        if (id === 'res_1ohm' || id === 'res_2ohm' || id === 'res_3ohm') {
+            const rVal = card.r || 1;
+            const colorHex = rVal === 1 ? '#059669' : (rVal === 2 ? '#1d4ed8' : '#c2410c');
+            const bandColor = rVal === 1 ? '#78350f' : (rVal === 2 ? '#dc2626' : '#ea580c');
+
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="35,166 22,157 22,175" fill="#0f172a"/>
-                <polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="195,166 182,157 182,175" fill="#0f172a"/>
-                <polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="${colorHex}">${rVal}Ω</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="${colorHex}" text-anchor="end">${rVal}Ω</text>
+
+                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                <polygon points="48,166 34,157 34,175" fill="#0f172a"/>
+                
+                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="198,166 184,157 184,175" fill="#0f172a"/>
+                <polygon points="214,166 200,157 200,175" fill="#0f172a"/>
+
+                <line x1="58" y1="166" x2="74" y2="166" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
+                <line x1="164" y1="166" x2="180" y2="166" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
+
+                <rect x="70" y="132" width="98" height="68" rx="14" fill="#fef08a" stroke="#0f172a" stroke-width="2.8"/>
+                <rect x="86" y="132" width="10" height="68" fill="${bandColor}"/>
+                <rect x="104" y="132" width="10" height="68" fill="#0f172a"/>
+                <rect x="122" y="132" width="10" height="68" fill="#eab308"/>
+                <rect x="144" y="132" width="8" height="68" fill="#d97706"/>
+                <rect x="72" y="136" width="94" height="6" rx="3" fill="#ffffff" fill-opacity="0.6"/>
+
+                <text x="119" y="116" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="${colorHex}" text-anchor="middle">R = ${rVal} OHM${rVal > 1 ? 'S' : ''}</text>
             </svg>
             `;
         }
 
-        // 3. RESISTOR 2Ω
-        if (id === 'res_2ohm') {
-            return `
-            <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            `;
-        }
-
-        // 4. RESISTOR 3Ω
-        if (id === 'res_3ohm') {
-            return `
-            <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="22,166 10,157 10,175" fill="#0f172a"/>
-                <rect x="198" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="222,166 210,157 210,175" fill="#0f172a"/>
-                <rect x="38" y="122" width="162" height="88" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="3"/>
-                <path d="M38,166 L52,166 L64,136 L82,196 L100,136 L118,196 L136,136 L154,196 L172,136 L184,166 L200,166" fill="none" stroke="#c2410c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#c2410c" text-anchor="middle">R = 3 OHMS</text>
-            </svg>
-            `;
-        }
-
-        // 5. LED PILOTO (3V)
+        // 3. LED PILOTO (3V)
         if (id === 'load_led') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="70" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="40,166 25,157 25,175" fill="#0f172a"/>
-                <rect x="168" y="147" width="70" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="205,166 190,157 190,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <polygon points="96,140 96,192 136,166" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
-                <line x1="138" y1="138" x2="138" y2="194" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
-                <line x1="126" y1="130" x2="146" y2="110" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
-                <polygon points="146,110 136,112 144,120" fill="#4338ca"/>
-                <line x1="140" y1="138" x2="160" y2="118" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
-                <polygon points="160,118 150,120 158,128" fill="#4338ca"/>
-                <text x="119" y="98" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 3 VOLTS</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">3V💡</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">3V💡</text>
+
+                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="35,166 20,157 20,175" fill="#0f172a"/>
+                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="208,166 193,157 193,175" fill="#0f172a"/>
+
+                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="2.5"/>
+                <circle cx="119" cy="166" r="38" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
+                <line x1="140" y1="134" x2="162" y2="112" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/>
+                <polygon points="162,112 152,114 160,122" fill="#4f46e5"/>
+                <line x1="152" y1="144" x2="174" y2="122" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/>
+                <polygon points="174,122 164,124 172,132" fill="#4f46e5"/>
+
+                <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 3 VOLTS</text>
             </svg>
             `;
         }
 
-        // 6. SERVIDOR CENTRAL (4V)
+        // 4. SERVIDOR CENTRAL (4V)
         if (id === 'load_servidor') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <rect x="58" y="120" width="122" height="92" rx="8" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <rect x="74" y="136" width="90" height="24" rx="3" fill="#312e81"/><circle cx="86" cy="148" r="4" fill="#34d399"/>
-                <rect x="74" y="168" width="90" height="24" rx="3" fill="#312e81"/><circle cx="86" cy="180" r="4" fill="#38bdf8"/>
-                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 4 VOLTS</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">4V🖥️</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">4V🖥️</text>
+
+                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                <rect x="52" y="118" width="134" height="96" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="3"/>
+                <rect x="62" y="128" width="114" height="22" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+                <circle cx="74" cy="139" r="3.5" fill="#34d399"/><circle cx="84" cy="139" r="3.5" fill="#38bdf8"/>
+                <rect x="62" y="156" width="114" height="22" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+                <circle cx="74" cy="167" r="3.5" fill="#34d399"/><circle cx="84" cy="167" r="3.5" fill="#fbbf24"/>
+
+                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 4 VOLTS</text>
             </svg>
             `;
         }
 
-        // 7. SIRENE DE ALARME (6V)
+        // 5. SIRENE DE ALARME (6V)
         if (id === 'load_sirene') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="46" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <path d="M102,150 L102,182 L116,182 L136,198 L136,134 L116,150 Z" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
-                <path d="M146,150 Q156,166 146,182" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
-                <path d="M154,142 Q168,166 154,190" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
-                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">6V🚨</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">6V🚨</text>
+
+                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="2.5"/>
+                <path d="M 94 150 L 94 182 L 112 182 L 138 202 L 138 130 L 112 150 Z" fill="#1e293b" stroke="#0f172a" stroke-width="2.5"/>
+                <path d="M 148 148 Q 160 166 148 184" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
+                <path d="M 158 138 Q 176 166 158 194" fill="none" stroke="#4f46e5" stroke-width="3.5" stroke-linecap="round"/>
+
+                <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
             </svg>
             `;
         }
 
-        // 8. MOTOR DE BOMBA (6V)
+        // 6. MOTOR DE BOMBA (6V)
         if (id === 'load_motor') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="4"/>
-                <text x="119" y="177" font-family="Inter, sans-serif" font-weight="900" font-size="32" fill="#4338ca" text-anchor="middle">M</text>
-                <rect x="67" y="156" width="6" height="20" fill="#0f172a"/>
-                <rect x="165" y="156" width="6" height="20" fill="#0f172a"/>
-                <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">6V⚙️</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">6V⚙️</text>
+
+                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                <rect x="62" y="120" width="114" height="92" rx="10" fill="#cbd5e1" stroke="#0f172a" stroke-width="3"/>
+                <circle cx="119" cy="166" r="32" fill="#0f172a" stroke="#d97706" stroke-width="2.5"/>
+                <text x="119" y="177" font-family="Inter, sans-serif" font-weight="900" font-size="28" fill="#f8fafc" text-anchor="middle">M</text>
+
+                <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
             </svg>
             `;
         }
 
-        // 9. TOMÓGRAFO UTI (12V)
+        // 7. TOMÓGRAFO UTI (12V)
         if (id === 'load_tomografo') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="50" fill="#eef2ff" stroke="#4338ca" stroke-width="4"/>
-                <circle cx="119" cy="166" r="32" fill="#ffffff" stroke="#4338ca" stroke-width="2.5"/>
-                <circle cx="119" cy="166" r="14" fill="#312e81"/>
-                <text x="119" y="102" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 12 VOLTS</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">12V🏥</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">12V🏥</text>
+
+                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                <circle cx="119" cy="166" r="54" fill="#0f172a" stroke="#dc2626" stroke-width="3"/>
+                <circle cx="119" cy="166" r="44" fill="#1e293b" stroke="#e0f2fe" stroke-width="2"/>
+                <circle cx="119" cy="166" r="30" fill="#f8fafc" stroke="#38bdf8" stroke-width="2"/>
+                <circle cx="119" cy="166" r="14" fill="#0f172a"/>
+
+                <text x="119" y="102" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 12 VOLTS</text>
             </svg>
             `;
         }
 
-        // 10. CABO TERRA (GND)
+        // 8. CABO TERRA (GND)
         if (id === 'gnd_cable') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="45,166 30,157 30,175" fill="#0f172a"/><polygon points="75,166 60,157 60,175" fill="#0f172a"/>
-                <rect x="115" y="105" width="108" height="122" rx="10" fill="#f0fdf4" stroke="#0f766e" stroke-width="3.5"/>
-                <line x1="119" y1="166" x2="160" y2="166" stroke="#0f766e" stroke-width="6"/>
-                <line x1="160" y1="130" x2="160" y2="202" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
-                <line x1="174" y1="142" x2="174" y2="190" stroke="#0f766e" stroke-width="7" stroke-linecap="round"/>
-                <line x1="188" y1="154" x2="188" y2="178" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/>
-                <line x1="200" y1="162" x2="200" y2="170" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/>
-                <text x="160" y="95" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0f766e">⏚ 0V</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0f766e" text-anchor="end">⏚ 0V</text>
+
+                <rect x="0" y="147" width="112" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="40,166 25,157 25,175" fill="#0f172a"/>
+                <polygon points="70,166 55,157 55,175" fill="#0f172a"/>
+
+                <rect x="110" y="106" width="112" height="120" rx="10" fill="#1e293b" stroke="#0f766e" stroke-width="3"/>
+                <line x1="112" y1="166" x2="154" y2="166" stroke="#0f766e" stroke-width="6"/>
+                <line x1="154" y1="130" x2="154" y2="202" stroke="#2dd4bf" stroke-width="8" stroke-linecap="round"/>
+                <line x1="168" y1="142" x2="168" y2="190" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round"/>
+                <line x1="182" y1="154" x2="182" y2="178" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round"/>
+                <line x1="194" y1="162" x2="194" y2="170" stroke="#2dd4bf" stroke-width="5" stroke-linecap="round"/>
+
+                <text x="160" y="94" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
             </svg>
             `;
         }
 
-        // 11. FUSÍVEL 1A
+        // 9. FUSÍVEL 1A
         if (id === 'special_fuse') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="30,166 18,157 18,175" fill="#0f172a"/>
-                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="215,166 203,157 203,175" fill="#0f172a"/>
-                <rect x="52" y="132" width="134" height="68" rx="14" fill="#f0f9ff" stroke="#0369a1" stroke-width="3"/>
-                <rect x="52" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <rect x="162" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <path d="M76,166 Q100,146 119,166 T162,166" fill="none" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">Imax = 1.0 A</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1">🛡️1A</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1" text-anchor="end">🛡️1A</text>
+
+                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                <rect x="52" y="132" width="134" height="68" rx="14" fill="#e0f2fe" stroke="#0369a1" stroke-width="2.8"/>
+                <rect x="52" y="132" width="24" height="68" rx="4" fill="#cbd5e1" stroke="#0f172a" stroke-width="2"/>
+                <rect x="162" y="132" width="24" height="68" rx="4" fill="#cbd5e1" stroke="#0f172a" stroke-width="2"/>
+                <path d="M 76 166 Q 96 142 119 166 T 162 166" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-linecap="round"/>
+
+                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#0369a1" text-anchor="middle">Imax = 1.0 A</text>
             </svg>
             `;
         }
 
-        // 12. NÓ PARALELO EM Y
+        // 10. NÓ PARALELO EM Y
         if (id === 'special_node_y') {
             return `
             <svg class="schematic-svg" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="45,166 30,157 30,175" fill="#0f172a"/>
-                <rect x="119" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 180,157 180,175" fill="#0f172a"/>
-                <path d="M100,166 Q119,100 119,0 L157,0 Q157,100 138,166 Z" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="138,40 128,55 148,55" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="24" fill="#0f172a"/><circle cx="119" cy="166" r="14" fill="#f59e0b"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">DIVISOR DE RAMO</text>
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1">🔀 Y</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1" text-anchor="end">🔀 Y</text>
+
+                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="45,166 30,157 30,175" fill="#0f172a"/>
+                <rect x="119" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+                <polygon points="195,166 180,157 180,175" fill="#0f172a"/>
+                <path d="M 100 166 Q 119 100 119 0 L 157 0 Q 157 100 138 166 Z" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
+
+                <circle cx="119" cy="166" r="24" fill="#0f172a"/>
+                <circle cx="119" cy="166" r="16" fill="#f59e0b"/>
+
+                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#0369a1" text-anchor="middle">DIVISOR DE RAMO</text>
             </svg>
             `;
         }
@@ -248,7 +286,7 @@ const VoltzRender = {
         // DEFAULT FALLBACK
         return `
         <svg class="schematic-svg" viewBox="0 0 238 332">
-            <rect x="0" y="147" width="238" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+            <rect x="0" y="147" width="238" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="2.5"/>
             <text x="119" y="172" font-family="Inter" font-weight="800" font-size="16" fill="#0f172a" text-anchor="middle">${card.name}</text>
         </svg>
         `;
@@ -275,11 +313,11 @@ const VoltzRender = {
             `;
         }
         return `
-        <div class="card-action-bar">
-            <button class="btn-action btn-play" onclick="App.openSectorPicker('${card.uid}', 'play')">
-                ⚡ Jogar no Ramo
-            </button>
-        </div>
+            <div class="card-action-bar">
+                <button class="btn-action btn-play" onclick="App.openSectorPicker('${card.uid}', 'play')">
+                    ⚡ Jogar no Ramo
+                </button>
+            </div>
         `;
     }
 };

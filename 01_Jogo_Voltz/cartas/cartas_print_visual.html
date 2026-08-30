@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOLTZ: Circuit Break — Baralho Oficial Modular (Alta Clareza Visual • Estilo Bandido / PCB)</title>
+    <title>VOLTZ: Circuit Break — Baralho Oficial Editorial (Arte Premium de Alta Fidelidade)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800;900&display=swap');
 
@@ -148,11 +148,11 @@
             border-bottom: 1px solid #cbd5e1;
             padding-bottom: 1mm;
             z-index: 5;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .card-head .title {
-            font-size: 0.60rem;
+            font-size: 0.58rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.3px;
@@ -161,7 +161,7 @@
 
         .card-head .badge {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.52rem;
+            font-size: 0.50rem;
             font-weight: 900;
             padding: 1px 4.5px;
             border-radius: 3px;
@@ -189,7 +189,7 @@
             border-top: 1px solid #cbd5e1;
             padding-top: 1mm;
             z-index: 5;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .blocks-indicator {
@@ -200,8 +200,8 @@
         }
 
         .ohm-cube {
-            width: 11px;
-            height: 11px;
+            width: 10px;
+            height: 10px;
             border: 1.5px solid #0f172a;
             border-radius: 2px;
             background: #ffffff;
@@ -213,7 +213,7 @@
         .ohm-cube.c-gen { background: var(--c-copper); }
 
         .foot-text {
-            font-size: 0.46rem;
+            font-size: 0.44rem;
             font-family: 'JetBrains Mono', monospace;
             font-weight: 700;
             color: #475569;
@@ -255,862 +255,697 @@
 
     <div class="no-print-bar">
         <div>
-            <h1>🎴 VOLTZ: Circuit Break — Baralho Oficial com Trilhas de Alta Clareza (Estilo Bandido / PCB)</h1>
-            <p>54 Cartas Modulares • Trilhas Contínuas de Cobre de 10mm • Esquemas Inline com Setas de Corrente</p>
+            <h1>🎴 VOLTZ: Circuit Break — Baralho Oficial Editorial (Arte Premium de Alta Fidelidade)</h1>
+            <p>54 Cartas Modulares • Trilhas de Cobre Metálicas de 10mm • Ilustrações 3D com Sombras & Índices de Poker</p>
         </div>
         <button class="btn-print" onclick="window.print()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
-            Imprimir / Salvar PDF
+            Imprimir Baralho A4
         </button>
     </div>
 
+    <!-- DEFS SVG GLOBAIS COMPARTILHADOS (Gradientes Metálicos, Micro-Grids e Filtros) -->
+    <svg style="position: absolute; width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Micro-Grid PCB Light -->
+            <pattern id="pcbGridLight" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#e2e8f0" stroke-width="0.7"/>
+                <circle cx="0" cy="0" r="0.8" fill="#cbd5e1"/>
+            </pattern>
+            <!-- Gradiente de Cobre Metálico -->
+            <linearGradient id="gradCopperBus" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#fbbf24"/>
+                <stop offset="35%" stop-color="#f59e0b"/>
+                <stop offset="70%" stop-color="#d97706"/>
+                <stop offset="100%" stop-color="#92400e"/>
+            </linearGradient>
+            <!-- Gradiente Resistor Cerâmica 3D -->
+            <linearGradient id="gradResistorBody" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#fef08a"/>
+                <stop offset="25%" stop-color="#fef9c3"/>
+                <stop offset="60%" stop-color="#fde047"/>
+                <stop offset="100%" stop-color="#ca8a04"/>
+            </linearGradient>
+            <!-- Gradiente Lente LED -->
+            <radialGradient id="gradLedGlow" cx="45%" cy="40%" r="55%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="30%" stop-color="#818cf8"/>
+                <stop offset="80%" stop-color="#4338ca"/>
+                <stop offset="100%" stop-color="#312e81"/>
+            </radialGradient>
+            <!-- Gradiente Fusível Vidro -->
+            <linearGradient id="gradGlassTube" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+                <stop offset="20%" stop-color="#e0f2fe" stop-opacity="0.6"/>
+                <stop offset="70%" stop-color="#bae6fd" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0.7"/>
+            </linearGradient>
+            <!-- Gradiente Motor Alumínio -->
+            <linearGradient id="gradMotorAlu" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f8fafc"/>
+                <stop offset="40%" stop-color="#cbd5e1"/>
+                <stop offset="80%" stop-color="#64748b"/>
+                <stop offset="100%" stop-color="#334155"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
     <!-- ========================================================================= -->
-    <!-- PÁGINA 1: GERADOR 12V (4 SAÍDAS) + 8x RESISTOR 1Ω (9 Cartas) -->
+    <!-- PÁGINA 1: GERADOR 12V + 8x RESISTOR 1Ω (9 Cartas)                         -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO MODULAR ALTA CLAREZA</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO EDITORIAL PREMIUM</span>
             <span>FOLHA 1 / 6 (GERADOR 12V & RESISTORES 1Ω)</span>
         </div>
 
-        <!-- 1. GERADOR CENTRAL (12V) - 4 SAÍDAS GROSSAS DE 10MM -->
+        <!-- 1. GERADOR CENTRAL 12V -->
         <div class="card card-gen">
             <div class="card-head">
                 <span class="title">Gerador Central</span>
                 <span class="badge" style="background: var(--c-gen);">DC 12V</span>
             </div>
 
-            <!-- SVG ESQUEMÁTICO MONOLÍTICO DE 100% DA CARTA (63mm x 88mm -> viewBox="0 0 238 332") -->
             <svg class="schematic-hero" viewBox="0 0 238 332">
-                <!-- Trilhas Radiais Norte, Leste, Sul, Oeste (Largura 38px ~ 10mm) -->
-                <!-- Norte -->
-                <rect x="100" y="0" width="38" height="85" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+                <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                <!-- Índices de Canto (Poker) -->
+                <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#b45309">⚡12V</text>
+                <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#b45309" text-anchor="end">⚡12V</text>
+
+                <!-- 4 Barramentos de Cobre Dourado (10mm de Largura com Chanfros) -->
+                <rect x="100" y="0" width="38" height="85" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
                 <polygon points="119,25 110,40 128,40" fill="#0f172a"/>
-                <!-- Sul -->
-                <rect x="100" y="247" width="38" height="85" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+                <rect x="100" y="247" width="38" height="85" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
                 <polygon points="119,307 110,292 128,292" fill="#0f172a"/>
-                <!-- Oeste -->
-                <rect x="0" y="147" width="85" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+                <rect x="0" y="147" width="85" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
                 <polygon points="25,166 40,157 40,175" fill="#0f172a"/>
-                <!-- Leste -->
-                <rect x="153" y="147" width="85" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
+                <rect x="153" y="147" width="85" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
                 <polygon points="213,166 198,157 198,175" fill="#0f172a"/>
 
-                <!-- Núcleo do Gerador 12V -->
-                <circle cx="119" cy="166" r="54" fill="#ffffff" stroke="#0f172a" stroke-width="4"/>
-                <circle cx="119" cy="166" r="46" fill="#fffbeb" stroke="#f59e0b" stroke-width="3"/>
-                <!-- Símbolo da Fonte DC / Bateria -->
-                <line x1="90" y1="152" x2="148" y2="152" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
-                <line x1="102" y1="166" x2="136" y2="166" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
-                <line x1="90" y1="180" x2="148" y2="180" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
-                <text x="119" y="132" font-family="Inter, sans-serif" font-weight="900" font-size="14" fill="#b45309" text-anchor="middle">FONTE 12V</text>
+                <!-- Vias de Solda nos Terminais -->
+                <circle cx="119" cy="12" r="4.5" fill="#d97706" stroke="#0f172a" stroke-width="1.5"/><circle cx="119" cy="12" r="1.5" fill="#0f172a"/>
+                <circle cx="119" cy="320" r="4.5" fill="#d97706" stroke="#0f172a" stroke-width="1.5"/><circle cx="119" cy="320" r="1.5" fill="#0f172a"/>
+                <circle cx="12" cy="166" r="4.5" fill="#d97706" stroke="#0f172a" stroke-width="1.5"/><circle cx="12" cy="166" r="1.5" fill="#0f172a"/>
+                <circle cx="226" cy="166" r="4.5" fill="#d97706" stroke="#0f172a" stroke-width="1.5"/><circle cx="226" cy="166" r="1.5" fill="#0f172a"/>
+
+                <!-- Reator Toroidal Central de 12V -->
+                <circle cx="119" cy="166" r="56" fill="#1e293b" stroke="#0f172a" stroke-width="3.5"/>
+                <circle cx="119" cy="166" r="48" fill="#fffbeb" stroke="url(#gradCopperBus)" stroke-width="3"/>
+                <circle cx="119" cy="166" r="38" fill="#ffffff" stroke="#b45309" stroke-width="1.5" stroke-dasharray="4,2"/>
+                
+                <!-- Placas de Acumulador Químico / Bateria -->
+                <rect x="92" y="148" width="54" height="7" rx="2" fill="#0f172a"/>
+                <rect x="100" y="160" width="38" height="5" rx="1.5" fill="#b45309"/>
+                <rect x="92" y="170" width="54" height="7" rx="2" fill="#0f172a"/>
+                <rect x="100" y="182" width="38" height="5" rx="1.5" fill="#b45309"/>
+                
+                <text x="119" y="128" font-family="Inter, sans-serif" font-weight="900" font-size="12" fill="#b45309" text-anchor="middle" letter-spacing="1">FONTE 12V</text>
             </svg>
 
             <div class="card-foot">
                 <div class="blocks-indicator">
                     <div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div><div class="ohm-cube c-gen"></div>
                 </div>
-                <div class="foot-text">4 Saídas de 12V • 12 Blocos de Energia</div>
+                <div class="foot-text">4 Portas Radiais • 12 Blocos de Potência</div>
             </div>
         </div>
 
-        <!-- 8x RESISTOR 1Ω (TRILHA CONDUTORA CONTÍNUA DE PONTA A PONTA COM ZIG-ZAG GROSSO) -->
-        <!-- R1-01 -->
-        <div class="card card-r1">
-            <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <!-- Fio Esquerda -->
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="35,166 22,157 22,175" fill="#0f172a"/>
-                <polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <!-- Fio Direita -->
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="195,166 182,157 182,175" fill="#0f172a"/>
-                <polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <!-- Corpo do Resistor 1Ω (Zig-Zag Grosso 1 Onda) -->
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
-            </svg>
-            <div class="card-foot">
-                <div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div>
-                <div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div>
-            </div>
-        </div>
+        <!-- 8x RESISTOR 1Ω (Corpo Cerâmico 3D com Faixas Marrom/Preto/Dourado) -->
+        <script>
+            function getResistorSVG(rVal, cat, colorHex, bands) {
+                const bandColors = {
+                    1: ['#78350f', '#0f172a', '#eab308'], // 1Ω: Marrom, Preto, Dourado
+                    2: ['#dc2626', '#0f172a', '#eab308'], // 2Ω: Vermelho, Preto, Dourado
+                    3: ['#ea580c', '#0f172a', '#eab308']  // 3Ω: Laranja, Preto, Dourado
+                };
+                const b = bandColors[rVal];
 
-        <!-- R1-02 -->
-        <div class="card card-r1">
-            <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 22,157 22,175" fill="#0f172a"/><polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 182,157 182,175" fill="#0f172a"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div><div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div></div>
-        </div>
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="${colorHex}">${rVal}Ω</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="${colorHex}" text-anchor="end">${rVal}Ω</text>
 
-        <!-- R1-03 -->
-        <div class="card card-r1">
-            <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 22,157 22,175" fill="#0f172a"/><polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 182,157 182,175" fill="#0f172a"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div><div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div></div>
-        </div>
+                    <!-- Barramentos de Cobre Metálico -->
+                    <rect x="0" y="147" width="60" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                    <polygon points="48,166 34,157 34,175" fill="#0f172a"/>
+                    
+                    <rect x="178" y="147" width="60" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="198,166 184,157 184,175" fill="#0f172a"/>
+                    <polygon points="214,166 200,157 200,175" fill="#0f172a"/>
 
-        <!-- R1-04 -->
-        <div class="card card-r1">
-            <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 22,157 22,175" fill="#0f172a"/><polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 182,157 182,175" fill="#0f172a"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div><div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div></div>
-        </div>
+                    <!-- Terminais Axiais Metálicos -->
+                    <line x1="58" y1="166" x2="74" y2="166" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
+                    <line x1="164" y1="166" x2="180" y2="166" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
 
-        <!-- R1-05 -->
-        <div class="card card-r1">
-            <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 22,157 22,175" fill="#0f172a"/><polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 182,157 182,175" fill="#0f172a"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div><div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div></div>
-        </div>
+                    <!-- Corpo 3D do Resistor de Cerâmica -->
+                    <rect x="70" y="132" width="98" height="68" rx="14" fill="url(#gradResistorBody)" stroke="#0f172a" stroke-width="2.8"/>
+                    
+                    <!-- Faixas de Código de Cores IEC -->
+                    <rect x="86" y="132" width="10" height="68" fill="${b[0]}"/>
+                    <rect x="104" y="132" width="10" height="68" fill="${b[1]}"/>
+                    <rect x="122" y="132" width="10" height="68" fill="${b[2]}"/>
+                    <rect x="144" y="132" width="8" height="68" fill="#d97706"/> <!-- Tolerância 5% Dourada -->
 
-        <!-- R1-06 -->
-        <div class="card card-r1">
-            <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 22,157 22,175" fill="#0f172a"/><polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 182,157 182,175" fill="#0f172a"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div><div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div></div>
-        </div>
+                    <!-- Brilho Especular na Curvatura do Resistor -->
+                    <rect x="72" y="136" width="94" height="6" rx="3" fill="#ffffff" fill-opacity="0.6"/>
 
-        <!-- R1-07 -->
-        <div class="card card-r1">
-            <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 22,157 22,175" fill="#0f172a"/><polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 182,157 182,175" fill="#0f172a"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div><div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div></div>
-        </div>
+                    <text x="119" y="116" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="${colorHex}" text-anchor="middle">R = ${rVal} OHM${rVal > 1 ? 'S' : ''}</text>
+                </svg>
+                `;
+            }
 
-        <!-- R1-08 -->
-        <div class="card card-r1">
-            <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 22,157 22,175" fill="#0f172a"/><polygon points="50,166 37,157 37,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 182,157 182,175" fill="#0f172a"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/>
-                <rect x="62" y="122" width="114" height="88" rx="8" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <path d="M62,166 L85,166 L98,136 L124,196 L150,136 L163,166 L176,166" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#059669" text-anchor="middle">R = 1 OHM</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div><div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div></div>
-        </div>
+            // Gera 8 cartas de 1Ω na página 1
+            for (let i = 0; i < 8; i++) {
+                document.write(`
+                <div class="card card-r1">
+                    <div class="card-head"><span class="title">Resistor Leve</span><span class="badge" style="background:var(--c-r1);">1 Ω</span></div>
+                    ${getResistorSVG(1, 'r1', '#059669')}
+                    <div class="card-foot">
+                        <div class="blocks-indicator"><div class="ohm-cube c-r1"></div></div>
+                        <div class="foot-text">+1 Bloco no Ramo • Trilha Contínua</div>
+                    </div>
+                </div>
+                `);
+            }
+        </script>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- PÁGINA 2: 8x RESISTOR 2Ω + 1x RESISTOR 3Ω (9 Cartas) -->
+    <!-- PÁGINA 2: 8x RESISTOR 2Ω + 1x RESISTOR 3Ω (9 Cartas)                      -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO MODULAR ALTA CLAREZA</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO EDITORIAL PREMIUM</span>
             <span>FOLHA 2 / 6 (RESISTORES 2Ω & 3Ω)</span>
         </div>
 
-        <!-- 8x RESISTOR 2Ω (ZIG-ZAG DUPLO 2 PICOS) -->
-        <!-- R2-01 a R2-08 -->
-        <div class="card card-r2">
-            <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div><div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
-
-        <div class="card card-r2">
-            <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div><div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
-
-        <div class="card card-r2">
-            <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div><div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
-
-        <div class="card card-r2">
-            <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div><div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
-
-        <div class="card card-r2">
-            <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div><div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
-
-        <div class="card card-r2">
-            <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div><div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
-
-        <div class="card card-r2">
-            <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div><div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
-
-        <div class="card card-r2">
-            <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="28,166 15,157 15,175" fill="#0f172a"/><polygon points="42,166 29,157 29,175" fill="#0f172a"/>
-                <rect x="188" y="147" width="50" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 197,157 197,175" fill="#0f172a"/><polygon points="225,166 212,157 212,175" fill="#0f172a"/>
-                <rect x="48" y="122" width="142" height="88" rx="8" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/>
-                <path d="M48,166 L68,166 L82,136 L104,196 L126,136 L148,196 L162,136 L175,166 L190,166" fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#1d4ed8" text-anchor="middle">R = 2 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div><div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
-
-        <!-- 1x RESISTOR 3Ω (ZIG-ZAG TRIPLO 3 PICOS) -->
-        <div class="card card-r3">
-            <div class="card-head"><span class="title">Resistor Pesado</span><span class="badge" style="background:var(--c-r3);">3 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="22,166 10,157 10,175" fill="#0f172a"/>
-                <rect x="198" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="222,166 210,157 210,175" fill="#0f172a"/>
-                <rect x="38" y="122" width="162" height="88" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="3"/>
-                <path d="M38,166 L52,166 L64,136 L82,196 L100,136 L118,196 L136,136 L154,196 L172,136 L184,166 L200,166" fill="none" stroke="#c2410c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#c2410c" text-anchor="middle">R = 3 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div></div><div class="foot-text">+3 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
+        <script>
+            // 8x Resistor 2Ω
+            for (let i = 0; i < 8; i++) {
+                document.write(`
+                <div class="card card-r2">
+                    <div class="card-head"><span class="title">Resistor Médio</span><span class="badge" style="background:var(--c-r2);">2 Ω</span></div>
+                    ${getResistorSVG(2, 'r2', '#1d4ed8')}
+                    <div class="card-foot">
+                        <div class="blocks-indicator"><div class="ohm-cube c-r2"></div><div class="ohm-cube c-r2"></div></div>
+                        <div class="foot-text">+2 Blocos no Ramo • Trilha Contínua</div>
+                    </div>
+                </div>
+                `);
+            }
+            // 1x Resistor 3Ω
+            document.write(`
+            <div class="card card-r3">
+                <div class="card-head"><span class="title">Resistor Pesado</span><span class="badge" style="background:var(--c-r3);">3 Ω</span></div>
+                ${getResistorSVG(3, 'r3', '#c2410c')}
+                <div class="card-foot">
+                    <div class="blocks-indicator"><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div></div>
+                    <div class="foot-text">+3 Blocos no Ramo • Trilha Contínua</div>
+                </div>
+            </div>
+            `);
+        </script>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- PÁGINA 3: 5x RESISTOR 3Ω + 3x LED PILOTO (3V) + 1x SERVIDOR (4V) (9 Cartas) -->
+    <!-- PÁGINA 3: 5x RESISTOR 3Ω + 3x LED PILOTO + 1x SERVIDOR (9 Cartas)          -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO MODULAR ALTA CLAREZA</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO EDITORIAL PREMIUM</span>
             <span>FOLHA 3 / 6 (RESISTORES 3Ω & EQUIPAMENTOS)</span>
         </div>
 
-        <!-- 5x RESISTOR 3Ω -->
-        <div class="card card-r3">
-            <div class="card-head"><span class="title">Resistor Pesado</span><span class="badge" style="background:var(--c-r3);">3 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="22,166 10,157 10,175" fill="#0f172a"/>
-                <rect x="198" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="222,166 210,157 210,175" fill="#0f172a"/>
-                <rect x="38" y="122" width="162" height="88" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="3"/>
-                <path d="M38,166 L52,166 L64,136 L82,196 L100,136 L118,196 L136,136 L154,196 L172,136 L184,166 L200,166" fill="none" stroke="#c2410c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#c2410c" text-anchor="middle">R = 3 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div></div><div class="foot-text">+3 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
+        <script>
+            // 5x Resistor 3Ω
+            for (let i = 0; i < 5; i++) {
+                document.write(`
+                <div class="card card-r3">
+                    <div class="card-head"><span class="title">Resistor Pesado</span><span class="badge" style="background:var(--c-r3);">3 Ω</span></div>
+                    ${getResistorSVG(3, 'r3', '#c2410c')}
+                    <div class="card-foot">
+                        <div class="blocks-indicator"><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div></div>
+                        <div class="foot-text">+3 Blocos no Ramo • Trilha Contínua</div>
+                    </div>
+                </div>
+                `);
+            }
 
-        <div class="card card-r3">
-            <div class="card-head"><span class="title">Resistor Pesado</span><span class="badge" style="background:var(--c-r3);">3 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="22,166 10,157 10,175" fill="#0f172a"/>
-                <rect x="198" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="222,166 210,157 210,175" fill="#0f172a"/>
-                <rect x="38" y="122" width="162" height="88" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="3"/>
-                <path d="M38,166 L52,166 L64,136 L82,196 L100,136 L118,196 L136,136 L154,196 L172,136 L184,166 L200,166" fill="none" stroke="#c2410c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#c2410c" text-anchor="middle">R = 3 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div></div><div class="foot-text">+3 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
+            // Função para Gerar LED Piloto 3D com Aura Lente
+            function getLedSVG() {
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">3V💡</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">3V💡</text>
 
-        <div class="card card-r3">
-            <div class="card-head"><span class="title">Resistor Pesado</span><span class="badge" style="background:var(--c-r3);">3 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="22,166 10,157 10,175" fill="#0f172a"/>
-                <rect x="198" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="222,166 210,157 210,175" fill="#0f172a"/>
-                <rect x="38" y="122" width="162" height="88" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="3"/>
-                <path d="M38,166 L52,166 L64,136 L82,196 L100,136 L118,196 L136,136 L154,196 L172,136 L184,166 L200,166" fill="none" stroke="#c2410c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#c2410c" text-anchor="middle">R = 3 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div></div><div class="foot-text">+3 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
+                    <rect x="0" y="147" width="65" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="35,166 20,157 20,175" fill="#0f172a"/>
+                    <rect x="173" y="147" width="65" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="208,166 193,157 193,175" fill="#0f172a"/>
 
-        <div class="card card-r3">
-            <div class="card-head"><span class="title">Resistor Pesado</span><span class="badge" style="background:var(--c-r3);">3 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="22,166 10,157 10,175" fill="#0f172a"/>
-                <rect x="198" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="222,166 210,157 210,175" fill="#0f172a"/>
-                <rect x="38" y="122" width="162" height="88" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="3"/>
-                <path d="M38,166 L52,166 L64,136 L82,196 L100,136 L118,196 L136,136 L154,196 L172,136 L184,166 L200,166" fill="none" stroke="#c2410c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#c2410c" text-anchor="middle">R = 3 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div></div><div class="foot-text">+3 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
+                    <!-- Anel de Base do Soquete -->
+                    <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="2.5"/>
+                    
+                    <!-- Cúpula Translúcida do Diodo com Gradiente Neon -->
+                    <circle cx="119" cy="166" r="38" fill="url(#gradLedGlow)" stroke="#0f172a" stroke-width="2"/>
+                    
+                    <!-- Leadframe Anvil & Post Metálico Interno -->
+                    <path d="M 104 154 L 114 154 L 114 178 L 104 178 Z" fill="#e0e7ff"/>
+                    <path d="M 124 150 L 134 166 L 124 178 Z" fill="#c7d2fe"/>
 
-        <div class="card card-r3">
-            <div class="card-head"><span class="title">Resistor Pesado</span><span class="badge" style="background:var(--c-r3);">3 Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="22,166 10,157 10,175" fill="#0f172a"/>
-                <rect x="198" y="147" width="40" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="222,166 210,157 210,175" fill="#0f172a"/>
-                <rect x="38" y="122" width="162" height="88" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="3"/>
-                <path d="M38,166 L52,166 L64,136 L82,196 L100,136 L118,196 L136,136 L154,196 L172,136 L184,166 L200,166" fill="none" stroke="#c2410c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#c2410c" text-anchor="middle">R = 3 OHMS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div><div class="ohm-cube c-r3"></div></div><div class="foot-text">+3 Blocos no Ramo • Trilha Contínua</div></div>
-        </div>
+                    <!-- Feixes de Fótons de Luz Radiantes -->
+                    <line x1="140" y1="134" x2="162" y2="112" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/>
+                    <polygon points="162,112 152,114 160,122" fill="#4f46e5"/>
+                    <line x1="152" y1="144" x2="174" y2="122" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/>
+                    <polygon points="174,122 164,124 172,132" fill="#4f46e5"/>
 
-        <!-- 3x LED PILOTO (3V / 1Ω) - DIODO EMISSOR DE LUZ GRANDE NO MEIO DO FIO -->
-        <div class="card card-load">
-            <div class="card-head"><span class="title">LED Piloto</span><span class="badge" style="background:var(--c-load);">3V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="70" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="40,166 25,157 25,175" fill="#0f172a"/>
-                <rect x="168" y="147" width="70" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="205,166 190,157 190,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <!-- Triângulo do Diodo + Barra de Cátodo -->
-                <polygon points="96,140 96,192 136,166" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
-                <line x1="138" y1="138" x2="138" y2="194" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
-                <!-- Setas de Fóton de Luz -->
-                <line x1="126" y1="130" x2="146" y2="110" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
-                <polygon points="146,110 136,112 144,120" fill="#4338ca"/>
-                <line x1="140" y1="138" x2="160" y2="118" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
-                <polygon points="160,118 150,120 158,128" fill="#4338ca"/>
-                <text x="119" y="98" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 3 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (12V / 4 = 3V)</div></div>
-        </div>
+                    <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 3 VOLTS</text>
+                </svg>
+                `;
+            }
 
-        <div class="card card-load">
-            <div class="card-head"><span class="title">LED Piloto</span><span class="badge" style="background:var(--c-load);">3V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="70" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="40,166 25,157 25,175" fill="#0f172a"/>
-                <rect x="168" y="147" width="70" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="205,166 190,157 190,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <polygon points="96,140 96,192 136,166" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
-                <line x1="138" y1="138" x2="138" y2="194" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
-                <line x1="126" y1="130" x2="146" y2="110" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
-                <polygon points="146,110 136,112 144,120" fill="#4338ca"/>
-                <line x1="140" y1="138" x2="160" y2="118" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
-                <polygon points="160,118 150,120 158,128" fill="#4338ca"/>
-                <text x="119" y="98" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 3 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (12V / 4 = 3V)</div></div>
-        </div>
+            // 3x LED Piloto (3V)
+            for (let i = 0; i < 3; i++) {
+                document.write(`
+                <div class="card card-load">
+                    <div class="card-head"><span class="title">LED Piloto</span><span class="badge" style="background:var(--c-load);">3V // 1Ω</span></div>
+                    ${getLedSVG()}
+                    <div class="card-foot">
+                        <div class="blocks-indicator"><div class="ohm-cube c-load"></div></div>
+                        <div class="foot-text">Meta do Ramo: 4 Blocos Totais (12V / 4 = 3V)</div>
+                    </div>
+                </div>
+                `);
+            }
 
-        <div class="card card-load">
-            <div class="card-head"><span class="title">LED Piloto</span><span class="badge" style="background:var(--c-load);">3V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="70" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="40,166 25,157 25,175" fill="#0f172a"/>
-                <rect x="168" y="147" width="70" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="205,166 190,157 190,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <polygon points="96,140 96,192 136,166" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
-                <line x1="138" y1="138" x2="138" y2="194" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
-                <line x1="126" y1="130" x2="146" y2="110" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
-                <polygon points="146,110 136,112 144,120" fill="#4338ca"/>
-                <line x1="140" y1="138" x2="160" y2="118" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
-                <polygon points="160,118 150,120 158,128" fill="#4338ca"/>
-                <text x="119" y="98" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 3 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (12V / 4 = 3V)</div></div>
-        </div>
+            // Função para Gerar Servidor Central (4V)
+            function getServerSVG() {
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">4V🖥️</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">4V🖥️</text>
 
-        <!-- 1x SERVIDOR CENTRAL (4V / 1Ω) - CPU / RACK EMBUTIDO NA TRILHA -->
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Servidor Central</span><span class="badge" style="background:var(--c-load);">4V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <rect x="58" y="120" width="122" height="92" rx="8" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <rect x="74" y="136" width="90" height="24" rx="3" fill="#312e81"/>
-                <circle cx="86" cy="148" r="4" fill="#34d399"/>
-                <rect x="74" y="168" width="90" height="24" rx="3" fill="#312e81"/>
-                <circle cx="86" cy="180" r="4" fill="#38bdf8"/>
-                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 4 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 3 Blocos Totais (12V / 3 = 4V)</div></div>
-        </div>
+                    <rect x="0" y="147" width="55" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                    <rect x="183" y="147" width="55" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                    <!-- Chassi Rack de Servidor -->
+                    <rect x="52" y="118" width="134" height="96" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="3"/>
+                    
+                    <!-- Lâminas de Servidor 1U e 2U -->
+                    <rect x="62" y="128" width="114" height="22" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+                    <circle cx="74" cy="139" r="3.5" fill="#34d399"/><circle cx="84" cy="139" r="3.5" fill="#38bdf8"/>
+                    <line x1="100" y1="139" x2="166" y2="139" stroke="#475569" stroke-width="2" stroke-dasharray="4,2"/>
+
+                    <rect x="62" y="156" width="114" height="22" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+                    <circle cx="74" cy="167" r="3.5" fill="#34d399"/><circle cx="84" cy="167" r="3.5" fill="#fbbf24"/>
+                    <line x1="100" y1="167" x2="166" y2="167" stroke="#475569" stroke-width="2" stroke-dasharray="4,2"/>
+
+                    <rect x="62" y="184" width="114" height="20" rx="3" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+                    <circle cx="74" cy="194" r="3.5" fill="#38bdf8"/><circle cx="84" cy="194" r="3.5" fill="#38bdf8"/>
+
+                    <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 4 VOLTS</text>
+                </svg>
+                `;
+            }
+
+            // 1x Servidor na pág 3
+            document.write(`
+            <div class="card card-load">
+                <div class="card-head"><span class="title">Servidor Central</span><span class="badge" style="background:var(--c-load);">4V // 1Ω</span></div>
+                ${getServerSVG()}
+                <div class="card-foot">
+                    <div class="blocks-indicator"><div class="ohm-cube c-load"></div></div>
+                    <div class="foot-text">Meta do Ramo: 3 Blocos Totais (12V / 3 = 4V)</div>
+                </div>
+            </div>
+            `);
+        </script>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- PÁGINA 4: 2x SERVIDOR + 3x SIRENE + 3x MOTOR + 1x TOMÓGRAFO (9 Cartas) -->
+    <!-- PÁGINA 4: 2x SERVIDOR + 3x SIRENE + 3x MOTOR + 1x TOMÓGRAFO (9 Cartas)      -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO MODULAR ALTA CLAREZA</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO EDITORIAL PREMIUM</span>
             <span>FOLHA 4 / 6 (SERVIDORES, SIRENES, MOTORES & TOMÓGRAFO)</span>
         </div>
 
-        <!-- 2x SERVIDOR -->
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Servidor Central</span><span class="badge" style="background:var(--c-load);">4V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <rect x="58" y="120" width="122" height="92" rx="8" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <rect x="74" y="136" width="90" height="24" rx="3" fill="#312e81"/><circle cx="86" cy="148" r="4" fill="#34d399"/>
-                <rect x="74" y="168" width="90" height="24" rx="3" fill="#312e81"/><circle cx="86" cy="180" r="4" fill="#38bdf8"/>
-                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 4 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 3 Blocos Totais (12V / 3 = 4V)</div></div>
-        </div>
+        <script>
+            // 2x Servidor Central
+            for (let i = 0; i < 2; i++) {
+                document.write(`
+                <div class="card card-load">
+                    <div class="card-head"><span class="title">Servidor Central</span><span class="badge" style="background:var(--c-load);">4V // 1Ω</span></div>
+                    ${getServerSVG()}
+                    <div class="card-foot">
+                        <div class="blocks-indicator"><div class="ohm-cube c-load"></div></div>
+                        <div class="foot-text">Meta do Ramo: 3 Blocos Totais (12V / 3 = 4V)</div>
+                    </div>
+                </div>
+                `);
+            }
 
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Servidor Central</span><span class="badge" style="background:var(--c-load);">4V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <rect x="58" y="120" width="122" height="92" rx="8" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <rect x="74" y="136" width="90" height="24" rx="3" fill="#312e81"/><circle cx="86" cy="148" r="4" fill="#34d399"/>
-                <rect x="74" y="168" width="90" height="24" rx="3" fill="#312e81"/><circle cx="86" cy="180" r="4" fill="#38bdf8"/>
-                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 4 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 3 Blocos Totais (12V / 3 = 4V)</div></div>
-        </div>
+            // Função para Gerar Sirene de Alarme 3D
+            function getSireneSVG() {
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">6V🚨</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">6V🚨</text>
 
-        <!-- 3x SIRENE DE ALARME (6V / 1Ω) - BUZZER / CORNETA INLINE -->
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Sirene de Alarme</span><span class="badge" style="background:var(--c-load);">6V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="46" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <path d="M102,150 L102,182 L116,182 L136,198 L136,134 L116,150 Z" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
-                <path d="M146,150 Q156,166 146,182" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
-                <path d="M154,142 Q168,166 154,190" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
-                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 2 Blocos Totais (12V / 2 = 6V)</div></div>
-        </div>
+                    <rect x="0" y="147" width="60" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                    <rect x="178" y="147" width="60" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
 
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Sirene de Alarme</span><span class="badge" style="background:var(--c-load);">6V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="46" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <path d="M102,150 L102,182 L116,182 L136,198 L136,134 L116,150 Z" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
-                <path d="M146,150 Q156,166 146,182" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
-                <path d="M154,142 Q168,166 154,190" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
-                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 2 Blocos Totais (12V / 2 = 6V)</div></div>
-        </div>
+                    <!-- Caixa Acústica Industrial -->
+                    <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="2.5"/>
+                    
+                    <!-- Corneta Acústica / Transdutor Piezo -->
+                    <path d="M 94 150 L 94 182 L 112 182 L 138 202 L 138 130 L 112 150 Z" fill="#1e293b" stroke="#0f172a" stroke-width="2.5"/>
+                    
+                    <!-- Diafragma Central Metálico -->
+                    <ellipse cx="94" cy="166" rx="5" ry="16" fill="#64748b"/>
 
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Sirene de Alarme</span><span class="badge" style="background:var(--c-load);">6V // 1Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="46" fill="#eef2ff" stroke="#4338ca" stroke-width="3"/>
-                <path d="M102,150 L102,182 L116,182 L136,198 L136,134 L116,150 Z" fill="#4338ca" stroke="#0f172a" stroke-width="2"/>
-                <path d="M146,150 Q156,166 146,182" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
-                <path d="M154,142 Q168,166 154,190" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
-                <text x="119" y="106" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 2 Blocos Totais (12V / 2 = 6V)</div></div>
-        </div>
+                    <!-- Ondas Sonoras Volumétricas em Expansão -->
+                    <path d="M 148 148 Q 160 166 148 184" fill="none" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
+                    <path d="M 158 138 Q 176 166 158 194" fill="none" stroke="#4f46e5" stroke-width="3.5" stroke-linecap="round"/>
+                    <path d="M 168 128 Q 192 166 168 204" fill="none" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/>
 
-        <!-- 3x MOTOR DE BOMBA (6V / 2Ω) - MOTOR INDUSTRIAL (M) -->
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Motor de Bomba</span><span class="badge" style="background:var(--c-load);">6V // 2Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="4"/>
-                <text x="119" y="177" font-family="Inter, sans-serif" font-weight="900" font-size="32" fill="#4338ca" text-anchor="middle">M</text>
-                <!-- Escovas do Motor -->
-                <rect x="67" y="156" width="6" height="20" fill="#0f172a"/>
-                <rect x="165" y="156" width="6" height="20" fill="#0f172a"/>
-                <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (12V · 2/4 = 6V)</div></div>
-        </div>
+                    <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
+                </svg>
+                `;
+            }
 
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Motor de Bomba</span><span class="badge" style="background:var(--c-load);">6V // 2Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="4"/>
-                <text x="119" y="177" font-family="Inter, sans-serif" font-weight="900" font-size="32" fill="#4338ca" text-anchor="middle">M</text>
-                <rect x="67" y="156" width="6" height="20" fill="#0f172a"/>
-                <rect x="165" y="156" width="6" height="20" fill="#0f172a"/>
-                <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (12V · 2/4 = 6V)</div></div>
-        </div>
+            // 3x Sirene de Alarme (6V)
+            for (let i = 0; i < 3; i++) {
+                document.write(`
+                <div class="card card-load">
+                    <div class="card-head"><span class="title">Sirene de Alarme</span><span class="badge" style="background:var(--c-load);">6V // 1Ω</span></div>
+                    ${getSireneSVG()}
+                    <div class="card-foot">
+                        <div class="blocks-indicator"><div class="ohm-cube c-load"></div></div>
+                        <div class="foot-text">Meta do Ramo: 2 Blocos Totais (12V / 2 = 6V)</div>
+                    </div>
+                </div>
+                `);
+            }
 
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Motor de Bomba</span><span class="badge" style="background:var(--c-load);">6V // 2Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="173" y="147" width="65" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="48" fill="#eef2ff" stroke="#4338ca" stroke-width="4"/>
-                <text x="119" y="177" font-family="Inter, sans-serif" font-weight="900" font-size="32" fill="#4338ca" text-anchor="middle">M</text>
-                <rect x="67" y="156" width="6" height="20" fill="#0f172a"/>
-                <rect x="165" y="156" width="6" height="20" fill="#0f172a"/>
-                <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (12V · 2/4 = 6V)</div></div>
-        </div>
+            // Função para Gerar Motor de Bomba 3D (6V / 2Ω)
+            function getMotorSVG() {
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">6V⚙️</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">6V⚙️</text>
 
-        <!-- 1x TOMÓGRAFO UTI (12V / 4Ω) -->
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Tomógrafo UTI</span><span class="badge" style="background:var(--c-load);">12V // 4Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="50" fill="#eef2ff" stroke="#4338ca" stroke-width="4"/>
-                <circle cx="119" cy="166" r="32" fill="#ffffff" stroke="#4338ca" stroke-width="2.5"/>
-                <circle cx="119" cy="166" r="14" fill="#312e81"/>
-                <text x="119" y="102" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 12 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (Liga Direto em 12V)</div></div>
-        </div>
+                    <rect x="0" y="147" width="55" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                    <rect x="183" y="147" width="55" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                    <!-- Carcaça do Estator com Aletas de Refrigeração -->
+                    <rect x="62" y="120" width="114" height="92" rx="10" fill="url(#gradMotorAlu)" stroke="#0f172a" stroke-width="3"/>
+                    
+                    <!-- Aletas de Metal Laterais -->
+                    <line x1="62" y1="138" x2="52" y2="138" stroke="#334155" stroke-width="4"/>
+                    <line x1="62" y1="152" x2="52" y2="152" stroke="#334155" stroke-width="4"/>
+                    <line x1="62" y1="166" x2="52" y2="166" stroke="#334155" stroke-width="4"/>
+                    <line x1="62" y1="180" x2="52" y2="180" stroke="#334155" stroke-width="4"/>
+                    <line x1="62" y1="194" x2="52" y2="194" stroke="#334155" stroke-width="4"/>
+
+                    <line x1="176" y1="138" x2="186" y2="138" stroke="#334155" stroke-width="4"/>
+                    <line x1="176" y1="152" x2="186" y2="152" stroke="#334155" stroke-width="4"/>
+                    <line x1="176" y1="166" x2="186" y2="166" stroke="#334155" stroke-width="4"/>
+                    <line x1="176" y1="180" x2="186" y2="180" stroke="#334155" stroke-width="4"/>
+                    <line x1="176" y1="194" x2="186" y2="194" stroke="#334155" stroke-width="4"/>
+
+                    <!-- Rotor Central Giratório (M) -->
+                    <circle cx="119" cy="166" r="32" fill="#0f172a" stroke="#d97706" stroke-width="2.5"/>
+                    <text x="119" y="177" font-family="Inter, sans-serif" font-weight="900" font-size="28" fill="#f8fafc" text-anchor="middle">M</text>
+                    
+                    <!-- Setas de Torque Rotacional em Círculo -->
+                    <path d="M 100 136 A 25 25 0 0 1 142 140" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                    <polygon points="144,142 134,136 142,130" fill="#fbbf24"/>
+
+                    <text x="119" y="104" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
+                </svg>
+                `;
+            }
+
+            // 3x Motor de Bomba (6V / 2Ω)
+            for (let i = 0; i < 3; i++) {
+                document.write(`
+                <div class="card card-load">
+                    <div class="card-head"><span class="title">Motor de Bomba</span><span class="badge" style="background:var(--c-load);">6V // 2Ω</span></div>
+                    ${getMotorSVG()}
+                    <div class="card-foot">
+                        <div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div>
+                        <div class="foot-text">Meta do Ramo: 4 Blocos Totais (12V · 2/4 = 6V)</div>
+                    </div>
+                </div>
+                `);
+            }
+
+            // Função para Gerar Tomógrafo UTI (12V / 4Ω)
+            function getTomografoSVG() {
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca">12V🏥</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="end">12V🏥</text>
+
+                    <rect x="0" y="147" width="55" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                    <rect x="183" y="147" width="55" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                    <!-- Gantry Toroidal de Ressonância Magnética Hospitalar -->
+                    <circle cx="119" cy="166" r="54" fill="#0f172a" stroke="#dc2626" stroke-width="3"/>
+                    <circle cx="119" cy="166" r="44" fill="#1e293b" stroke="#e0f2fe" stroke-width="2"/>
+                    <circle cx="119" cy="166" r="30" fill="#f8fafc" stroke="#38bdf8" stroke-width="2"/>
+                    <circle cx="119" cy="166" r="14" fill="#0f172a"/>
+
+                    <!-- Miras a Laser e Sensores de Precisão -->
+                    <line x1="119" y1="114" x2="119" y2="132" stroke="#dc2626" stroke-width="2.5"/>
+                    <line x1="119" y1="200" x2="119" y2="218" stroke="#dc2626" stroke-width="2.5"/>
+                    <line x1="67" y1="166" x2="85" y2="166" stroke="#dc2626" stroke-width="2.5"/>
+                    <line x1="153" y1="166" x2="171" y2="166" stroke="#dc2626" stroke-width="2.5"/>
+
+                    <text x="119" y="102" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 12 VOLTS</text>
+                </svg>
+                `;
+            }
+
+            // 1x Tomógrafo na pág 4
+            document.write(`
+            <div class="card card-load">
+                <div class="card-head"><span class="title">Tomógrafo UTI</span><span class="badge" style="background:var(--c-load);">12V // 4Ω</span></div>
+                ${getTomografoSVG()}
+                <div class="card-foot">
+                    <div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div>
+                    <div class="foot-text">Meta do Ramo: 4 Blocos Totais (Liga Direto em 12V)</div>
+                </div>
+            </div>
+            `);
+        </script>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- PÁGINA 5: 2x TOMÓGRAFO + 4x CABO TERRA (GND) + 3x FUSÍVEL (9 Cartas) -->
+    <!-- PÁGINA 5: 1x TOMÓGRAFO + 4x CABO TERRA + 4x FUSÍVEL (9 Cartas)            -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO MODULAR ALTA CLAREZA</span>
-            <span>FOLHA 5 / 6 (TOMÓGRAFOS, CABOS TERRA GND & FUSÍVEIS)</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO EDITORIAL PREMIUM</span>
+            <span>FOLHA 5 / 6 (TOMÓGRAFO, CABOS TERRA GND & FUSÍVEIS)</span>
         </div>
 
-        <!-- 2x TOMÓGRAFO -->
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Tomógrafo UTI</span><span class="badge" style="background:var(--c-load);">12V // 4Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="50" fill="#eef2ff" stroke="#4338ca" stroke-width="4"/>
-                <circle cx="119" cy="166" r="32" fill="#ffffff" stroke="#4338ca" stroke-width="2.5"/>
-                <circle cx="119" cy="166" r="14" fill="#312e81"/>
-                <text x="119" y="102" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 12 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (Liga Direto em 12V)</div></div>
-        </div>
+        <script>
+            // 1x Tomógrafo UTI (completando as 2 cartas do catálogo)
+            document.write(`
+            <div class="card card-load">
+                <div class="card-head"><span class="title">Tomógrafo UTI</span><span class="badge" style="background:var(--c-load);">12V // 4Ω</span></div>
+                ${getTomografoSVG()}
+                <div class="card-foot">
+                    <div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div>
+                    <div class="foot-text">Meta do Ramo: 4 Blocos Totais (Liga Direto em 12V)</div>
+                </div>
+            </div>
+            `);
 
-        <div class="card card-load">
-            <div class="card-head"><span class="title">Tomógrafo UTI</span><span class="badge" style="background:var(--c-load);">12V // 4Ω</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="35,166 20,157 20,175" fill="#0f172a"/>
-                <rect x="178" y="147" width="60" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="210,166 195,157 195,175" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="50" fill="#eef2ff" stroke="#4338ca" stroke-width="4"/>
-                <circle cx="119" cy="166" r="32" fill="#ffffff" stroke="#4338ca" stroke-width="2.5"/>
-                <circle cx="119" cy="166" r="14" fill="#312e81"/>
-                <text x="119" y="102" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#4338ca" text-anchor="middle">Vnom = 12 VOLTS</text>
-            </svg>
-            <div class="card-foot"><div class="blocks-indicator"><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div><div class="ohm-cube c-load"></div></div><div class="foot-text">Meta do Ramo: 4 Blocos Totais (Liga Direto em 12V)</div></div>
-        </div>
+            // Função para Gerar Cabo Terra GND (Terminal 0V 3D)
+            function getGndSVG() {
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0f766e">⏚ 0V</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0f766e" text-anchor="end">⏚ 0V</text>
 
-        <!-- 4x CABO TERRA (GND - 0V) - TERMINAL CEGO DEFINITIVO COM SÍMBOLO ⏚ GIGANTE -->
-        <div class="card card-gnd">
-            <div class="card-head"><span class="title">Cabo Terra</span><span class="badge" style="background:var(--c-gnd);">GND // 0V</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <!-- Fio entra da esquerda e para no centro -->
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="45,166 30,157 30,175" fill="#0f172a"/>
-                <polygon points="75,166 60,157 60,175" fill="#0f172a"/>
-                <polygon points="105,166 90,157 90,175" fill="#0f172a"/>
-                <!-- Eletrodo de Aterramento GND (⏚) -->
-                <rect x="115" y="105" width="108" height="122" rx="10" fill="#f0fdf4" stroke="#0f766e" stroke-width="3.5"/>
-                <line x1="119" y1="166" x2="160" y2="166" stroke="#0f766e" stroke-width="6"/>
-                <line x1="160" y1="130" x2="160" y2="202" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
-                <line x1="174" y1="142" x2="174" y2="190" stroke="#0f766e" stroke-width="7" stroke-linecap="round"/>
-                <line x1="188" y1="154" x2="188" y2="178" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/>
-                <line x1="200" y1="162" x2="200" y2="170" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/>
-                <text x="160" y="95" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text" style="color:var(--c-gnd); font-weight:900;">FECHAMENTO • CONTE OS BLOCOS DA LINHA!</div></div>
-        </div>
+                    <!-- Fio entra da esquerda e ancora no bloco central -->
+                    <rect x="0" y="147" width="112" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="40,166 25,157 25,175" fill="#0f172a"/>
+                    <polygon points="70,166 55,157 55,175" fill="#0f172a"/>
+                    <polygon points="100,166 85,157 85,175" fill="#0f172a"/>
 
-        <div class="card card-gnd">
-            <div class="card-head"><span class="title">Cabo Terra</span><span class="badge" style="background:var(--c-gnd);">GND // 0V</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="45,166 30,157 30,175" fill="#0f172a"/><polygon points="75,166 60,157 60,175" fill="#0f172a"/><polygon points="105,166 90,157 90,175" fill="#0f172a"/>
-                <rect x="115" y="105" width="108" height="122" rx="10" fill="#f0fdf4" stroke="#0f766e" stroke-width="3.5"/>
-                <line x1="119" y1="166" x2="160" y2="166" stroke="#0f766e" stroke-width="6"/>
-                <line x1="160" y1="130" x2="160" y2="202" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
-                <line x1="174" y1="142" x2="174" y2="190" stroke="#0f766e" stroke-width="7" stroke-linecap="round"/>
-                <line x1="188" y1="154" x2="188" y2="178" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/>
-                <line x1="200" y1="162" x2="200" y2="170" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/>
-                <text x="160" y="95" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text" style="color:var(--c-gnd); font-weight:900;">FECHAMENTO • CONTE OS BLOCOS DA LINHA!</div></div>
-        </div>
+                    <!-- Bloco de Aterramento Forjado em Aço / Cobre -->
+                    <rect x="110" y="106" width="112" height="120" rx="10" fill="#1e293b" stroke="#0f766e" stroke-width="3"/>
+                    
+                    <!-- Parafusos Hexagonais Industriais -->
+                    <polygon points="122,118 126,115 130,118 130,124 126,127 122,124" fill="#cbd5e1" stroke="#0f172a" stroke-width="1"/>
+                    <polygon points="122,204 126,201 130,204 130,210 126,213 122,210" fill="#cbd5e1" stroke="#0f172a" stroke-width="1"/>
 
-        <div class="card card-gnd">
-            <div class="card-head"><span class="title">Cabo Terra</span><span class="badge" style="background:var(--c-gnd);">GND // 0V</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="45,166 30,157 30,175" fill="#0f172a"/><polygon points="75,166 60,157 60,175" fill="#0f172a"/><polygon points="105,166 90,157 90,175" fill="#0f172a"/>
-                <rect x="115" y="105" width="108" height="122" rx="10" fill="#f0fdf4" stroke="#0f766e" stroke-width="3.5"/>
-                <line x1="119" y1="166" x2="160" y2="166" stroke="#0f766e" stroke-width="6"/>
-                <line x1="160" y1="130" x2="160" y2="202" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
-                <line x1="174" y1="142" x2="174" y2="190" stroke="#0f766e" stroke-width="7" stroke-linecap="round"/>
-                <line x1="188" y1="154" x2="188" y2="178" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/>
-                <line x1="200" y1="162" x2="200" y2="170" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/>
-                <text x="160" y="95" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text" style="color:var(--c-gnd); font-weight:900;">FECHAMENTO • CONTE OS BLOCOS DA LINHA!</div></div>
-        </div>
+                    <!-- Eletrodo de Aterramento Esculpido (⏚) -->
+                    <line x1="112" y1="166" x2="154" y2="166" stroke="#0f766e" stroke-width="6"/>
+                    <line x1="154" y1="130" x2="154" y2="202" stroke="#2dd4bf" stroke-width="8" stroke-linecap="round"/>
+                    <line x1="168" y1="142" x2="168" y2="190" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round"/>
+                    <line x1="182" y1="154" x2="182" y2="178" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="194" y1="162" x2="194" y2="170" stroke="#2dd4bf" stroke-width="5" stroke-linecap="round"/>
 
-        <div class="card card-gnd">
-            <div class="card-head"><span class="title">Cabo Terra</span><span class="badge" style="background:var(--c-gnd);">GND // 0V</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="45,166 30,157 30,175" fill="#0f172a"/><polygon points="75,166 60,157 60,175" fill="#0f172a"/><polygon points="105,166 90,157 90,175" fill="#0f172a"/>
-                <rect x="115" y="105" width="108" height="122" rx="10" fill="#f0fdf4" stroke="#0f766e" stroke-width="3.5"/>
-                <line x1="119" y1="166" x2="160" y2="166" stroke="#0f766e" stroke-width="6"/>
-                <line x1="160" y1="130" x2="160" y2="202" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
-                <line x1="174" y1="142" x2="174" y2="190" stroke="#0f766e" stroke-width="7" stroke-linecap="round"/>
-                <line x1="188" y1="154" x2="188" y2="178" stroke="#0f766e" stroke-width="6" stroke-linecap="round"/>
-                <line x1="200" y1="162" x2="200" y2="170" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/>
-                <text x="160" y="95" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text" style="color:var(--c-gnd); font-weight:900;">FECHAMENTO • CONTE OS BLOCOS DA LINHA!</div></div>
-        </div>
+                    <text x="160" y="94" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
+                </svg>
+                `;
+            }
 
-        <!-- 3x FUSÍVEL 1A -->
-        <div class="card card-special">
-            <div class="card-head"><span class="title">Fusível 1A</span><span class="badge" style="background:var(--c-special);">PROTEÇÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="30,166 18,157 18,175" fill="#0f172a"/>
-                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="215,166 203,157 203,175" fill="#0f172a"/>
-                <!-- Cápsula de Fusível de Vidro -->
-                <rect x="52" y="132" width="134" height="68" rx="14" fill="#f0f9ff" stroke="#0369a1" stroke-width="3"/>
-                <!-- Capas de Metal -->
-                <rect x="52" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <rect x="162" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <!-- Filamento Fusível -->
-                <path d="M76,166 Q100,146 119,166 T162,166" fill="none" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">Imax = 1.0 A</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text">Salva a carga em caso de sobretensão</div></div>
-        </div>
+            // 4x Cabo Terra (GND)
+            for (let i = 0; i < 4; i++) {
+                document.write(`
+                <div class="card card-gnd">
+                    <div class="card-head"><span class="title">Cabo Terra</span><span class="badge" style="background:var(--c-gnd);">GND // 0V</span></div>
+                    ${getGndSVG()}
+                    <div class="card-foot"><div class="foot-text" style="color:var(--c-gnd); font-weight:900;">FECHAMENTO • DISPARO DE TESTE!</div></div>
+                </div>
+                `);
+            }
 
-        <div class="card card-special">
-            <div class="card-head"><span class="title">Fusível 1A</span><span class="badge" style="background:var(--c-special);">PROTEÇÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="30,166 18,157 18,175" fill="#0f172a"/>
-                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="215,166 203,157 203,175" fill="#0f172a"/>
-                <rect x="52" y="132" width="134" height="68" rx="14" fill="#f0f9ff" stroke="#0369a1" stroke-width="3"/>
-                <rect x="52" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <rect x="162" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <path d="M76,166 Q100,146 119,166 T162,166" fill="none" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">Imax = 1.0 A</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text">Salva a carga em caso de sobretensão</div></div>
-        </div>
+            // Função para Gerar Fusível de Proteção 3D
+            function getFuseSVG() {
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1">🛡️1A</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1" text-anchor="end">🛡️1A</text>
 
-        <div class="card card-special">
-            <div class="card-head"><span class="title">Fusível 1A</span><span class="badge" style="background:var(--c-special);">PROTEÇÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="30,166 18,157 18,175" fill="#0f172a"/>
-                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="215,166 203,157 203,175" fill="#0f172a"/>
-                <rect x="52" y="132" width="134" height="68" rx="14" fill="#f0f9ff" stroke="#0369a1" stroke-width="3"/>
-                <rect x="52" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <rect x="162" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <path d="M76,166 Q100,146 119,166 T162,166" fill="none" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">Imax = 1.0 A</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text">Salva a carga em caso de sobretensão</div></div>
-        </div>
+                    <rect x="0" y="147" width="55" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="32,166 18,157 18,175" fill="#0f172a"/>
+                    <rect x="183" y="147" width="55" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="212,166 198,157 198,175" fill="#0f172a"/>
+
+                    <!-- Tubo de Vidro Quartzo do Fusível -->
+                    <rect x="52" y="132" width="134" height="68" rx="14" fill="url(#gradGlassTube)" stroke="#0369a1" stroke-width="2.8"/>
+                    
+                    <!-- Capas Cromadas nas Pontas -->
+                    <rect x="52" y="132" width="24" height="68" rx="4" fill="#cbd5e1" stroke="#0f172a" stroke-width="2"/>
+                    <rect x="162" y="132" width="24" height="68" rx="4" fill="#cbd5e1" stroke="#0f172a" stroke-width="2"/>
+
+                    <!-- Filamento Fusível Incandescente com Onda Curva -->
+                    <path d="M 76 166 Q 96 142 119 166 T 162 166" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-linecap="round"/>
+                    <circle cx="119" cy="166" r="3.5" fill="#fef08a"/>
+
+                    <!-- Reflexo de Brilho no Vidro -->
+                    <rect x="80" y="136" width="78" height="6" rx="3" fill="#ffffff" fill-opacity="0.8"/>
+
+                    <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#0369a1" text-anchor="middle">Imax = 1.0 AMPÈRE</text>
+                </svg>
+                `;
+            }
+
+            // 4x Fusível na pág 5 (3 oficiais + 1 bônus)
+            for (let i = 0; i < 4; i++) {
+                document.write(`
+                <div class="card card-special">
+                    <div class="card-head"><span class="title">Fusível 1A</span><span class="badge" style="background:var(--c-special);">PROTEÇÃO</span></div>
+                    ${getFuseSVG()}
+                    <div class="card-foot"><div class="foot-text">Salva a carga em caso de Sobretensão</div></div>
+                </div>
+                `);
+            }
+        </script>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- PÁGINA 6: 1x FUSÍVEL + 4x NÓ PARALELO EM Y + 4x SETORES DA CIDADE (9 Cartas) -->
+    <!-- PÁGINA 6: 4x CABO TERRA + 4x NÓ PARALELO + 1x SETOR 1 (9 Cartas)          -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO MODULAR ALTA CLAREZA</span>
-            <span>FOLHA 6 / 6 (FUSÍVEL, NÓS PARALELOS EM Y & SETORES DA CIDADE)</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO EDITORIAL PREMIUM</span>
+            <span>FOLHA 6 / 6 (CABOS TERRA, NÓS Y & SETOR)</span>
         </div>
 
-        <!-- 1x FUSÍVEL 1A -->
-        <div class="card card-special">
-            <div class="card-head"><span class="title">Fusível 1A</span><span class="badge" style="background:var(--c-special);">PROTEÇÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="30,166 18,157 18,175" fill="#0f172a"/>
-                <rect x="183" y="147" width="55" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="215,166 203,157 203,175" fill="#0f172a"/>
-                <rect x="52" y="132" width="134" height="68" rx="14" fill="#f0f9ff" stroke="#0369a1" stroke-width="3"/>
-                <rect x="52" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <rect x="162" y="132" width="24" height="68" rx="4" fill="#94a3b8" stroke="#0f172a" stroke-width="2"/>
-                <path d="M76,166 Q100,146 119,166 T162,166" fill="none" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">Imax = 1.0 A</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text">Salva a carga em caso de sobretensão</div></div>
-        </div>
+        <script>
+            // 4x Cabo Terra (GND) completando as 8 cartas do baralho oficial
+            for (let i = 0; i < 4; i++) {
+                document.write(`
+                <div class="card card-gnd">
+                    <div class="card-head"><span class="title">Cabo Terra</span><span class="badge" style="background:var(--c-gnd);">GND // 0V</span></div>
+                    ${getGndSVG()}
+                    <div class="card-foot"><div class="foot-text" style="color:var(--c-gnd); font-weight:900;">FECHAMENTO • DISPARO DE TESTE!</div></div>
+                </div>
+                `);
+            }
 
-        <!-- 4x NÓ PARALELO EM Y (BIFURCAÇÃO VISUAL CLARA DA TRILHA DE COBRE: ENTRA PELA ESQUERDA, SAI PELA DIREITA E TOPO) -->
-        <div class="card card-special">
-            <div class="card-head"><span class="title">Nó Paralelo (Y)</span><span class="badge" style="background:var(--c-special);">BIFURCAÇÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <!-- Entrada Esquerda -->
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="45,166 30,157 30,175" fill="#0f172a"/>
-                <!-- Saída Direita -->
-                <rect x="119" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="195,166 180,157 180,175" fill="#0f172a"/>
-                <!-- Saída Topo (Ramo 2) -->
-                <path d="M100,166 Q119,100 119,0 L157,0 Q157,100 138,166 Z" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/>
-                <polygon points="138,40 128,55 148,55" fill="#0f172a"/>
-                <!-- Nó de Solda Grosso -->
-                <circle cx="119" cy="166" r="24" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="14" fill="#f59e0b"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">DIVISOR DE RAMO</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text">Bifurca o Ramo em 2 Linhas Independentes de 12V</div></div>
-        </div>
+            // Função para Gerar Nó Paralelo em Y (Bifurcação 3D)
+            function getNodeYSVG() {
+                return `
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1">🔀 Y</text>
+                    <text x="226" y="318" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1" text-anchor="end">🔀 Y</text>
 
-        <div class="card card-special">
-            <div class="card-head"><span class="title">Nó Paralelo (Y)</span><span class="badge" style="background:var(--c-special);">BIFURCAÇÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="45,166 30,157 30,175" fill="#0f172a"/>
-                <rect x="119" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 180,157 180,175" fill="#0f172a"/>
-                <path d="M100,166 Q119,100 119,0 L157,0 Q157,100 138,166 Z" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="138,40 128,55 148,55" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="24" fill="#0f172a"/><circle cx="119" cy="166" r="14" fill="#f59e0b"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">DIVISOR DE RAMO</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text">Bifurca o Ramo em 2 Linhas Independentes de 12V</div></div>
-        </div>
+                    <!-- Entrada Esquerda -->
+                    <rect x="0" y="147" width="119" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="45,166 30,157 30,175" fill="#0f172a"/>
+                    
+                    <!-- Saída Direita -->
+                    <rect x="119" y="147" width="119" height="38" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="195,166 180,157 180,175" fill="#0f172a"/>
 
-        <div class="card card-special">
-            <div class="card-head"><span class="title">Nó Paralelo (Y)</span><span class="badge" style="background:var(--c-special);">BIFURCAÇÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="45,166 30,157 30,175" fill="#0f172a"/>
-                <rect x="119" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 180,157 180,175" fill="#0f172a"/>
-                <path d="M100,166 Q119,100 119,0 L157,0 Q157,100 138,166 Z" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="138,40 128,55 148,55" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="24" fill="#0f172a"/><circle cx="119" cy="166" r="14" fill="#f59e0b"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">DIVISOR DE RAMO</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text">Bifurca o Ramo em 2 Linhas Independentes de 12V</div></div>
-        </div>
+                    <!-- Saída Curvada Superior (Ramo Paralelo) -->
+                    <path d="M 100 166 Q 119 100 119 0 L 157 0 Q 157 100 138 166 Z" fill="url(#gradCopperBus)" stroke="#0f172a" stroke-width="2.5"/>
+                    <polygon points="138,40 128,55 148,55" fill="#0f172a"/>
 
-        <div class="card card-special">
-            <div class="card-head"><span class="title">Nó Paralelo (Y)</span><span class="badge" style="background:var(--c-special);">BIFURCAÇÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="0" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="45,166 30,157 30,175" fill="#0f172a"/>
-                <rect x="119" y="147" width="119" height="38" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="195,166 180,157 180,175" fill="#0f172a"/>
-                <path d="M100,166 Q119,100 119,0 L157,0 Q157,100 138,166 Z" fill="#f59e0b" stroke="#0f172a" stroke-width="3"/><polygon points="138,40 128,55 148,55" fill="#0f172a"/>
-                <circle cx="119" cy="166" r="24" fill="#0f172a"/><circle cx="119" cy="166" r="14" fill="#f59e0b"/>
-                <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="13" fill="#0369a1" text-anchor="middle">DIVISOR DE RAMO</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text">Bifurca o Ramo em 2 Linhas Independentes de 12V</div></div>
-        </div>
+                    <!-- Ponto de Junção / Nó de Solda Dourado -->
+                    <circle cx="119" cy="166" r="24" fill="#0f172a"/>
+                    <circle cx="119" cy="166" r="16" fill="url(#gradCopperBus)" stroke="#fbbf24" stroke-width="2"/>
+                    <circle cx="119" cy="166" r="6" fill="#0f172a"/>
 
-        <!-- 4x CARTAS DE SETOR DA CIDADE -->
-        <div class="card card-sector">
-            <div class="card-head"><span class="title">Setor 1</span><span class="badge" style="background:#dc2626;">APAGÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="25" y="60" width="188" height="190" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="3"/>
-                <!-- Cruz Médica -->
-                <path d="M104,110 L134,110 L134,138 L162,138 L162,168 L134,168 L134,196 L104,196 L104,168 L76,168 L76,138 L104,138 Z" fill="#dc2626"/>
-                <text x="119" y="222" font-family="Inter, sans-serif" font-weight="900" font-size="14" fill="#991b1b" text-anchor="middle">HOSPITAL REGIONAL</text>
-                <text x="119" y="240" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11" fill="#dc2626" text-anchor="middle">META: TOMÓGRAFO (12V)</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text" style="color:#b91c1c; font-weight:800;">Vire ao energizar e aterrar com sucesso!</div></div>
-        </div>
+                    <text x="119" y="112" font-family="JetBrains Mono, monospace" font-weight="900" font-size="12" fill="#0369a1" text-anchor="middle">DIVISOR DE RAMO</text>
+                </svg>
+                `;
+            }
 
-        <div class="card card-sector">
-            <div class="card-head"><span class="title">Setor 2</span><span class="badge" style="background:#2563eb;">APAGÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="25" y="60" width="188" height="190" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
-                <rect x="74" y="110" width="90" height="26" rx="4" fill="#1d4ed8"/><circle cx="88" cy="123" r="4" fill="#34d399"/>
-                <rect x="74" y="144" width="90" height="26" rx="4" fill="#1d4ed8"/><circle cx="88" cy="157" r="4" fill="#38bdf8"/>
-                <rect x="74" y="178" width="90" height="26" rx="4" fill="#1d4ed8"/><circle cx="88" cy="191" r="4" fill="#fbbf24"/>
-                <text x="119" y="222" font-family="Inter, sans-serif" font-weight="900" font-size="14" fill="#1e40af" text-anchor="middle">CENTRAL DE DADOS</text>
-                <text x="119" y="240" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11" fill="#2563eb" text-anchor="middle">META: SERVIDOR (4V)</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text" style="color:#1d4ed8; font-weight:800;">Vire ao energizar e aterrar com sucesso!</div></div>
-        </div>
+            // 4x Nó Paralelo em Y
+            for (let i = 0; i < 4; i++) {
+                document.write(`
+                <div class="card card-special">
+                    <div class="card-head"><span class="title">Nó Paralelo (Y)</span><span class="badge" style="background:var(--c-special);">BIFURCAÇÃO</span></div>
+                    ${getNodeYSVG()}
+                    <div class="card-foot"><div class="foot-text">Bifurca o Ramo em 2 Linhas Independentes de 12V</div></div>
+                </div>
+                `);
+            }
 
-        <div class="card card-sector">
-            <div class="card-head"><span class="title">Setor 3</span><span class="badge" style="background:#059669;">APAGÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="25" y="60" width="188" height="190" rx="12" fill="#f0fdf4" stroke="#059669" stroke-width="3"/>
-                <circle cx="119" cy="148" r="42" fill="#ffffff" stroke="#059669" stroke-width="4"/>
-                <text x="119" y="159" font-family="Inter, sans-serif" font-weight="900" font-size="28" fill="#059669" text-anchor="middle">M</text>
-                <text x="119" y="222" font-family="Inter, sans-serif" font-weight="900" font-size="14" fill="#065f46" text-anchor="middle">TRATAMENTO DE ÁGUA</text>
-                <text x="119" y="240" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11" fill="#059669" text-anchor="middle">META: MOTOR DE BOMBA (6V)</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text" style="color:#059669; font-weight:800;">Vire ao energizar e aterrar com sucesso!</div></div>
-        </div>
-
-        <div class="card card-sector">
-            <div class="card-head"><span class="title">Setor 4</span><span class="badge" style="background:#7c3aed;">APAGÃO</span></div>
-            <svg class="schematic-hero" viewBox="0 0 238 332">
-                <rect x="25" y="60" width="188" height="190" rx="12" fill="#faf5ff" stroke="#7c3aed" stroke-width="3"/>
-                <polygon points="119,102 75,138 85,138 85,190 153,190 153,138 163,138" fill="#7c3aed"/>
-                <text x="119" y="222" font-family="Inter, sans-serif" font-weight="900" font-size="14" fill="#5b21b6" text-anchor="middle">REDE RESIDENCIAL</text>
-                <text x="119" y="240" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11" fill="#7c3aed" text-anchor="middle">META: LED (3V) / SIRENE (6V)</text>
-            </svg>
-            <div class="card-foot"><div class="foot-text" style="color:#7c3aed; font-weight:800;">Vire ao energizar e aterrar com sucesso!</div></div>
-        </div>
+            // 1x Setor Hospitalar
+            document.write(`
+            <div class="card card-sector">
+                <div class="card-head"><span class="title">Setor 1</span><span class="badge" style="background:#dc2626;">APAGÃO</span></div>
+                <svg class="schematic-hero" viewBox="0 0 238 332">
+                    <rect width="238" height="332" fill="url(#pcbGridLight)"/>
+                    <rect x="25" y="60" width="188" height="190" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="3"/>
+                    <path d="M 104 110 L 134 110 L 134 138 L 162 138 L 162 168 L 134 168 L 134 196 L 104 196 L 104 168 L 76 168 L 76 138 L 104 138 Z" fill="#dc2626"/>
+                    <text x="119" y="222" font-family="Inter, sans-serif" font-weight="900" font-size="13" fill="#991b1b" text-anchor="middle">HOSPITAL REGIONAL</text>
+                    <text x="119" y="240" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11" fill="#dc2626" text-anchor="middle">META: TOMÓGRAFO (12V)</text>
+                </svg>
+                <div class="card-foot"><div class="foot-text" style="color:#b91c1c; font-weight:800;">Vire ao energizar e aterrar com sucesso!</div></div>
+            </div>
+            `);
+        </script>
     </div>
 
 </body>

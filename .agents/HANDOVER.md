@@ -1,50 +1,49 @@
 # Handoff Briefing
 
 ## Environment Metadata
-- **Timestamp:** 2026-08-26T12:30:00-03:00
+- **Timestamp:** 2026-08-29T23:38:00-03:00
 - **Git Branch:** `master`
-- **Last Commit:** `9d75e26 - feat(voltz): add high-clarity modular circuit deck, print-and-play package, and digital multiplayer web game`
-- **Uncommitted Changes:** None (All committed and pushed to `https://github.com/davidlhferro/febrace`)
+- **Last Commit:** `3f2877e - docs(handover): record final session handoff state with digital multiplayer and github sync`
+- **Uncommitted Changes:** Arte editorial rica das 54 cartas, Verso Oficial A4 anti-cheat, PDFs atualizados e ZIP recompilado.
 
 ## Goal & Objective
-Consolidação do jogo cooperativo de eletrodinâmica VOLTZ: Circuit Break como um produto duplo de excelência: (1) Pacote físico Print-and-Play (PNP) autônomo com baralho de 54 cartas e trilhas contínuas de 10mm (estilo Bandido / PCB), e (2) Versão Digital Web Multiplayer funcional (WebRTC P2P) para playtests online com a equipe, sincronizada com o GitHub.
+Elevação do design visual do VOLTZ: Circuit Break para o padrão de arte editorial dos jogos de tabuleiro comerciais premium (*Netrunner*, *Radlands*, *Turing Tumble*), adicionando ilustrações ricas com profundidade 3D, gradientes metálicos, índices de poker nos cantos e criação do Verso Oficial (Card Back) com simetria rotacional de 180° anti-cheat para impressão frente-e-verso.
 
 ## Current Status
 - **Completed in this session:**
-  - **Desacoplamento de Produto (PNP)**: Criação de `01_Jogo_Voltz/dist_print_and_play/` com PDFs pré-compilados prontos para impressão (Manual Oficial de 3 págs sem marcas de feira, Baralho de 54 cartas, Tabuleiro Guia A4 e ZIP completo).
-  - **Topologia Modular de Alta Clareza**: Deep inspection e redesenho das 54 cartas em SVG monolítico com trilhas de cobre de 10mm, esquemas elétricos inline e setas de fluxo de corrente (`▶▶`).
-  - **Versão Digital Web Multiplayer**: Implementação da aplicação web SPA completa em `01_Jogo_Voltz/web_multiplayer/` (Lobby com códigos de sala, Mesa compartilhada com 4 setores, Mão privada, motor de regras `voltz_engine.js`, diagnóstico automático de Leis de Ohm no GND e sincronização WebRTC via PeerJS).
-  - **Validação Automatizada**: Suite de testes `test_engine.js` cobrindo os 4 setores, resistores em série, curto-circuito, sobretensão protegida por fusível e subtensão (100% aprovada).
-  - **Sincronização com GitHub**: Configuração segura do repositório remoto `https://github.com/davidlhferro/febrace` e envio de todos os arquivos sem vazamento de tokens ou dados privados.
+  - **Verso Oficial Anti-Cheat (`verso_cartas_a4.html`)**: Grade A4 3x3 com 9 cartas ($63\text{mm} \times 88\text{mm}$) em azul espacial (`#090d16`), labirinto de circuitos dourados e medalhão central com simetria rotacional rigorosa de 180°.
+  - **Arte Editorial das 54 Cartas (`cartas_print_visual.html`)**:
+    - Resistores 3D com corpo cerâmico e anéis de tolerância reais (código IEC).
+    - LED Piloto com cúpula luminosa, néon emissivo e fótons de luz.
+    - Sirene de Alarme com corneta metálica e ondas volumétricas.
+    - Motor de Bomba com carcaça de alumínio e aletas de refrigeração.
+    - Servidor Central com chassi rack, lâminas e LEDs de status.
+    - Tomógrafo UTI com gantry toroidal e miras a laser.
+    - Fusível 1A com tubo de quartzo/vidro e filamento incandescente.
+    - Cabo Terra com bloco de aterramento e eletrodo forjado ⏚.
+    - Mini-índices de poker nos cantos superior-esquerdo e inferior-direito para leitura rápida em leque.
+  - **Sincronização Web (`voltz_render.js`)**: Renderizador digital atualizado com os novos SVGs e índices de canto.
+  - **Compilação de PDFs**:
+    - `01_Jogo_Voltz/dist_print_and_play/VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf` (1.96 MB, 6 págs A4).
+    - `01_Jogo_Voltz/dist_print_and_play/VOLTZ_Verso_Oficial_A4.pdf` (431 KB, 1 pág A4).
+  - **Pacote ZIP**: `VOLTZ_Print_and_Play_Completo.zip` atualizado com o Verso Oficial e Guia de Impressão.
 - **In-Progress:**
-  - Nenhum. Todos os objetivos aprovados foram totalmente concluídos.
+  - Nenhum. Todos os objetivos foram implementados e validados.
 - **Blockers / Known Issues:**
   - Nenhum.
 
 ## Decisions Made (Locked)
-- **Fidelidade Canônica Total**: Nenhuma regra ou matemática do jogo físico foi alterada na versão digital; o motor `voltz_engine.js` espelha com precisão absoluta as regras do manual físico.
-- **Arquitetura Schematic-First**: As cartas dedicam 70% da área ao circuito visível com trilhas grossas de 10mm, visíveis a 2 metros de distância.
-- **P2P Serverless WebRTC**: Utilização do PeerJS para permitir que 2 a 4 jogadores criem e entrem em salas pelo navegador sem necessidade de infraestrutura ou custos de servidor.
-- **Segurança de Credenciais Git**: O token de autenticação pessoal (PAT) foi manuseado exclusivamente em memória volátil durante a execução do comando de push, mantendo a URL remota limpa no `.git/config`.
-
-## Failed Approaches & Anti-Patterns (Do Not Retry)
-- **Oclusão por Camada Branca (`.card-inner-frame`)**: Não utilizar fundos opacos que sobreponham o eixo central das cartas, pois ocultam a continuidade das trilhas condutoras de cobre.
-- **Componentes Desconectados em Caixas de Texto**: Não isolar símbolos elétricos em caixas fechadas; os componentes devem ser desenhados de forma que o fio condutor entre pela esquerda e saia pela direita.
-
-## Extracted User Preferences & Project Learnings
-- O usuário valoriza alto impacto visual, clareza imediata ("estilo Bandido/Carcassonne") e usabilidade zero-friction (arquivos PDF pré-compilados e link direto no navegador para a equipe testar).
-- A separação entre documentação acadêmica da FEBRACE e o artefato lúdico autônomo foi fundamental para a profissionalização do projeto.
+- **Simetria Rotacional de 180° (Anti-Cheat)**: O verso não possui topo ou base distingüíveis, impossibilitando identificar cartas na mão de outros jogadores.
+- **Poker Size Canônico (63mm x 88mm)**: Compatibilidade total com sleeves de Magic/Pokémon e alinhamento milimétrico com a frente.
 
 ## Attention Routing (Key Pointers)
-- **Active Plan Files:**
-  - `.llms/plans/versao-digital-multiplayer.plan.md`
-  - `.llms/plans/desacoplamento-pnp-e-jogo-puro.plan.md`
-- **Primary Code Files:**
-  - `01_Jogo_Voltz/web_multiplayer/index.html` (Interface do jogo digital)
-  - `01_Jogo_Voltz/web_multiplayer/js/voltz_engine.js` (Motor de regras e física)
-  - `01_Jogo_Voltz/dist_print_and_play/` (Pacote físico completo)
-  - `01_Jogo_Voltz/cartas/cartas_print_visual.html` (Código-fonte visual das cartas)
-  - `README.md` (Índice geral do projeto)
+- **Primary Files:**
+  - `01_Jogo_Voltz/dist_print_and_play/VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf` (Baralho 54 cartas com nova arte)
+  - `01_Jogo_Voltz/dist_print_and_play/VOLTZ_Verso_Oficial_A4.pdf` (Verso oficial anti-cheat)
+  - `01_Jogo_Voltz/dist_print_and_play/VOLTZ_Print_and_Play_Completo.zip` (Pacote ZIP atualizado)
+  - `01_Jogo_Voltz/cartas/cartas_print_visual.html` (Frente das cartas)
+  - `01_Jogo_Voltz/cartas/verso_cartas_a4.html` (Verso das cartas)
+  - `01_Jogo_Voltz/web_multiplayer/js/voltz_render.js` (Renderizador web)
 
 ## Immediate Next Step
-- Executar `python -m http.server 8000 --directory 01_Jogo_Voltz/web_multiplayer` para realizar os playtests remotos com a equipe de estudantes e registrar o feedback no diário de bordo!
+- Abrir os arquivos PDF gerados em `01_Jogo_Voltz/dist_print_and_play/` ou testar no navegador a visualização do baralho e do verso oficial!

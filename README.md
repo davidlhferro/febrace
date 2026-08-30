@@ -11,9 +11,10 @@ Se você deseja apenas **baixar, imprimir e jogar** o VOLTZ com seus amigos, fam
 
 | Arquivo | Descrição | Formato |
 | :--- | :--- | :--- |
-| 🗜️ [**VOLTZ_Print_and_Play_Completo.zip**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/dist_print_and_play/VOLTZ_Print_and_Play_Completo.zip) | **Pacote Completo em 1 Clique** (Manual + Baralho + Tabuleiro + Guia de Montagem) | Arquivo ZIP (455 KB) |
+| 🗜️ [**VOLTZ_Print_and_Play_Completo.zip**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/dist_print_and_play/VOLTZ_Print_and_Play_Completo.zip) | **Pacote Completo em 1 Clique** (Manual + Baralho + Verso + Tabuleiro + Guia) | Arquivo ZIP (1.5 MB) |
 | 📖 [**VOLTZ_Manual_de_Regras.pdf**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/dist_print_and_play/VOLTZ_Manual_de_Regras.pdf) | Manual Oficial com Tabela de Mesa, Fluxo de Turno e Modo Tutorial (3 págs) | PDF A4 Pronto |
-| 🃏 [**VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/dist_print_and_play/VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf) | Baralho Modular com 54 Cartas e Trilhas de Encaixe Borda a Borda (6 págs A4) | PDF A4 Toner-Safe |
+| 🃏 [**VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/dist_print_and_play/VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf) | Baralho Editorial com 54 Cartas, Arte 3D, Índices de Poker e Trilhas de 10mm (6 págs A4) | PDF A4 Toner-Safe |
+| 🛡️ [**VOLTZ_Verso_Oficial_A4.pdf**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/dist_print_and_play/VOLTZ_Verso_Oficial_A4.pdf) | Verso Oficial das Cartas com Simetria Rotacional de 180° Anti-Cheat (1 pág A4) | PDF A4 Pronto |
 | 🗺️ [**VOLTZ_Tabuleiro_Guia_Mesa_A4.pdf**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/dist_print_and_play/VOLTZ_Tabuleiro_Guia_Mesa_A4.pdf) | Tabuleiro de Apoio de Mesa Opcional para montagem dos 4 setores (1 pág A4) | PDF A4 Landscape |
 | 🌐 [**Versão Digital Web Multiplayer**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/web_multiplayer/index.html) | Jogue online em tempo real no navegador (2 a 4 jogadores via WebRTC P2P) | Web SPA HTML5/JS |
 | 📝 [**Guia_de_Impressao_e_Montagem.txt**](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/dist_print_and_play/Guia_de_Impressao_e_Montagem.txt) | Instruções simples de papel (Couchê 250g–300g / Sulfite + Sleeves) e corte | Texto Puro |
@@ -39,13 +40,15 @@ C:\codigos\FEBRACE\
 │   ├── 📁 dist_print_and_play/             # 📦 DISTRIBUIÇÃO PRONTA (Zero Código / PDFs Pré-Compilados)
 │   │   ├── VOLTZ_Print_and_Play_Completo.zip # Pacote ZIP para Compartilhamento Fácil
 │   │   ├── VOLTZ_Manual_de_Regras.pdf      # Manual Oficial Puro em PDF
-│   │   ├── VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf # 54 Cartas com Trilhas Contínuas
+│   │   ├── VOLTZ_Baralho_54_Cartas_PrintAndPlay.pdf # 54 Cartas com Arte Editorial 3D
+│   │   ├── VOLTZ_Verso_Oficial_A4.pdf      # Verso Simétrico Anti-Cheat A4
 │   │   ├── VOLTZ_Tabuleiro_Guia_Mesa_A4.pdf # Tabuleiro de Apoio Central
 │   │   └── Guia_de_Impressao_e_Montagem.txt # Passo a Passo de Papel e Tesoura
 │   ├── 📁 cartas/                          # 🛠️ Código-Fonte do Baralho
-│   │   ├── cartas_print_visual.html        # Layout Editorial com Trilhas PCB em HTML/SVG
+│   │   ├── cartas_print_visual.html        # Layout Editorial em HTML/SVG
+│   │   ├── verso_cartas_a4.html            # Layout do Verso Anti-Cheat em HTML/SVG
 │   │   ├── tabuleiro_mesa_a4.html          # Tabuleiro de Mesa Modular em HTML
-│   │   ├── exportar_pdf_baralho.py         # Automação de Exportação via Edge Headless
+│   │   ├── exportar_pdf_baralho.py         # Automação de Exportação da Frente e Verso
 │   │   ├── exportar_pdf_tabuleiro.py       # Automação do Tabuleiro via Edge Headless
 │   │   └── baralho_cartas_jogo2.md         # Especificação Canônica das 54 Cartas
 │   └── 📁 manual_e_regras/                 # 🛠️ Código-Fonte do Manual
