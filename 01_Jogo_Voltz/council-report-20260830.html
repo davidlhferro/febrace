@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Council Report — Julgamento do Design Neo-Risograph (VOLTZ: Circuit Break)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap');
+
+        :root {
+            --bg: #f8fafc;
+            --panel: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #0f172a;
+            --accent: #d97706;
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #f59e0b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+        }
+
+        header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+        }
+
+        .tag-badge {
+            display: inline-block;
+            background: #f1f5f9;
+            color: #475569;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+        }
+
+        .question-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 32px 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verdict-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .verdict-box h3 {
+            color: #166534;
+            font-size: 1.15rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .verdict-item {
+            margin-bottom: 16px;
+        }
+
+        .verdict-item strong {
+            color: #14532d;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* AGREEMENT SPECTRUM */
+        .spectrum-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .advisor-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.8rem;
+            background: #ffffff;
+        }
+
+        .advisor-card.agree { border-top: 4px solid var(--success); }
+        .advisor-card.warn { border-top: 4px solid var(--warning); }
+        .advisor-card.dissent { border-top: 4px solid var(--danger); }
+
+        .advisor-role {
+            font-weight: 800;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+        }
+
+        .advisor-stance {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* COLLAPSIBLE DETAILS */
+        details {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        summary {
+            padding: 14px 18px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: #f8fafc;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary:hover {
+            background: #f1f5f9;
+        }
+
+        .details-body {
+            padding: 18px;
+            font-size: 0.88rem;
+            color: #334155;
+            border-top: 1px solid var(--border);
+            line-height: 1.5;
+        }
+
+        .action-card {
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            border-left: 5px solid var(--warning);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 24px;
+        }
+
+        .action-card h4 {
+            color: #92400e;
+            font-weight: 900;
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="tag-badge">LLM COUNCIL VERDICT • 5 ADVISORS & PEER REVIEW</div>
+            <h1>Julgamento do Design Neo-Risograph Editorial Suíço</h1>
+            <div class="question-box">
+                <strong>Objeto Julgado:</strong> A nova identidade visual do <em>VOLTZ: Circuit Break</em> baseada em papel oatmeal tátil, fita condutora de cobre de 10mm contínua, ícones vetoriais autorais de 3pt, cores spot sólidas e verso simétrico de 180°.
+            </div>
+        </header>
+
+        <!-- GRID DE ALINHAMENTO -->
+        <h2>🏛️ Mapa de Convergência do Conselho</h2>
+        <div class="spectrum-grid">
+            <div class="advisor-card agree">
+                <div class="advisor-role">The First Principles</div>
+                <div class="advisor-stance">Aprova a pureza topológica da Gestalt e latência zero de cálculo.</div>
+            </div>
+            <div class="advisor-card agree">
+                <div class="advisor-role">The Expansionist</div>
+                <div class="advisor-stance">Enxerga apelo colecionável de luxo (MoMA, Teenage Engineering).</div>
+            </div>
+            <div class="advisor-card warn">
+                <div class="advisor-role">The Outsider</div>
+                <div class="advisor-stance">Alerta sobre hieróglifos técnicos e mistura de emojis de celular.</div>
+            </div>
+            <div class="advisor-card warn">
+                <div class="advisor-role">The Executor</div>
+                <div class="advisor-stance">Exige 2mm de sangria e fundo branco no Print-and-Play caseiro.</div>
+            </div>
+            <div class="advisor-card dissent">
+                <div class="advisor-role">The Contrarian</div>
+                <div class="advisor-stance">Aponta caos semiótico (emojis vs Suíço) e risco para daltônicos.</div>
+            </div>
+        </div>
+
+        <!-- VEREDITO DO PRESIDENTE -->
+        <h2>⚖️ Veredito do Presidente do Conselho</h2>
+        <div class="verdict-box">
+            <h3>Síntese Executiva: "A Vitória da Engenharia Topológica, com 3 Ajustes Mandatórios"</h3>
+
+            <div class="verdict-item">
+                <strong>1. Onde o Conselho Concorda Unanimemente:</strong>
+                O abandono de 3D/AI-slop em prol de um traço vetorial grosso e autoral com a fita contínua de cobre de 10mm é a decisão mais forte do projeto. Ela cria uma identidade madura e atemporal, posicionando o jogo no patamar de editoras cult (*Oink Games, Helvetiq, Button Shy*). O código digital multiplayer fica ultra-leve (&lt;5KB por carta) e instantâneo.
+            </div>
+
+            <div class="verdict-item">
+                <strong>2. Onde o Conselho Entra em Conflito (A Tensão Estética vs. Acessibilidade):</strong>
+                Enquanto o *Expansionist* e *First Principles* defendem o purismo editorial brutalista, o *Contrarian* e o *Outsider* acertaram cirurgicamente: <strong>a mistura de emojis genéricos de smartphone (🚨, 🏥, ⚙️, 🖥️) dentro de um grid suíço quebra a coerência estética</strong> e parece improviso amador.
+            </div>
+
+            <div class="verdict-item">
+                <strong>3. O Ponto Cego Descoberto pelo Peer Review:</strong>
+                <strong>Orientação Multidirecional na Mesa:</strong> Em uma partida com 2 a 4 jogadores sentados ao redor da mesa, as cartas conectadas são vistas de ponta-cabeça (180°) ou de lado (90°). Os valores de Ohm e Vnom precisam ser legíveis de qualquer ângulo sem forçar os jogadores a se contorcerem.
+            </div>
+        </div>
+
+        <!-- AÇÕES RECOMENDADAS -->
+        <div class="action-card">
+            <h4>🎯 A Única Coisa a Fazer Imediatamente:</h4>
+            <p><strong>Substituir os emojis de celular por pictogramas vetoriais autorais em linha preta pura (monochrome icons)</strong> nos cantos de poker, adicionar <strong>2mm de sangria (bleed) na trilha de cobre</strong> e garantir contraste duplo (símbolo geométrico + cor) para jogadores daltônicos.</p>
+        </div>
+
+        <!-- SEÇÕES COLAPSÁVEIS DOS CONSELHEIROS -->
+        <h2>📋 Pareceres Individuais dos 5 Conselheiros</h2>
+
+        <details>
+            <summary><span>The Contrarian (O Crítico Implacável)</span> <span style="color:var(--danger)">● DISSIDÊNCIA RIGOROSA</span></summary>
+            <div class="details-body">
+                "Prometer encaixe milimétrico estilo Bandido com trilha de borda a borda é ilusão se não houver sangria; qualquer desvio de 1mm cria degraus visuais grotescos. Misturar 'rigor editorial suíço' com uma salada de emojis de smartphone (🖥️, 🚨, ⚙️, 🏥) não é vanguarda, é incoerência estilística. Além disso, usar 7 cores spot com pares de contraste crítico (Índigo vs Cobalto, Teal vs Esmeralda, Cobre vs Laranja) sob iluminação fraca é um desastre e barreira para daltônicos."
+            </div>
+        </details>
+
+        <details>
+            <summary><span>The First Principles Thinker (O Pensador de Primeiros Princípios)</span> <span style="color:var(--success)">● CONVERGÊNCIA COGNITIVA</span></summary>
+            <div class="details-body">
+                "Um circuito elétrico é um grafo topológico regido por relações escalares estritas (V = R · I). O cérebro humano não consegue calcular conservação de energia e leis de Kirchhoff se desperdiçar largura de banda cognitiva decodificando ruído visual. A Trilha Central de 10mm resolve a continuidade topológica da Gestalt com latência zero. O Neo-Risograph Suíço funciona porque remove qualquer camada decorativa desnecessária e expõe a estrutura óssea do problema."
+            </div>
+        </details>
+
+        <details>
+            <summary><span>The Expansionist (O Visionário de Mercado)</span> <span style="color:var(--success)">● ALTO VALOR PERCEBIDO</span></summary>
+            <div class="details-body">
+                "Esta identidade não é apenas um visual bonito; é um cavalo de Troia para transformar VOLTZ em um objeto de design colecionável de altíssimo valor percebido (nível Teenage Engineering encontra a Braun de Dieter Rams). A estética Neo-Risograph Suíça arranca o jogo do estigma pedagógico e o catapulta para concept stores, livrarias de arquitetura e B2B de gigantes de semicondutores (NVIDIA, ARM, ETH Zurich)."
+            </div>
+        </details>
+
+        <details>
+            <summary><span>The Outsider (O Olhar do Usuário Leigo)</span> <span style="color:var(--warning)">● ALERTA DE BARREIRA</span></summary>
+            <div class="details-body">
+                "A trilha contínua é perfeita para o leigo, mas a sopa de letrinhas e termos elétricos gera ansiedade: ⏚0V e Ω parecem hieróglifos para quem não lembra do ensino médio. A mistura de emojis com unidades de medida parece etiqueta de almoxarifado. Para ser verdadeiramente intuitivo, a mecânica precisa ser compreensível por formas e cores limpas."
+            </div>
+        </details>
+
+        <details>
+            <summary><span>The Executor (O Engenheiro Prático)</span> <span style="color:var(--warning)">● DIAGNÓSTICO DE PRODUÇÃO</span></summary>
+            <div class="details-body">
+                "A trilha de 10mm vai quebrar no corte com estilete se não houver sangria de 2mm. Adicione sangria e cruzes de corte no PDF A4. Para a versão de impressão caseira, use o branco natural do papel para economizar 70% de tinta colorida e recomende papel 180-240g. O modelo digital está ultra-otimizado para o código web multiplayer (SVGs inline &lt;5KB)."
+            </div>
+        </details>
+
+        <footer>
+            VOLTZ: CIRCUIT BREAK // CONSELHO EXECUTIVO DE DESIGN • 2026
+        </footer>
+    </div>
+
+</body>
+</html>

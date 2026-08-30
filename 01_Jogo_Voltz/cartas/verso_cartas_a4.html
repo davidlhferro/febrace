@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOLTZ: Circuit Break — Verso Oficial do Baralho (Minimalista & Simétrico)</title>
+    <title>VOLTZ: Circuit Break — Verso Oficial do Baralho (Neo-Risograph & Grid Sagrado)</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=JetBrains+Mono:wght@700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=JetBrains+Mono:wght@800;900&display=swap');
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f1f5f9;
+            background: #e2e8f0;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -31,19 +31,19 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            border: 1px solid #e2e8f0;
+            border: 1px solid #cbd5e1;
         }
 
         .no-print-bar h1 {
             font-size: 1.15rem;
             font-weight: 900;
-            color: #0f172a;
+            color: #09090b;
         }
 
         .btn-print {
-            background: #0f172a;
+            background: #09090b;
             color: #ffffff;
-            font-weight: 800;
+            font-weight: 900;
             padding: 10px 22px;
             border: none;
             border-radius: 8px;
@@ -58,8 +58,8 @@
             background: #ffffff;
             padding: 8mm 6mm;
             margin-bottom: 20mm;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            border: 1px solid #cbd5e1;
             display: grid;
             grid-template-columns: repeat(3, 63mm);
             grid-template-rows: repeat(3, 88mm);
@@ -80,7 +80,7 @@
             justify-content: space-between;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.55rem;
-            color: #94a3b8;
+            color: #64748b;
             border-bottom: 0.5px solid #cbd5e1;
             padding-bottom: 1mm;
         }
@@ -89,8 +89,8 @@
         .card-back {
             width: 63mm;
             height: 88mm;
-            background: #0f172a;
-            border: 1.5px solid #020617;
+            background: #09090b;
+            border: 1.8px solid #09090b;
             border-radius: 3.5mm;
             position: relative;
             overflow: hidden;
@@ -126,70 +126,59 @@
 
     <div class="no-print-bar">
         <div>
-            <h1>⚡ VOLTZ: Circuit Break — Verso Oficial do Baralho (Design Minimalista & Simétrico)</h1>
-            <p>Grade 3x3 • Linework Vetorial Suíço Limpo • Simetria 180° Anti-Cheat</p>
+            <h1>⚡ VOLTZ: Circuit Break — Verso Oficial do Baralho (Atelier Risograph)</h1>
+            <p>Grade 3x3 • Simetria Rotacional Rigorosa de 180° • Padrão Editorial Suíço</p>
         </div>
         <button class="btn-print" onclick="window.print()">Imprimir Verso em A4</button>
     </div>
 
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // VERSO OFICIAL ANTI-CHEAT</span>
-            <span>SIMETRIA ROTACIONAL 180° • PADRÃO POKER (63x88mm)</span>
+            <span>VOLTZ: CIRCUIT BREAK // VERSO OFICIAL ANTI-CHEAT (180° SYMMETRY)</span>
+            <span>FOLHA PADRÃO PARA IMPRESSÃO FRENTE-E-VERSO (63mm x 88mm)</span>
         </div>
 
         <script>
             const cardBackSvg = `
             <svg viewBox="0 0 238 332" xmlns="http://www.w3.org/2000/svg">
-                <!-- Fundo Navy Profundo -->
-                <rect width="238" height="332" fill="#0f172a"/>
+                <!-- Fundo Grafite Profundo com Micro-Ruído -->
+                <rect width="238" height="332" fill="#09090b"/>
                 
-                <!-- Borda Dupla Minimalista -->
-                <rect x="8" y="8" width="222" height="316" rx="8" fill="none" stroke="#334155" stroke-width="1.2"/>
-                <rect x="14" y="14" width="210" height="304" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.8"/>
+                <!-- Moldura Dupla Serigráfica Dourada & Vermelho Cobre -->
+                <rect x="8" y="8" width="222" height="316" rx="8" fill="none" stroke="#27272a" stroke-width="2"/>
+                <rect x="13" y="13" width="212" height="306" rx="6" fill="none" stroke="#d97706" stroke-width="1.8"/>
 
-                <!-- Nós de Canto Simétricos -->
-                <circle cx="24" cy="24" r="4" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
-                <circle cx="24" cy="24" r="1.5" fill="#f59e0b"/>
-                <circle cx="214" cy="24" r="4" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
-                <circle cx="214" cy="24" r="1.5" fill="#f59e0b"/>
-                <circle cx="24" cy="308" r="4" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
-                <circle cx="24" cy="308" r="1.5" fill="#f59e0b"/>
-                <circle cx="214" cy="308" r="4" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
-                <circle cx="214" cy="308" r="1.5" fill="#f59e0b"/>
+                <!-- Micro-Padrão Geométrico de Vias e Malha Suíça -->
+                <g stroke="#d97706" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+                    <!-- Cantoneiras Tecnológicas -->
+                    <path d="M 22 45 L 22 22 L 45 22"/>
+                    <path d="M 216 45 L 216 22 L 193 22"/>
+                    <path d="M 22 287 L 22 310 L 45 310"/>
+                    <path d="M 216 287 L 216 310 L 193 310"/>
 
-                <!-- Linhas de Circuito Minimalistas e Elegantes -->
-                <g stroke="#f59e0b" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <!-- Traçados Norte / Sul -->
-                    <path d="M 119 14 L 119 55 L 60 55 L 60 95 L 35 95 L 35 140 L 70 140"/>
-                    <path d="M 119 318 L 119 277 L 178 277 L 178 237 L 203 237 L 203 192 L 168 192"/>
-                    <path d="M 119 14 L 119 55 L 178 55 L 178 95 L 203 95 L 203 140 L 168 140"/>
-                    <path d="M 119 318 L 119 277 L 60 277 L 60 237 L 35 237 L 35 192 L 70 192"/>
+                    <!-- Linhas Ortogonais de Alta Precisão -->
+                    <path d="M 119 13 L 119 60 L 50 60 L 50 110 L 25 110 L 25 166 L 50 166"/>
+                    <path d="M 119 319 L 119 272 L 188 272 L 188 222 L 213 222 L 213 166 L 188 166"/>
+                    <path d="M 119 13 L 119 60 L 188 60 L 188 110 L 213 110 L 213 166 L 188 166"/>
+                    <path d="M 119 319 L 119 272 L 50 272 L 50 222 L 25 222 L 25 166 L 50 166"/>
 
-                    <!-- Conexões Horizontais -->
-                    <line x1="14" y1="166" x2="55" y2="166" stroke-width="2.5"/>
-                    <line x1="224" y1="166" x2="183" y2="166" stroke-width="2.5"/>
+                    <!-- Vias e Ilhas de Solda -->
+                    <circle cx="50" cy="60" r="3.5" fill="#09090b" stroke="#f59e0b" stroke-width="1.5"/>
+                    <circle cx="188" cy="60" r="3.5" fill="#09090b" stroke="#f59e0b" stroke-width="1.5"/>
+                    <circle cx="50" cy="272" r="3.5" fill="#09090b" stroke="#f59e0b" stroke-width="1.5"/>
+                    <circle cx="188" cy="272" r="3.5" fill="#09090b" stroke="#f59e0b" stroke-width="1.5"/>
                 </g>
 
-                <!-- Vias de Linework Fino Secundárias -->
-                <g stroke="#38bdf8" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.6">
-                    <path d="M 45 40 L 45 75 L 85 75"/>
-                    <path d="M 193 292 L 193 257 L 153 257"/>
-                    <path d="M 193 40 L 193 75 L 153 75"/>
-                    <path d="M 45 292 L 45 257 L 85 257"/>
-                </g>
-
-                <!-- Emblema Central Simétrico (180° Rotatable) -->
+                <!-- Medalhão Central Brutalista com Tipografia Imersiva -->
                 <g transform="translate(119, 166)">
-                    <circle cx="0" cy="0" r="46" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
-                    <circle cx="0" cy="0" r="38" fill="#0f172a" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3,3"/>
-                    
-                    <!-- Raio Duplo Simétrico Central -->
-                    <polygon points="-2,-24 8,-6 -1,-6 6,10 -8,-2 1,-2" fill="#f59e0b"/>
-                    
-                    <!-- Tipografia Minimalista Pura -->
-                    <text x="0" y="24" font-family="Inter, sans-serif" font-weight="900" font-size="8.5" fill="#f8fafc" letter-spacing="2" text-anchor="middle">VOLTZ</text>
-                    <text x="0" y="-27" font-family="JetBrains Mono, monospace" font-weight="800" font-size="5" fill="#38bdf8" letter-spacing="1.5" text-anchor="middle">CIRCUIT BREAK</text>
+                    <rect x="-44" y="-44" width="88" height="88" rx="12" fill="#18181b" stroke="#f59e0b" stroke-width="2.5"/>
+                    <rect x="-38" y="-38" width="76" height="76" rx="8" fill="#09090b" stroke="#d97706" stroke-width="1.2"/>
+
+                    <!-- Símbolo do Raio Dinâmico com Simetria Central -->
+                    <polygon points="-4,-20 8,-4 -1,-4 5,14 -7,0 1,0" fill="#f59e0b"/>
+
+                    <text x="0" y="27" font-family="Inter, sans-serif" font-weight="900" font-size="9" fill="#f8fafc" letter-spacing="2.5" text-anchor="middle">VOLTZ</text>
+                    <text x="0" y="-25" font-family="JetBrains Mono, monospace" font-weight="800" font-size="5" fill="#d97706" letter-spacing="1.5" text-anchor="middle">CIRCUIT BREAK</text>
                 </g>
             </svg>
             `;
