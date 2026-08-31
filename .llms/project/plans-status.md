@@ -12,4 +12,8 @@
 | `versao-digital-multiplayer` | Versão digital web multiplayer (WebRTC/Socket) com 100% de fidelidade canônica às regras para playtests online com a equipe | `done` | Versão web SPA, motor de regras testado e documentação concluídos em web_multiplayer/ | 2026-08-26 |
 | `arte-editorial-e-verso-cartas` | Arte editorial rica de alta fidelidade (estilo Netrunner/Radlands) nas 54 cartas e Verso Oficial 100% simétrico anti-cheat | `done` | Frente e Verso oficial compilados em PDF A4 e integrados no PNP ZIP | 2026-08-29 |
 | `neo-risograph-e-council` | Criação da identidade visual Neo-Risograph Editorial Suíço e julgamento completo pelo LLM Council com 5 conselheiros e peer review | `done` | Relatório HTML, transcrição do conselho e PDFs compilados em dist_print_and_play/ | 2026-08-30 |
+| `portal-equipe-febrace` | Desenvolvimento completo da SPA Portal VOLTZ & Central FEBRACE (P2P WebRTC 3P, War Room, Diário e Banca) | `done` | Aplicação web completa e testada (22/22 testes) em 01_Jogo_Voltz/portal_equipe/ | 2026-08-31 |
+| `mecanica-bandido-ssot` | Dissecação formal e SSOT permanente da transposição isomórfica de Bandido (Helvetiq) para o VOLTZ | `done` | Documento permanente criado em .llms/project/mecanica-bandido-e-voltz-ssot.md | 2026-08-31 |
+| `unslop-e-humanizacao-portal` | Refatoração completa da interface e textos, eliminando pedantismo e adicionando tutorial de 1 minuto, assistente e glossário | `done` | Interface reformulada, amigável e testada rodando na porta 3333 | 2026-08-31 |
+
 
