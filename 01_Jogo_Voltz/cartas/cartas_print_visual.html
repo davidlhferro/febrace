@@ -339,7 +339,7 @@
             `;
         }
 
-        // 5. SIRENE DE ALARME 6V (Corneta Klaxon Industrial — Limpa, Marcante e Sem Poluição)
+        // 5. SIRENE DE ALARME 6V (Lâmpada Vermelha Clássica com Ondas Sonoras Pequenas e Discretas)
         function getSireneBandido() {
             return `
             <svg viewBox="0 0 238 332">
@@ -350,24 +350,28 @@
                 <polygon points="36,166 22,154 22,178" fill="#0a0908"/>
                 <polygon points="216,166 202,154 202,178" fill="#0a0908"/>
 
-                <!-- 3 Ondas Sonoras Espessas e Limpas (Estilo Helvetiq) -->
-                <path d="M 160 134 Q 188 166 160 198" fill="none" stroke="#fde047" stroke-width="8" stroke-linecap="round"/>
-                <path d="M 182 118 Q 220 166 182 214" fill="none" stroke="#f59e0b" stroke-width="7" stroke-linecap="round"/>
-                <path d="M 204 102 Q 252 166 204 230" fill="none" stroke="#dc2626" stroke-width="6" stroke-linecap="round"/>
+                <!-- Ondas Sonoras Pequenas, Sutis e Discretas -->
+                <path d="M 68 146 Q 52 166 68 186" fill="none" stroke="#f59e0b" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M 54 136 Q 34 166 54 196" fill="none" stroke="#dc2626" stroke-width="3.5" stroke-linecap="round"/>
 
-                <!-- Caixa Traseira do Motor da Sirene -->
-                <rect x="52" y="132" width="38" height="68" rx="8" fill="#0a0908"/>
-                <rect x="56" y="136" width="30" height="60" rx="6" fill="#7f1d1d" stroke="#0a0908" stroke-width="2"/>
-                <circle cx="71" cy="166" r="6" fill="#f59e0b"/>
+                <path d="M 170 146 Q 186 166 170 186" fill="none" stroke="#f59e0b" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M 184 136 Q 204 166 184 196" fill="none" stroke="#dc2626" stroke-width="3.5" stroke-linecap="round"/>
 
-                <!-- Corneta / Megafone Vermelho Carmim -->
-                <path d="M 88 144 L 88 188 L 112 188 L 152 216 L 152 116 L 112 144 Z" fill="#0a0908"/>
-                <path d="M 90 148 L 90 184 L 112 184 L 148 210 L 148 122 L 112 148 Z" fill="#dc2626"/>
+                <!-- Base da Lâmpada de Alarme -->
+                <rect x="80" y="192" width="78" height="24" rx="5" fill="#0a0908"/>
+                <rect x="86" y="196" width="66" height="16" rx="3" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+                <circle cx="94" cy="204" r="3" fill="#64748b"/>
+                <circle cx="144" cy="204" r="3" fill="#64748b"/>
 
-                <!-- Boca da Corneta com Borda Oval -->
-                <ellipse cx="148" cy="166" rx="9" ry="44" fill="#0a0908"/>
-                <ellipse cx="148" cy="166" rx="6" ry="40" fill="#ef4444"/>
-                <ellipse cx="148" cy="166" rx="3" ry="24" fill="#ffffff" opacity="0.6"/>
+                <!-- Cúpula de Lâmpada Vermelha Clássica (Glow Suave) -->
+                <path d="M 86 192 C 86 110 152 110 152 192 Z" fill="#0a0908"/>
+                <path d="M 90 192 C 90 118 148 118 148 192 Z" fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+                <path d="M 98 192 C 98 132 140 132 140 192 Z" fill="#ef4444"/>
+
+                <!-- Bulbo Halógeno Interno & Brilho Óptico Suave -->
+                <circle cx="119" cy="162" r="14" fill="#ffffff" opacity="0.9"/>
+                <circle cx="119" cy="162" r="8" fill="#fef08a"/>
+                <path d="M 100 140 Q 112 126 128 126" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
 
                 <!-- Selo de Carga no Topo -->
                 <circle cx="119" cy="64" r="28" fill="#0a0908"/>
