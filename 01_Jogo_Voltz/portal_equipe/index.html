@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTAL VOLTZ & Central de Comando FEBRACE 2026</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- PeerJS WebRTC CDN -->
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+
+    <!-- NAVBAR DE COMANDO SUPERIOR -->
+    <header class="navbar">
+        <div class="brand-header">
+            <div class="brand-title">⚡ VOLTZ // CENTRAL FEBRACE</div>
+            <div class="brand-badge">Bancada Científica v2.0</div>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab-btn active" data-tab="tab-arena">⚡ Arena Multiplayer</button>
+            <button class="nav-tab-btn" data-tab="tab-warroom">🛡️ War Room FEBRACE</button>
+            <button class="nav-tab-btn" data-tab="tab-diario">📝 Diário de Bordo</button>
+            <button class="nav-tab-btn" data-tab="tab-banca">🎓 Treinador de Banca</button>
+        </nav>
+    </header>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="main-container">
+
+        <!-- ========================================================= -->
+        <!-- ABA 1: ARENA MULTIPLAYER P2P                              -->
+        <!-- ========================================================= -->
+        <section id="tab-arena" class="tab-pane active">
+            <div class="arena-grid">
+                
+                <!-- ÁREA ESQUERDA: TABULEIRO & MÃO -->
+                <div>
+                    <div class="board-container">
+                        <div class="board-header">
+                            <div>
+                                <h2 style="font-size:18px; font-weight:800; color:var(--copper-glow);">Bancada de Eletrodinâmica</h2>
+                                <div id="turn-indicator" style="font-size:13px; color:var(--text-muted); margin-top:4px;">
+                                    Aguardando início da partida...
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:12px; align-items:center;">
+                                <div class="sector-meter" style="border-color:var(--copper-glow); color:var(--copper-glow);">
+                                    MONTE: <strong id="deck-count">69</strong> CARTAS
+                                </div>
+                                <div id="p2p-status" class="sector-meter">
+                                    <span style="color:var(--text-muted)">○ OFFLINE</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4 SETORES DA CIDADE (GRID CARDEAL) -->
+                        <div class="sectors-cross" id="sectors-container">
+                            <!-- Injetado dinamicamente via app.js -->
+                        </div>
+                    </div>
+
+                    <!-- MÃO DE CARTAS DO JOGADOR -->
+                    <div class="player-hand-container">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <div style="font-weight:800; font-size:14px; color:#fff; display:flex; align-items:center; gap:8px;">
+                                <span>🎴 Sua Mão de Componentes</span>
+                                <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">(Selecione uma carta e clique no setor para instalar)</span>
+                            </div>
+                            <button id="btn-refresh-hand" class="btn-secondary" title="Descarta as 3 cartas para o fundo do monte e compra 3 novas">
+                                🔄 Renovar Mão (Fundo do Monte)
+                            </button>
+                        </div>
+                        <div class="hand-flex" id="player-hand">
+                            <div style="color:var(--text-muted); font-size:13px;">Inicie uma partida no lobby ao lado para receber suas cartas.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ÁREA DIREITA: LOBBY & LOGS P2P -->
+                <div class="side-panel">
+                    <div class="warroom-card" style="margin-bottom:0; padding:16px;">
+                        <h3 style="font-size:14px; font-weight:800; color:var(--neon-green); margin-bottom:12px;">📡 Conexão P2P (WebRTC)</h3>
+                        
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:11px; color:var(--text-muted);">Seu Nome de Pesquisador:</label>
+                            <input type="text" id="player-name-input" class="form-input" placeholder="Ex: David Ferro" value="Engenheiro Chefe">
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+                            <button id="btn-create-room" class="btn-primary" style="width:100%;">
+                                ⚡ Criar Sala (Host)
+                            </button>
+                            
+                            <div style="display:flex; gap:8px; margin-top:4px;">
+                                <input type="text" id="room-code-input" class="form-input" placeholder="CÓDIGO (4 letras)" style="margin-top:0; text-transform:uppercase; font-family:'Fira Code', monospace; text-align:center; font-weight:700;">
+                                <button id="btn-join-room" class="btn-secondary" style="white-space:nowrap;">
+                                    Entrar
+                                </button>
+                            </div>
+
+                            <button id="btn-solo-start" class="btn-secondary" style="width:100%; border-color:#334155; color:var(--text-muted); margin-top:4px;">
+                                🕹️ Modo Sandbox (Solo)
+                            </button>
+                        </div>
+
+                        <div style="margin-top:14px; padding-top:12px; border-top:1px solid #1e293b; font-size:12px; display:flex; justify-content:space-between;">
+                            <span style="color:var(--text-muted);">Código da Sala:</span>
+                            <strong id="room-code-display" style="font-family:'Fira Code', monospace; color:var(--copper-glow); letter-spacing:2px;">----</strong>
+                        </div>
+                    </div>
+
+                    <!-- TELEMETRIA & LOGS DA BANCADA -->
+                    <div>
+                        <div style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:6px; display:flex; justify-content:space-between;">
+                            <span>📟 Telemetria & Logs</span>
+                            <span style="font-family:'Fira Code', monospace; font-size:10px; color:var(--neon-green);">LIVE 12V</span>
+                        </div>
+                        <div class="log-box" id="log-box">
+                            <div class="log-entry"><span class="time">[SISTEMA]</span> Portal VOLTZ pronto para conexão P2P.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ABA 2: WAR ROOM FEBRACE                                   -->
+        <!-- ========================================================= -->
+        <section id="tab-warroom" class="tab-pane">
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px;">
+                
+                <div>
+                    <div class="warroom-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <h2 style="font-size:20px; font-weight:900; color:var(--neon-green);">Diagnóstico de Prontidão da Equipe</h2>
+                                <div style="font-size:13px; color:var(--text-muted); margin-top:2px;">Conformidade estrita com o Regulamento Oficial da FEBRACE 2026</div>
+                            </div>
+                            <div id="warroom-score" style="font-family:'Fira Code', monospace; font-size:32px; font-weight:900; color:var(--neon-green);">
+                                0%
+                            </div>
+                        </div>
+
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="warroom-bar-fill" style="width:0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="warroom-card">
+                        <h3 style="font-size:16px; font-weight:800; color:#fff; margin-bottom:12px;">📋 Checklist dos 5 Documentos Oficiais da USP</h3>
+                        <div id="checklist-container">
+                            <!-- Injetado dinamicamente via voltz_warroom.js -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA DO TEMPO & CRITÉRIOS DA USP -->
+                <div>
+                    <div class="warroom-card">
+                        <h3 style="font-size:15px; font-weight:800; color:var(--copper-glow); margin-bottom:12px;">⏳ Prazos Oficiais FEBRACE</h3>
+                        <div style="font-size:13px; line-height:1.8; color:#cbd5e1;">
+                            <div><strong>• Submissão Virtual:</strong> Outubro/Novembro</div>
+                            <div><strong>• Análise de Triagem:</strong> Dezembro</div>
+                            <div><strong>• Divulgação de Finalistas:</strong> Janeiro</div>
+                            <div><strong>• Mostra Presencial USP:</strong> Março 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="warroom-card">
+                        <h3 style="font-size:15px; font-weight:800; color:var(--neon-blue); margin-bottom:12px;">🎯 Os 7 Eixos da Banca USP</h3>
+                        <ul style="font-size:12px; line-height:1.7; color:var(--text-muted); padding-left:16px;">
+                            <li>1. Hipótese & Planejamento (15%)</li>
+                            <li>2. Execução Metodológica (25%)</li>
+                            <li>3. Rigor Estatístico / Hake (20%)</li>
+                            <li>4. Inovação & Criatividade (15%)</li>
+                            <li>5. Diário de Bordo Autêntico (10%)</li>
+                            <li>6. Clareza Escrita ABNT (10%)</li>
+                            <li>7. Atitude Científica na Banca (5%)</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ABA 3: DIÁRIO DE BORDO COLETIVO                           -->
+        <!-- ========================================================= -->
+        <section id="tab-diario" class="tab-pane">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                
+                <!-- FORMULÁRIO DE NOVA ENTRADA -->
+                <div class="warroom-card">
+                    <h2 style="font-size:18px; font-weight:800; color:var(--copper-glow); margin-bottom:14px;">📝 Nova Entrada no Diário de Bordo</h2>
+                    
+                    <form id="form-diario-entry">
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:12px; color:var(--text-muted);">Título do Registro:</label>
+                            <input type="text" id="diario-title" class="form-input" placeholder="Ex: Playtest com Turma 3B - Validação do Resistor 4Ω" required>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+                            <div>
+                                <label style="font-size:12px; color:var(--text-muted);">Tipo de Atividade:</label>
+                                <select id="diario-type" class="form-input">
+                                    <option>Playtest de Bancada</option>
+                                    <option>Teste em Sala de Aula</option>
+                                    <option>Reunião com Orientador</option>
+                                    <option>Refinamento de Código / Física</option>
+                                    <option>Pesquisa Bibliográfica</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size:12px; color:var(--text-muted);">Autor(es):</label>
+                                <input type="text" id="diario-author" class="form-input" value="David e João Vitor">
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:12px; color:var(--text-muted);">Fatos e Procedimentos Realizados:</label>
+                            <textarea id="diario-desc" class="form-input" rows="4" placeholder="Descreva os passos, dados coletados e observações práticas..." required></textarea>
+                        </div>
+
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:12px; color:var(--text-muted);">Descobertas & Análise de Resultados:</label>
+                            <textarea id="diario-findings" class="form-input" rows="2" placeholder="O que funcionou? Quais erros ou bloqueios cognitivos foram detectados?"></textarea>
+                        </div>
+
+                        <div style="margin-bottom:16px;">
+                            <label style="font-size:12px; color:var(--text-muted);">Encaminhamentos / Próximos Passos:</label>
+                            <input type="text" id="diario-actions" class="form-input" placeholder="Ex: Ajustar o valor do capacitor ou reimprimir ficha de auxílio">
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="width:100%;">
+                            💾 Registrar Ata Oficial
+                        </button>
+                    </form>
+                </div>
+
+                <!-- LISTA DE ENTRADAS & EXPORTAÇÃO -->
+                <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                        <h3 style="font-size:16px; font-weight:800; color:#fff;">Histórico Cronológico</h3>
+                        <div style="display:flex; gap:8px;">
+                            <button id="btn-export-md" class="btn-secondary" style="font-size:11px;">
+                                📥 Exportar Markdown (.md)
+                            </button>
+                            <button id="btn-export-pdf" class="btn-primary" style="font-size:11px; padding:6px 12px;">
+                                🖨️ Imprimir / PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="diario-entries-list">
+                        <!-- Injetado dinamicamente via voltz_diario.js -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ABA 4: TREINADOR DE BANCA USP                             -->
+        <!-- ========================================================= -->
+        <section id="tab-banca" class="tab-pane">
+            <div class="warroom-card" style="margin-bottom:16px;">
+                <h2 style="font-size:20px; font-weight:900; color:var(--neon-blue);">Simulador de Arguição & FAQ de Jurados USP</h2>
+                <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">
+                    Clique em qualquer pergunta para revelar a resposta-modelo de alta densidade teórica (física, estatística de Hake, psicometria DIRECT e engenharia).
+                </div>
+            </div>
+
+            <div id="banca-qa-container">
+                <!-- Injetado dinamicamente via voltz_banca.js -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SCRIPTS DA APLICAÇÃO -->
+    <script src="js/voltz_cards_data.js"></script>
+    <script src="js/voltz_engine.js"></script>
+    <script src="js/voltz_p2p.js"></script>
+    <script src="js/voltz_warroom.js"></script>
+    <script src="js/voltz_diario.js"></script>
+    <script src="js/voltz_banca.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
