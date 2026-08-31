@@ -64,30 +64,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botões de Lobby
     const btnCreateRoom = document.getElementById('btn-create-room');
     const btnJoinRoom = document.getElementById('btn-join-room');
-    const btnSoloStart = document.getElementById('btn-solo-start');
+    const btnStartMultiplayer = document.getElementById('btn-start-multiplayer-game');
+    const btnSolo3P = document.getElementById('btn-solo-3p');
     const btnRefreshHand = document.getElementById('btn-refresh-hand');
     const playerNameInput = document.getElementById('player-name-input');
     const roomCodeInput = document.getElementById('room-code-input');
+    const playersListDisplay = document.getElementById('players-list-display');
 
     if (btnCreateRoom) {
         btnCreateRoom.addEventListener('click', () => {
-            const name = playerNameInput.value.trim() || 'Engenheiro Chefe';
+            const name = playerNameInput.value.trim() || 'David';
             btnCreateRoom.disabled = true;
             p2pManager.createRoom(name, (code, pId) => {
                 myPlayerId = pId;
                 if (roomCodeDisplay) roomCodeDisplay.textContent = code;
-                if (p2pStatusEl) p2pStatusEl.innerHTML = `<span style="color:var(--neon-green)">● SALA ATIVA [${code}]</span>`;
+                if (p2pStatusEl) p2pStatusEl.innerHTML = `<span style="color:var(--neon-green)">● SALA [${code}]</span>`;
+                if (btnStartMultiplayer) btnStartMultiplayer.style.display = 'block';
+                renderGameState(engine.gameState);
+            });
+        });
+    }
+
+    if (btnStartMultiplayer) {
+        btnStartMultiplayer.addEventListener('click', () => {
+            if (p2pManager.isHost) {
                 engine.startGame();
                 p2pManager.broadcastState();
                 renderGameState(engine.gameState);
-            });
+                appendLog('🚀 Partida iniciada pelo Host com ' + engine.gameState.players.length + ' jogadores!');
+            }
         });
     }
 
     if (btnJoinRoom) {
         btnJoinRoom.addEventListener('click', () => {
             const code = roomCodeInput.value.trim();
-            const name = playerNameInput.value.trim() || 'Estudante Convidado';
+            const name = playerNameInput.value.trim() || 'Amigo ' + Math.floor(Math.random() * 100);
             if (!code) return alert('Por favor, digite o código de 4 letras da sala.');
             btnJoinRoom.disabled = true;
             p2pManager.joinRoom(code, name, (c, pId) => {
@@ -98,14 +110,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (btnSoloStart) {
-        btnSoloStart.addEventListener('click', () => {
-            myPlayerId = 'p_solo';
+    if (btnSolo3P) {
+        btnSolo3P.addEventListener('click', () => {
+            myPlayerId = 'p1';
             engine.resetGame();
-            engine.addPlayer(myPlayerId, playerNameInput.value.trim() || 'Engenheiro Solo', true);
+            engine.addPlayer('p1', 'David', true);
+            engine.addPlayer('p2', 'João', false);
+            engine.addPlayer('p3', 'Amigo 3', false);
             engine.startGame();
+            if (p2pStatusEl) p2pStatusEl.innerHTML = `<span style="color:var(--neon-green)">● TESTE 3P (LOCAL)</span>`;
             renderGameState(engine.gameState);
-            appendLog('⚡ Modo Sandbox/Solo iniciado com sucesso.');
+            appendLog('👥 Modo de Teste 3 Jogadores (David, João, Amigo 3) iniciado.');
         });
     }
 
@@ -122,11 +137,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (deckCountEl) deckCountEl.textContent = state.deck.length;
 
+        // Atualiza Lista de Jogadores no Lobby
+        if (playersListDisplay) {
+            if (state.players.length === 0) {
+                playersListDisplay.innerHTML = '<em>Ninguém conectado ainda.</em>';
+            } else {
+                playersListDisplay.innerHTML = state.players.map((p, i) => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
+                        <span><strong>${i + 1}. ${p.name}</strong> ${p.isHost ? '👑 (Criador da Sala)' : ''} ${p.id === myPlayerId ? '<span style="color:var(--neon-green)">(Você)</span>' : ''}</span>
+                        <span style="color:var(--neon-green); font-size:11px;">● Pronto (${p.hand.length} cartas)</span>
+                    </div>
+                `).join('');
+            }
+        }
+
         // Indicador de Turno
         if (turnIndicator && state.players.length > 0) {
             const curr = state.players[state.currentTurnPlayerIndex];
             const isMyTurn = curr && curr.id === myPlayerId;
-            turnIndicator.innerHTML = `Vez de: <strong style="color:${isMyTurn ? 'var(--neon-green)' : 'var(--neon-blue)'}">${curr.name}</strong> ${isMyTurn ? '(SUA VEZ!)' : ''}`;
+            turnIndicator.innerHTML = `Vez de: <strong style="color:${isMyTurn ? 'var(--neon-green)' : 'var(--neon-blue)'}; font-size:15px;">${curr.name}</strong> ${isMyTurn ? '<span style="background:var(--neon-green); color:#000; padding:2px 6px; border-radius:4px; font-weight:800; margin-left:6px;">SUA VEZ! CLIQUE NUMA CARTA E DEPOIS NO SETOR</span>' : '<span style="color:var(--text-muted); font-size:12px; margin-left:6px;">(Aguardando jogada do amigo...)</span>'}`;
         }
 
         // Renderiza os 4 Setores Cardeais
