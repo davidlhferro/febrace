@@ -1,5 +1,5 @@
 /**
- * PORTAL VOLTZ & CENTRAL FEBRACE — Controlador Mestre da Aplicação (SPA)
+ * PORTAL VOLTZ & CENTRAL FEBRACE — Controlador Mestre (Amigável & Sem Jargões)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // -------------------------------------------------------------
-    // MÓDULO 1: ARENA MULTIPLAYER P2P
+    // MÓDULO 1: ARENA MULTIPLAYER (JOGAR COM AMIGOS)
     // -------------------------------------------------------------
     const p2pStatusEl = document.getElementById('p2p-status');
     const roomCodeDisplay = document.getElementById('room-code-display');
@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectorsContainer = document.getElementById('sectors-container');
     const turnIndicator = document.getElementById('turn-indicator');
     const deckCountEl = document.getElementById('deck-count');
+    const assistantText = document.getElementById('assistant-status-text');
+    const assistantPill = document.getElementById('assistant-calc-pill');
 
     function appendLog(msg) {
         if (!logBox) return;
@@ -91,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 engine.startGame();
                 p2pManager.broadcastState();
                 renderGameState(engine.gameState);
-                appendLog('🚀 Partida iniciada pelo Host com ' + engine.gameState.players.length + ' jogadores!');
+                appendLog('🚀 Partida iniciada com ' + engine.gameState.players.length + ' jogadores!');
             }
         });
     }
@@ -144,21 +146,21 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 playersListDisplay.innerHTML = state.players.map((p, i) => `
                     <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
-                        <span><strong>${i + 1}. ${p.name}</strong> ${p.isHost ? '👑 (Criador da Sala)' : ''} ${p.id === myPlayerId ? '<span style="color:var(--neon-green)">(Você)</span>' : ''}</span>
+                        <span><strong>${i + 1}. ${p.name}</strong> ${p.isHost ? '👑 (Criador)' : ''} ${p.id === myPlayerId ? '<span style="color:var(--neon-green)">(Você)</span>' : ''}</span>
                         <span style="color:var(--neon-green); font-size:11px;">● Pronto (${p.hand.length} cartas)</span>
                     </div>
                 `).join('');
             }
         }
 
-        // Indicador de Turno
+        // Indicador de Turno Amigável
         if (turnIndicator && state.players.length > 0) {
             const curr = state.players[state.currentTurnPlayerIndex];
             const isMyTurn = curr && curr.id === myPlayerId;
-            turnIndicator.innerHTML = `Vez de: <strong style="color:${isMyTurn ? 'var(--neon-green)' : 'var(--neon-blue)'}; font-size:15px;">${curr.name}</strong> ${isMyTurn ? '<span style="background:var(--neon-green); color:#000; padding:2px 6px; border-radius:4px; font-weight:800; margin-left:6px;">SUA VEZ! CLIQUE NUMA CARTA E DEPOIS NO SETOR</span>' : '<span style="color:var(--text-muted); font-size:12px; margin-left:6px;">(Aguardando jogada do amigo...)</span>'}`;
+            turnIndicator.innerHTML = `Vez de: <strong style="color:${isMyTurn ? 'var(--neon-green)' : 'var(--neon-blue)'}; font-size:14px;">${curr.name}</strong> ${isMyTurn ? '<span style="background:var(--neon-green); color:#000; padding:2px 6px; border-radius:4px; font-weight:800; margin-left:6px;">👉 SUA VEZ! ESCOLHA UMA CARTA E CLIQUE NO SETOR</span>' : '<span style="color:var(--text-muted); font-size:12px; margin-left:6px;">(Aguardando o amigo jogar...)</span>'}`;
         }
 
-        // Renderiza os 4 Setores Cardeais
+        // Renderiza os 4 Setores Cardeais da Metrópole
         if (sectorsContainer) {
             sectorsContainer.innerHTML = '';
             for (const [sKey, sector] of Object.entries(state.board.sectors)) {
@@ -166,25 +168,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 sDiv.className = `sector-card ${sector.status}`;
                 sDiv.setAttribute('data-sector', sKey);
 
-                let statusBadge = '<span style="color:var(--text-muted)">⚪ Blackout</span>';
-                if (sector.status === 'energized') statusBadge = '<span style="color:var(--neon-green)">🟢 ENERGIZADO</span>';
-                if (sector.status === 'overvoltage') statusBadge = '<span style="color:var(--neon-red)">💥 QUEIMADO</span>';
+                let statusBadge = '<span style="color:var(--text-muted)">⚪ Desligado</span>';
+                if (sector.status === 'energized') statusBadge = '<span style="color:var(--neon-green); font-weight:800;">🟢 SALVO (NOMINAL)</span>';
+                if (sector.status === 'overvoltage') statusBadge = '<span style="color:var(--neon-red); font-weight:800;">💥 QUEIMOU!</span>';
+
+                // Cálculo visual amigável do ramo
+                const resistorsSum = sector.cards.filter(c => c.type === 'resistor').reduce((sum, r) => sum + (r.r || 0), 0);
+                const hasLoad = sector.cards.find(c => c.type === 'equipment');
 
                 sDiv.innerHTML = `
                     <div class="sector-header">
                         <div class="sector-title">${sector.name}</div>
-                        <div class="sector-meter">${sector.vCalculated || 0}V / ${sector.vNom}V</div>
+                        <div class="sector-meter">${sector.vCalculated || 0}V / Meta: ${sector.vNom}V</div>
                     </div>
-                    <div style="font-size:11px; margin-bottom:8px; color:var(--text-muted); display:flex; justify-content:space-between;">
+                    <div style="font-size:11.5px; margin-bottom:8px; color:var(--text-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px;">
                         <span>Status: ${statusBadge}</span>
-                        <span>Meta Adicional: +${sector.targetAddR}Ω</span>
+                        <span>Resistores na linha: <strong>+${resistorsSum}Ω</strong> (Meta: +${sector.targetAddR}Ω)</span>
                     </div>
                     <div class="cards-lane" id="lane-${sKey}">
-                        ${sector.cards.map(c => renderCardMini(c, false)).join('')}
+                        ${sector.cards.length === 0 ? '<div style="font-size:11px; color:#475569; padding:8px;">Nenhum componente instalado ainda.</div>' : sector.cards.map(c => renderCardMini(c, false)).join('')}
                     </div>
                 `;
 
-                // Clique no setor para instalar a carta selecionada da mão
+                // Clique no setor para instalar a carta selecionada
                 sDiv.addEventListener('click', () => {
                     if (!selectedCardUid || !myPlayerId) return;
                     p2pManager.sendAction('PLAY_CARD', {
@@ -193,13 +199,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         sectorId: sKey
                     });
                     selectedCardUid = null;
+                    updateVisualAssistant(null);
                 });
 
                 sectorsContainer.appendChild(sDiv);
             }
         }
 
-        // Renderiza a Mão do Jogador Atual
+        // Renderiza a Mão do Jogador
         if (playerHandEl) {
             playerHandEl.innerHTML = '';
             const myPlayer = state.players.find(p => p.id === myPlayerId) || state.players[0];
@@ -212,8 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     cardNode.addEventListener('click', () => {
                         if (selectedCardUid === card.uid) {
                             selectedCardUid = null;
+                            updateVisualAssistant(null);
                         } else {
                             selectedCardUid = card.uid;
+                            updateVisualAssistant(card);
                         }
                         renderGameState(engine.gameState);
                     });
@@ -221,6 +230,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     playerHandEl.appendChild(cardNode);
                 });
             }
+        }
+    }
+
+    // 2. ATUALIZAÇÃO DO ASSISTENTE VISUAL EM TEMPO REAL
+    function updateVisualAssistant(card) {
+        if (!assistantText) return;
+        if (!card) {
+            assistantText.textContent = 'Selecione uma carta da sua mão para ver a dica de ligação.';
+            if (assistantPill) assistantPill.style.display = 'none';
+            return;
+        }
+
+        if (assistantPill) assistantPill.style.display = 'block';
+
+        if (card.type === 'resistor') {
+            assistantText.innerHTML = `🟢 <strong>${card.name}</strong>: Adiciona <strong>+${card.r}Ω</strong> no caminho. Use para reduzir a voltagem que chega no aparelho!`;
+            if (assistantPill) assistantPill.textContent = `+${card.r}Ω de Resistência`;
+        } else if (card.type === 'equipment') {
+            assistantText.innerHTML = `💡 <strong>${card.name}</strong>: Precisa de exatamente <strong>${card.vNom}V</strong> para funcionar com segurança sem queimar.`;
+            if (assistantPill) assistantPill.textContent = `Meta: ${card.vNom}V`;
+        } else if (card.type === 'gnd') {
+            assistantText.innerHTML = `⏚ <strong>${card.name}</strong>: Fecha o circuito no chão (0V) e <strong>faz o teste final na hora</strong> para ver se o setor acende!`;
+            if (assistantPill) assistantPill.textContent = `TESTE FINAL (0V)`;
+        } else if (card.type === 'fuse') {
+            assistantText.innerHTML = `🛡️ <strong>${card.name}</strong>: Proteção contra acidentes! Se a voltagem passar do limite, o fusível queima no lugar do aparelho.`;
+            if (assistantPill) assistantPill.textContent = `PROTEÇÃO 1A`;
+        } else if (card.type === 'node_y') {
+            assistantText.innerHTML = `🔀 <strong>${card.name}</strong>: Divide o circuito em <strong>2 caminhos novos de 12V</strong> (Efeito Bandido)!`;
+            if (assistantPill) assistantPill.textContent = `DIVIDE EM 2 RAMOS`;
+        } else {
+            assistantText.textContent = `Componente selecionado: [${card.name}]. Clique no setor para instalar!`;
         }
     }
 
@@ -244,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         } else {
             return `
-                <div class="card-tile" style="width:65px; height:90px; border-color:${badgeColor}; pointer-events:none;">
+                <div class="card-tile" style="width:68px; height:95px; border-color:${badgeColor}; pointer-events:none;">
                     <div class="card-badge-top" style="background:${badgeColor}; font-size:8px;">${badgeText}</div>
                     <div class="card-center-icon" style="font-size:18px;">${icon}</div>
                     <div class="card-title-bottom" style="font-size:8px;">${card.name}</div>
@@ -254,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------
-    // MÓDULO 2: WAR ROOM FEBRACE (DIAGNÓSTICO & CHECKLIST)
+    // MÓDULO 2: GUIA DA FEBRACE (CARDS EXPLICATIVOS SEM JARGÕES)
     // -------------------------------------------------------------
     function renderWarRoom() {
         const scoreEl = document.getElementById('warroom-score');
@@ -269,18 +309,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         checklistContainer.innerHTML = '';
         warRoom.items.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'checklist-item';
-            div.innerHTML = `
-                <input type="checkbox" ${item.status ? 'checked' : ''} style="width:18px; height:18px; accent-color:var(--neon-green); cursor:pointer;">
-                <div style="flex:1;">
-                    <div style="font-weight:700; font-size:14px; color:${item.status ? 'var(--neon-green)' : '#fff'};">${item.title}</div>
-                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">${item.desc}</div>
+            const card = document.createElement('div');
+            card.className = 'guide-card';
+            card.innerHTML = `
+                <div class="guide-card-header">
+                    <div class="guide-card-title">
+                        <input type="checkbox" ${item.status ? 'checked' : ''} style="width:18px; height:18px; accent-color:var(--neon-green); cursor:pointer;">
+                        <span>${item.title}</span>
+                    </div>
+                    <span class="guide-badge-pill">${item.tag}</span>
                 </div>
-                <div style="font-family:'Fira Code', monospace; font-size:11px; font-weight:700; color:var(--copper-glow);">${item.weight}% Peso</div>
+
+                <div class="guide-section-block">
+                    <div class="guide-section-label">❓ O que é isso?</div>
+                    <div class="guide-section-text">${item.queE}</div>
+                </div>
+
+                <div class="guide-section-block" style="border-left-color:var(--neon-blue);">
+                    <div class="guide-section-label" style="color:var(--neon-blue);">🎯 Por que a banca da USP pede isso?</div>
+                    <div class="guide-section-text">${item.porQuePede}</div>
+                </div>
+
+                <div class="guide-section-block" style="border-left-color:var(--neon-green);">
+                    <div class="guide-section-label" style="color:var(--neon-green);">🛠️ Como a gente faz o nosso na prática?</div>
+                    <div class="guide-section-text">${item.comoFazer}</div>
+                </div>
             `;
 
-            const chk = div.querySelector('input');
+            const chk = card.querySelector('input');
             chk.addEventListener('change', () => {
                 const newScore = warRoom.toggleItem(item.id);
                 scoreEl.textContent = `${newScore}%`;
@@ -288,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderWarRoom();
             });
 
-            checklistContainer.appendChild(div);
+            checklistContainer.appendChild(card);
         });
     }
 
@@ -302,24 +358,24 @@ document.addEventListener('DOMContentLoaded', () => {
         diarioList.innerHTML = '';
         diarioManager.entries.forEach(e => {
             const div = document.createElement('div');
-            div.className = 'warroom-card';
+            div.className = 'guide-card';
             div.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
                     <div>
-                        <div style="font-weight:800; font-size:16px; color:var(--copper-glow);">${e.title}</div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">📅 ${e.date} | Categoria: <strong>${e.type}</strong> | Autor: <strong>${e.author}</strong></div>
+                        <div style="font-weight:800; font-size:15px; color:var(--copper-bright);">${e.title}</div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">📅 ${e.date} | Tipo: <strong>${e.type}</strong> | Feito por: <strong>${e.author}</strong></div>
                     </div>
                     <button class="btn-secondary" style="color:var(--neon-red); border-color:rgba(239,68,68,0.3); font-size:11px;" data-del="${e.id}">Excluir</button>
                 </div>
-                <div style="font-size:13px; line-height:1.6; color:#cbd5e1; margin-top:8px;">${e.description}</div>
-                ${e.findings ? `<div style="font-size:12px; color:var(--neon-blue); margin-top:6px;"><strong>💡 Descobertas:</strong> ${e.findings}</div>` : ''}
-                ${e.actionItems ? `<div style="font-size:12px; color:var(--neon-green); margin-top:4px;"><strong>🎯 Ações:</strong> ${e.actionItems}</div>` : ''}
+                <div style="font-size:13px; line-height:1.5; color:#cbd5e1; margin-top:6px;">${e.description}</div>
+                ${e.findings ? `<div style="font-size:12px; color:var(--neon-blue); margin-top:6px; background:#090e18; padding:6px 10px; border-radius:4px;"><strong>💡 O que aprendemos:</strong> ${e.findings}</div>` : ''}
+                ${e.actionItems ? `<div style="font-size:12px; color:var(--neon-green); margin-top:4px; background:#090e18; padding:6px 10px; border-radius:4px;"><strong>🎯 Próximo passo:</strong> ${e.actionItems}</div>` : ''}
             `;
 
             const btnDel = div.querySelector('button[data-del]');
             if (btnDel) {
                 btnDel.addEventListener('click', () => {
-                    if (confirm('Deseja excluir esta entrada do Diário de Bordo?')) {
+                    if (confirm('Deseja excluir esta anotação do Diário de Bordo?')) {
                         diarioManager.deleteEntry(e.id);
                         renderDiario();
                     }
@@ -342,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const findings = document.getElementById('diario-findings').value.trim();
             const actions = document.getElementById('diario-actions').value.trim();
 
-            if (!title || !desc) return alert('Preencha pelo menos o título e a descrição da ata.');
+            if (!title || !desc) return alert('Preencha pelo menos o título e a descrição da partida.');
 
             diarioManager.addEntry({
                 title, type, author, description: desc, findings, actionItems: actions
@@ -350,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             formDiario.reset();
             renderDiario();
-            alert('Ata registrada com sucesso no Diário de Bordo!');
+            alert('Anotação salva com sucesso no Diário de Bordo!');
         });
     }
 
@@ -383,27 +439,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------
-    // MÓDULO 4: TREINADOR DE BANCA USP & FEBRACE
+    // MÓDULO 4: TRADUTOR DA BANCA USP (GLOSSÁRIO DESCOMPLICADO)
     // -------------------------------------------------------------
     function renderBanca() {
-        const bancaContainer = document.getElementById('banca-qa-container');
+        const bancaContainer = document.getElementById('banca-translator-container');
         if (!bancaContainer) return;
 
         bancaContainer.innerHTML = '';
-        bancaCoach.questions.forEach((q, idx) => {
-            const div = document.createElement('div');
-            div.className = 'qa-card';
-            div.innerHTML = `
-                <div style="font-size:11px; font-weight:700; color:var(--copper-glow); text-transform:uppercase; margin-bottom:4px;">${q.category}</div>
-                <div class="qa-question">${q.question}</div>
-                <div class="qa-answer">${q.answer.replace(/\n/g, '<br><br>')}</div>
+        bancaCoach.glossary.forEach((item, idx) => {
+            const card = document.createElement('div');
+            card.className = 'translator-card';
+            card.innerHTML = `
+                <div class="translator-jurado">
+                    <span>🎓 O Jurado Pergunta:</span>
+                    <em>"${item.juradoDiz}"</em>
+                </div>
+                <div class="translator-real">
+                    <div style="font-size:11.5px; font-weight:800; color:var(--copper-bright); margin-bottom:2px;">🗣️ O que ele realmente quer saber:</div>
+                    <div style="font-weight:600; color:#fff; margin-bottom:8px;">${item.traducao}</div>
+                    <div style="font-size:11.5px; font-weight:800; color:var(--neon-green); margin-bottom:2px;">💡 Resposta na ponta da língua:</div>
+                    <div style="color:#cbd5e1;">${item.respostaNaPontaDaLingua}</div>
+                </div>
             `;
-
-            div.addEventListener('click', () => {
-                div.classList.toggle('open');
-            });
-
-            bancaContainer.appendChild(div);
+            bancaContainer.appendChild(card);
         });
     }
 });
