@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOLTZ: Circuit Break — Baralho Canônico Print-and-Play (54 Cartas // Design Unslop)</title>
+    <title>VOLTZ: Circuit Break — Baralho Oficial de Produção (54 Cartas // IEEE & Unslop)</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800;900&family=JetBrains+Mono:wght@600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800;900&display=swap');
 
-        /* ========================================================================= */
-        /* DESIGN TOKENS OKLCH (W3C DTCG SPEC)                                      */
-        /* ========================================================================= */
+        /* TOKENS DE MATERIAIS FÍSICOS REAIS DE BANCADA (OKLCH) */
         :root {
             --mat-copper-raw: oklch(0.65 0.17 58);
             --mat-copper-gold: oklch(0.78 0.19 75);
@@ -19,19 +17,18 @@
             --mat-paper-white: oklch(0.99 0.002 90);
             --mat-ceramic: oklch(0.97 0.04 100);
 
-            /* Categorias Eletrodinâmicas */
-            --cat-gen: oklch(0.55 0.16 52);      /* #b45309 */
-            --cat-r1: oklch(0.58 0.18 155);     /* #047857 */
-            --cat-r2: oklch(0.52 0.22 260);     /* #1d4ed8 */
-            --cat-r3: oklch(0.62 0.21 42);      /* #c2410c */
-            --cat-load: oklch(0.44 0.24 275);   /* #4338ca */
-            --cat-gnd: oklch(0.52 0.15 185);    /* #0f766e */
-            --cat-special: oklch(0.58 0.18 220);/* #0369a1 */
-            --cat-danger: oklch(0.58 0.24 25);  /* #b91c1c */
+            --cat-gen: #b45309;
+            --cat-r1: #047857;
+            --cat-r2: #1d4ed8;
+            --cat-r3: #c2410c;
+            --cat-load: #4338ca;
+            --cat-gnd: #0f766e;
+            --cat-special: #0369a1;
+            --cat-danger: #b91c1c;
 
             --ink-black: #09090b;
             --ink-muted: #52525b;
-            --bg-preview: #e2e8f0;
+            --bg-preview: #cbd5e1;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,7 +45,6 @@
             print-color-adjust: exact;
         }
 
-        /* BARRA SUPERIOR NÃO IMPRESSA */
         .no-print-bar {
             background: #ffffff;
             width: 100%;
@@ -59,8 +55,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            border: 1px solid #94a3b8;
         }
 
         .no-print-bar h1 {
@@ -99,8 +95,8 @@
             background: #ffffff;
             padding: 8mm 6mm;
             margin-bottom: 20mm;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-            border: 1px solid #cbd5e1;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            border: 1px solid #94a3b8;
             display: grid;
             grid-template-columns: repeat(3, 63mm);
             grid-template-rows: repeat(3, 88mm);
@@ -132,7 +128,7 @@
             width: 63mm;
             height: 88mm;
             background: var(--mat-paper-oatmeal);
-            border: 2px solid var(--ink-black);
+            border: 2.2px solid var(--ink-black);
             border-radius: 3.5mm;
             position: relative;
             overflow: hidden;
@@ -161,13 +157,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1.5px solid var(--ink-black);
+            border-bottom: 1.6px solid var(--ink-black);
             padding-bottom: 1mm;
             background: rgba(244, 239, 230, 0.96);
         }
 
         .card-title {
-            font-size: 0.60rem;
+            font-size: 0.58rem;
             font-weight: 900;
             color: var(--ink-black);
             text-transform: uppercase;
@@ -176,7 +172,7 @@
 
         .card-badge {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.52rem;
+            font-size: 0.50rem;
             font-weight: 900;
             color: #ffffff;
             padding: 1.5px 5px;
@@ -192,7 +188,7 @@
             flex-direction: column;
             align-items: center;
             gap: 1mm;
-            border-top: 1.5px solid var(--ink-black);
+            border-top: 1.6px solid var(--ink-black);
             padding-top: 1mm;
             background: rgba(244, 239, 230, 0.96);
         }
@@ -205,30 +201,31 @@
         }
 
         .ohm-block {
-            width: 10px;
-            height: 10px;
+            width: 9.5px;
+            height: 9.5px;
             border: 1.6px solid var(--ink-black);
             border-radius: 2px;
         }
 
         .footer-text {
-            font-size: 0.42rem;
+            font-size: 0.41rem;
             font-family: 'JetBrains Mono', monospace;
             font-weight: 800;
             color: var(--ink-black);
             text-transform: uppercase;
             letter-spacing: 0.2px;
+            text-align: center;
         }
 
-        /* ABAS DE CATEGORIA */
-        .card-gen { border-top: 4.5mm solid #b45309; }
-        .card-r1 { border-top: 4.5mm solid #047857; }
-        .card-r2 { border-top: 4.5mm solid #1d4ed8; }
-        .card-r3 { border-top: 4.5mm solid #c2410c; }
-        .card-load { border-top: 4.5mm solid #4338ca; }
-        .card-gnd { border-top: 4.5mm solid #0f766e; }
-        .card-special { border-top: 4.5mm solid #0369a1; }
-        .card-danger { border-top: 4.5mm solid #b91c1c; }
+        /* ABAS DE CATEGORIA NO TOPO */
+        .card-gen { border-top: 4.5mm solid var(--cat-gen); }
+        .card-r1 { border-top: 4.5mm solid var(--cat-r1); }
+        .card-r2 { border-top: 4.5mm solid var(--cat-r2); }
+        .card-r3 { border-top: 4.5mm solid var(--cat-r3); }
+        .card-load { border-top: 4.5mm solid var(--cat-load); }
+        .card-gnd { border-top: 4.5mm solid var(--cat-gnd); }
+        .card-special { border-top: 4.5mm solid var(--cat-special); }
+        .card-danger { border-top: 4.5mm solid var(--cat-danger); }
 
         @page {
             size: A4 portrait;
@@ -255,41 +252,42 @@
 
     <div class="no-print-bar">
         <div>
-            <h1>🎴 VOLTZ: Circuit Break — Baralho Canônico 54 Cartas</h1>
-            <p>Design Unslop • Normas IEEE/ABNT • Trilha Contínua 10mm • Índices de Poker Monocromáticos</p>
+            <h1>🎴 VOLTZ: Circuit Break — Baralho Oficial de Produção</h1>
+            <p>54 Cartas • Trilha de Cobre Contínua de 10mm • Símbolos IEEE & ABNT • Notação Metrológica</p>
         </div>
         <button class="btn-print" onclick="window.print()">Imprimir Baralho A4</button>
     </div>
 
-    <!-- DEFS GLOBAIS DE GRADIENTES E PADRÕES VETORIAIS -->
+    <!-- DEFS GLOBAIS DE COBRE, CHANFROS E MALHA TÉCNICA -->
     <svg style="position: absolute; width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg">
         <defs>
-            <linearGradient id="solidCopperBus" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="brushedCopper" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stop-color="#f59e0b"/>
                 <stop offset="35%" stop-color="#d97706"/>
                 <stop offset="100%" stop-color="#b45309"/>
             </linearGradient>
-            <pattern id="benchGridDots" width="8" height="8" patternUnits="userSpaceOnUse">
+            <pattern id="benchMillimeterGrid" width="8" height="8" patternUnits="userSpaceOnUse">
                 <circle cx="2" cy="2" r="0.6" fill="#09090b" opacity="0.04"/>
                 <circle cx="6" cy="6" r="0.6" fill="#09090b" opacity="0.04"/>
             </pattern>
         </defs>
     </svg>
 
-    <!-- FUNÇÕES VETORIAIS PURAS DOS COMPONENTES (SEM AI SLOP / SEM EMOJIS) -->
+    <!-- FUNÇÕES DE GERAÇÃO DOS ATIVOS VETORIAIS DE BANCADA -->
     <script>
+        // Trilha de Cobre Contínua Horizontal de 10mm de borda a borda (Y: 147 a 185)
         function getBusLineSvg(hasLeft = true, hasRight = true) {
             let svg = '';
             if (hasLeft) {
                 svg += `
-                <rect x="0" y="147" width="62" height="38" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <rect x="0" y="147" width="62" height="38" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
                 <polygon points="34,166 18,155 18,177" fill="#09090b"/>
                 <polygon points="50,166 34,155 34,177" fill="#09090b"/>
                 `;
             }
             if (hasRight) {
                 svg += `
-                <rect x="176" y="147" width="62" height="38" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <rect x="176" y="147" width="62" height="38" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
                 <polygon points="196,166 180,155 180,177" fill="#09090b"/>
                 <polygon points="212,166 196,155 196,177" fill="#09090b"/>
                 `;
@@ -298,15 +296,15 @@
         }
 
         // Ponto de Teste Metrológico TP-01
-        function getTestPointSvg(cx = 36, cy = 114) {
+        function getTestPointSvg(cx = 38, cy = 116) {
             return `
             <circle cx="${cx}" cy="${cy}" r="7" fill="#f4efe6" stroke="#09090b" stroke-width="1.8"/>
             <circle cx="${cx}" cy="${cy}" r="3.5" fill="#f59e0b" stroke="#09090b" stroke-width="1"/>
-            <text x="${cx}" y="${cy + 13}" font-family="JetBrains Mono" font-size="5" font-weight="900" fill="#09090b" text-anchor="middle">TP-01</text>
+            <text x="${cx}" y="${cy + 13}" font-family="JetBrains Mono" font-size="5.2" font-weight="900" fill="#09090b" text-anchor="middle">TP-01</text>
             `;
         }
 
-        // Índices de Poker Duplos Monocromáticos Técnicos
+        // Índices de Poker Duplos Monocromáticos de Alta Precisão
         function getPokerIndices(cornerText, cornerColor) {
             return `
             <text x="12" y="28" font-family="JetBrains Mono" font-weight="900" font-size="10.5" fill="${cornerColor}">${cornerText}</text>
@@ -318,23 +316,23 @@
         function getGenSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('12V', '#b45309')}
 
-                <!-- 4 Barramentos Radiais de Potência -->
-                <rect x="100" y="0" width="38" height="85" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <!-- 4 Barramentos Radiais de Potência (10mm cada) -->
+                <rect x="100" y="0" width="38" height="85" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
                 <polygon points="119,25 108,42 130,42" fill="#09090b"/>
                 
-                <rect x="100" y="247" width="38" height="85" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <rect x="100" y="247" width="38" height="85" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
                 <polygon points="119,307 108,290 130,290" fill="#09090b"/>
 
-                <rect x="0" y="147" width="85" height="38" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <rect x="0" y="147" width="85" height="38" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
                 <polygon points="25,166 42,155 42,177" fill="#09090b"/>
 
-                <rect x="153" y="147" width="85" height="38" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <rect x="153" y="147" width="85" height="38" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
                 <polygon points="213,166 196,155 196,177" fill="#09090b"/>
 
-                <!-- Reator Circular Estilizado -->
+                <!-- Núcleo Reator de Cobre e Placas DC -->
                 <circle cx="119" cy="166" r="56" fill="#09090b" stroke="#b45309" stroke-width="3"/>
                 <circle cx="119" cy="166" r="46" fill="#f4efe6" stroke="#d97706" stroke-width="2.5"/>
 
@@ -343,44 +341,48 @@
                 <rect x="90" y="169" width="58" height="9" rx="2" fill="#09090b"/>
                 <rect x="98" y="182" width="42" height="6" rx="1.5" fill="#b45309"/>
 
-                <text x="119" y="126" font-family="Inter, sans-serif" font-weight="900" font-size="12" fill="#b45309" text-anchor="middle" letter-spacing="1.5">DC 12V</text>
+                <text x="119" y="126" font-family="Inter, sans-serif" font-weight="900" font-size="12" fill="#b45309" text-anchor="middle" letter-spacing="1.5">DC 12V // 12A</text>
             </svg>
             `;
         }
 
-        // 2. RESISTORES (1Ω, 2Ω, 3Ω)
+        // 2. RESISTORES REAIS COM CÓDIGO DE COR IEC (1Ω, 2Ω, 3Ω)
         function getResistorSVG(rVal, colorHex, b0, b1, b2) {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices(`${rVal}R`, colorHex)}
                 ${getBusLineSvg(true, true)}
-                ${getTestPointSvg(38, 118)}
+                ${getTestPointSvg(38, 116)}
 
+                <!-- Terminais Axiais de Estanho -->
                 <line x1="58" y1="166" x2="72" y2="166" stroke="#09090b" stroke-width="8" stroke-linecap="round"/>
                 <line x1="166" y1="166" x2="180" y2="166" stroke="#09090b" stroke-width="8" stroke-linecap="round"/>
 
+                <!-- Corpo Cerâmico de Alumina com Anéis IEC -->
                 <rect x="68" y="130" width="102" height="72" rx="16" fill="#fef9c3" stroke="#09090b" stroke-width="2.8"/>
                 
+                <!-- Faixas de Código de Cores Normalizadas -->
                 <rect x="84" y="130" width="11" height="72" fill="${b0}"/>
                 <rect x="103" y="130" width="11" height="72" fill="${b1}"/>
                 <rect x="122" y="130" width="11" height="72" fill="${b2}"/>
-                <rect x="146" y="130" width="9" height="72" fill="#d97706"/>
+                <rect x="146" y="130" width="9" height="72" fill="#d97706"/> <!-- Tolerância 5% Ouro -->
 
-                <text x="119" y="114" font-family="JetBrains Mono" font-weight="900" font-size="13" fill="${colorHex}" text-anchor="middle">R = ${rVal} OHM${rVal > 1 ? 'S' : ''}</text>
+                <text x="119" y="112" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="${colorHex}" text-anchor="middle">R = ${rVal}.0 OHM ±5%</text>
             </svg>
             `;
         }
 
-        // 3. LED PILOTO (3V // 1Ω)
+        // 3. LED PILOTO (3V // 1Ω) — Diodo Semicondutor
         function getLedSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('3V', '#4338ca')}
                 ${getBusLineSvg(true, true)}
-                ${getTestPointSvg(38, 118)}
+                ${getTestPointSvg(38, 116)}
 
+                <!-- Cúpula Epóxi com Junção PN e Fótons -->
                 <circle cx="119" cy="166" r="50" fill="#eef2ff" stroke="#4338ca" stroke-width="2.8"/>
                 <circle cx="119" cy="166" r="38" fill="#4338ca" stroke="#09090b" stroke-width="2.2"/>
                 
@@ -389,19 +391,19 @@
                 <line x1="154" y1="144" x2="182" y2="116" stroke="#4338ca" stroke-width="3.5" stroke-linecap="round"/>
                 <polygon points="182,116 170,119 179,128" fill="#4338ca"/>
 
-                <text x="119" y="100" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 3 VOLTS</text>
+                <text x="119" y="98" font-family="JetBrains Mono" font-weight="900" font-size="11.5" fill="#4338ca" text-anchor="middle">Vnom = 3.0V // 1.0 OHM</text>
             </svg>
             `;
         }
 
-        // 4. SERVIDOR CENTRAL (4V // 1Ω)
+        // 4. SERVIDOR CENTRAL (4V // 1Ω) — Rack Chassis
         function getServerSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('4V', '#4338ca')}
                 ${getBusLineSvg(true, true)}
-                ${getTestPointSvg(38, 118)}
+                ${getTestPointSvg(38, 116)}
 
                 <rect x="50" y="114" width="138" height="104" rx="10" fill="#09090b" stroke="#4338ca" stroke-width="2.8"/>
                 
@@ -416,19 +418,19 @@
                 <rect x="60" y="183" width="118" height="23" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1.5"/>
                 <circle cx="73" cy="194.5" r="4" fill="#38bdf8"/><circle cx="85" cy="194.5" r="4" fill="#38bdf8"/>
 
-                <text x="119" y="100" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 4 VOLTS</text>
+                <text x="119" y="98" font-family="JetBrains Mono" font-weight="900" font-size="11.5" fill="#4338ca" text-anchor="middle">Vnom = 4.0V // 1.0 OHM</text>
             </svg>
             `;
         }
 
-        // 5. SIRENE DE ALARME (6V // 1Ω)
+        // 5. SIRENE DE ALARME (6V // 1Ω) — Transdutor Acústico
         function getSireneSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('6V', '#4338ca')}
                 ${getBusLineSvg(true, true)}
-                ${getTestPointSvg(38, 118)}
+                ${getTestPointSvg(38, 116)}
 
                 <circle cx="119" cy="166" r="50" fill="#eef2ff" stroke="#4338ca" stroke-width="2.8"/>
                 <path d="M 92 148 L 92 184 L 112 184 L 140 206 L 140 126 L 112 148 Z" fill="#09090b" stroke="#4338ca" stroke-width="2"/>
@@ -437,56 +439,72 @@
                 <path d="M 150 146 Q 164 166 150 186" fill="none" stroke="#4338ca" stroke-width="4" stroke-linecap="round"/>
                 <path d="M 162 134 Q 182 166 162 198" fill="none" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round"/>
 
-                <text x="119" y="100" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
+                <text x="119" y="98" font-family="JetBrains Mono" font-weight="900" font-size="11.5" fill="#4338ca" text-anchor="middle">Vnom = 6.0V // 1.0 OHM</text>
             </svg>
             `;
         }
 
-        // 6. MOTOR DE BOMBA (6V // 2Ω)
+        // 6. MOTOR DE BOMBA (6V // 2Ω) — Rotor Indutivo
         function getMotorSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('6V', '#4338ca')}
                 ${getBusLineSvg(true, true)}
-                ${getTestPointSvg(38, 118)}
+                ${getTestPointSvg(38, 116)}
 
                 <rect x="60" y="118" width="118" height="96" rx="12" fill="#f4efe6" stroke="#09090b" stroke-width="2.8"/>
+                <line x1="60" y1="138" x2="46" y2="138" stroke="#09090b" stroke-width="4"/>
+                <line x1="60" y1="152" x2="46" y2="152" stroke="#09090b" stroke-width="4"/>
+                <line x1="60" y1="166" x2="46" y2="166" stroke="#09090b" stroke-width="4"/>
+                <line x1="60" y1="180" x2="46" y2="180" stroke="#09090b" stroke-width="4"/>
+
+                <line x1="178" y1="138" x2="192" y2="138" stroke="#09090b" stroke-width="4"/>
+                <line x1="178" y1="152" x2="192" y2="152" stroke="#09090b" stroke-width="4"/>
+                <line x1="178" y1="166" x2="192" y2="166" stroke="#09090b" stroke-width="4"/>
+                <line x1="178" y1="180" x2="192" y2="180" stroke="#09090b" stroke-width="4"/>
+
                 <circle cx="119" cy="166" r="34" fill="#09090b" stroke="#d97706" stroke-width="2.8"/>
                 <text x="119" y="178" font-family="Inter, sans-serif" font-weight="900" font-size="30" fill="#ffffff" text-anchor="middle">M</text>
-                <text x="119" y="100" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
+
+                <text x="119" y="98" font-family="JetBrains Mono" font-weight="900" font-size="11.5" fill="#4338ca" text-anchor="middle">Vnom = 6.0V // 2.0 OHMS</text>
             </svg>
             `;
         }
 
-        // 7. TOMÓGRAFO UTI (12V // 4Ω)
+        // 7. TOMÓGRAFO UTI (12V // 4Ω) — Gantry Ressonância
         function getTomografoSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('12V', '#4338ca')}
                 ${getBusLineSvg(true, true)}
-                ${getTestPointSvg(38, 118)}
+                ${getTestPointSvg(38, 116)}
 
                 <circle cx="119" cy="166" r="56" fill="#09090b" stroke="#b91c1c" stroke-width="3"/>
                 <circle cx="119" cy="166" r="44" fill="#18181b" stroke="#38bdf8" stroke-width="2"/>
                 <circle cx="119" cy="166" r="30" fill="#ffffff" stroke="#b91c1c" stroke-width="2.2"/>
                 <circle cx="119" cy="166" r="14" fill="#09090b"/>
 
-                <text x="119" y="98" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="#4338ca" text-anchor="middle">Vnom = 12 VOLTS</text>
+                <line x1="119" y1="112" x2="119" y2="132" stroke="#b91c1c" stroke-width="3"/>
+                <line x1="119" y1="200" x2="119" y2="220" stroke="#b91c1c" stroke-width="3"/>
+                <line x1="65" y1="166" x2="85" y2="166" stroke="#b91c1c" stroke-width="3"/>
+                <line x1="153" y1="166" x2="173" y2="166" stroke="#b91c1c" stroke-width="3"/>
+
+                <text x="119" y="98" font-family="JetBrains Mono" font-weight="900" font-size="11.5" fill="#4338ca" text-anchor="middle">Vnom = 12.0V // 4.0 OHMS</text>
             </svg>
             `;
         }
 
-        // 8. CABO TERRA (GND // 0V)
+        // 8. CABO TERRA (GND // 0V) — Aterramento ABNT
         function getGndSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('0V', '#0f766e')}
                 ${getBusLineSvg(true, false)}
 
-                <rect x="24" y="147" width="88" height="38" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <rect x="24" y="147" width="88" height="38" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
 
                 <rect x="108" y="104" width="116" height="124" rx="12" fill="#09090b" stroke="#0f766e" stroke-width="3.2"/>
                 <line x1="110" y1="166" x2="154" y2="166" stroke="#0f766e" stroke-width="7"/>
@@ -495,19 +513,19 @@
                 <line x1="184" y1="152" x2="184" y2="180" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round"/>
                 <line x1="196" y1="162" x2="196" y2="170" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round"/>
 
-                <text x="160" y="92" font-family="JetBrains Mono" font-weight="900" font-size="12.5" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
+                <text x="160" y="92" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="#0f766e" text-anchor="middle">POTENCIAL = 0.0V</text>
             </svg>
             `;
         }
 
-        // 9. FUSÍVEL 1A
+        // 9. FUSÍVEL 1A — Filamento de Platina
         function getFuseSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('1A', '#0369a1')}
                 ${getBusLineSvg(true, true)}
-                ${getTestPointSvg(38, 118)}
+                ${getTestPointSvg(38, 116)}
 
                 <rect x="50" y="130" width="138" height="72" rx="16" fill="#f0f9ff" stroke="#0369a1" stroke-width="2.8"/>
                 <rect x="50" y="130" width="26" height="72" rx="4" fill="#cbd5e1" stroke="#09090b" stroke-width="2"/>
@@ -521,34 +539,34 @@
             `;
         }
 
-        // 10. CONECTOR Y EM PARALELO
+        // 10. CONECTOR Y EM PARALELO — Nó de Kirchhoff
         function getNodeYSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('Y', '#0369a1')}
 
-                <rect x="0" y="147" width="119" height="38" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <rect x="0" y="147" width="119" height="38" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
                 <polygon points="45,166 30,155 30,177" fill="#09090b"/>
                 
-                <rect x="119" y="147" width="119" height="38" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <rect x="119" y="147" width="119" height="38" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
                 <polygon points="195,166 180,155 180,177" fill="#09090b"/>
 
-                <path d="M 100 166 Q 119 100 119 0 L 157 0 Q 157 100 138 166 Z" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.4"/>
+                <path d="M 100 166 Q 119 100 119 0 L 157 0 Q 157 100 138 166 Z" fill="url(#brushedCopper)" stroke="#09090b" stroke-width="2.4"/>
 
                 <circle cx="119" cy="166" r="26" fill="#09090b"/>
-                <circle cx="119" cy="166" r="18" fill="url(#solidCopperBus)" stroke="#f59e0b" stroke-width="2"/>
+                <circle cx="119" cy="166" r="18" fill="url(#brushedCopper)" stroke="#f59e0b" stroke-width="2"/>
 
-                <text x="119" y="110" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="#0369a1" text-anchor="middle">DIVISOR DE RAMO</text>
+                <text x="119" y="110" font-family="JetBrains Mono" font-weight="900" font-size="12" fill="#0369a1" text-anchor="middle">NÓ DE KIRCHHOFF</text>
             </svg>
             `;
         }
 
-        // 11. SURTO DE REDE (24V)
+        // 11. SURTO DE REDE (24V) — Descarga Atmosférica
         function getSurgeSVG() {
             return `
             <svg class="card-svg-hero" viewBox="0 0 238 332">
-                <rect width="238" height="332" fill="url(#benchGridDots)"/>
+                <rect width="238" height="332" fill="url(#benchMillimeterGrid)"/>
                 ${getPokerIndices('24V', '#b91c1c')}
                 ${getBusLineSvg(true, true)}
 
@@ -561,11 +579,11 @@
     </script>
 
     <!-- ========================================================================= -->
-    <!-- FOLHA 1/6: GERADOR 12V (1x) + RESISTOR 1Ω (8x) [9 Cartas]                 -->
+    <!-- FOLHA 1 / 6: GERADOR 12V (1x) + RESISTOR 1Ω (8x) [9 Cartas]               -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO CANÔNICO 54 CARTAS</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO OFICIAL DE PRODUÇÃO</span>
             <span>FOLHA 1 / 6 (GERADOR 12V & RESISTORES 1Ω)</span>
         </div>
 
@@ -573,12 +591,12 @@
         <div class="card card-gen">
             <div class="card-header">
                 <span class="card-title">Gerador Central</span>
-                <span class="card-badge" style="background:#b45309;">DC 12V</span>
+                <span class="card-badge" style="background:var(--cat-gen);">DC 12V</span>
             </div>
             <script>document.write(getGenSVG());</script>
             <div class="card-footer">
                 <div class="blocks-indicator">
-                    <div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div><div class="ohm-block" style="background:#b45309"></div>
+                    <div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div><div class="ohm-block" style="background:var(--cat-gen)"></div>
                 </div>
                 <div class="footer-text">4 Portas Radiais • 12 Blocos de Potência</div>
             </div>
@@ -589,10 +607,10 @@
             for (let i = 0; i < 8; i++) {
                 document.write(`
                 <div class="card card-r1">
-                    <div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-badge" style="background:#047857;">1 OHM</span></div>
+                    <div class="card-header"><span class="card-title">Resistor Leve</span><span class="card-badge" style="background:var(--cat-r1);">1 OHM</span></div>
                     ${getResistorSVG(1, '#047857', '#78350f', '#09090b', '#d97706')}
                     <div class="card-footer">
-                        <div class="blocks-indicator"><div class="ohm-block" style="background:#047857;"></div></div>
+                        <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-r1);"></div></div>
                         <div class="footer-text">+1 Bloco no Ramo • Trilha Contínua</div>
                     </div>
                 </div>
@@ -602,11 +620,11 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- FOLHA 2/6: RESISTOR 2Ω (8x) + RESISTOR 3Ω (1x) [9 Cartas]                 -->
+    <!-- FOLHA 2 / 6: RESISTOR 2Ω (8x) + RESISTOR 3Ω (1x) [9 Cartas]               -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO CANÔNICO 54 CARTAS</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO OFICIAL DE PRODUÇÃO</span>
             <span>FOLHA 2 / 6 (RESISTORES 2Ω & 3Ω)</span>
         </div>
 
@@ -615,10 +633,10 @@
             for (let i = 0; i < 8; i++) {
                 document.write(`
                 <div class="card card-r2">
-                    <div class="card-header"><span class="card-title">Resistor Médio</span><span class="card-badge" style="background:#1d4ed8;">2 OHMS</span></div>
+                    <div class="card-header"><span class="card-title">Resistor Médio</span><span class="card-badge" style="background:var(--cat-r2);">2 OHMS</span></div>
                     ${getResistorSVG(2, '#1d4ed8', '#b91c1c', '#09090b', '#d97706')}
                     <div class="card-footer">
-                        <div class="blocks-indicator"><div class="ohm-block" style="background:#1d4ed8;"></div><div class="ohm-block" style="background:#1d4ed8;"></div></div>
+                        <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-r2);"></div><div class="ohm-block" style="background:var(--cat-r2);"></div></div>
                         <div class="footer-text">+2 Blocos no Ramo • Trilha Contínua</div>
                     </div>
                 </div>
@@ -627,10 +645,10 @@
             // 1x 3Ω
             document.write(`
             <div class="card card-r3">
-                <div class="card-header"><span class="card-title">Resistor Pesado</span><span class="card-badge" style="background:#c2410c;">3 OHMS</span></div>
+                <div class="card-header"><span class="card-title">Resistor Pesado</span><span class="card-badge" style="background:var(--cat-r3);">3 OHMS</span></div>
                 ${getResistorSVG(3, '#c2410c', '#c2410c', '#09090b', '#d97706')}
                 <div class="card-footer">
-                    <div class="blocks-indicator"><div class="ohm-block" style="background:#c2410c;"></div><div class="ohm-block" style="background:#c2410c;"></div><div class="ohm-block" style="background:#c2410c;"></div></div>
+                    <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-r3);"></div><div class="ohm-block" style="background:var(--cat-r3);"></div><div class="ohm-block" style="background:var(--cat-r3);"></div></div>
                     <div class="footer-text">+3 Blocos no Ramo • Trilha Contínua</div>
                 </div>
             </div>
@@ -639,23 +657,23 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- FOLHA 3/6: RESISTOR 3Ω (5x) + LED PILOTO (3x) + SERVIDOR (1x) [9 Cartas]  -->
+    <!-- FOLHA 3 / 6: RESISTOR 3Ω (5x) + LED PILOTO (3x) + SERVIDOR (1x) [9]       -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO CANÔNICO 54 CARTAS</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO OFICIAL DE PRODUÇÃO</span>
             <span>FOLHA 3 / 6 (RESISTORES 3Ω & EQUIPAMENTOS)</span>
         </div>
 
         <script>
-            // 5x 3Ω (Totalizando 6x 3Ω com o da Folha 2)
+            // 5x 3Ω (Totalizando 6x 3Ω)
             for (let i = 0; i < 5; i++) {
                 document.write(`
                 <div class="card card-r3">
-                    <div class="card-header"><span class="card-title">Resistor Pesado</span><span class="card-badge" style="background:#c2410c;">3 OHMS</span></div>
+                    <div class="card-header"><span class="card-title">Resistor Pesado</span><span class="card-badge" style="background:var(--cat-r3);">3 OHMS</span></div>
                     ${getResistorSVG(3, '#c2410c', '#c2410c', '#09090b', '#d97706')}
                     <div class="card-footer">
-                        <div class="blocks-indicator"><div class="ohm-block" style="background:#c2410c;"></div><div class="ohm-block" style="background:#c2410c;"></div><div class="ohm-block" style="background:#c2410c;"></div></div>
+                        <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-r3);"></div><div class="ohm-block" style="background:var(--cat-r3);"></div><div class="ohm-block" style="background:var(--cat-r3);"></div></div>
                         <div class="footer-text">+3 Blocos no Ramo • Trilha Contínua</div>
                     </div>
                 </div>
@@ -666,10 +684,10 @@
             for (let i = 0; i < 3; i++) {
                 document.write(`
                 <div class="card card-load">
-                    <div class="card-header"><span class="card-title">LED Piloto</span><span class="card-badge" style="background:#4338ca;">3V // 1Ω</span></div>
+                    <div class="card-header"><span class="card-title">LED Piloto</span><span class="card-badge" style="background:var(--cat-load);">3V // 1Ω</span></div>
                     ${getLedSVG()}
                     <div class="card-footer">
-                        <div class="blocks-indicator"><div class="ohm-block" style="background:#4338ca;"></div></div>
+                        <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-load);"></div></div>
                         <div class="footer-text">Meta do Ramo: 4 Blocos Totais (12V / 4 = 3V)</div>
                     </div>
                 </div>
@@ -679,10 +697,10 @@
             // 1x Servidor Central (4V // 1Ω)
             document.write(`
             <div class="card card-load">
-                <div class="card-header"><span class="card-title">Servidor Central</span><span class="card-badge" style="background:#4338ca;">4V // 1Ω</span></div>
+                <div class="card-header"><span class="card-title">Servidor Central</span><span class="card-badge" style="background:var(--cat-load);">4V // 1Ω</span></div>
                 ${getServerSVG()}
                 <div class="card-footer">
-                    <div class="blocks-indicator"><div class="ohm-block" style="background:#4338ca;"></div></div>
+                    <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-load);"></div></div>
                     <div class="footer-text">Meta do Ramo: 3 Blocos Totais (12V / 3 = 4V)</div>
                 </div>
             </div>
@@ -691,11 +709,11 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- FOLHA 4/6: SERVIDOR (2x) + SIRENE (2x) + MOTOR (3x) + TOMÓGRAFO (2x) [9]  -->
+    <!-- FOLHA 4 / 6: SERVIDOR (2x) + SIRENE (2x) + MOTOR (3x) + TOMÓGRAFO (2x) [9]-->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO CANÔNICO 54 CARTAS</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO OFICIAL DE PRODUÇÃO</span>
             <span>FOLHA 4 / 6 (SERVIDORES, SIRENES, MOTORES & TOMÓGRAFOS)</span>
         </div>
 
@@ -704,10 +722,10 @@
             for (let i = 0; i < 2; i++) {
                 document.write(`
                 <div class="card card-load">
-                    <div class="card-header"><span class="card-title">Servidor Central</span><span class="card-badge" style="background:#4338ca;">4V // 1Ω</span></div>
+                    <div class="card-header"><span class="card-title">Servidor Central</span><span class="card-badge" style="background:var(--cat-load);">4V // 1Ω</span></div>
                     ${getServerSVG()}
                     <div class="card-footer">
-                        <div class="blocks-indicator"><div class="ohm-block" style="background:#4338ca;"></div></div>
+                        <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-load);"></div></div>
                         <div class="footer-text">Meta do Ramo: 3 Blocos Totais (12V / 3 = 4V)</div>
                     </div>
                 </div>
@@ -718,10 +736,10 @@
             for (let i = 0; i < 2; i++) {
                 document.write(`
                 <div class="card card-load">
-                    <div class="card-header"><span class="card-title">Sirene de Alarme</span><span class="card-badge" style="background:#4338ca;">6V // 1Ω</span></div>
+                    <div class="card-header"><span class="card-title">Sirene de Alarme</span><span class="card-badge" style="background:var(--cat-load);">6V // 1Ω</span></div>
                     ${getSireneSVG()}
                     <div class="card-footer">
-                        <div class="blocks-indicator"><div class="ohm-block" style="background:#4338ca;"></div></div>
+                        <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-load);"></div></div>
                         <div class="footer-text">Meta do Ramo: 2 Blocos Totais (12V / 2 = 6V)</div>
                     </div>
                 </div>
@@ -732,10 +750,10 @@
             for (let i = 0; i < 3; i++) {
                 document.write(`
                 <div class="card card-load">
-                    <div class="card-header"><span class="card-title">Motor de Bomba</span><span class="card-badge" style="background:#4338ca;">6V // 2Ω</span></div>
+                    <div class="card-header"><span class="card-title">Motor de Bomba</span><span class="card-badge" style="background:var(--cat-load);">6V // 2Ω</span></div>
                     ${getMotorSVG()}
                     <div class="card-footer">
-                        <div class="blocks-indicator"><div class="ohm-block" style="background:#4338ca;"></div><div class="ohm-block" style="background:#4338ca;"></div></div>
+                        <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-load);"></div><div class="ohm-block" style="background:var(--cat-load);"></div></div>
                         <div class="footer-text">Meta do Ramo: 4 Blocos Totais (12V · 2/4 = 6V)</div>
                     </div>
                 </div>
@@ -746,10 +764,10 @@
             for (let i = 0; i < 2; i++) {
                 document.write(`
                 <div class="card card-load">
-                    <div class="card-header"><span class="card-title">Tomógrafo UTI</span><span class="card-badge" style="background:#4338ca;">12V // 4Ω</span></div>
+                    <div class="card-header"><span class="card-title">Tomógrafo UTI</span><span class="card-badge" style="background:var(--cat-load);">12V // 4Ω</span></div>
                     ${getTomografoSVG()}
                     <div class="card-footer">
-                        <div class="blocks-indicator"><div class="ohm-block" style="background:#4338ca;"></div><div class="ohm-block" style="background:#4338ca;"></div><div class="ohm-block" style="background:#4338ca;"></div><div class="ohm-block" style="background:#4338ca;"></div></div>
+                        <div class="blocks-indicator"><div class="ohm-block" style="background:var(--cat-load);"></div><div class="ohm-block" style="background:var(--cat-load);"></div><div class="ohm-block" style="background:var(--cat-load);"></div><div class="ohm-block" style="background:var(--cat-load);"></div></div>
                         <div class="footer-text">Meta do Ramo: 4 Blocos Totais (Liga Direto em 12V)</div>
                     </div>
                 </div>
@@ -759,11 +777,11 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- FOLHA 5/6: CABO TERRA (4x) + FUSÍVEL 1A (3x) + SURTO 24V (2x) [9 Cartas]  -->
+    <!-- FOLHA 5 / 6: CABO TERRA (4x) + FUSÍVEL 1A (3x) + SURTO 24V (2x) [9]       -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO CANÔNICO 54 CARTAS</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO OFICIAL DE PRODUÇÃO</span>
             <span>FOLHA 5 / 6 (CABOS TERRA, FUSÍVEIS & SURTOS)</span>
         </div>
 
@@ -772,9 +790,9 @@
             for (let i = 0; i < 4; i++) {
                 document.write(`
                 <div class="card card-gnd">
-                    <div class="card-header"><span class="card-title">Cabo Terra</span><span class="card-badge" style="background:#0f766e;">GND // 0V</span></div>
+                    <div class="card-header"><span class="card-title">Cabo Terra</span><span class="card-badge" style="background:var(--cat-gnd);">GND // 0V</span></div>
                     ${getGndSVG()}
-                    <div class="card-footer"><div class="footer-text" style="color:#0f766e; font-weight:900;">FECHAMENTO • DISPARO DE TESTE!</div></div>
+                    <div class="card-footer"><div class="footer-text" style="color:var(--cat-gnd); font-weight:900;">FECHAMENTO • DISPARO DE TESTE!</div></div>
                 </div>
                 `);
             }
@@ -783,7 +801,7 @@
             for (let i = 0; i < 3; i++) {
                 document.write(`
                 <div class="card card-special">
-                    <div class="card-header"><span class="card-title">Fusível 1A</span><span class="card-badge" style="background:#0369a1;">PROTEÇÃO</span></div>
+                    <div class="card-header"><span class="card-title">Fusível 1A</span><span class="card-badge" style="background:var(--cat-special);">PROTEÇÃO</span></div>
                     ${getFuseSVG()}
                     <div class="card-footer"><div class="footer-text">Salva a carga em caso de Sobretensão</div></div>
                 </div>
@@ -794,9 +812,9 @@
             for (let i = 0; i < 2; i++) {
                 document.write(`
                 <div class="card card-danger">
-                    <div class="card-header"><span class="card-title">Surto de Rede</span><span class="card-badge" style="background:#b91c1c;">SURTO 24V</span></div>
+                    <div class="card-header"><span class="card-title">Surto de Rede</span><span class="card-badge" style="background:var(--cat-danger);">SURTO 24V</span></div>
                     ${getSurgeSVG()}
-                    <div class="card-footer"><div class="footer-text" style="color:#b91c1c; font-weight:900;">DOBRA TENSÃO // EXIGE +RESISTORES</div></div>
+                    <div class="card-footer"><div class="footer-text" style="color:var(--cat-danger); font-weight:900;">DOBRA TENSÃO // EXIGE +RESISTORES</div></div>
                 </div>
                 `);
             }
@@ -804,11 +822,11 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- FOLHA 6/6: CABO TERRA (4x) + CONECTOR Y (5x) [9 Cartas]                   -->
+    <!-- FOLHA 6 / 6: CABO TERRA (4x) + CONECTOR Y (5x) [9 Cartas]                 -->
     <!-- ========================================================================= -->
     <div class="a4-page">
         <div class="page-header-tag">
-            <span>VOLTZ: CIRCUIT BREAK // BARALHO CANÔNICO 54 CARTAS</span>
+            <span>VOLTZ: CIRCUIT BREAK // BARALHO OFICIAL DE PRODUÇÃO</span>
             <span>FOLHA 6 / 6 (CABOS TERRA & CONECTORES Y EM PARALELO)</span>
         </div>
 
@@ -817,9 +835,9 @@
             for (let i = 0; i < 4; i++) {
                 document.write(`
                 <div class="card card-gnd">
-                    <div class="card-header"><span class="card-title">Cabo Terra</span><span class="card-badge" style="background:#0f766e;">GND // 0V</span></div>
+                    <div class="card-header"><span class="card-title">Cabo Terra</span><span class="card-badge" style="background:var(--cat-gnd);">GND // 0V</span></div>
                     ${getGndSVG()}
-                    <div class="card-footer"><div class="footer-text" style="color:#0f766e; font-weight:900;">FECHAMENTO • DISPARO DE TESTE!</div></div>
+                    <div class="card-footer"><div class="footer-text" style="color:var(--cat-gnd); font-weight:900;">FECHAMENTO • DISPARO DE TESTE!</div></div>
                 </div>
                 `);
             }
@@ -828,7 +846,7 @@
             for (let i = 0; i < 5; i++) {
                 document.write(`
                 <div class="card card-special">
-                    <div class="card-header"><span class="card-title">Conector Y</span><span class="card-badge" style="background:#0369a1;">BIFURCAÇÃO</span></div>
+                    <div class="card-header"><span class="card-title">Conector Y</span><span class="card-badge" style="background:var(--cat-special);">BIFURCAÇÃO</span></div>
                     ${getNodeYSVG()}
                     <div class="card-footer"><div class="footer-text">Bifurca o Ramo em 2 Linhas de 12V</div></div>
                 </div>
