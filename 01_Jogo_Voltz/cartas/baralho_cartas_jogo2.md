@@ -1,117 +1,74 @@
-# 🎴 Baralho Oficial para Impressão — VOLTZ: CIRCUIT BREAK (Versão Refinada LLM Council)
-**Jogo de Cartas Cooperativo com Linguagem Acessível, Divisores de Tensão e Cabo Terra (GND)**
+# 🎴 Baralho Oficial & Matriz Topológica — VOLTZ: CIRCUIT BREAK
+**Especificação Matemática e Espacial Validada por Simulação Monte Carlo (1.000 Partidas)**
 
-Este documento contém a especificação gráfica, textual e dimensional de todas as **54 cartas** do jogo físico para serem impressas em folhas A4 (formato de grade 3x3 por folha, total de 6 páginas A4).
-
----
-
-## 📐 Especificações de Impressão e Ergonomia Visual
-
-* **Tamanho Padrão de Carta**: $63\text{ mm} \times 88\text{ mm}$ (Poker Size).
-* **Grid por Página A4**: 9 cartas por folha ($3 \times 3$).
-* **Modelagem de Física Realista**:
-  * As cartas de Equipamentos exibem apenas a **Energia Necessária ($V_{nom}$)** e a **Resistência Base ($R_{equip}$)**.
-  * A tabela de conversão proporcional de blocos fica no **Guia Rápido de Mesa (Player Aid)**, estimulando a dedução real da Lei de Ohm sem receitas mágicas pré-calculadas.
+Este documento consolida a especificação canônica do baralho do VOLTZ, incorporando as descobertas da **Simulação Monte Carlo de Topologia 2D** ([`simular_balanceamento.js`](file:///C:/codigos/FEBRACE/01_Jogo_Voltz/web_multiplayer/simular_balanceamento.js)).
 
 ---
 
-## 🃏 Catálogo Completo das 54 Cartas
+## 🔬 1. Decisões Baseadas em Dados da Simulação Monte Carlo
 
-### 🔴 CARTA CENTRAL DO GERADOR (1 Carta)
-```
-┌──────────────────────────────────────────────────┐
-│ [TOP: 2 Conectores]    [RIGHT: 1 Conector]       │
-│                                                  │
-│          ⚡ GERADOR PRINCIPAL ENERGIZADO         │
-│          Bateria de 12 Blocos de Energia         │
-│          [ 🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨 ] (Vin = 12V)  │
-│                                                  │
-│ [LEFT: 1 Conector]    [BOTTOM: 1 Conector]       │
-└──────────────────────────────────────────────────┘
-```
+### 📏 Decisão A: Tamanho do Baralho (63 Cartas // 7 Páginas A4)
+* **Comparação Estatística (1.000 Partidas por Cenário):**
+  * **54 Cartas (6 Folhas A4):** Vitória de $81.7\%$, sobram apenas $11\text{ a }13\text{ cartas}$ no monte. Excelente para partidas rápidas de 2 jogadores, mas apertado para 4 jogadores.
+  * **63 Cartas (7 Folhas A4 — Vencedor Oficial):** Vitória equilibrada de $77.8\% \text{ a } 81.6\%$, com média de **$20.2\text{ cartas}$ restantes ao vencer**. Ponto ideal de tensão cooperativa para 2, 3 e 4 jogadores.
+  * **72 Cartas (8 Folhas A4):** Vitória de $85.6\%$, com sobra excessiva de $33\text{ cartas}$ no monte (quase metade do baralho intocada, diluindo a urgência).
 
 ---
 
-### 🟢 CARTAS DE RESISTOR (22 Cartas)
-* **Resistor Leve 1Ω (Verde)** — 8 Cartas: Estampa **1 Bloco** `[ ■ 1Ω ]`.
-* **Resistor Médio 2Ω (Azul)** — 8 Cartas: Estampa **2 Blocos** `[ ■ ■ 2Ω ]`.
-* **Resistor Pesado 3Ω (Laranja)** — 6 Cartas: Estampa **3 Blocos** `[ ■ ■ ■ 3Ω ]`.
+### 📐 Decisão B: Curvas Integradas nos Componentes (Zero Cartas Vazias)
+* **Problema Resolvido:** Circuitos puramente retos avançam $35.2\text{cm}$ por ramo e escapam da mesa.
+* **Solução Adotada:** Em vez de cartas de "arame vazio", **as curvas de 90° são integradas diretamente nos corpos dos resistores, cargas e aterramentos**:
+  * Resistor $1\Omega$ Reto ($5\times$) + Resistor $1\Omega$ em Joelho 90° ($4\times$).
+  * Resistor $2\Omega$ Reto ($5\times$) + Resistor $2\Omega$ em Joelho 90° ($4\times$).
+  * Resistor $3\Omega$ Reto ($4\times$) + Resistor $3\Omega$ em Joelho 90° ($3\times$).
+  * Resistor $4\Omega$ Industrial em Joelho 90° ($2\times$).
+  * Cargas em Esquina (Sirene e Motor com saída em 90°).
 
 ---
 
-### ⚙️ CARTAS DE EQUIPAMENTOS (13 Cartas)
-> **LAYOUT REFINADO**: Exibe apenas Energia Necessária ($V_{nom}$) e Resistência Base ($R_{equip}$).
-
-#### 💡 LED Piloto — 3 Cartas
-* **Energia Necessária ($V_{nom}$)**: $3\text{ Volts}$.
-* **Resistência Base ($R_{equip}$)**: `[ ■ ]` ($1\Omega$).
-* **Efeito**: Ativa a iluminação do setor ao ser energizado com $3\text{V}$!
-
-#### 🖥️ Servidor Central — 3 Cartas
-* **Energia Necessária ($V_{nom}$)**: $4\text{ Volts}$.
-* **Resistência Base ($R_{equip}$)**: `[ ■ ]` ($1\Omega$).
-* **Efeito**: Ativa a rede de computadores ao ser energizado com $4\text{V}$!
-
-#### 🚨 Sirene de Alerta — 2 Cartas
-* **Energia Necessária ($V_{nom}$)**: $6\text{ Volts}$.
-* **Resistência Base ($R_{equip}$)**: `[ ■ ]` ($1\Omega$).
-* **Efeito**: Ativa o alarme ao ser energizado com $6\text{V}$!
-
-#### ⚙️ Motor de Bomba — 3 Cartas
-* **Energia Necessária ($V_{nom}$)**: $6\text{ Volts}$.
-* **Resistência Base ($R_{equip}$)**: `[ ■ ■ ]` ($2\Omega$).
-* **Efeito**: Ativa o sistema hidráulico ao ser energizado com $6\text{V}$!
-
-#### 🏥 Tomógrafo UTI — 2 Cartas
-* **Energia Necessária ($V_{nom}$)**: $12\text{ Volts}$.
-* **Resistência Base ($R_{equip}$)**: `[ ■ ■ ■ ■ ]` ($4\Omega$).
-* **Efeito**: Liga direto na fonte de $12\text{V}$!
-
----
-
-### ⏚ CARTAS DE CABO TERRA (GND - 0V) (8 Cartas) 🛑
-> **CARTA DE ATERRAMENTO E GATILHO**: Consome 1 Ação do turno. Fecha a malha ($12\text{V} \to 0\text{V}$) e dispara o Teste do Ramo.
+## 🃏 2. Catálogo Oficial da Matriz Canônica (63 Cartas // 7 Páginas A4)
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│ ▲ [CONECTOR DE ATERRAMENTO]                              │
-├──────────────────────────────────────────────────────────┤
-│                    ⏚ CABO TERRA (GND - 0V)               │
-│              << GATILHO DE TESTE DO CIRCUITO >>          │
-│                                                          │
-│  Gasta 1 Ação de Turno.                                  │
-│  Confera a proporção de blocos com a Tabela de Mesa:     │
-│  • Voltagem Exata == Vnom ──► 🟢 ACENDEU! Setor Salvo 🛑 │
-│  • Voltagem Maior > Vnom  ──► 💥 SOBRETENSÃO (Queimou)   │
-│  • Voltagem Menor < Vnom  ──► ⚪ SUBTENSÃO (Ação Gasta)  │
-└──────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        MATRIZ CANÔNICA DE 63 CARTAS DO VOLTZ                           │
+├───────────────────┬──────────────┬────────┬──────────────┬──────────────┬──────────────┤
+│ CATEGORIA         │ ID DA CARTA  │ VALOR  │ TOPOLOGIA    │ QUANTIDADE   │ COR / SÍMBOLO│
+├───────────────────┼──────────────┼────────┼──────────────┼──────────────┼──────────────┤
+│ ⚡ Fonte Central   │ gen_12v      │ DC 12V │ 4 Saídas 10mm│ 1x           │ Cobre Escuro │
+│ 🟢 Resistor Leve  │ res_1ohm_str │ 1.0 Ω  │ Reto (L-O)   │ 5x           │ Verde / IEC  │
+│ 🟢 Resistor Leve  │ res_1ohm_crn │ 1.0 Ω  │ Joelho 90°   │ 4x           │ Verde / IEC  │
+│ 🔵 Resistor Médio │ res_2ohm_str │ 2.0 Ω  │ Reto (L-O)   │ 5x           │ Azul / IEC   │
+│ 🔵 Resistor Médio │ res_2ohm_crn │ 2.0 Ω  │ Joelho 90°   │ 4x           │ Azul / IEC   │
+│ 🟠 Resistor Pesado│ res_3ohm_str │ 3.0 Ω  │ Reto (L-O)   │ 4x           │ Laranja / IEC│
+│ 🟠 Resistor Pesado│ res_3ohm_crn │ 3.0 Ω  │ Joelho 90°   │ 3x           │ Laranja / IEC│
+│ 🟤 Resistor Força │ res_4ohm_crn │ 4.0 Ω  │ Joelho 90°   │ 2x           │ Marrom / IEC │
+│ 💡 LED Piloto     │ load_led     │ 3V/1Ω  │ Reto (L-O)   │ 3x           │ Amarelo / PN │
+│ 🖥️ Servidor       │ load_servidor│ 4V/1Ω  │ Reto (L-O)   │ 3x           │ Azul Celeste │
+│ 🚨 Sirene         │ load_sirene  │ 6V/1Ω  │ Joelho 90°   │ 3x           │ Vermelho-Rubi│
+│ 💧 Bomba D'Água   │ load_motor   │ 6V/2Ω  │ Joelho 90°   │ 3x           │ Voluta Azul  │
+│ 🏥 Tomógrafo UTI  │ load_tomograf│ 12V/4Ω │ Reto (L-O)   │ 2x           │ Gantry Torus │
+│ ⏚ Cabo Terra      │ gnd_straight │ 0.0 V  │ Reto Dead-End│ 5x           │ Verde-Água   │
+│ ⏚ Cabo Terra      │ gnd_corner   │ 0.0 V  │ 90° Dead-End │ 3x           │ Verde-Água   │
+│ 🔀 Conector Y     │ node_y       │ --     │ Bifurcação   │ 3x           │ Cobre Dourado│
+│ 🛡️ Fusível 1A     │ fuse_1a      │ 1.0 A  │ Reto (L-O)   │ 4x           │ Azul Petróleo│
+│ ⚡ Surto de Tensão│ surge_24v    │ 24.0 V │ Desafio      │ 2x           │ Vermelho Fogo│
+├───────────────────┴──────────────┴────────┴──────────────┼──────────────┼──────────────┤
+│ TOTAL DE CARTAS NO BARALHO OFICIAL                       │ 63 CARTAS    │ 7 Folhas A4  │
+└──────────────────────────────────────────────────────────┴──────────────┴──────────────┘
 ```
 
 ---
 
-### 🔀 CARTAS DE RAMIFICAÇÃO & EVENTOS (10 Cartas)
+## 📐 3. Guia de Conexão Espacial e Topologia em Mesa
 
-* **Conector Y em Paralelo** — 5 Cartas (Abre 2 ramos paralelos de 12V).
-* **🛡️ Fusível de Proteção** — 3 Cartas (Evita que o equipamento queime em caso de erro).
-* **⚠️ Surto de Voltagem ($24\text{V}$)** — 2 Cartas (Aumenta a voltagem para $24\text{V}$, desafiando o grupo).
-
----
-
-## 📊 Matriz Resumida das 54 Cartas
-
-| Carta | Resistência Base | Energia Necessária ($V_{nom}$) | Qtd |
-| :--- | :---: | :---: | :---: |
-| **Gerador Central** | N/A | Fonte $12\text{V}$ (12 Blocos) | 1 |
-| **Resistor 1Ω** | `[ ■ ]` (1 Bloco) | N/A | 8 |
-| **Resistor 2Ω** | `[ ■ ■ ]` (2 Blocos) | N/A | 8 |
-| **Resistor 3Ω** | `[ ■ ■ ■ ]` (3 Blocos) | N/A | 6 |
-| **Sirene Alarme** | `[ ■ ]` (1 Bloco) | $6\text{V}$ | 2 |
-| **Servidor Central** | `[ ■ ]` (1 Bloco) | $4\text{V}$ | 3 |
-| **LED Piloto** | `[ ■ ]` (1 Bloco) | $3\text{V}$ | 3 |
-| **Motor de Bomba** | `[ ■ ■ ]` (2 Blocos) | $6\text{V}$ | 3 |
-| **Tomógrafo UTI** | `[ ■ ■ ■ ■ ]` (4 Blocos) | $12\text{V}$ | 2 |
-| **Cabo Terra (GND)**| N/A | **Gatilho de Teste (1 Ação)** | 8 |
-| **Conector Y Paralelo**| N/A | Abre 2 ramos de 12V | 5 |
-| **Fusível Proteção** | N/A | Absorve 1 sobretensão | 3 |
-| **Surto de Rede** | N/A | Dobra para 24V | 2 |
-| **TOTAL** | | | **54 Cartas** |
+1. **Alinhamento Padrão de 10mm:**
+   * Todas as conexões nas 4 bordas (Norte, Sul, Leste, Oeste) possuem **$10\text{mm}$ ($48\text{px}$) de espessura de cobre maciço centralizado**, garantindo continuidade visual estilo *Bandido*.
+2. **Uso das Cartas de Joelho (90°):**
+   * Podem ser rotacionadas em qualquer ângulo ($0^\circ, 90^\circ, 180^\circ, 270^\circ$) ao serem jogadas.
+   * Permitem que um ramo contorne as bordas da mesa ou dê meia-volta, limitando o espaço total de jogo a **$45\text{cm} \times 45\text{cm}$**.
+3. **Resolução de Kirchhoff:**
+   * $\text{Hospital (12V): } 12\text{V} \text{ direto sem resistores } (R_{\text{eq}} = 4\Omega, I = 3\text{A})$.
+   * $\text{Dados (4V): } 1\times 2\Omega \text{ ou } 2\times 1\Omega \text{ em série com Servidor } 1\Omega \to 12\text{V} / 3\Omega = 4\text{V}$.
+   * $\text{Água (6V): } 1\times 2\Omega \text{ em série com Bomba } 2\Omega \to 12\text{V} \cdot \frac{2}{4} = 6\text{V}$.
+   * $\text{Residencial (3V): } 1\times 3\Omega \text{ ou } (1\times 2\Omega + 1\times 1\Omega) \text{ em série com LED } 1\Omega \to 12\text{V} / 4\Omega = 3\text{V}$.
+   * $\text{Residencial (6V Alternativa): } 1\times 1\Omega \text{ em série com Sirene } 1\Omega \to 12\text{V} / 2\Omega = 6\text{V}$.
