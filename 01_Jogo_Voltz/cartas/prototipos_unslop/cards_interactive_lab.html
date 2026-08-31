@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLTZ: Circuit Break — Laboratório Interativo de Cartas (Design System Unslop)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800;900&display=swap');
+
+        /* ========================================================================= */
+        /* TOKENS OKLCH CANÔNICOS DE MATERIAIS FÍSICOS                               */
+        /* ========================================================================= */
+        :root {
+            --mat-copper-raw: oklch(0.65 0.17 58);
+            --mat-copper-gold: oklch(0.78 0.19 75);
+            --mat-copper-dark: oklch(0.45 0.14 48);
+            --mat-graphite: oklch(0.14 0.01 260);
+            --mat-paper-oatmeal: oklch(0.95 0.015 85);
+            --mat-paper-white: oklch(0.99 0.002 90);
+            --mat-ceramic: oklch(0.97 0.04 100);
+
+            /* Categorias Semânticas */
+            --cat-gen: oklch(0.55 0.16 52);
+            --cat-r1: oklch(0.58 0.18 155);
+            --cat-r2: oklch(0.52 0.22 260);
+            --cat-r3: oklch(0.62 0.21 42);
+            --cat-load: oklch(0.44 0.24 275);
+            --cat-gnd: oklch(0.52 0.15 185);
+            --cat-special: oklch(0.58 0.18 220);
+            --cat-danger: oklch(0.58 0.24 25);
+
+            --bg-body: #09090b;
+            --panel-bg: #18181b;
+            --panel-border: #27272a;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* HEADER DE CONTROLE DO LABORATÓRIO */
+        .lab-header {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .lab-header h1 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lab-header p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background: #27272a;
+            color: var(--text-muted);
+            border: 1px solid #3f3f46;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--mat-copper-raw);
+            color: #ffffff;
+            border-color: var(--mat-copper-gold);
+        }
+
+        /* PALETA DE MATERIAIS FÍSICOS DISPLAY */
+        .materials-banner {
+            width: 100%;
+            max-width: 1200px;
+            background: #121215;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .material-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chip-swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            border: 1px solid #000;
+        }
+
+        /* GRID DAS CARTAS DE POKER */
+        .cards-grid {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        /* CARTA VOLTZ INDIVIDUAL (POKER SIZE CANÔNICO) */
+        .voltz-card-view {
+            width: 220px;
+            height: 308px;
+            background: var(--mat-paper-oatmeal);
+            border: 2px solid var(--mat-graphite);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px 10px;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .voltz-card-view:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 16px 36px rgba(0,0,0,0.6);
+            z-index: 10;
+        }
+
+        /* CABEÇALHO DA CARTA */
+        .card-top {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid var(--mat-graphite);
+            padding-bottom: 4px;
+            background: rgba(244, 239, 230, 0.96);
+        }
+
+        .card-top-title {
+            font-size: 0.62rem;
+            font-weight: 900;
+            color: var(--mat-graphite);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-top-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.52rem;
+            font-weight: 900;
+            color: #ffffff;
+            padding: 1.5px 5px;
+            border-radius: 2px;
+            border: 1px solid var(--mat-graphite);
+        }
+
+        /* SVG HERO COM O ESQUEMÁTICO FUNCIONAL */
+        .card-svg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* RODAPÉ DA CARTA */
+        .card-bottom {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            border-top: 1.5px solid var(--mat-graphite);
+            padding-top: 4px;
+            background: rgba(244, 239, 230, 0.96);
+        }
+
+        .blocks-row {
+            display: flex;
+            gap: 2.5px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .block-cube {
+            width: 9px;
+            height: 9px;
+            border: 1.5px solid var(--mat-graphite);
+            border-radius: 1.5px;
+        }
+
+        .card-desc-text {
+            font-size: 0.44rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            color: var(--mat-graphite);
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 0.2px;
+        }
+
+        /* ABAS DE CATEGORIA NO TOPO */
+        .tab-gen { border-top: 5mm solid var(--cat-gen); }
+        .tab-r1 { border-top: 5mm solid var(--cat-r1); }
+        .tab-r2 { border-top: 5mm solid var(--cat-r2); }
+        .tab-r3 { border-top: 5mm solid var(--cat-r3); }
+        .tab-load { border-top: 5mm solid var(--cat-load); }
+        .tab-gnd { border-top: 5mm solid var(--cat-gnd); }
+        .tab-special { border-top: 5mm solid var(--cat-special); }
+    </style>
+</head>
+<body>
+
+    <!-- DEFS GLOBAIS DE GRADIENTE, TEXTURA TÁTIL E CHANFROS -->
+    <svg style="position: absolute; width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Fita de Cobre Maciço PBR -->
+            <linearGradient id="solidCopperBus" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#f59e0b"/>
+                <stop offset="35%" stop-color="#d97706"/>
+                <stop offset="100%" stop-color="#b45309"/>
+            </linearGradient>
+
+            <!-- Textura Tátil de Papel Técnico Risograph (Micro-Grain) -->
+            <filter id="paperNoise" x="0%" y="0%" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0.03  0 0 0 0 0.03  0 0 0 0 0.04  0 0 0 0.04 0" in="noise" result="coloredNoise"/>
+                <feComposite operator="in" in2="SourceGraphic"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- HEADER DO LABORATÓRIO -->
+    <div class="lab-header">
+        <div>
+            <h1>⚡ VOLTZ — Laboratório Interativo de Cartas</h1>
+            <p>Design System Bespoke • Normas IEEE / ABNT • Trilha Contínua de 10mm</p>
+        </div>
+        <div class="filter-group">
+            <button class="filter-btn active" onclick="filterCards('all')">Todas (54)</button>
+            <button class="filter-btn" onclick="filterCards('gen')">Fonte 12V</button>
+            <button class="filter-btn" onclick="filterCards('res')">Resistores</button>
+            <button class="filter-btn" onclick="filterCards('load')">Equipamentos</button>
+            <button class="filter-btn" onclick="filterCards('gnd')">GND & Proteção</button>
+        </div>
+    </div>
+
+    <!-- BANNER DE MATERIAIS FÍSICOS REAIS -->
+    <div class="materials-banner">
+        <div class="material-chip"><div class="chip-swatch" style="background:#d97706;"></div> <span>Cobre Bruto (10mm Bus)</span></div>
+        <div class="material-chip"><div class="chip-swatch" style="background:#fef9c3;"></div> <span>Cerâmica de Alumina</span></div>
+        <div class="material-chip"><div class="chip-swatch" style="background:#09090b;"></div> <span>Grafite Carbono (3pt)</span></div>
+        <div class="material-chip"><div class="chip-swatch" style="background:#f4efe6;"></div> <span>Papel Oatmeal Tátil</span></div>
+        <div class="material-chip"><div class="chip-swatch" style="background:#0f766e;"></div> <span>Aterramento GND (0V)</span></div>
+    </div>
+
+    <!-- GRID DAS CARTAS DE POKER -->
+    <div class="cards-grid" id="cardsGrid">
+        <!-- Renderizado dinamicamente via JavaScript -->
+    </div>
+
+    <script>
+        // GERADOR DOS ÍCONES VETORIAIS AUTORAIS EM SVG PURO (SEM AI SLOP)
+        function getCardSvg(type, val, color) {
+            // Trilha horizontal contínua de 10mm de borda a borda (Y: 138 a 170)
+            const hasRight = type !== 'gnd';
+            let busSvg = `
+                <rect x="0" y="136" width="${hasRight ? '220' : '110'}" height="36" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.2"/>
+                <polygon points="30,154 16,143 16,165" fill="#09090b"/>
+                <polygon points="46,154 32,143 32,165" fill="#09090b"/>
+            `;
+            if (hasRight) {
+                busSvg += `
+                <polygon points="186,154 172,143 172,165" fill="#09090b"/>
+                <polygon points="202,154 188,143 188,165" fill="#09090b"/>
+                `;
+            }
+
+            // Ponto de Teste Metrológico TP-01
+            const tpSvg = `
+                <circle cx="30" cy="110" r="7" fill="#f4efe6" stroke="#09090b" stroke-width="1.8"/>
+                <circle cx="30" cy="110" r="3.5" fill="#f59e0b" stroke="#09090b" stroke-width="1"/>
+                <text x="30" y="125" font-family="JetBrains Mono" font-size="5" font-weight="900" fill="#09090b" text-anchor="middle">TP-01</text>
+            `;
+
+            let heroSvg = '';
+
+            if (type === 'gen') {
+                heroSvg = `
+                    <rect x="92" y="0" width="36" height="76" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.2"/>
+                    <rect x="92" y="232" width="36" height="76" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.2"/>
+                    <circle cx="110" cy="154" r="52" fill="#09090b" stroke="#b45309" stroke-width="3"/>
+                    <circle cx="110" cy="154" r="42" fill="#f4efe6" stroke="#d97706" stroke-width="2.5"/>
+                    <rect x="84" y="136" width="52" height="8" rx="2" fill="#09090b"/>
+                    <rect x="92" y="148" width="36" height="5" rx="1.5" fill="#b45309"/>
+                    <rect x="84" y="157" width="52" height="8" rx="2" fill="#09090b"/>
+                    <rect x="92" y="169" width="36" height="5" rx="1.5" fill="#b45309"/>
+                    <text x="110" y="116" font-family="Inter" font-weight="900" font-size="12" fill="#b45309" text-anchor="middle">FONTE DC</text>
+                `;
+            } else if (type === 'res') {
+                const bColor = val === 1 ? '#047857' : (val === 2 ? '#1d4ed8' : '#c2410c');
+                heroSvg = `
+                    ${busSvg}
+                    ${tpSvg}
+                    <line x1="56" y1="154" x2="68" y2="154" stroke="#09090b" stroke-width="8" stroke-linecap="round"/>
+                    <line x1="152" y1="154" x2="164" y2="154" stroke="#09090b" stroke-width="8" stroke-linecap="round"/>
+                    <rect x="66" y="122" width="88" height="64" rx="14" fill="#fef9c3" stroke="#09090b" stroke-width="2.6"/>
+                    <rect x="80" y="122" width="10" height="64" fill="${bColor}"/>
+                    <rect x="98" y="122" width="10" height="64" fill="#09090b"/>
+                    <rect x="116" y="122" width="10" height="64" fill="#d97706"/>
+                    <rect x="136" y="122" width="8" height="64" fill="#d97706"/>
+                    <text x="110" y="106" font-family="JetBrains Mono" font-weight="900" font-size="13" fill="${bColor}" text-anchor="middle">R = ${val} OHM${val > 1 ? 'S' : ''}</text>
+                `;
+            } else if (type === 'led') {
+                heroSvg = `
+                    ${busSvg}
+                    ${tpSvg}
+                    <circle cx="110" cy="154" r="46" fill="#eef2ff" stroke="#4338ca" stroke-width="2.6"/>
+                    <circle cx="110" cy="154" r="34" fill="#4338ca" stroke="#09090b" stroke-width="2"/>
+                    <line x1="130" y1="124" x2="156" y2="98" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
+                    <polygon points="156,98 146,101 153,108" fill="#4338ca"/>
+                    <line x1="140" y1="134" x2="166" y2="108" stroke="#4338ca" stroke-width="3" stroke-linecap="round"/>
+                    <polygon points="166,108 156,111 163,118" fill="#4338ca"/>
+                    <text x="110" y="94" font-family="JetBrains Mono" font-weight="900" font-size="11" fill="#4338ca" text-anchor="middle">Vnom = 3 VOLTS</text>
+                `;
+            } else if (type === 'servidor') {
+                heroSvg = `
+                    ${busSvg}
+                    ${tpSvg}
+                    <rect x="46" y="106" width="128" height="96" rx="8" fill="#09090b" stroke="#4338ca" stroke-width="2.6"/>
+                    <rect x="56" y="116" width="108" height="20" rx="2" fill="#18181b" stroke="#3f3f46" stroke-width="1.2"/>
+                    <circle cx="68" cy="126" r="3.5" fill="#047857"/><circle cx="78" cy="126" r="3.5" fill="#38bdf8"/>
+                    <line x1="92" y1="126" x2="152" y2="126" stroke="#71717a" stroke-width="2" stroke-dasharray="4,2"/>
+                    <rect x="56" y="142" width="108" height="20" rx="2" fill="#18181b" stroke="#3f3f46" stroke-width="1.2"/>
+                    <circle cx="68" cy="152" r="3.5" fill="#047857"/><circle cx="78" cy="152" r="3.5" fill="#f59e0b"/>
+                    <line x1="92" y1="152" x2="152" y2="152" stroke="#71717a" stroke-width="2" stroke-dasharray="4,2"/>
+                    <rect x="56" y="168" width="108" height="20" rx="2" fill="#18181b" stroke="#3f3f46" stroke-width="1.2"/>
+                    <circle cx="68" cy="178" r="3.5" fill="#38bdf8"/><circle cx="78" cy="178" r="3.5" fill="#38bdf8"/>
+                    <text x="110" y="94" font-family="JetBrains Mono" font-weight="900" font-size="11" fill="#4338ca" text-anchor="middle">Vnom = 4 VOLTS</text>
+                `;
+            } else if (type === 'motor') {
+                heroSvg = `
+                    ${busSvg}
+                    ${tpSvg}
+                    <rect x="56" y="110" width="108" height="88" rx="10" fill="#f4efe6" stroke="#09090b" stroke-width="2.6"/>
+                    <line x1="56" y1="128" x2="44" y2="128" stroke="#09090b" stroke-width="3.5"/>
+                    <line x1="56" y1="142" x2="44" y2="142" stroke="#09090b" stroke-width="3.5"/>
+                    <line x1="56" y1="156" x2="44" y2="156" stroke="#09090b" stroke-width="3.5"/>
+                    <line x1="56" y1="170" x2="44" y2="170" stroke="#09090b" stroke-width="3.5"/>
+                    <line x1="164" y1="128" x2="176" y2="128" stroke="#09090b" stroke-width="3.5"/>
+                    <line x1="164" y1="142" x2="176" y2="142" stroke="#09090b" stroke-width="3.5"/>
+                    <line x1="164" y1="156" x2="176" y2="156" stroke="#09090b" stroke-width="3.5"/>
+                    <line x1="164" y1="170" x2="176" y2="170" stroke="#09090b" stroke-width="3.5"/>
+                    <circle cx="110" cy="154" r="30" fill="#09090b" stroke="#d97706" stroke-width="2.6"/>
+                    <text x="110" y="165" font-family="Inter" font-weight="900" font-size="26" fill="#ffffff" text-anchor="middle">M</text>
+                    <text x="110" y="94" font-family="JetBrains Mono" font-weight="900" font-size="11" fill="#4338ca" text-anchor="middle">Vnom = 6 VOLTS</text>
+                `;
+            } else if (type === 'gnd') {
+                heroSvg = `
+                    ${busSvg}
+                    <rect x="20" y="136" width="80" height="36" fill="url(#solidCopperBus)" stroke="#09090b" stroke-width="2.2"/>
+                    <rect x="100" y="98" width="108" height="112" rx="10" fill="#09090b" stroke="#0f766e" stroke-width="3"/>
+                    <line x1="102" y1="154" x2="144" y2="154" stroke="#0f766e" stroke-width="6"/>
+                    <line x1="144" y1="120" x2="144" y2="188" stroke="#2dd4bf" stroke-width="8" stroke-linecap="round"/>
+                    <line x1="158" y1="130" x2="158" y2="178" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round"/>
+                    <line x1="172" y1="140" x2="172" y2="168" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round"/>
+                    <text x="154" y="86" font-family="JetBrains Mono" font-weight="900" font-size="11" fill="#0f766e" text-anchor="middle">POTENCIAL = 0V</text>
+                `;
+            } else if (type === 'fuse') {
+                heroSvg = `
+                    ${busSvg}
+                    ${tpSvg}
+                    <rect x="46" y="122" width="128" height="64" rx="14" fill="#f0f9ff" stroke="#0369a1" stroke-width="2.6"/>
+                    <rect x="46" y="122" width="24" height="64" rx="3" fill="#cbd5e1" stroke="#09090b" stroke-width="1.8"/>
+                    <rect x="150" y="122" width="24" height="64" rx="3" fill="#cbd5e1" stroke="#09090b" stroke-width="1.8"/>
+                    <path d="M 70 154 Q 90 130 110 154 T 150 154" fill="none" stroke="#b91c1c" stroke-width="4.5" stroke-linecap="round"/>
+                    <text x="110" y="104" font-family="JetBrains Mono" font-weight="900" font-size="11" fill="#0369a1" text-anchor="middle">Imax = 1.0 A</text>
+                `;
+            }
+
+            return `
+            <svg class="card-svg-container" viewBox="0 0 220 308">
+                <!-- Índices de Poker Duplos Espelhados -->
+                <text x="10" y="24" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="${color}">${val}</text>
+                <text x="210" y="296" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="${color}" text-anchor="end">${val}</text>
+                ${heroSvg}
+            </svg>
+            `;
+        }
+
+        // DADOS DAS CARTAS DO LABORATÓRIO
+        const cardDefs = [
+            { cat: 'gen', tab: 'tab-gen', title: 'Gerador Central', badge: 'DC 12V', bColor: '#b45309', type: 'gen', val: '⚡12V', blocks: 12, cubeColor: '#b45309', desc: '4 Portas Radiais • 12 Blocos' },
+            { cat: 'res', tab: 'tab-r1', title: 'Resistor Leve', badge: '1 OHM', bColor: '#047857', type: 'res', val: '1Ω', blocks: 1, cubeColor: '#047857', desc: '+1 Bloco no Ramo • Trilha Contínua' },
+            { cat: 'res', tab: 'tab-r2', title: 'Resistor Médio', badge: '2 OHMS', bColor: '#1d4ed8', type: 'res', val: '2Ω', blocks: 2, cubeColor: '#1d4ed8', desc: '+2 Blocos no Ramo • Trilha Contínua' },
+            { cat: 'res', tab: 'tab-r3', title: 'Resistor Pesado', badge: '3 OHMS', bColor: '#c2410c', type: 'res', val: '3Ω', blocks: 3, cubeColor: '#c2410c', desc: '+3 Blocos no Ramo • Trilha Contínua' },
+            { cat: 'load', tab: 'tab-load', title: 'LED Piloto', badge: '3V // 1Ω', bColor: '#4338ca', type: 'led', val: '3V💡', blocks: 1, cubeColor: '#4338ca', desc: 'Meta: 4 Blocos Totais (12V / 4 = 3V)' },
+            { cat: 'load', tab: 'tab-load', title: 'Servidor Central', badge: '4V // 1Ω', bColor: '#4338ca', type: 'servidor', val: '4V🖥️', blocks: 1, cubeColor: '#4338ca', desc: 'Meta: 3 Blocos Totais (12V / 3 = 4V)' },
+            { cat: 'load', tab: 'tab-load', title: 'Motor de Bomba', badge: '6V // 2Ω', bColor: '#4338ca', type: 'motor', val: '6V⚙️', blocks: 2, cubeColor: '#4338ca', desc: 'Meta: 4 Blocos Totais (12V · 2/4 = 6V)' },
+            { cat: 'gnd', tab: 'tab-gnd', title: 'Cabo Terra', badge: 'GND // 0V', bColor: '#0f766e', type: 'gnd', val: '⏚ 0V', blocks: 0, cubeColor: '#0f766e', desc: 'FECHAMENTO • DISPARO DE TESTE!' },
+            { cat: 'gnd', tab: 'tab-special', title: 'Fusível 1A', badge: 'PROTEÇÃO', bColor: '#0369a1', type: 'fuse', val: '🛡️1A', blocks: 0, cubeColor: '#0369a1', desc: 'Salva a carga em Sobretensão' }
+        ];
+
+        function renderGrid(filter = 'all') {
+            const grid = document.getElementById('cardsGrid');
+            grid.innerHTML = '';
+            
+            cardDefs.forEach(c => {
+                if (filter !== 'all' && c.cat !== filter) return;
+
+                let blocksHtml = '';
+                for (let i = 0; i < c.blocks; i++) {
+                    blocksHtml += `<div class="block-cube" style="background:${c.cubeColor};"></div>`;
+                }
+
+                const cardEl = document.createElement('div');
+                cardEl.className = `voltz-card-view ${c.tab}`;
+                cardEl.innerHTML = `
+                    <div class="card-top">
+                        <span class="card-top-title">${c.title}</span>
+                        <span class="card-top-badge" style="background:${c.bColor};">${c.badge}</span>
+                    </div>
+                    ${getCardSvg(c.type, c.val, c.bColor)}
+                    <div class="card-bottom">
+                        <div class="blocks-row">${blocksHtml}</div>
+                        <div class="card-desc-text">${c.desc}</div>
+                    </div>
+                `;
+                grid.appendChild(cardEl);
+            });
+        }
+
+        function filterCards(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderGrid(category);
+        }
+
+        // Render inicial
+        renderGrid('all');
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLTZ: Circuit Break — Bancada Interativa de Montagem de Circuitos (Simulador de Mesa)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800;900&display=swap');
+
+        :root {
+            --mat-copper-raw: oklch(0.65 0.17 58);
+            --mat-copper-gold: oklch(0.78 0.19 75);
+            --mat-copper-dark: oklch(0.45 0.14 48);
+            --mat-graphite: oklch(0.14 0.01 260);
+            --mat-paper-oatmeal: oklch(0.95 0.015 85);
+            --mat-paper-white: oklch(0.99 0.002 90);
+            --mat-ceramic: oklch(0.97 0.04 100);
+
+            --bg-bench: #121215;
+            --bench-grid-major: #27272a;
+            --bench-grid-minor: #18181b;
+            --panel-bg: #18181b;
+            --panel-border: #3f3f46;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-bench);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* HEADER & INSTRUMENTAÇÃO */
+        .workbench-header {
+            width: 100%;
+            max-width: 1300px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+        }
+
+        .workbench-title h1 {
+            font-size: 1.15rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .workbench-title p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* PAINEL MULTÍMETRO DIGITAL DE BANCADA */
+        .multimeter-display {
+            background: #09090b;
+            border: 2px solid var(--mat-copper-raw);
+            border-radius: 8px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.8);
+        }
+
+        .meter-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .meter-label {
+            font-size: 0.55rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .meter-val {
+            font-size: 1.1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 900;
+            color: #f59e0b;
+            line-height: 1.1;
+        }
+
+        .meter-status-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 900;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .status-open { background: #3f3f46; color: #a1a1aa; }
+        .status-success { background: #064e3b; color: #34d399; border: 1px solid #059669; }
+        .status-over { background: #450a0a; color: #f87171; border: 1px solid #991b1b; }
+        .status-under { background: #172554; color: #60a5fa; border: 1px solid #2563eb; }
+
+        /* BANCADA MILIMETRADA DE MONTAGEM (THE BENCH) */
+        .circuit-bench {
+            width: 100%;
+            max-width: 1300px;
+            height: 380px;
+            background-color: #0d0d11;
+            background-image: 
+                linear-gradient(to right, var(--bench-grid-major) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--bench-grid-major) 1px, transparent 1px),
+                linear-gradient(to right, var(--bench-grid-minor) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--bench-grid-minor) 1px, transparent 1px);
+            background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+            border: 2px solid var(--panel-border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow-x: auto;
+            overflow-y: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+        }
+
+        .circuit-slot-line {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            gap: 0; /* ENCAIXE MILIMÉTRICO BORDA A BORDA (0 GAP) */
+        }
+
+        /* CARTA NA BANCADA */
+        .bench-card {
+            width: 190px;
+            height: 266px;
+            background: var(--mat-paper-oatmeal);
+            border: 2px solid var(--mat-graphite);
+            border-radius: 8px;
+            position: relative;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 6px 8px;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
+        }
+
+        .bench-card .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid var(--mat-graphite);
+            padding-bottom: 3px;
+            background: rgba(244, 239, 230, 0.96);
+            z-index: 5;
+        }
+
+        .bench-card .card-head .title {
+            font-size: 0.55rem;
+            font-weight: 900;
+            color: var(--mat-graphite);
+            text-transform: uppercase;
+        }
+
+        .bench-card .card-head .badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.48rem;
+            font-weight: 900;
+            color: #ffffff;
+            padding: 1px 4px;
+            border-radius: 2px;
+            border: 1px solid var(--mat-graphite);
+        }
+
+        .bench-card .schematic-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .bench-card .card-foot {
+            border-top: 1.5px solid var(--mat-graphite);
+            padding-top: 3px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: rgba(244, 239, 230, 0.96);
+            z-index: 5;
+        }
+
+        .bench-card .blocks-row {
+            display: flex;
+            gap: 2px;
+        }
+
+        .bench-card .block-cube {
+            width: 8px;
+            height: 8px;
+            border: 1.2px solid var(--mat-graphite);
+            border-radius: 1px;
+        }
+
+        .bench-card .foot-desc {
+            font-size: 0.40rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            color: var(--mat-graphite);
+            text-transform: uppercase;
+        }
+
+        .btn-remove-card {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 22px;
+            height: 22px;
+            background: #ef4444;
+            color: #ffffff;
+            border: 1.5px solid #09090b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 900;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+
+        /* PALETA DE COMPONENTES PARA ADICIONAR AO CIRCUITO */
+        .component-drawer {
+            width: 100%;
+            max-width: 1300px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .drawer-title {
+            font-size: 0.8rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .drawer-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .drawer-btn {
+            background: #27272a;
+            color: #ffffff;
+            border: 1px solid #3f3f46;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .drawer-btn:hover {
+            background: var(--mat-copper-raw);
+            border-color: var(--mat-copper-gold);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- DEFS GLOBAIS DE COBRE E FLUXO -->
+    <svg style="position: absolute; width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="benchCopperBus" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#f59e0b"/>
+                <stop offset="35%" stop-color="#d97706"/>
+                <stop offset="100%" stop-color="#b45309"/>
+            </linearGradient>
+            <linearGradient id="benchEnergizedBus" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#34d399"/>
+                <stop offset="35%" stop-color="#10b981"/>
+                <stop offset="100%" stop-color="#047857"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- HEADER DA BANCADA COM MULTÍMETRO METROLÓGICO -->
+    <div class="workbench-header">
+        <div class="workbench-title">
+            <h1>⚡ VOLTZ: Bancada Interativa de Eletrodinâmica</h1>
+            <p>Simulação em Tempo Real das Leis de Kirchhoff e Divisores de Tensão</p>
+        </div>
+
+        <div class="multimeter-display">
+            <div class="meter-col">
+                <span class="meter-label">FONTE (VCC)</span>
+                <span class="meter-val" id="meterVcc">12.0 V</span>
+            </div>
+            <div class="meter-col">
+                <span class="meter-label">R TOTAL (ΣR)</span>
+                <span class="meter-val" id="meterRtotal">-- Ω</span>
+            </div>
+            <div class="meter-col">
+                <span class="meter-label">CORRENTE (I)</span>
+                <span class="meter-val" id="meterCurrent">-- A</span>
+            </div>
+            <div class="meter-col">
+                <span class="meter-label">V CARGA (Vload)</span>
+                <span class="meter-val" id="meterVload">-- V</span>
+            </div>
+            <div class="meter-status-tag status-open" id="meterStatus">CIRCUITO ABERTO</div>
+        </div>
+    </div>
+
+    <!-- BANCADA MILIMETRADA (CIRCUIT BENCH) -->
+    <div class="circuit-bench">
+        <div class="circuit-slot-line" id="circuitLine">
+            <!-- Renderizado dinamicamente via JS -->
+        </div>
+    </div>
+
+    <!-- GAVETA DE COMPONENTES DA BANCADA -->
+    <div class="component-drawer">
+        <div class="drawer-title">Adicionar Componente ao Ramo:</div>
+        <div class="drawer-buttons">
+            <button class="drawer-btn" onclick="addCard('res_1ohm')">➕ Resistor 1Ω</button>
+            <button class="drawer-btn" onclick="addCard('res_2ohm')">➕ Resistor 2Ω</button>
+            <button class="drawer-btn" onclick="addCard('res_3ohm')">➕ Resistor 3Ω</button>
+            <button class="drawer-btn" onclick="addCard('load_led')">💡 LED Piloto (3V)</button>
+            <button class="drawer-btn" onclick="addCard('load_servidor')">🖥️ Servidor (4V)</button>
+            <button class="drawer-btn" onclick="addCard('load_motor')">⚙️ Motor Bomba (6V)</button>
+            <button class="drawer-btn" onclick="addCard('special_fuse')">🛡️ Fusível 1A</button>
+            <button class="drawer-btn" onclick="addCard('gnd_cable')">⏚ Cabo Terra (GND)</button>
+            <button class="drawer-btn" style="background:#450a0a; margin-left:auto;" onclick="resetCircuit()">🔄 Limpar Bancada</button>
+        </div>
+    </div>
+
+    <script>
+        // ESTADO INICIAL DO CIRCUITO NA BANCADA
+        let circuitCards = [
+            { id: 'gen_12v', type: 'gen', title: 'Gerador Central', badge: 'DC 12V', bColor: '#b45309', val: 0, r: 0, vnom: 12, blocks: 12, cubeColor: '#b45309', desc: 'Fonte Contínua 12V' }
+        ];
+
+        const COMPONENT_DB = {
+            'res_1ohm': { id: 'res_1ohm', type: 'res', title: 'Resistor Leve', badge: '1 OHM', bColor: '#047857', r: 1, vnom: 0, blocks: 1, cubeColor: '#047857', desc: '+1Ω no Ramo' },
+            'res_2ohm': { id: 'res_2ohm', type: 'res', title: 'Resistor Médio', badge: '2 OHMS', bColor: '#1d4ed8', r: 2, vnom: 0, blocks: 2, cubeColor: '#1d4ed8', desc: '+2Ω no Ramo' },
+            'res_3ohm': { id: 'res_3ohm', type: 'res', title: 'Resistor Pesado', badge: '3 OHMS', bColor: '#c2410c', r: 3, vnom: 0, blocks: 3, cubeColor: '#c2410c', desc: '+3Ω no Ramo' },
+            'load_led': { id: 'load_led', type: 'load', title: 'LED Piloto', badge: '3V // 1Ω', bColor: '#4338ca', r: 1, vnom: 3, blocks: 1, cubeColor: '#4338ca', desc: 'Vnom = 3V (Meta: 4Ω)' },
+            'load_servidor': { id: 'load_servidor', type: 'load', title: 'Servidor Central', badge: '4V // 1Ω', bColor: '#4338ca', r: 1, vnom: 4, blocks: 1, cubeColor: '#4338ca', desc: 'Vnom = 4V (Meta: 3Ω)' },
+            'load_motor': { id: 'load_motor', type: 'load', title: 'Motor de Bomba', badge: '6V // 2Ω', bColor: '#4338ca', r: 2, vnom: 6, blocks: 2, cubeColor: '#4338ca', desc: 'Vnom = 6V (Meta: 4Ω)' },
+            'special_fuse': { id: 'special_fuse', type: 'fuse', title: 'Fusível 1A', badge: 'PROTEÇÃO', bColor: '#0369a1', r: 0, vnom: 0, blocks: 0, cubeColor: '#0369a1', desc: 'Imax = 1.0A' },
+            'gnd_cable': { id: 'gnd_cable', type: 'gnd', title: 'Cabo Terra', badge: 'GND // 0V', bColor: '#0f766e', r: 0, vnom: 0, blocks: 0, cubeColor: '#0f766e', desc: 'Fechamento 0V' }
+        };
+
+        function addCard(compKey) {
+            const hasGnd = circuitCards.some(c => c.type === 'gnd');
+            if (hasGnd) {
+                alert('O circuito já foi fechado com o Cabo Terra (GND). Remova o terra para adicionar mais componentes.');
+                return;
+            }
+            circuitCards.push({ ...COMPONENT_DB[compKey] });
+            updateBench();
+        }
+
+        function removeCard(index) {
+            if (index === 0) {
+                alert('O Gerador Central 12V não pode ser removido.');
+                return;
+            }
+            circuitCards.splice(index, 1);
+            updateBench();
+        }
+
+        function resetCircuit() {
+            circuitCards = [circuitCards[0]];
+            updateBench();
+        }
+
+        // MOTOR DE FÍSICA ELETRODINÂMICA EM TEMPO REAL
+        function solveCircuitPhysics() {
+            const hasGnd = circuitCards.some(c => c.type === 'gnd');
+            const loadCard = circuitCards.find(c => c.type === 'load');
+            const hasFuse = circuitCards.some(c => c.type === 'fuse');
+
+            if (!hasGnd) {
+                return { isClosed: false, rTotal: 0, current: 0, vLoad: 0, status: 'open', msg: 'CIRCUITO ABERTO' };
+            }
+
+            // Cálculo da resistência equivalente em série
+            let rTotal = 0;
+            circuitCards.forEach(c => {
+                rTotal += (c.r || 0);
+            });
+
+            if (rTotal === 0) rTotal = 0.001; // Curto-circuito puro
+
+            const vcc = 12.0;
+            const current = vcc / rTotal;
+
+            if (!loadCard) {
+                return { isClosed: true, rTotal, current, vLoad: 0, status: 'no_load', msg: 'SEM CARGA CONECTADA' };
+            }
+
+            const vLoad = current * loadCard.r;
+            const vnom = loadCard.vnom;
+
+            let status = 'success';
+            let msg = '⚡ ENERGIZADO COM SUCESSO';
+
+            if (Math.abs(vLoad - vnom) < 0.05) {
+                status = 'success';
+                msg = '⚡ ENERGIZAÇÃO PERFEITA (100%)';
+            } else if (vLoad > vnom + 0.05) {
+                if (hasFuse) {
+                    status = 'over_fuse';
+                    msg = '🛡️ FUSÍVEL SALVOU A CARGA!';
+                } else {
+                    status = 'over';
+                    msg = '💥 SOBRETENSÃO (CARGA QUEIMADA)';
+                }
+            } else {
+                status = 'under';
+                msg = '⚪ SUBTENSÃO (SEM FORÇA)';
+            }
+
+            return { isClosed: true, rTotal, current, vLoad, status, msg };
+        }
+
+        function getSchematicSVG(card, isEnergized) {
+            const hasRight = card.type !== 'gnd';
+            const busFill = isEnergized ? 'url(#benchEnergizedBus)' : 'url(#benchCopperBus)';
+
+            let busSvg = `
+                <rect x="0" y="118" width="${hasRight ? '190' : '95'}" height="32" fill="${busFill}" stroke="#09090b" stroke-width="2"/>
+                <polygon points="25,134 14,124 14,144" fill="#09090b"/>
+            `;
+            if (hasRight) {
+                busSvg += `<polygon points="165,134 154,124 154,144" fill="#09090b"/>`;
+            }
+
+            let heroSvg = '';
+            if (card.type === 'gen') {
+                heroSvg = `
+                    <circle cx="95" cy="134" r="44" fill="#09090b" stroke="#b45309" stroke-width="2.5"/>
+                    <circle cx="95" cy="134" r="36" fill="#f4efe6" stroke="#d97706" stroke-width="2"/>
+                    <text x="95" y="140" font-family="Inter" font-weight="900" font-size="14" fill="#b45309" text-anchor="middle">12V</text>
+                `;
+            } else if (card.type === 'res') {
+                const bColor = card.r === 1 ? '#047857' : (card.r === 2 ? '#1d4ed8' : '#c2410c');
+                heroSvg = `
+                    ${busSvg}
+                    <rect x="55" y="106" width="80" height="56" rx="12" fill="#fef9c3" stroke="#09090b" stroke-width="2.4"/>
+                    <rect x="70" y="106" width="8" height="56" fill="${bColor}"/>
+                    <rect x="85" y="106" width="8" height="56" fill="#09090b"/>
+                    <rect x="100" y="106" width="8" height="56" fill="#d97706"/>
+                    <text x="95" y="94" font-family="JetBrains Mono" font-weight="900" font-size="11" fill="${bColor}" text-anchor="middle">${card.r}Ω</text>
+                `;
+            } else if (card.type === 'load') {
+                heroSvg = `
+                    ${busSvg}
+                    <circle cx="95" cy="134" r="38" fill="#eef2ff" stroke="#4338ca" stroke-width="2.4"/>
+                    <circle cx="95" cy="134" r="28" fill="#4338ca" stroke="#09090b" stroke-width="1.8"/>
+                    <text x="95" y="92" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#4338ca" text-anchor="middle">Vnom=${card.vnom}V</text>
+                `;
+            } else if (card.type === 'gnd') {
+                heroSvg = `
+                    ${busSvg}
+                    <rect x="85" y="85" width="95" height="98" rx="8" fill="#09090b" stroke="#0f766e" stroke-width="2.6"/>
+                    <line x1="88" y1="134" x2="124" y2="134" stroke="#0f766e" stroke-width="5"/>
+                    <line x1="124" y1="104" x2="124" y2="164" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round"/>
+                    <line x1="136" y1="114" x2="136" y2="154" stroke="#2dd4bf" stroke-width="6" stroke-linecap="round"/>
+                    <line x1="148" y1="124" x2="148" y2="144" stroke="#2dd4bf" stroke-width="5" stroke-linecap="round"/>
+                    <text x="135" y="76" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0f766e" text-anchor="middle">0V</text>
+                `;
+            } else if (card.type === 'fuse') {
+                heroSvg = `
+                    ${busSvg}
+                    <rect x="40" y="106" width="110" height="56" rx="10" fill="#f0f9ff" stroke="#0369a1" stroke-width="2.2"/>
+                    <path d="M 60 134 Q 75 114 95 134 T 130 134" fill="none" stroke="#b91c1c" stroke-width="4" stroke-linecap="round"/>
+                    <text x="95" y="94" font-family="JetBrains Mono" font-weight="900" font-size="10" fill="#0369a1" text-anchor="middle">1.0A</text>
+                `;
+            }
+
+            return `
+            <svg class="schematic-svg" viewBox="0 0 190 266">
+                ${heroSvg}
+            </svg>
+            `;
+        }
+
+        function updateBench() {
+            const bench = document.getElementById('circuitLine');
+            bench.innerHTML = '';
+
+            const sim = solveCircuitPhysics();
+            const isEnergized = sim.isClosed && sim.status === 'success';
+
+            // Atualiza o Display do Multímetro de Bancada
+            document.getElementById('meterRtotal').innerText = sim.isClosed ? `${sim.rTotal.toFixed(1)} Ω` : '-- Ω';
+            document.getElementById('meterCurrent').innerText = sim.isClosed ? `${sim.current.toFixed(2)} A` : '-- A';
+            document.getElementById('meterVload').innerText = sim.isClosed && sim.vLoad > 0 ? `${sim.vLoad.toFixed(1)} V` : '-- V';
+
+            const statusEl = document.getElementById('meterStatus');
+            statusEl.innerText = sim.msg;
+            statusEl.className = 'meter-status-tag';
+
+            if (!sim.isClosed) statusEl.classList.add('status-open');
+            else if (sim.status === 'success') statusEl.classList.add('status-success');
+            else if (sim.status.startsWith('over')) statusEl.classList.add('status-over');
+            else statusEl.classList.add('status-under');
+
+            // Renderiza as cartas conectadas na linha
+            circuitCards.forEach((c, idx) => {
+                let blocksHtml = '';
+                for (let i = 0; i < c.blocks; i++) {
+                    blocksHtml += `<div class="block-cube" style="background:${c.cubeColor};"></div>`;
+                }
+
+                const cardEl = document.createElement('div');
+                cardEl.className = 'bench-card';
+                cardEl.innerHTML = `
+                    ${idx > 0 ? `<button class="btn-remove-card" onclick="removeCard(${idx})">✕</button>` : ''}
+                    <div class="card-head">
+                        <span class="title">${c.title}</span>
+                        <span class="badge" style="background:${c.bColor};">${c.badge}</span>
+                    </div>
+                    ${getSchematicSVG(c, isEnergized)}
+                    <div class="card-foot">
+                        <div class="blocks-row">${blocksHtml}</div>
+                        <div class="foot-desc">${c.desc}</div>
+                    </div>
+                `;
+                bench.appendChild(cardEl);
+            });
+        }
+
+        // Inicialização
+        updateBench();
+    </script>
+
+</body>
+</html>
