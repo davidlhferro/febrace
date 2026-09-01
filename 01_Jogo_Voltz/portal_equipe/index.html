@@ -204,7 +204,7 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- ABA 3: GUIA DA JORNADA FEBRACE (AS 4 ETAPAS & CHECKLIST)   -->
+        <!-- ABA 3: GUIA DA JORNADA FEBRACE & MATRIZ DE PRIORIDADES     -->
         <!-- ========================================================= -->
         <section id="tab-warroom" class="tab-pane">
             <div style="display:grid; grid-template-columns: 2fr 1fr; gap:16px;">
@@ -233,20 +233,12 @@
                         </div>
                     </div>
 
-                    <!-- AS 4 ETAPAS DA JORNADA FEBRACE -->
-                    <div class="guide-card" style="margin-bottom:14px;">
-                        <h2 style="font-size:16px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🗺️ Mapa da Jornada FEBRACE (Passo a Passo)</h2>
-                        <div id="journey-stages-container">
-                            <!-- Injetado dinamicamente via voltz_warroom.js -->
-                        </div>
-                    </div>
-
                     <!-- PROGRESSO GERAL DA EQUIPE -->
-                    <div class="guide-card">
+                    <div class="guide-card" style="margin-bottom:14px;">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <h2 style="font-size:17px; font-weight:900; color:var(--neon-green);">Prontidão Geral dos Documentos</h2>
-                                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Checklist oficial dos 5 documentos obrigatórios da USP</div>
+                                <h2 style="font-size:17px; font-weight:900; color:var(--neon-green);">Prontidão Geral das Tarefas</h2>
+                                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Matriz de Prioridades Oficial — FEBRACE 2026</div>
                             </div>
                             <div id="warroom-score" style="font-family:'Fira Code', monospace; font-size:28px; font-weight:900; color:var(--neon-green);">
                                 0%
@@ -258,37 +250,29 @@
                         </div>
                     </div>
 
-                    <!-- OS 5 CARDS EXPLICATIVOS SEM JARGÕES -->
-                    <div id="checklist-container">
+                    <!-- MATRIZ DE PRIORIDADES EM 3 NÍVEIS -->
+                    <div id="priority-matrix-container">
                         <!-- Injetado dinamicamente via voltz_warroom.js -->
+                    </div>
+
+                    <!-- AS 4 ETAPAS DA JORNADA FEBRACE -->
+                    <div class="guide-card" style="margin-top:16px;">
+                        <h2 style="font-size:16px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🗺️ Mapa da Jornada FEBRACE (Passo a Passo)</h2>
+                        <div id="journey-stages-container">
+                            <!-- Injetado dinamicamente via voltz_warroom.js -->
+                        </div>
                     </div>
                 </div>
 
-                <!-- QUADRO DE TAREFAS & DICAS DA BANCA -->
+                <!-- SIDEBAR: DICAS DA BANCA & ROTEIRO DO PITCH -->
                 <div>
-                    <div class="guide-card">
-                        <h3 style="font-size:14px; font-weight:800; color:var(--copper-bright); margin-bottom:8px;">👥 Divisão de Tarefas da Equipe</h3>
-                        <table class="task-table">
-                            <thead>
-                                <tr>
-                                    <th>Tarefa</th>
-                                    <th>Responsável</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="task-table-body">
-                                <!-- Injetado dinamicamente -->
-                            </tbody>
-                        </table>
-                    </div>
-
                     <div class="guide-card">
                         <h3 style="font-size:14px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🎯 O Que a Banca da USP Avalia?</h3>
                         <ul style="font-size:12px; line-height:1.6; color:#cbd5e1; padding-left:16px;">
-                            <li><strong>1. Rigor do Jogo:</strong> As notas dos alunos subiram na prática?</li>
-                            <li><strong>2. Autenticidade:</strong> O Diário de Bordo mostra os erros corrigidos?</li>
-                            <li><strong>3. Custo Social:</strong> O kit custa menos de R$ 25 para escolas públicas?</li>
-                            <li><strong>4. Domínio da Equipe:</strong> Os alunos explicam a física sem ler papel?</li>
+                            <li><strong>1. Rigor Científico:</strong> Pré/Pós-teste padronizado e ganho de Hake.</li>
+                            <li><strong>2. Autenticidade:</strong> O Diário de Bordo mostra os erros corrigidos.</li>
+                            <li><strong>3. Custo Social:</strong> O kit custa menos de R$ 25 para escolas públicas.</li>
+                            <li><strong>4. Domínio da Equipe:</strong> Os alunos explicam a física sem ler papel.</li>
                         </ul>
                     </div>
 
@@ -310,7 +294,7 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- ABA 4: DIÁRIO DE BORDO & TRADUTOR DA BANCA USP            -->
+        <!-- ABA 4: DIÁRIO DE BORDO & TREINAMENTO PARA A BANCA USP      -->
         <!-- ========================================================= -->
         <section id="tab-diario-banca" class="tab-pane">
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
@@ -381,17 +365,45 @@
                     </div>
                 </div>
 
-                <!-- COLUNA DIREITA: TRADUTOR DA BANCA USP -->
+                <!-- COLUNA DIREITA: GUIA DA BANCA USP & SIMULADOR DE DEFESA -->
                 <div>
-                    <div class="guide-card" style="margin-bottom:12px;">
-                        <h2 style="font-size:16px; font-weight:900; color:var(--neon-blue);">🎓 Tradutor da Banca da USP</h2>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                            Tradução do juradês para o português claro e respostas na ponta da língua!
+                    <!-- MÓDULO 3: O QUE A BANCA QUER VER NOS RELATÓRIOS -->
+                    <div class="guide-card" style="border-top: 3px solid var(--neon-blue); margin-bottom:16px;">
+                        <h2 style="font-size:15px; font-weight:800; color:var(--neon-blue); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+                            <span>📑</span> O Que a Banca da USP Quer Ver nos Nossos Relatórios
+                        </h2>
+                        <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
+                            O que os doutores e pesquisadores buscam ao avaliar nossos textos e gráficos:
+                        </div>
+                        <div id="banca-requirements-container">
+                            <!-- Injetado dinamicamente via voltz_banca.js -->
                         </div>
                     </div>
 
-                    <div id="banca-translator-container">
-                        <!-- Injetado dinamicamente via voltz_banca.js -->
+                    <!-- MÓDULO 4: SIMULADOR DE OBJEÇÕES DA BANCA -->
+                    <div class="guide-card" style="border-top: 3px solid var(--neon-amber); margin-bottom:16px;">
+                        <h2 style="font-size:15px; font-weight:800; color:var(--neon-amber); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+                            <span>🛡️</span> Simulador de Objeções da Banca & Guia de Defesa
+                        </h2>
+                        <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
+                            Treine as 5 perguntas capciosas mais perigosas com respostas científicas ensaiadas:
+                        </div>
+                        <div id="banca-objections-container">
+                            <!-- Injetado dinamicamente via voltz_banca.js -->
+                        </div>
+                    </div>
+
+                    <!-- TRADUTOR DE JURADÊS -->
+                    <div class="guide-card" style="border-top: 3px solid var(--neon-green);">
+                        <h2 style="font-size:15px; font-weight:800; color:var(--neon-green); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+                            <span>🎓</span> Tradutor da Banca USP (Glossário Rápido)
+                        </h2>
+                        <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
+                            Tradução do juradês acadêmico para o português claro e direto:
+                        </div>
+                        <div id="banca-translator-container">
+                            <!-- Injetado dinamicamente via voltz_banca.js -->
+                        </div>
                     </div>
                 </div>
 

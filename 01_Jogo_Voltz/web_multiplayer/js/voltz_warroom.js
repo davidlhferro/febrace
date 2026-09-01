@@ -1,6 +1,6 @@
 /**
- * PORTAL VOLTZ — Painel da Jornada FEBRACE & Metas da Equipe
- * Mapeia as 4 etapas da jornada, checklist oficial e o roteiro do pitch oral de 5 minutos na USP.
+ * PORTAL VOLTZ — Painel da Jornada FEBRACE & Matriz de Urgência da Equipe
+ * Mapeia as 4 etapas da jornada, a Matriz de Prioridades em 3 Níveis e o Roteiro de Pitch Oral.
  */
 
 const FEBRACE_JOURNEY_STAGES = [
@@ -59,6 +59,105 @@ const FEBRACE_JOURNEY_STAGES = [
     }
 ];
 
+const FEBRACE_PRIORITY_MATRIX = [
+    {
+        level: 'Nível 1',
+        title: '🔴 NÍVEL 1: CRÍTICO & URGENTE (Prazo Inscrição: 02/10)',
+        color: '#ef4444',
+        badge: 'Prazo 02/10',
+        tasks: [
+            {
+                id: 'n1_diario',
+                title: 'Diário de Bordo Oficial',
+                desc: 'Criar caderno datado com registros das reuniões, fotos dos protótipos de cartas e anotações de regras corrigidas.',
+                responsible: 'João Vitor',
+                status: true,
+                weight: 25
+            },
+            {
+                id: 'n1_plano',
+                title: 'Plano de Pesquisa Formal',
+                desc: 'Documento de 3 a 5 páginas com a metodologia dos 3 grupos estratificados e termos TCLE/TALE.',
+                responsible: 'David',
+                status: true,
+                weight: 25
+            },
+            {
+                id: 'n1_artigo',
+                title: 'Relatório Científico / Artigo ABNT',
+                desc: 'Texto acadêmico completo com Introdução, Metodologia, Resultados Esperados e Referências bibliográficas.',
+                responsible: 'David',
+                status: true,
+                weight: 30
+            },
+            {
+                id: 'n1_video',
+                title: 'Vídeo de Apresentação de 3 Minutos',
+                desc: 'Gravação simples da equipe demonstrando as cartas na mesa e explicando o problema dos circuitos.',
+                responsible: 'Parceiro 3 & Toda a Equipe',
+                status: false,
+                weight: 20
+            }
+        ]
+    },
+    {
+        level: 'Nível 2',
+        title: '🟡 NÍVEL 2: ALTA PRIORIDADE (Execução da Pesquisa na Escola)',
+        color: '#f59e0b',
+        badge: 'Aplicação Real',
+        tasks: [
+            {
+                id: 'n2_impressao_cartas',
+                title: 'Imprimir 6 Cópias do Baralho de Testes',
+                desc: 'Imprimir os baralhos em papel sulfite ou 180g para levar nas mesas da escola.',
+                responsible: 'João Vitor',
+                status: false,
+                weight: 35
+            },
+            {
+                id: 'n2_impressao_testes',
+                title: 'Imprimir Questionários de Pré-Teste e Pós-Teste',
+                desc: '1 folha frente e verso codificada (ID-01 a ID-75) para cada estudante da turma.',
+                responsible: 'Parceiro 3',
+                status: false,
+                weight: 35
+            },
+            {
+                id: 'n2_tabular_python',
+                title: 'Tabular Notas no CSV e Rodar Script Python',
+                desc: 'Digitar as notas coletadas e executar `analise_estatistica_hake.py` para gerar os gráficos finais.',
+                responsible: 'David',
+                status: true,
+                weight: 30
+            }
+        ]
+    },
+    {
+        level: 'Nível 3',
+        title: '🟢 NÍVEL 3: IMPORTANTE PARA A FEIRA PRESENCIAL (Pós-Classificação)',
+        color: '#22c55e',
+        badge: 'Estande Poli-USP',
+        tasks: [
+            {
+                id: 'n3_poster',
+                title: 'Diagramação do Pôster Oficial (90x120cm)',
+                desc: 'Montar o layout vetorial com gráficos e fotos dos baralhos para impressão em lona com canaleta.',
+                responsible: 'David & Equipe',
+                status: false,
+                weight: 50
+            },
+            {
+                id: 'n3_pitch',
+                title: 'Ensaiar o Pitch Oral de 3 a 5 Minutos',
+                desc: 'Treinar as falas na ponta da língua para responder aos jurados e professores da USP.',
+                responsible: 'Toda a Equipe',
+                status: true,
+                weight: 50
+            }
+        ]
+    }
+];
+
 const FEBRACE_PITCH_SCRIPT = [
     {
         minuto: 'Minuto 1',
@@ -87,110 +186,73 @@ const FEBRACE_PITCH_SCRIPT = [
     }
 ];
 
-const FEBRACE_CHECKLIST_DEFAULT = [
-    {
-        id: 'doc_diario',
-        title: '1. Diário de Bordo Oficial (O Caderno da Equipe)',
-        tag: 'Registro Diário',
-        weight: 20,
-        status: true,
-        queE: 'É o caderno onde a gente anota dia a dia tudo o que testou, fotos das partidas na escola e o que deu certo ou errado.',
-        porQuePede: 'A banca de jurados da USP ama ver os erros que a gente cometeu e como corrigimos cada um. Isso prova que o projeto é 100% nosso e autêntico!',
-        comoFazer: 'Basta registrar as partidas na aba "Diário de Bordo" aqui do portal e clicar no botão "Imprimir / PDF" para encadernar.'
-    },
-    {
-        id: 'doc_relatorio',
-        title: '2. Relatório Científico (O Artigo do Jogo)',
-        tag: 'Artigo Completo',
-        weight: 30,
-        status: true,
-        queE: 'É o texto formal da pesquisa explicando por que o jogo VOLTZ ajuda os alunos a entender circuitos elétricos muito melhor do que uma aula chata só de lousa.',
-        porQuePede: 'Para avaliar se a gente testou o jogo com turmas reais de alunos e se as notas deles realmente subiram depois de jogar.',
-        comoFazer: 'O artigo já está pronto na pasta `02_Febrace_Pesquisa/artigo/` com os gráficos de notas e comparações de turmas.'
-    },
-    {
-        id: 'doc_plano',
-        title: '3. Plano de Pesquisa & Autorização de Ética (Formulário 4)',
-        tag: 'Documentação Escolar',
-        weight: 20,
-        status: true,
-        queE: 'O documento inicial que autoriza a gente a aplicar os testes de física com os estudantes na escola com autorização dos pais (TCLE).',
-        porQuePede: 'A FEBRACE e a feira internacional (ISEF) exigem que qualquer teste com pessoas garanta sigilo total e autorização assinada.',
-        comoFazer: 'Preencher o Formulário 4 padrão da FEBRACE e guardar os termos de autorização assinados na pasta do projeto.'
-    },
-    {
-        id: 'doc_resumo',
-        title: '4. Resumo da Inscrição (Texto Curto de 2.500 caracteres)',
-        tag: 'Inscrição no Site',
-        weight: 15,
-        status: true,
-        queE: 'Um textinho direto ao ponto resumindo: qual era o problema (física difícil), o que a gente criou (o jogo VOLTZ) e o resultado (todo mundo aprendeu).',
-        porQuePede: 'É o primeiro texto que os jurados leem na triagem virtual para decidir se o projeto vai para a final na USP.',
-        comoFazer: 'Copiar o resumo pronto do artigo e colar no formulário de inscrição da FEBRACE.'
-    },
-    {
-        id: 'doc_poster_video',
-        title: '5. Vídeo de 3 Minutos & Pôster de Bancada (90x120cm)',
-        tag: 'Apresentação Visual',
-        weight: 15,
-        status: false,
-        queE: 'O vídeo rápido da equipe jogando na mesa e o banner gigante que fica atrás do nosso estande na feira presencial.',
-        porQuePede: 'Para a banca ver a nossa energia ao vivo e avaliar se a gente sabe explicar o projeto com clareza e entusiasmo.',
-        comoFazer: 'Gravar um vídeo de 3 minutos no celular mostrando a partida de 3 jogadores e mandar o pôster para imprimir em lona.'
-    }
-];
-
-const FEBRACE_TEAM_TASKS_DEFAULT = [
-    { task: 'Artigo & Estatística de Ganho de Hake', responsible: 'David', status: 'Concluído 🟢' },
-    { task: 'Diário de Bordo & Playtests na Escola', responsible: 'João Vitor', status: 'Em Andamento 🟡' },
-    { task: 'Gravação do Vídeo de 3 Minutos na Mesa', responsible: 'Parceiro 3 & David', status: 'Próxima Etapa ⏳' },
-    { task: 'Impressão do Pôster 90x120cm em Lona', responsible: 'Toda a Equipe', status: 'Aguardando ⏳' },
-    { task: 'Formulário 4 e Termos de Consentimento (TCLE)', responsible: 'João Vitor', status: 'Concluído 🟢' }
-];
-
 class VoltzWarRoom {
     constructor() {
-        this.storageKey = 'voltz_febrace_warroom_human_v3';
-        this.items = this.loadChecklist();
+        this.storageKey = 'voltz_febrace_priorities_v4';
         this.journey = FEBRACE_JOURNEY_STAGES;
+        this.matrix = this.loadPriorityMatrix();
         this.pitch = FEBRACE_PITCH_SCRIPT;
-        this.tasks = FEBRACE_TEAM_TASKS_DEFAULT;
     }
 
-    loadChecklist() {
+    loadPriorityMatrix() {
         try {
             const saved = localStorage.getItem(this.storageKey);
-            if (saved) return JSON.parse(saved);
+            if (saved) {
+                const statusMap = JSON.parse(saved);
+                return FEBRACE_PRIORITY_MATRIX.map(level => ({
+                    ...level,
+                    tasks: level.tasks.map(t => ({
+                        ...t,
+                        status: statusMap[t.id] !== undefined ? statusMap[t.id] : t.status
+                    }))
+                }));
+            }
         } catch (e) {}
-        return JSON.parse(JSON.stringify(FEBRACE_CHECKLIST_DEFAULT));
+        return JSON.parse(JSON.stringify(FEBRACE_PRIORITY_MATRIX));
     }
 
-    saveChecklist() {
+    savePriorityMatrix() {
         try {
-            localStorage.setItem(this.storageKey, JSON.stringify(this.items));
+            const statusMap = {};
+            this.matrix.forEach(level => {
+                level.tasks.forEach(t => {
+                    statusMap[t.id] = t.status;
+                });
+            });
+            localStorage.setItem(this.storageKey, JSON.stringify(statusMap));
         } catch (e) {}
     }
 
-    toggleItem(id) {
-        const item = this.items.find(i => i.id === id);
-        if (item) {
-            item.status = !item.status;
-            this.saveChecklist();
+    toggleTask(taskId) {
+        for (const level of this.matrix) {
+            const task = level.tasks.find(t => t.id === taskId);
+            if (task) {
+                task.status = !task.status;
+                this.savePriorityMatrix();
+                break;
+            }
         }
         return this.getReadinessScore();
     }
 
     getReadinessScore() {
-        let totalWeight = 0;
-        let earnedWeight = 0;
-        for (const item of this.items) {
-            totalWeight += item.weight;
-            if (item.status) earnedWeight += item.weight;
-        }
-        return Math.round((earnedWeight / totalWeight) * 100);
+        let total = 0;
+        let done = 0;
+        this.matrix.forEach(level => {
+            level.tasks.forEach(t => {
+                total += 1;
+                if (t.status) done += 1;
+            });
+        });
+        return total === 0 ? 0 : Math.round((done / total) * 100);
     }
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { VoltzWarRoom, FEBRACE_CHECKLIST_DEFAULT, FEBRACE_JOURNEY_STAGES, FEBRACE_PITCH_SCRIPT, FEBRACE_TEAM_TASKS_DEFAULT };
+    module.exports = {
+        VoltzWarRoom,
+        FEBRACE_JOURNEY_STAGES,
+        FEBRACE_PRIORITY_MATRIX,
+        FEBRACE_PITCH_SCRIPT
+    };
 }

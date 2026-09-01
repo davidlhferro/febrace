@@ -409,6 +409,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const proposals = researchManager.proposals;
         const maxVotes = Math.max(...proposals.map(p => p.votes));
+        const steps = researchManager.steps || [];
+        const rationale = researchManager.rationale || { cards: [] };
 
         container.innerHTML = `
             <!-- HEADER DA PESQUISA -->
@@ -424,6 +426,62 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div style="font-size:13px; color:#cbd5e1; line-height:1.5; margin-top:10px; background:#050a14; padding:10px 12px; border-radius:6px; border:1px solid #1e293b;">
                     <strong>🎯 Nossa Hipótese Central:</strong> O jogo <strong>VOLTZ</strong> alcança ganho de aprendizagem de Hake superior (g ≥ 0.65) e taxa de sucesso em bancada (>80%), destravando especialmente quem tinha nota baixa no pré-teste.
+                </div>
+            </div>
+
+            <!-- MÓDULO 1: GUIA PASSO A PASSO DA PESQUISA NA ESCOLA -->
+            <div class="guide-card" style="border-top: 3px solid var(--neon-blue); margin-bottom: 24px;">
+                <div style="margin-bottom: 14px;">
+                    <h3 style="font-size:16px; font-weight:900; color:var(--neon-blue); display:flex; align-items:center; gap:8px;">
+                        <span>🏫</span> Como Será a Nossa Pesquisa na Escola (Passo a Passo)
+                    </h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                        Tudo o que faremos no dia da aplicação com a turma de 75 alunos, minuto a minuto:
+                    </p>
+                </div>
+
+                <!-- OS 5 PASSOS DA APLICAÇÃO -->
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-bottom:16px;">
+                    ${steps.map(s => `
+                        <div style="background:#050a14; border:1px solid #1e293b; border-left:3px solid ${s.color}; padding:12px; border-radius:6px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                <div style="font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:6px;">
+                                    <span>${s.icon}</span> ${s.title}
+                                </div>
+                                <span class="guide-badge-pill" style="color:${s.color}; border-color:${s.color}; font-size:10px;">${s.badge}</span>
+                            </div>
+                            <div style="font-size:12px; color:#cbd5e1; margin-bottom:6px; line-height:1.45;">
+                                ${s.whatWeDo}
+                            </div>
+                            <div style="font-size:11.5px; color:var(--neon-green); margin-bottom:4px; background:rgba(34,197,94,0.08); padding:4px 8px; border-radius:4px;">
+                                <strong>🎯 Por que fazemos:</strong> ${s.whyItMatters}
+                            </div>
+                            <div style="font-size:11px; color:#94a3b8; font-style:italic;">
+                                💡 <strong>Dica Prática:</strong> ${s.practicalTip}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- POR QUE CRIAMOS 3 JOGOS -->
+                <div style="background:#0a101d; border:1px solid #2d4160; padding:14px; border-radius:8px;">
+                    <h4 style="font-size:14px; font-weight:800; color:var(--copper-bright); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+                        <span>🎲</span> ${rationale.title}
+                    </h4>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">${rationale.subtitle}</p>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:10px;">
+                        ${rationale.cards.map(c => `
+                            <div style="background:#050a14; padding:10px; border-radius:6px; border:1px solid #1e293b;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                    <strong style="font-size:12.5px; color:#fff; display:flex; align-items:center; gap:4px;">
+                                        <span>${c.icon}</span> ${c.title}
+                                    </strong>
+                                    <span class="guide-badge-pill" style="font-size:9.5px;">${c.tag}</span>
+                                </div>
+                                <p style="font-size:11.5px; color:#cbd5e1; line-height:1.4;">${c.text}</p>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             </div>
 
@@ -639,19 +697,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------
-    // MÓDULO 3: GUIA DA JORNADA FEBRACE (AS 4 ETAPAS & CHECKLIST)
+    // MÓDULO 3: GUIA DA JORNADA FEBRACE & MATRIZ DE PRIORIDADES
     // -------------------------------------------------------------
     function renderWarRoom() {
         const scoreEl = document.getElementById('warroom-score');
         const barFill = document.getElementById('warroom-bar-fill');
         const journeyContainer = document.getElementById('journey-stages-container');
-        const checklistContainer = document.getElementById('checklist-container');
-        const taskTableBody = document.getElementById('task-table-body');
+        const matrixContainer = document.getElementById('priority-matrix-container');
 
         if (scoreEl) {
             const score = warRoom.getReadinessScore();
             scoreEl.textContent = `${score}%`;
             if (barFill) barFill.style.width = `${score}%`;
+        }
+
+        // Renderiza a Matriz de Prioridades em 3 Níveis (Nível 1, 2 e 3)
+        if (matrixContainer) {
+            matrixContainer.innerHTML = warRoom.matrix.map(level => `
+                <div class="guide-card" style="border-top: 3px solid ${level.color}; margin-bottom: 14px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <h3 style="font-size:14.5px; font-weight:800; color:#fff;">${level.title}</h3>
+                        <span class="guide-badge-pill" style="color:${level.color}; border-color:${level.color}; font-size:10px;">${level.badge}</span>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        ${level.tasks.map(t => `
+                            <div style="background:#050a14; border:1px solid #1e293b; padding:10px 12px; border-radius:6px; display:flex; align-items:flex-start; gap:10px;">
+                                <input type="checkbox" data-task="${t.id}" ${t.status ? 'checked' : ''} style="width:18px; height:18px; margin-top:2px; accent-color:${level.color}; cursor:pointer;">
+                                <div style="flex:1;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+                                        <strong style="font-size:13px; color:${t.status ? '#94a3b8' : '#fff'}; text-decoration:${t.status ? 'line-through' : 'none'};">
+                                            ${t.title}
+                                        </strong>
+                                        <span style="font-size:11px; color:var(--copper-bright); font-weight:700;">Responsável: ${t.responsible}</span>
+                                    </div>
+                                    <div style="font-size:11.5px; color:#94a3b8; margin-top:3px; line-height:1.4;">
+                                        ${t.desc}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Event listener nos checkboxes da Matriz de Prioridades
+            matrixContainer.querySelectorAll('input[data-task]').forEach(chk => {
+                chk.addEventListener('change', (e) => {
+                    const taskId = e.target.getAttribute('data-task');
+                    warRoom.toggleTask(taskId);
+                    renderWarRoom();
+                });
+            });
         }
 
         // Renderiza as 4 Etapas da Jornada FEBRACE
@@ -671,49 +768,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('');
         }
 
-        // Renderiza os 5 Cards de Documentos Obrigatórios
-        if (checklistContainer) {
-            checklistContainer.innerHTML = '';
-            warRoom.items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'guide-card';
-                card.innerHTML = `
-                    <div class="guide-card-header">
-                        <div class="guide-card-title">
-                            <input type="checkbox" ${item.status ? 'checked' : ''} style="width:18px; height:18px; accent-color:var(--neon-green); cursor:pointer;">
-                            <span>${item.title}</span>
-                        </div>
-                        <span class="guide-badge-pill">${item.tag}</span>
-                    </div>
-
-                    <div class="guide-section-block">
-                        <div class="guide-section-label">❓ O que é isso?</div>
-                        <div class="guide-section-text">${item.queE}</div>
-                    </div>
-
-                    <div class="guide-section-block" style="border-left-color:var(--neon-blue);">
-                        <div class="guide-section-label" style="color:var(--neon-blue);">🎯 Por que a banca da USP pede isso?</div>
-                        <div class="guide-section-text">${item.porQuePede}</div>
-                    </div>
-
-                    <div class="guide-section-block" style="border-left-color:var(--neon-green);">
-                        <div class="guide-section-label" style="color:var(--neon-green);">🛠️ Como a gente faz o nosso na prática?</div>
-                        <div class="guide-section-text">${item.comoFazer}</div>
-                    </div>
-                `;
-
-                const chk = card.querySelector('input');
-                chk.addEventListener('change', () => {
-                    const newScore = warRoom.toggleItem(item.id);
-                    if (scoreEl) scoreEl.textContent = `${newScore}%`;
-                    if (barFill) barFill.style.width = `${newScore}%`;
-                    renderWarRoom();
-                });
-
-                checklistContainer.appendChild(card);
-            });
-        }
-
         // Renderiza o Roteiro do Pitch Oral de 5 Minutos
         const pitchContainer = document.getElementById('pitch-script-container');
         if (pitchContainer && warRoom.pitch) {
@@ -726,16 +780,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         "${p.fala}"
                     </div>
                 </div>
-            `).join('');
-        }
-
-        if (taskTableBody) {
-            taskTableBody.innerHTML = warRoom.tasks.map(t => `
-                <tr>
-                    <td><strong>${t.task}</strong></td>
-                    <td><span style="color:var(--copper-bright); font-weight:700;">${t.responsible}</span></td>
-                    <td>${t.status}</td>
-                </tr>
             `).join('');
         }
     }
@@ -774,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startCountdown();
 
     // -------------------------------------------------------------
-    // MÓDULO 4: DIÁRIO DE BORDO & TRADUTOR DA BANCA USP
+    // MÓDULO 4: DIÁRIO DE BORDO & TREINAMENTO PARA A BANCA USP
     // -------------------------------------------------------------
     function renderDiario() {
         const diarioList = document.getElementById('diario-entries-list');
@@ -861,27 +905,71 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // RENDERIZAÇÃO DOS MÓDULOS DA BANCA (MÓDULOS 3 E 4)
     function renderBanca() {
-        const bancaContainer = document.getElementById('banca-translator-container');
-        if (!bancaContainer) return;
+        // Módulo 3: O Que a Banca Quer Ver nos Relatórios
+        const reqsContainer = document.getElementById('banca-requirements-container');
+        if (reqsContainer && bancaCoach.reportReqs) {
+            reqsContainer.innerHTML = bancaCoach.reportReqs.map(r => `
+                <div style="background:#050a14; border-left:3px solid ${r.color}; padding:10px 12px; border-radius:6px; margin-bottom:10px;">
+                    <div style="font-weight:800; font-size:13px; color:#fff; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                        <span>${r.icon}</span> ${r.category}
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        ${r.items.map(it => `
+                            <div style="font-size:11.5px; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:4px; line-height:1.4;">
+                                <strong style="color:${r.color};">${it.topic}:</strong>
+                                <span style="color:#cbd5e1;"> ${it.detail}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
 
-        bancaContainer.innerHTML = '';
-        bancaCoach.glossary.forEach((item) => {
-            const card = document.createElement('div');
-            card.className = 'translator-card';
-            card.innerHTML = `
-                <div class="translator-jurado">
-                    <span>🎓 O Jurado Pergunta:</span>
-                    <em>"${item.juradoDiz}"</em>
-                </div>
-                <div class="translator-real">
-                    <div style="font-size:11px; font-weight:800; color:var(--copper-bright); margin-bottom:2px;">🗣️ O que ele realmente quer saber:</div>
-                    <div style="font-weight:600; color:#fff; margin-bottom:8px;">${item.traducao}</div>
-                    <div style="font-size:11px; font-weight:800; color:var(--neon-green); margin-bottom:2px;">💡 Resposta na ponta da língua:</div>
-                    <div style="color:#cbd5e1;">${item.respostaNaPontaDaLingua}</div>
-                </div>
-            `;
-            bancaContainer.appendChild(card);
-        });
+        // Módulo 4: Simulador de Objeções da Banca & Guia de Defesa
+        const objContainer = document.getElementById('banca-objections-container');
+        if (objContainer && bancaCoach.objections) {
+            objContainer.innerHTML = bancaCoach.objections.map(obj => `
+                <details style="background:#050a14; border:1px solid #1e293b; border-radius:6px; margin-bottom:8px; padding:8px 12px;">
+                    <summary style="font-size:12.5px; font-weight:800; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:space-between;">
+                        <span>${obj.icon} ${obj.pergunta}</span>
+                        <span class="guide-badge-pill" style="font-size:9.5px; color:var(--neon-amber); border-color:var(--neon-amber);">${obj.conceitoChave}</span>
+                    </summary>
+                    <div style="margin-top:10px; padding-top:8px; border-top:1px solid #1e293b; font-size:12px; line-height:1.45;">
+                        <div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">
+                            <strong>🧐 Por que o jurado pergunta isso:</strong> ${obj.porQuePerguntam}
+                        </div>
+                        <div style="background:rgba(34,197,94,0.08); border-left:3px solid var(--neon-green); padding:8px 10px; border-radius:4px; color:#f1f5f9; margin-top:6px;">
+                            <strong style="color:var(--neon-green); font-size:11.5px;">💬 Nossa Resposta Científica Ensaiada:</strong><br>
+                            "${obj.respostaPerfeita}"
+                        </div>
+                    </div>
+                </details>
+            `).join('');
+        }
+
+        // Tradutor de Juradês
+        const bancaContainer = document.getElementById('banca-translator-container');
+        if (bancaContainer && bancaCoach.glossary) {
+            bancaContainer.innerHTML = '';
+            bancaCoach.glossary.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'translator-card';
+                card.innerHTML = `
+                    <div class="translator-jurado">
+                        <span>🎓 O Jurado Pergunta:</span>
+                        <em>"${item.juradoDiz}"</em>
+                    </div>
+                    <div class="translator-real">
+                        <div style="font-size:11px; font-weight:800; color:var(--copper-bright); margin-bottom:2px;">🗣️ O que ele realmente quer saber:</div>
+                        <div style="font-weight:600; color:#fff; margin-bottom:8px;">${item.traducao}</div>
+                        <div style="font-size:11px; font-weight:800; color:var(--neon-green); margin-bottom:2px;">💡 Resposta na ponta da língua:</div>
+                        <div style="color:#cbd5e1;">${item.respostaNaPontaDaLingua}</div>
+                    </div>
+                `;
+                bancaContainer.appendChild(card);
+            });
+        }
     }
 });

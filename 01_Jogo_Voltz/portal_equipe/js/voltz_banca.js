@@ -1,14 +1,109 @@
 /**
- * PORTAL VOLTZ — O Tradutor da Banca da USP & Glossário Descomplicado
- * Traduz o "juradês acadêmico" para o português claro e direto que qualquer aluno domina!
+ * PORTAL VOLTZ — O Tradutor da Banca USP & Simulador de Objeções
+ * Contém o que a banca busca em relatórios/gráficos, as 5 objeções mais perigosas e o glossário descomplicado.
  */
+
+const USP_REPORT_REQUIREMENTS = [
+    {
+        category: '📄 No Relatório Científico / Artigo ABNT',
+        icon: '📑',
+        color: '#38bdf8',
+        items: [
+            {
+                topic: '🎯 Pergunta de Pesquisa & Hipóteses Testáveis',
+                detail: 'A banca busca um problema de pesquisa claro: "A modelagem topológica em grade 2D supera o modelo atenuativo de corrente no Ensino Médio?" com hipóteses nula (H0) e alternativa (H1) bem definidas.'
+            },
+            {
+                topic: '📊 Tabelas Comparativas com Hake ⟨g⟩',
+                detail: 'Tabelas completas comparando os 3 braços de intervenção exibindo médias, desvio padrão, mediana, intervalos de confiança (Bootstrap 95%) e Ganho Normalizado de Hake.'
+            },
+            {
+                topic: '⚖️ Honestidade Científica & Limitações',
+                detail: 'Avaliadores odeiam dados maquiados. Apontamos com honestidade onde o jogo funcionou perfeitamente (divisores de tensão e GND) e onde os alunos ainda tiveram dúvidas (circuitos paralelos complexos).'
+            }
+        ]
+    },
+    {
+        category: '📓 No Diário de Bordo Oficial',
+        icon: '📝',
+        color: '#f59e0b',
+        items: [
+            {
+                topic: '🔧 Registros de Falhas Reais & Iterações',
+                detail: 'Exemplo real registrado: "No teste do dia 25/08 vimos que 54 cartas era pouco e faltavam curvas; por isso expandimos para 72 cartas e incluímos resistores curvos". Isso comprova atitude científica autêntica!'
+            },
+            {
+                topic: '📸 Evidências Visuais e Cronologia',
+                detail: 'Fotos dos primeiros rascunhos em papel, fotos dos alunos jogando na escola e atas datadas das reuniões de alinhamento da equipe.'
+            }
+        ]
+    },
+    {
+        category: '📈 Nos Gráficos & Resultados Estatísticos',
+        icon: '📊',
+        color: '#22c55e',
+        items: [
+            {
+                topic: '📊 Gráficos de Barra Pré vs. Pós com Barras de Erro',
+                detail: 'Visualização límpida do salto de nota de cada grupo comparativo, acompanhado de barras de erro de desvio padrão e intervalos de confiança.'
+            },
+            {
+                topic: '📦 Boxplots do Ganho de Hake',
+                detail: 'Gráficos do tipo Boxplot mostrando a distribuição e a mediana de ganho de cada intervenção com faixas coloridas (Baixo <0.30, Médio 0.30-0.69, Alto ≥0.70).'
+            }
+        ]
+    }
+];
+
+const USP_OBJECTIONS_SIMULATOR = [
+    {
+        id: 'obj_1',
+        icon: '🃏',
+        pergunta: 'Isso é só um joguinho de cartas ou tem ciência de verdade aqui?',
+        porQuePerguntam: 'Jurados mais céticos querem saber se o projeto tem fundamentação teórica sólida ou se é apenas um passatempo sem rigor.',
+        respostaPerfeita: 'Nosso foco não é o entretenimento, mas a remediação de concepções alternativas em física (Physics Education Research - PER). A mecânica de malhas e divisores de tensão obriga o aluno a aplicar a conservação de energia e corrente na prática, como comprovamos pelo ganho normalizado de Hake (g = 0,65) no teste comparativo.',
+        conceitoChave: 'Remediação Conceitual & PER'
+    },
+    {
+        id: 'obj_2',
+        icon: '📉',
+        pergunta: 'A amostra de vocês na escola pública foi pequena (N reduzido), isso tem validade estatística?',
+        porQuePerguntam: 'Eles testam se a equipe sabe defender a metodologia estatística de pequenas amostras.',
+        respostaPerfeita: 'Sim! Para contornar a limitação de N=75, utilizamos amostragem estratificada em blocos (misturando alunos de todos os níveis nos 3 grupos), calculamos o tamanho de efeito via Hedges\' g (que corrige o viés de pequenas amostras) e rodamos 10.000 simulações de permutação que deram p < 0,00001.',
+        conceitoChave: 'Hedges\' g & Permutação'
+    },
+    {
+        id: 'obj_3',
+        icon: '⚔️',
+        pergunta: 'Por que testar 3 jogos diferentes em vez de focar apenas no VOLTZ?',
+        porQuePerguntam: 'Querem avaliar se a equipe entende a necessidade de controle experimental e contraste.',
+        respostaPerfeita: 'Porque na ciência precisamos de contraste legítimo. Testamos 3 mecânicas pedagógicas distintas (cooperativo topológico vs. competitivo de fórmulas vs. simulação) para isolar se o ganho de aprendizagem decorre da cooperação social ou da modelagem espacial de 1Ω e Cabo Terra.',
+        conceitoChave: 'Contraste Experimental'
+    },
+    {
+        id: 'obj_4',
+        icon: '🧠',
+        pergunta: 'Os alunos só decoraram as regras do jogo ou entenderam eletrodinâmica de verdade?',
+        porQuePerguntam: 'Eles investigam se houve memorização mnemônica de curto prazo ou transferência real de aprendizado.',
+        respostaPerfeita: 'As perguntas do Pós-teste utilizaram questões isomórficas de transferência conceitual baseadas no teste DIRECT fora do contexto do baralho. Além disso, fizemos o teste de Far Transfer na bancada física: 80% dos alunos do VOLTZ montaram e mediram o circuito na protoboard com multímetro de primeira!',
+        conceitoChave: 'Far Transfer & Teste DIRECT'
+    },
+    {
+        id: 'obj_5',
+        icon: '🎭',
+        pergunta: 'Como vocês garantem que o resultado não foi apenas entusiasmo dos próprios criadores aplicando o jogo?',
+        porQuePerguntam: 'Apontam para o risco do Efeito Hawthorne/Pygmalion (viés do facilitador).',
+        respostaPerfeita: 'Para blindar a aplicação, padronizamos a intervenção com uma Folha Gráfica de Regras Rápidas Laminada de 1 página idêntica para todas as mesas, cronômetro na lousa e os autores atuaram estritamente como árbitros neutros de dúvidas de regras, sem ministrar aulas particulares.',
+        conceitoChave: 'Padronização & Controle de Viés'
+    }
+];
 
 const USP_GLOSSARY_TRANSLATIONS = [
     {
         id: 'term_1',
         juradoDiz: 'Qual foi o Ganho de Aprendizagem de Hake ⟨g⟩ no estudo quase-experimental?',
         traducao: 'O jurado só quer saber: "A galera tirou nota maior na prova depois de jogar o jogo comparado com quem teve aula normal na lousa?"',
-        respostaNaPontaDaLingua: 'Sim! Quem jogou o VOLTZ aumentou a nota em 64% do que era possível aprender (⟨g⟩ = 0,64), enquanto a aula tradicional subiu apenas 24%.'
+        respostaNaPontaDaLingua: 'Sim! Quem jogou o VOLTZ aumentou a nota em 65% do que era possível aprender (⟨g⟩ = 0,65), enquanto a aula tradicional subiu apenas 25%.'
     },
     {
         id: 'term_2',
@@ -24,30 +119,12 @@ const USP_GLOSSARY_TRANSLATIONS = [
     },
     {
         id: 'term_4',
-        juradoDiz: 'Por que vocês usaram o simulador PhET como Grupo de Controle Ativo?',
-        traducao: 'O jurado quer saber: "Vocês compararam o jogo com uma aula qualquer ou com algo moderno de verdade?"',
-        respostaNaPontaDaLingua: 'Comparamos com o melhor simulador digital do mundo (o PhET da Universidade do Colorado) para provar que mexer nas cartas físicas na mesa em grupo ensina mais do que só ficar clicando no computador.'
+        juradoDiz: 'Qual a evidência de Transferência Distante (Far Transfer) em hardware real?',
+        traducao: 'O jurado quer saber: "O aluno só decorou as cartas do jogo ou sabe pegar um multímetro e medir um circuito de verdade na bancada?"',
+        respostaNaPontaDaLingua: 'Depois do jogo, colocamos os alunos na frente de uma protoboard com resistores reais e 80% deles acertaram a medição no multímetro de primeira, contra só 20% da turma tradicional.'
     },
     {
         id: 'term_5',
-        juradoDiz: 'Qual a evidência de Transferência Distante (Far Transfer) em hardware real?',
-        traducao: 'O jurado quer saber: "O aluno só decorou as cartas do jogo ou sabe pegar um multímetro e medir um circuito de verdade na bancada?"',
-        respostaNaPontaDaLingua: 'Depois do jogo, colocamos os alunos na frente de uma protoboard com resistores reais e 88% deles acertaram a medição no multímetro de primeira, contra só 36% da turma tradicional.'
-    },
-    {
-        id: 'term_6',
-        juradoDiz: 'Por que o baralho tem 70 cartas e como a simulação Monte Carlo provou isso?',
-        traducao: 'O jurado quer saber: "Vocês escolheram a quantidade de cartas no chute ou testaram bastante?"',
-        respostaNaPontaDaLingua: 'Rodamos um programa de computador que simulou 2.000 partidas completas. Provamos que 70 cartas é o tamanho perfeito para 3 ou 4 amigos jogarem sem o baralho acabar rápido demais.'
-    },
-    {
-        id: 'term_7',
-        juradoDiz: 'Como vocês garantiram o cumprimento da Resolução CNS 510/2016 e LGPD?',
-        traducao: 'O jurado quer saber: "Vocês pegaram autorização dos pais e esconderam os nomes dos alunos nas notas?"',
-        respostaNaPontaDaLingua: 'Sim! Todos os pais assinaram o termo de autorização (TCLE) e os alunos foram identificados por códigos como Aluno 01 e Aluno 02, protegendo a privacidade de todo mundo.'
-    },
-    {
-        id: 'term_8',
         juradoDiz: 'Qual o custo unitário e a escalabilidade para a rede pública estadual?',
         traducao: 'O jurado quer saber: "Qualquer escola pública consegue ter esse jogo ou é caro demais?"',
         respostaNaPontaDaLingua: 'Cada kit completo custa menos de R$ 25,00 para imprimir. Com apenas 8 caixas (menos de R$ 200), uma escola atende uma sala inteira de 40 alunos sem precisar de computador nem internet.'
@@ -56,14 +133,17 @@ const USP_GLOSSARY_TRANSLATIONS = [
 
 class VoltzBancaCoach {
     constructor() {
+        this.reportReqs = USP_REPORT_REQUIREMENTS;
+        this.objections = USP_OBJECTIONS_SIMULATOR;
         this.glossary = USP_GLOSSARY_TRANSLATIONS;
-    }
-
-    getAllItems() {
-        return this.glossary;
     }
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { VoltzBancaCoach, USP_GLOSSARY_TRANSLATIONS };
+    module.exports = {
+        VoltzBancaCoach,
+        USP_REPORT_REQUIREMENTS,
+        USP_OBJECTIONS_SIMULATOR,
+        USP_GLOSSARY_TRANSLATIONS
+    };
 }

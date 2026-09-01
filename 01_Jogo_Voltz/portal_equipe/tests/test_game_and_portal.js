@@ -1,14 +1,16 @@
 /**
  * SUÍTE DE TESTES AUTOMATIZADOS — JOGO VOLTZ 2D & PORTAL FEBRACE
  * Cobre: Carta Única (0,0), Rejeição de Jogadas Ilegais Bandido, Fechamento por Loop e GND,
- * Lei de Ohm, Diário de Bordo, Propostas do Braço 1, Banco DIRECT e Roteiro de Pitch.
+ * Lei de Ohm, Diário de Bordo, Propostas do Braço 1, Banco DIRECT, Roteiro de Pitch,
+ * Guia do Experimento na Escola (5 Passos), Matriz de Prioridades em 3 Níveis e Simulador de Objeções da Banca.
  */
 
 const { TOPOLOGY_SHAPES, getRotatedPorts, VOLTZ_CARDS_CATALOG, generateFullDeck } = require('../js/voltz_cards_data.js');
 const { VoltzEngine } = require('../js/voltz_engine.js');
 const { VoltzDiarioManager } = require('../js/voltz_diario.js');
-const { VoltzWarRoom, FEBRACE_PITCH_SCRIPT } = require('../js/voltz_warroom.js');
-const { VoltzResearchManager, VOLTZ_ARM1_PROPOSALS, VOLTZ_DIRECT_ITEMS_PRE, VOLTZ_DIRECT_ITEMS_POST } = require('../js/voltz_pesquisa.js');
+const { VoltzWarRoom, FEBRACE_PRIORITY_MATRIX, FEBRACE_PITCH_SCRIPT } = require('../js/voltz_warroom.js');
+const { VoltzResearchManager, VOLTZ_EXPERIMENT_STEPS, VOLTZ_THREE_GAMES_RATIONALE, VOLTZ_ARM1_PROPOSALS, VOLTZ_DIRECT_ITEMS_PRE, VOLTZ_DIRECT_ITEMS_POST } = require('../js/voltz_pesquisa.js');
+const { VoltzBancaCoach, USP_REPORT_REQUIREMENTS, USP_OBJECTIONS_SIMULATOR, USP_GLOSSARY_TRANSLATIONS } = require('../js/voltz_banca.js');
 
 console.log('================================================================================');
 console.log('🧪 SUÍTE DE TESTES TÉCNICOS AUTOMATIZADOS — PORTAL VOLTZ & FEBRACE 2D');
@@ -172,11 +174,59 @@ assert(researchMgr.postItems.length >= 5, 'O banco do Pós-Teste deve conter que
 assert(researchMgr.preItems[0].distractor.toLowerCase().includes('consom'), 'A Questão 1 deve mapear o distrator de modelo atenuativo.');
 
 // -------------------------------------------------------------
-// BLOCO 7: Roteiro do Pitch de 5 Minutos da FEBRACE
+// BLOCO 7: Módulo "Como Será a Nossa Pesquisa na Escola" (5 Passos)
 // -------------------------------------------------------------
-console.log('\n--- BLOCO 7: Roteiro de Pitch Oral FEBRACE ---');
+console.log('\n--- BLOCO 7: Guia do Experimento na Escola (5 Passos) ---');
+
+assert(researchMgr.steps.length === 5, 'O guia do experimento deve conter exatamente 5 passos sequenciais.');
+assert(researchMgr.steps[0].title.includes('Pré-Teste'), 'O Passo 1 deve ser o Pré-Teste Diagnóstico (10 min).');
+assert(researchMgr.steps[1].title.includes('Estratificação'), 'O Passo 2 deve ser a Estratificação em 3 Níveis e formação de grupos justos.');
+assert(researchMgr.steps[2].title.includes('Intervenção Lúdica'), 'O Passo 3 deve ser a Intervenção com os 3 Jogos (30 min).');
+assert(researchMgr.steps[3].title.includes('Pós-Teste'), 'O Passo 4 deve ser o Pós-Teste Isomórfico (10 min).');
+assert(researchMgr.steps[4].title.includes('Ganho de Hake'), 'O Passo 5 deve ser o Cálculo do Ganho de Hake.');
+assert(researchMgr.rationale.cards.length === 3, 'A justificativa dos 3 jogos deve conter 3 pilares de contraste.');
+
+// -------------------------------------------------------------
+// BLOCO 8: Matriz de Prioridades em 3 Níveis (Nível 1, 2 e 3)
+// -------------------------------------------------------------
+console.log('\n--- BLOCO 8: Matriz de Prioridades Granular ---');
 
 const warRoom = new VoltzWarRoom();
+assert(warRoom.matrix.length === 3, 'A matriz de prioridades deve ser dividida em exatamente 3 níveis.');
+assert(warRoom.matrix[0].level === 'Nível 1', 'O primeiro nível deve ser Nível 1: Crítico & Urgente.');
+assert(warRoom.matrix[0].tasks.some(t => t.id === 'n1_diario'), 'Nível 1 deve conter o Diário de Bordo Oficial.');
+assert(warRoom.matrix[0].tasks.some(t => t.id === 'n1_plano'), 'Nível 1 deve conter o Plano de Pesquisa Formal.');
+assert(warRoom.matrix[0].tasks.some(t => t.id === 'n1_artigo'), 'Nível 1 deve conter o Relatório Científico / Artigo ABNT.');
+assert(warRoom.matrix[0].tasks.some(t => t.id === 'n1_video'), 'Nível 1 deve conter o Vídeo de 3 Minutos.');
+
+const scoreInitial = warRoom.getReadinessScore();
+assert(typeof scoreInitial === 'number' && scoreInitial >= 0 && scoreInitial <= 100, 'O score de prontidão deve ser um percentual de 0 a 100.');
+
+// Teste de Toggle de Tarefa
+const taskToToggle = warRoom.matrix[0].tasks[3]; // n1_video (false)
+const prevStatus = taskToToggle.status;
+warRoom.toggleTask(taskToToggle.id);
+assert(taskToToggle.status === !prevStatus, 'O toggle da tarefa deve inverter seu status.');
+
+// -------------------------------------------------------------
+// BLOCO 9: O Que a Banca Quer Ver nos Relatórios & Simulador de Objeções
+// -------------------------------------------------------------
+console.log('\n--- BLOCO 9: Relatórios USP & Simulador de 5 Objeções ---');
+
+const coach = new VoltzBancaCoach();
+assert(coach.reportReqs.length === 3, 'Devem existir 3 categorias de exigências para relatórios da USP.');
+assert(coach.objections.length === 5, 'O simulador de defesa deve conter as 5 objeções mais perigosas da banca.');
+assert(coach.objections[0].pergunta.includes('joguinho'), 'A Objeção 1 deve tratar de jogo vs ciência.');
+assert(coach.objections[1].pergunta.includes('pequena'), 'A Objeção 2 deve tratar do tamanho da amostra (N reduzido).');
+assert(coach.objections[2].pergunta.includes('3 jogos'), 'A Objeção 3 deve tratar da comparação entre 3 jogos.');
+assert(coach.objections[3].pergunta.includes('decoraram'), 'A Objeção 4 deve tratar de decoreba vs compreensão real.');
+assert(coach.objections[4].pergunta.includes('entusiasmo'), 'A Objeção 5 deve tratar do viés do experimentador.');
+
+// -------------------------------------------------------------
+// BLOCO 10: Roteiro de Pitch Oral FEBRACE
+// -------------------------------------------------------------
+console.log('\n--- BLOCO 10: Roteiro de Pitch Oral FEBRACE ---');
+
 assert(warRoom.pitch.length === 5, 'O roteiro do pitch oral deve conter exatamente 5 minutos estruturados.');
 assert(warRoom.pitch[0].fala.includes('8 em cada 10 alunos'), 'O minuto 1 deve abrir com a estatística do problema em sala de aula.');
 assert(warRoom.pitch[4].fala.includes('R$ 25'), 'O minuto 5 deve enfatizar o baixo custo social de R$ 25.');
