@@ -56,6 +56,14 @@ const FEBRACE_CHECKLIST_DEFAULT = [
     }
 ];
 
+const FEBRACE_TEAM_TASKS_DEFAULT = [
+    { task: 'Artigo & Estatística de Hake', responsible: 'David', status: 'Concluído 🟢' },
+    { task: 'Diário de Bordo & Playtests na Escola', responsible: 'João Vitor', status: 'Em Andamento 🟡' },
+    { task: 'Gravação do Vídeo de 3 Minutos', responsible: 'Parceiro 3 & David', status: 'Próxima Etapa ⏳' },
+    { task: 'Impressão do Pôster 90x120cm em Lona', responsible: 'Toda a Equipe', status: 'Aguardando ⏳' },
+    { task: 'Formulário 4 e Termos de Consentimento (TCLE)', responsible: 'João Vitor', status: 'Concluído 🟢' }
+];
+
 class VoltzWarRoom {
     constructor() {
         this.storageKey = 'voltz_febrace_warroom_human_v2';

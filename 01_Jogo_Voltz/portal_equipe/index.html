@@ -10,18 +10,18 @@
 </head>
 <body>
 
-    <!-- NAVBAR DE COMANDO -->
+    <!-- NAVBAR DE COMANDO FIXA -->
     <header class="navbar">
         <div class="brand-header">
             <div class="brand-title">⚡ VOLTZ: CIRCUIT BREAK</div>
-            <div class="brand-badge">Central da Equipe FEBRACE 2026</div>
+            <div class="brand-badge">Central FEBRACE 2026</div>
         </div>
 
         <nav class="nav-tabs">
-            <button class="nav-tab-btn active" data-tab="tab-arena">🎮 Jogar com Amigos (Arena)</button>
-            <button class="nav-tab-btn" data-tab="tab-warroom">🛡️ Guia da FEBRACE</button>
-            <button class="nav-tab-btn" data-tab="tab-diario">📝 Diário de Bordo</button>
-            <button class="nav-tab-btn" data-tab="tab-banca">🗣️ Tradutor da Banca USP</button>
+            <button class="nav-tab-btn active" data-tab="tab-arena">⚡ 1. Jogo Multiplayer</button>
+            <button class="nav-tab-btn" data-tab="tab-warroom">📊 2. Painel FEBRACE & Metas</button>
+            <button class="nav-tab-btn" data-tab="tab-diario">📓 3. Diário de Bordo</button>
+            <button class="nav-tab-btn" data-tab="tab-banca">🎓 4. Tradutor da Banca USP</button>
         </nav>
     </header>
 
@@ -29,38 +29,36 @@
     <main class="main-container">
 
         <!-- ========================================================= -->
-        <!-- ABA 1: ARENA MULTIPLAYER P2P (JOGAR COM AMIGOS)           -->
+        <!-- ABA 1: JOGO MULTIPLAYER COM GRADE 2D                      -->
         <!-- ========================================================= -->
         <section id="tab-arena" class="tab-pane active">
             
-            <!-- 1. TUTORIAL VISUAL DE 1 MINUTO (ESTILO BANDIDO) -->
+            <!-- TUTORIAL VISUAL DE 1 MINUTO (ESTILO BANDIDO) -->
             <div class="tutorial-banner">
-                <div style="flex:1;">
-                    <div style="font-size:16px; font-weight:900; color:var(--copper-bright); display:flex; align-items:center; gap:8px;">
-                        <span>📖 Como Jogar em 1 Minuto (Estilo Bandido)</span>
-                        <span style="font-size:11px; background:rgba(0,0,0,0.4); padding:2px 8px; border-radius:4px; color:#fff; border:1px solid #475569;">Regras Rápidas</span>
+                <div style="font-size:15px; font-weight:900; color:var(--copper-bright); display:flex; align-items:center; gap:8px;">
+                    <span>📖 Como Jogar em 1 Minuto (Regra Canônica do Bandido)</span>
+                    <span style="font-size:11px; background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:4px; color:#fff; border:1px solid #334155;">Tutorial Rápido</span>
+                </div>
+                
+                <div class="tutorial-step-grid">
+                    <div class="tutorial-step-card">
+                        <div class="tutorial-step-title">⚡ 1. O Ponto de Partida</div>
+                        <div class="tutorial-step-desc">
+                            A mesa começa com <strong>1 única carta no centro (0,0)</strong>: o <strong>Gerador 12V</strong> com 4 saídas de barramento abertas. O time expande a malha ao redor dele!
+                        </div>
                     </div>
-                    
-                    <div class="tutorial-step-grid">
-                        <div class="tutorial-step-card">
-                            <div class="tutorial-step-title">⚡ 1. O Objetivo do Time</div>
-                            <div class="tutorial-step-desc">
-                                O Gerador no centro solta <strong>12V</strong>. O time precisa guiar essa energia pela mesa usando resistores para alimentar os 4 aparelhos da cidade com a voltagem certa e fechar o circuito com o <strong>Cabo Terra (GND)</strong> antes das cartas acabarem!
-                            </div>
-                        </div>
 
-                        <div class="tutorial-step-card">
-                            <div class="tutorial-step-title">🔀 2. O Efeito Bandido</div>
-                            <div class="tutorial-step-desc">
-                                Cada vez que você coloca um <strong>Conector Y</strong>, o circuito se divide em <strong>2 caminhos novos de 12V</strong>, deixando a mesa mais desafiadora para o grupo fechar!
-                            </div>
+                    <div class="tutorial-step-card">
+                        <div class="tutorial-step-title">🔀 2. Encaixe Exato na Grade</div>
+                        <div class="tutorial-step-desc">
+                            As cartas devem conectar <strong>trilha com trilha</strong> em todos os vizinhos. Gire as cartas da mão (0°, 90°, 180°, 270°) e clique nos slots verdes <strong>(+)</strong>!
                         </div>
+                    </div>
 
-                        <div class="tutorial-step-card">
-                            <div class="tutorial-step-title">💥 3. A Regra de Ouro</div>
-                            <div class="tutorial-step-desc">
-                                Se o aparelho precisa de <strong>4V</strong> e você mandar <strong>12V direto, ele QUEIMA</strong>! Coloque resistores no caminho para reduzir a energia até o valor exato!
-                            </div>
+                    <div class="tutorial-step-card">
+                        <div class="tutorial-step-title">💥 3. Duplo Fechamento</div>
+                        <div class="tutorial-step-desc">
+                            O circuito fecha ao <strong>retornar ao Gerador (Loop)</strong> ou ao colocar um <strong>Cabo Terra (GND)</strong>. A voltagem no aparelho deve bater na meta para não queimar!
                         </div>
                     </div>
                 </div>
@@ -69,113 +67,126 @@
             <!-- GRID PRINCIPAL DA ARENA -->
             <div class="arena-grid">
                 
-                <!-- ÁREA ESQUERDA: MESA DE JOGO & MÃO -->
+                <!-- ÁREA ESQUERDA: MESA 2D & MÃO -->
                 <div>
                     <div class="board-container">
                         <div class="board-header">
                             <div>
-                                <h2 style="font-size:17px; font-weight:800; color:var(--copper-glow);">Bancada da Cidade (Metrópole)</h2>
-                                <div id="turn-indicator" style="font-size:13px; color:var(--text-muted); margin-top:3px;">
+                                <h2 style="font-size:16px; font-weight:800; color:var(--copper-glow);">Bancada Virtual 2D (Grade Canônica)</h2>
+                                <div id="turn-indicator" style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">
                                     Aguardando início da partida...
                                 </div>
                             </div>
-                            <div style="display:flex; gap:10px; align-items:center;">
+                            
+                            <!-- CONTROLES DE ZOOM & STATUS -->
+                            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                                 <div class="sector-meter" style="border-color:var(--copper-glow); color:var(--copper-glow);">
-                                    BARALHO: <strong id="deck-count">69</strong> CARTAS
+                                    MONTE: <strong id="deck-count">69</strong>
+                                </div>
+                                <div class="sector-meter" style="border-color:var(--neon-green); color:var(--neon-green);">
+                                    VIDAS: <strong id="network-lives-display">3 / 3</strong> 🛡️
                                 </div>
                                 <div id="p2p-status" class="sector-meter">
                                     <span style="color:var(--text-muted)">○ OFFLINE</span>
                                 </div>
+
+                                <div style="display:flex; gap:4px; margin-left:6px;">
+                                    <button id="btn-zoom-in" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Aproximar Mesa">🔍 +</button>
+                                    <button id="btn-zoom-out" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Afastar Mesa">🔍 -</button>
+                                    <button id="btn-zoom-reset" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Recentralizar">⌖</button>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 2. ASSISTENTE VISUAL EM TEMPO REAL -->
+                        <!-- ASSISTENTE VISUAL EM TEMPO REAL -->
                         <div class="visual-assistant-bar" id="visual-assistant-bar">
-                            <div style="display:flex; align-items:center; gap:8px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
                                 <span style="font-size:14px;">⚡</span>
-                                <span style="font-size:12px; font-weight:700; color:var(--text-muted);">ASSISTENTE DE VOLTAGEM:</span>
-                                <span id="assistant-status-text" style="font-size:12.5px; color:#fff; font-weight:600;">Selecione uma carta da sua mão para ver a dica de ligação.</span>
+                                <span style="font-size:11.5px; font-weight:700; color:var(--text-muted);">ASSISTENTE:</span>
+                                <span id="assistant-status-text" style="font-size:12px; color:#fff; font-weight:600;">Selecione uma carta da sua mão para ver a rotação e os slots (+) disponíveis.</span>
                             </div>
                             <div class="assistant-pill" id="assistant-calc-pill" style="display:none;">
                                 12V // Ramo
                             </div>
                         </div>
 
-                        <!-- 4 SETORES DA CIDADE -->
-                        <div class="sectors-cross" id="sectors-container">
-                            <!-- Injetado dinamicamente via app.js -->
+                        <!-- VIEWPORT DA GRADE 2D COM PAN & ZOOM -->
+                        <div class="grid-viewport" id="grid-viewport">
+                            <div class="grid-canvas" id="grid-canvas">
+                                <!-- Cartas e slots (+) gerados dinamicamente via app.js -->
+                            </div>
                         </div>
                     </div>
 
                     <!-- MÃO DE CARTAS DO JOGADOR -->
                     <div class="player-hand-container">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
-                            <div style="font-weight:800; font-size:14px; color:#fff; display:flex; align-items:center; gap:8px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                            <div style="font-weight:800; font-size:13.5px; color:#fff; display:flex; align-items:center; gap:8px;">
                                 <span>🎴 Suas 3 Cartas na Mão</span>
-                                <span style="font-size:11.5px; color:var(--text-muted); font-weight:normal;">(Clique na carta e depois clique no setor onde quer colocar)</span>
+                                <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">(Selecione, use o botão 🔄 Girar e clique no slot <strong>(+)</strong>)</span>
                             </div>
-                            <button id="btn-refresh-hand" class="btn-secondary" title="Descarta as 3 cartas para o fundo do monte e compra 3 novas">
-                                🔄 Não tenho jogada (Trocar 3 cartas)
+                            <button id="btn-refresh-hand" class="btn-secondary" style="font-size:11px; padding:6px 10px;" title="Descarta as 3 cartas para o fundo do monte e compra 3 novas">
+                                🔄 Sem Jogadas (Trocar 3 Cartas)
                             </button>
                         </div>
-                        <div class="hand-flex" id="player-hand">
-                            <div style="color:var(--text-muted); font-size:13px;">Inicie uma partida no painel ao lado para receber suas cartas.</div>
+                        <div style="display:flex; gap:12px; align-items:center; overflow-x:auto; padding-bottom:6px;" id="player-hand">
+                            <div style="color:var(--text-muted); font-size:12.5px;">Inicie uma partida no painel ao lado para receber suas cartas.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ÁREA DIREITA: LOBBY PARA 3 AMIGOS & LOGS -->
+                <!-- ÁREA DIREITA: LOBBY SERVERLESS & TELEMETRIA -->
                 <div class="side-panel">
-                    <div class="guide-card" style="margin-bottom:0; padding:16px;">
-                        <h3 style="font-size:14px; font-weight:800; color:var(--neon-green); margin-bottom:12px;">👥 Sala para Jogar com os Amigos</h3>
+                    <div class="guide-card" style="margin-bottom:0; padding:14px;">
+                        <h3 style="font-size:13.5px; font-weight:800; color:var(--neon-green); margin-bottom:10px;">👥 Sala para Jogar com Amigos</h3>
                         
-                        <div style="margin-bottom:10px;">
+                        <div style="margin-bottom:8px;">
                             <label style="font-size:11px; color:var(--text-muted);">Seu Nome:</label>
                             <input type="text" id="player-name-input" class="form-input" placeholder="Ex: David" value="David">
                         </div>
 
-                        <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+                        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
                             <button id="btn-create-room" class="btn-primary" style="width:100%;">
-                                👑 1. Criar Sala (Gerar Código)
+                                👑 1. Criar Sala (Host)
                             </button>
                             
-                            <div style="display:flex; gap:8px; margin-top:4px;">
+                            <div style="display:flex; gap:6px; margin-top:2px;">
                                 <input type="text" id="room-code-input" class="form-input" placeholder="CÓDIGO (4 letras)" style="margin-top:0; text-transform:uppercase; font-family:'Fira Code', monospace; text-align:center; font-weight:700;">
                                 <button id="btn-join-room" class="btn-secondary" style="white-space:nowrap;">
-                                    2. Entrar na Sala
+                                    2. Entrar
                                 </button>
                             </div>
 
-                            <div style="margin-top:10px; padding:10px; background:#080c14; border:1px solid #1e293b; border-radius:6px;">
-                                <div style="font-size:11px; color:var(--text-muted); margin-bottom:6px; font-weight:700;">QUEM ESTÁ NA SALA:</div>
-                                <div id="players-list-display" style="font-size:12px; line-height:1.6; color:#cbd5e1;">
+                            <div style="margin-top:8px; padding:8px; background:#050a14; border:1px solid #1e2c42; border-radius:6px;">
+                                <div style="font-size:10.5px; color:var(--text-muted); margin-bottom:4px; font-weight:700;">JOGADORES NA SALA:</div>
+                                <div id="players-list-display" style="font-size:11.5px; line-height:1.5; color:#cbd5e1;">
                                     <em>Ninguém conectado ainda.</em>
                                 </div>
                             </div>
 
-                            <button id="btn-start-multiplayer-game" class="btn-primary" style="width:100%; background:linear-gradient(135deg, #16a34a, #059669); margin-top:6px; display:none;">
-                                🚀 Começar Jogo (Distribuir Cartas)
+                            <button id="btn-start-multiplayer-game" class="btn-primary" style="width:100%; background:linear-gradient(135deg, #16a34a, #059669); margin-top:4px; display:none;">
+                                🚀 Começar Partida
                             </button>
 
-                            <button id="btn-solo-3p" class="btn-secondary" style="width:100%; border-color:#334155; color:var(--neon-blue); margin-top:4px;">
+                            <button id="btn-solo-3p" class="btn-secondary" style="width:100%; border-color:#2d4160; color:var(--neon-blue); margin-top:2px;">
                                 👥 Testar 3 Jogadores na Mesma Tela
                             </button>
                         </div>
 
-                        <div style="margin-top:14px; padding-top:12px; border-top:1px solid #1e293b; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
-                            <span style="color:var(--text-muted);">Código para os amigos:</span>
-                            <strong id="room-code-display" style="font-family:'Fira Code', monospace; font-size:16px; color:var(--copper-glow); letter-spacing:3px; background:#070b14; padding:2px 8px; border-radius:4px; border:1px solid #334155;">----</strong>
+                        <div style="margin-top:12px; padding-top:10px; border-top:1px solid #1e2c42; font-size:11.5px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="color:var(--text-muted);">Código da Sala:</span>
+                            <strong id="room-code-display" style="font-family:'Fira Code', monospace; font-size:15px; color:var(--copper-glow); letter-spacing:2px; background:#050a14; padding:2px 8px; border-radius:4px; border:1px solid #1e2c42;">----</strong>
                         </div>
                     </div>
 
-                    <!-- MURAL DE JOGADAS EM TEMPO REAL -->
+                    <!-- MURAL DE AÇÕES AO VIVO -->
                     <div>
-                        <div style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:6px; display:flex; justify-content:space-between;">
-                            <span>📟 O Que Aconteceu no Jogo</span>
-                            <span style="font-family:'Fira Code', monospace; font-size:10px; color:var(--neon-green);">AO VIVO</span>
+                        <div style="font-size:11.5px; font-weight:700; color:var(--text-muted); margin-bottom:4px; display:flex; justify-content:space-between;">
+                            <span>📟 Telemetria da Bancada</span>
+                            <span style="font-family:'Fira Code', monospace; font-size:10px; color:var(--neon-green);">LIVE</span>
                         </div>
                         <div class="log-box" id="log-box">
-                            <div class="log-entry"><span class="time">[BANCADA]</span> Portal VOLTZ pronto para a partida de 3 jogadores.</div>
+                            <div class="log-entry"><span class="time">[SISTEMA]</span> Portal VOLTZ 2D pronto para jogo.</div>
                         </div>
                     </div>
                 </div>
@@ -184,20 +195,43 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- ABA 2: GUIA DA FEBRACE (CARDS DESCOMPLICADOS)             -->
+        <!-- ABA 2: PAINEL DA FEBRACE & METAS                          -->
         <!-- ========================================================= -->
         <section id="tab-warroom" class="tab-pane">
-            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px;">
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:16px;">
                 
                 <div>
-                    <!-- BARRA DE PROGRESSO GERAL -->
+                    <!-- CRONÔMETRO REGRESSIVO ATÉ A DATA LIMITE (02/10) -->
+                    <div class="countdown-container">
+                        <div class="countdown-unit">
+                            <div class="countdown-num" id="cd-days">00</div>
+                            <div class="countdown-label">Dias</div>
+                        </div>
+                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num" id="cd-hours">00</div>
+                            <div class="countdown-label">Horas</div>
+                        </div>
+                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num" id="cd-minutes">00</div>
+                            <div class="countdown-label">Minutos</div>
+                        </div>
+                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num" id="cd-seconds">00</div>
+                            <div class="countdown-label">Segundos</div>
+                        </div>
+                    </div>
+
+                    <!-- PROGRESSO GERAL DA EQUIPE -->
                     <div class="guide-card">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <h2 style="font-size:19px; font-weight:900; color:var(--neon-green);">Prontidão da Nossa Equipe para a FEBRACE</h2>
-                                <div style="font-size:13px; color:var(--text-muted); margin-top:2px;">Tudo o que a banca da USP exige explicado de forma simples</div>
+                                <h2 style="font-size:18px; font-weight:900; color:var(--neon-green);">Prontidão Geral da Equipe</h2>
+                                <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">Checklist oficial dos 5 documentos obrigatórios da USP</div>
                             </div>
-                            <div id="warroom-score" style="font-family:'Fira Code', monospace; font-size:32px; font-weight:900; color:var(--neon-green);">
+                            <div id="warroom-score" style="font-family:'Fira Code', monospace; font-size:30px; font-weight:900; color:var(--neon-green);">
                                 0%
                             </div>
                         </div>
@@ -213,25 +247,31 @@
                     </div>
                 </div>
 
-                <!-- DICAS DA BANCA & CALENDÁRIO -->
+                <!-- QUADRO DE TAREFAS & DICAS DA BANCA -->
                 <div>
                     <div class="guide-card">
-                        <h3 style="font-size:15px; font-weight:800; color:var(--copper-glow); margin-bottom:10px;">📅 Prazos Importantes</h3>
-                        <div style="font-size:13px; line-height:1.8; color:#cbd5e1;">
-                            <div><strong>• Outubro/Novembro:</strong> Envio dos documentos no site da FEBRACE.</div>
-                            <div><strong>• Dezembro:</strong> Jurados da USP leem os relatórios.</div>
-                            <div><strong>• Janeiro:</strong> Sai a lista de projetos finalistas.</div>
-                            <div><strong>• Março 2026:</strong> A gente apresenta nosso estande presencialmente na USP em São Paulo!</div>
-                        </div>
+                        <h3 style="font-size:14px; font-weight:800; color:var(--copper-bright); margin-bottom:8px;">👥 Divisão de Tarefas da Equipe</h3>
+                        <table class="task-table">
+                            <thead>
+                                <tr>
+                                    <th>Tarefa</th>
+                                    <th>Responsável</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="task-table-body">
+                                <!-- Injetado dinamicamente -->
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="guide-card">
-                        <h3 style="font-size:15px; font-weight:800; color:var(--neon-blue); margin-bottom:10px;">💡 O Que os Jurados Mais Olham?</h3>
-                        <ul style="font-size:12.5px; line-height:1.7; color:#cbd5e1; padding-left:16px;">
-                            <li><strong>1. Se o jogo funciona mesmo:</strong> As notas dos alunos subiram na prática?</li>
-                            <li><strong>2. Se a gente fez tudo:</strong> O Diário de Bordo mostra os nossos erros e testes?</li>
-                            <li><strong>3. Custo baixo:</strong> Dá pra usar em qualquer escola pública sem computador?</li>
-                            <li><strong>4. Entusiasmo da equipe:</strong> A gente sabe explicar a física sem ler papelzinho?</li>
+                        <h3 style="font-size:14px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🎯 O Que a Banca da USP Avalia?</h3>
+                        <ul style="font-size:12px; line-height:1.6; color:#cbd5e1; padding-left:16px;">
+                            <li><strong>1. Rigor do Jogo:</strong> As notas dos alunos subiram na prática?</li>
+                            <li><strong>2. Autenticidade:</strong> O Diário de Bordo mostra os erros corrigidos?</li>
+                            <li><strong>3. Custo Social:</strong> O kit custa menos de R$ 25 para escolas públicas?</li>
+                            <li><strong>4. Domínio da Equipe:</strong> Os alunos explicam a física sem ler papel?</li>
                         </ul>
                     </div>
                 </div>
@@ -240,51 +280,51 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- ABA 3: DIÁRIO DE BORDO COLETIVO                           -->
+        <!-- ABA 3: CENTRAL DO DIÁRIO DE BORDO                         -->
         <!-- ========================================================= -->
         <section id="tab-diario" class="tab-pane">
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
                 
-                <!-- FORMULÁRIO DE NOVA ENTRADA -->
+                <!-- FORMULÁRIO DE NOVO REGISTRO -->
                 <div class="guide-card">
-                    <h2 style="font-size:18px; font-weight:800; color:var(--copper-glow); margin-bottom:10px;">📝 Anotar Novo Teste ou Partida</h2>
-                    <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Anote aqui cada partida que você jogou com seus amigos ou na escola para comprovar à banca!</div>
+                    <h2 style="font-size:17px; font-weight:800; color:var(--copper-glow); margin-bottom:6px;">📝 Registrar Nova Sessão de Testes</h2>
+                    <div style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Anote cada partida jogada com a turma ou reunião de equipe para anexar no relatório oficial!</div>
                     
                     <form id="form-diario-entry">
-                        <div style="margin-bottom:12px;">
-                            <label style="font-size:12px; color:var(--text-muted);">Título da Atividade:</label>
-                            <input type="text" id="diario-title" class="form-input" placeholder="Ex: Partida de 3 jogadores - Salvamos a Central de Dados com 4V" required>
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:11.5px; color:var(--text-muted);">Título da Atividade:</label>
+                            <input type="text" id="diario-title" class="form-input" placeholder="Ex: Partida 3P - Conexão do Servidor 4V via Loop Fechado" required>
                         </div>
 
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
                             <div>
-                                <label style="font-size:12px; color:var(--text-muted);">Tipo de Atividade:</label>
+                                <label style="font-size:11.5px; color:var(--text-muted);">Tipo de Atividade:</label>
                                 <select id="diario-type" class="form-input">
                                     <option>Playtest com Amigos</option>
-                                    <option>Teste com Turma na Escola</option>
-                                    <option>Conversa com Professor</option>
-                                    <option>Ajuste nas Regras do Jogo</option>
+                                    <option>Teste em Sala de Aula</option>
+                                    <option>Reunião com Orientador</option>
+                                    <option>Ajuste nas Regras da Grade</option>
                                 </select>
                             </div>
                             <div>
-                                <label style="font-size:12px; color:var(--text-muted);">Quem participou:</label>
-                                <input type="text" id="diario-author" class="form-input" value="David, João e Parceiro">
+                                <label style="font-size:11.5px; color:var(--text-muted);">Integrantes Presentes:</label>
+                                <input type="text" id="diario-author" class="form-input" value="David, João e Parceiro 3">
                             </div>
                         </div>
 
-                        <div style="margin-bottom:12px;">
-                            <label style="font-size:12px; color:var(--text-muted);">O que a gente fez na partida:</label>
-                            <textarea id="diario-desc" class="form-input" rows="3" placeholder="Ex: Jogamos 2 partidas. Na primeira, o LED queimou porque mandamos 12V direto sem resistor. Na segunda, usamos resistor de 3Ω e deu certo..." required></textarea>
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:11.5px; color:var(--text-muted);">Fatos e Procedimentos Realizados:</label>
+                            <textarea id="diario-desc" class="form-input" rows="3" placeholder="Descreva os passos e como a grade foi montada..." required></textarea>
                         </div>
 
-                        <div style="margin-bottom:12px;">
-                            <label style="font-size:12px; color:var(--text-muted);">O que a gente aprendeu / descobriu:</label>
-                            <textarea id="diario-findings" class="form-input" rows="2" placeholder="Ex: A galera achou fácil entender que 3Ω + 1Ω divide os 12V em 4 partes."></textarea>
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:11.5px; color:var(--text-muted);">O que aprendemos / Falhas Encontradas:</label>
+                            <textarea id="diario-findings" class="form-input" rows="2" placeholder="O que deu certo? Houve sobretensão ou curto?"></textarea>
                         </div>
 
-                        <div style="margin-bottom:16px;">
-                            <label style="font-size:12px; color:var(--text-muted);">Próximo passo:</label>
-                            <input type="text" id="diario-actions" class="form-input" placeholder="Ex: Gravar o vídeo de 3 minutos demonstrando essa jogada">
+                        <div style="margin-bottom:14px;">
+                            <label style="font-size:11.5px; color:var(--text-muted);">Decisões e Próximos Passos:</label>
+                            <input type="text" id="diario-actions" class="form-input" placeholder="Ex: Incluir fusível 1A no ramo para evitar queima">
                         </div>
 
                         <button type="submit" class="btn-primary" style="width:100%;">
@@ -295,14 +335,14 @@
 
                 <!-- LISTA DE ENTRADAS & EXPORTAÇÃO -->
                 <div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-                        <h3 style="font-size:16px; font-weight:800; color:#fff;">Histórico das Nossas Anotações</h3>
-                        <div style="display:flex; gap:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:6px;">
+                        <h3 style="font-size:15px; font-weight:800; color:#fff;">Histórico Cronológico</h3>
+                        <div style="display:flex; gap:6px;">
                             <button id="btn-export-md" class="btn-secondary" style="font-size:11px;">
-                                📥 Baixar em Markdown (.md)
+                                📥 Baixar Markdown (.md)
                             </button>
-                            <button id="btn-export-pdf" class="btn-primary" style="font-size:11px; padding:6px 12px;">
-                                🖨️ Imprimir Diário Oficial
+                            <button id="btn-export-pdf" class="btn-primary" style="font-size:11px; padding:6px 10px;">
+                                🖨️ Baixar Diário Oficial (PDF)
                             </button>
                         </div>
                     </div>
@@ -316,13 +356,13 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- ABA 4: TRADUTOR DA BANCA USP (GLOSSÁRIO DESCOMPLICADO)     -->
+        <!-- ABA 4: TRADUTOR DA BANCA USP & FAQ                        -->
         <!-- ========================================================= -->
         <section id="tab-banca" class="tab-pane">
-            <div class="guide-card" style="margin-bottom:16px;">
-                <h2 style="font-size:19px; font-weight:900; color:var(--neon-blue);">🗣️ O Tradutor da Banca da USP (Glossário sem Jargões)</h2>
-                <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">
-                    Veja o que os jurados dizem em "juradês acadêmico" e a tradução direta do que eles realmente querem saber, com a resposta perfeita na ponta da língua!
+            <div class="guide-card" style="margin-bottom:14px;">
+                <h2 style="font-size:18px; font-weight:900; color:var(--neon-blue);">🎓 Tradutor da Banca da USP & 10 Perguntas Frequentes</h2>
+                <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">
+                    Tradução do juradês para o português claro e respostas-modelo de alto nível para a equipe se destacar na arguição oral!
                 </div>
             </div>
 

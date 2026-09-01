@@ -1,18 +1,19 @@
 /**
- * PORTAL VOLTZ & CENTRAL FEBRACE — Folha de Estilos Oficial (Amigável, Moderna & PCB Dark)
+ * PORTAL VOLTZ & CENTRAL FEBRACE — Folha de Estilos Oficial (Dark PCB FR-4 & Grade 2D)
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;700&family=Inter:wght@400;500;600;700;800;900&family=Rubik:wght@700;900&display=swap');
 
 :root {
-    --bg-dark: #07090e;
-    --bg-surface: #0f172a;
-    --bg-card: #182234;
-    --bg-card-hover: #233149;
+    --bg-pcb: #070d17;
+    --bg-surface: #0f1828;
+    --bg-card: #162235;
+    --bg-card-hover: #1f3049;
     
     --copper-glow: #f59e0b;
     --copper-bright: #fbbf24;
     --copper-trace: #d97706;
+    --copper-enig: #eab308;
     
     --neon-green: #22c55e;
     --neon-blue: #38bdf8;
@@ -23,7 +24,7 @@
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --text-dim: #64748b;
-    --border-pcb: #24344d;
+    --border-pcb: #243550;
 }
 
 * {
@@ -33,7 +34,7 @@
 }
 
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--bg-pcb);
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
@@ -42,9 +43,9 @@ body {
     overflow-x: hidden;
 }
 
-/* NAVBAR SUPERIOR */
+/* NAVBAR SUPERIOR FIXA */
 .navbar {
-    background: #0b111e;
+    background: #09101d;
     border-bottom: 2px solid var(--border-pcb);
     padding: 12px 24px;
     display: flex;
@@ -83,11 +84,11 @@ body {
     border-radius: 4px;
 }
 
-/* NAVEGAÇÃO EM ABAS */
+/* NAVEGAÇÃO EM 4 ABAS FIXAS */
 .nav-tabs {
     display: flex;
     gap: 6px;
-    background: #060a12;
+    background: #050810;
     padding: 4px;
     border-radius: 8px;
     border: 1px solid #1e293b;
@@ -101,7 +102,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 13px;
-    padding: 8px 14px;
+    padding: 8px 16px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -122,30 +123,24 @@ body {
     box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
 }
 
-/* BANNER DE TUTORIAL RÁPIDO (COMO JOGAR EM 1 MINUTO) */
+/* TUTORIAL VISUAL DE 1 MINUTO (ESTILO BANDIDO) */
 .tutorial-banner {
-    background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(15, 23, 42, 0.9));
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.12), rgba(15, 24, 40, 0.95));
     border: 2px solid var(--copper-trace);
     border-radius: 12px;
     padding: 16px 20px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+    margin-bottom: 16px;
 }
 
 .tutorial-step-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
-    margin-top: 12px;
-    width: 100%;
+    gap: 12px;
+    margin-top: 10px;
 }
 
 .tutorial-step-card {
-    background: rgba(11, 17, 30, 0.85);
+    background: rgba(11, 17, 30, 0.9);
     border: 1px solid #334155;
     border-radius: 8px;
     padding: 12px 14px;
@@ -164,16 +159,16 @@ body {
 .tutorial-step-desc {
     font-size: 12px;
     color: #cbd5e1;
-    line-height: 1.4;
+    line-height: 1.45;
 }
 
 /* CONTEÚDO PRINCIPAL */
 .main-container {
     flex: 1;
-    max-width: 1400px;
+    max-width: 1440px;
     width: 100%;
     margin: 0 auto;
-    padding: 20px 16px;
+    padding: 16px;
 }
 
 .tab-pane {
@@ -182,19 +177,19 @@ body {
 
 .tab-pane.active {
     display: block;
-    animation: fadeIn 0.25s ease forwards;
+    animation: fadeIn 0.2s ease forwards;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
+    from { opacity: 0; transform: translateY(3px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ARENA MULTIPLAYER */
+/* ARENA MULTIPLAYER COM GRADE 2D */
 .arena-grid {
     display: grid;
     grid-template-columns: 1fr 340px;
-    gap: 20px;
+    gap: 16px;
 }
 
 @media (max-width: 1024px) {
@@ -204,218 +199,227 @@ body {
 }
 
 .board-container {
-    background: #0d1424;
+    background: #09101c;
     border: 2px solid var(--border-pcb);
     border-radius: 12px;
-    padding: 18px;
+    padding: 16px;
     position: relative;
-    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
 }
 
 .board-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
     gap: 10px;
 }
 
-/* BARRA ASSISTENTE VISUAL EM TEMPO REAL */
-.visual-assistant-bar {
-    background: #090e1a;
-    border: 2px solid #334155;
+/* VIEWPORT DA GRADE 2D COM PAN & ZOOM */
+.grid-viewport {
+    width: 100%;
+    height: 480px;
+    background: #040810;
+    background-image: 
+        radial-gradient(circle, #1a283e 1px, transparent 1px),
+        linear-gradient(to right, rgba(36, 53, 80, 0.2) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(36, 53, 80, 0.2) 1px, transparent 1px);
+    background-size: 20px 20px, 80px 80px, 80px 80px;
+    border: 2px solid #1e2c42;
     border-radius: 8px;
-    padding: 10px 16px;
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.assistant-pill {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background: #151f32;
-    border: 1px solid #334155;
-}
-
-/* METRÓPOLE (4 SETORES CARDEAIS) */
-.sectors-cross {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-@media (max-width: 768px) {
-    .sectors-cross {
-        grid-template-columns: 1fr;
-    }
-}
-
-.sector-card {
-    background: #121c2e;
-    border: 2px solid #243550;
-    border-radius: 10px;
-    padding: 14px;
     position: relative;
-    transition: all 0.2s ease;
-    cursor: pointer;
+    overflow: auto;
+    cursor: grab;
+    user-select: none;
 }
 
-.sector-card:hover {
-    border-color: var(--copper-glow);
-    background: #17243b;
+.grid-viewport:active {
+    cursor: grabbing;
 }
 
-.sector-card.energized {
-    border-color: var(--neon-green);
-    background: rgba(34, 197, 94, 0.1);
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
-}
-
-.sector-card.overvoltage {
-    border-color: var(--neon-red);
-    background: rgba(239, 68, 68, 0.12);
-}
-
-.sector-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.sector-title {
-    font-size: 15px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.sector-meter {
-    font-family: 'Fira Code', monospace;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 4px;
-    background: #090e17;
-    border: 1px solid #334155;
-}
-
-.cards-lane {
-    display: flex;
+.grid-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
     gap: 8px;
-    min-height: 100px;
-    background: #070b12;
-    border: 1px dashed #334155;
-    border-radius: 6px;
-    padding: 8px;
-    overflow-x: auto;
-    align-items: center;
+    padding: 100px;
+    transition: transform 0.1s ease-out;
 }
 
-/* CARTAS DE JOGO (TILES ESTILO BANDIDO) */
-.card-tile {
-    width: 82px;
-    height: 112px;
-    background: #182234;
-    border: 2px solid #3b4c68;
+/* TILES DA GRADE 2D (CARTAS NA MESA) */
+.grid-card-tile {
+    width: 84px;
+    height: 114px;
+    background: #0c1626;
+    border: 2px solid #2d4160;
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4px;
+    transition: all 0.2s ease;
+}
+
+.grid-card-tile.generator {
+    border-color: #f59e0b;
+    background: #192610;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.grid-card-tile.energized {
+    border-color: var(--neon-green);
+    background: rgba(34, 197, 94, 0.15);
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.4);
+}
+
+.grid-card-tile.burned {
+    border-color: var(--neon-red);
+    background: rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* TRILHAS DE COBRE ENIG NOS BORDOS DAS CARTAS */
+.track-north, .track-south, .track-east, .track-west {
+    position: absolute;
+    background: var(--copper-bright);
+    box-shadow: 0 0 6px var(--copper-glow);
+    z-index: 2;
+}
+
+.track-north {
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 18px;
+}
+
+.track-south {
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 18px;
+}
+
+.track-east {
+    right: 0; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 14px;
+}
+
+.track-west {
+    left: 0; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 14px;
+}
+
+/* SLOTS VÁLIDOS DE ENCAIXE (+) */
+.grid-slot-valid {
+    width: 84px;
+    height: 114px;
+    border: 2px dashed var(--neon-green);
+    background: rgba(34, 197, 94, 0.08);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--neon-green);
+    font-weight: 900;
+    font-size: 16px;
+    transition: all 0.15s ease;
+}
+
+.grid-slot-valid:hover {
+    background: rgba(34, 197, 94, 0.25);
+    transform: scale(1.04);
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+/* MÃO DO JOGADOR */
+.player-hand-container {
+    margin-top: 16px;
+    background: #09101c;
+    border: 2px solid var(--border-pcb);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.hand-card-tile {
+    width: 90px;
+    height: 122px;
+    background: #131e30;
+    border: 2px solid #33486b;
     border-radius: 6px;
     padding: 6px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
-    user-select: none;
     transition: all 0.15s ease;
+    position: relative;
     flex-shrink: 0;
 }
 
-.card-tile:hover {
-    transform: translateY(-3px);
+.hand-card-tile:hover {
+    transform: translateY(-4px);
     border-color: var(--copper-glow);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
 }
 
-.card-tile.selected {
+.hand-card-tile.selected {
     border-color: var(--neon-green);
-    box-shadow: 0 0 15px var(--neon-green);
-    transform: translateY(-5px);
-    background: #1c2b42;
+    box-shadow: 0 0 16px var(--neon-green);
+    transform: translateY(-6px);
+    background: #182842;
 }
 
-.card-badge-top {
-    font-family: 'Fira Code', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 2px 4px;
-    border-radius: 3px;
-    text-align: center;
-    color: #fff;
-}
-
-.card-center-icon {
-    font-size: 22px;
-    text-align: center;
-    margin: 2px 0;
-}
-
-.card-title-bottom {
-    font-size: 9.5px;
-    font-weight: 700;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #f1f5f9;
-}
-
-/* MÃO DO JOGADOR */
-.player-hand-container {
-    margin-top: 18px;
-    background: #0d1424;
-    border: 2px solid var(--border-pcb);
-    border-radius: 12px;
-    padding: 16px;
-}
-
-.hand-flex {
+/* ASSISTENTE VISUAL NA MESA */
+.visual-assistant-bar {
+    background: #050a14;
+    border: 2px solid #23344e;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
     display: flex;
-    gap: 12px;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    gap: 8px;
 }
 
-/* PAINEL LATERAL & LOGS */
+.assistant-pill {
+    font-family: 'Fira Code', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: #131e30;
+    border: 1px solid #33486b;
+    color: var(--copper-bright);
+}
+
+/* PAINEL LATERAL */
 .side-panel {
-    background: #0d1424;
+    background: #09101c;
     border: 2px solid var(--border-pcb);
     border-radius: 12px;
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 }
 
 .log-box {
-    background: #060911;
-    border: 1px solid #1e293b;
+    background: #040810;
+    border: 1px solid #1e2c42;
     border-radius: 6px;
     padding: 10px;
     font-family: 'Fira Code', monospace;
     font-size: 11px;
-    height: 300px;
+    height: 280px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
 }
 
 .log-entry {
@@ -425,7 +429,7 @@ body {
 
 .log-entry .time {
     color: #64748b;
-    margin-right: 6px;
+    margin-right: 5px;
 }
 
 /* BOTÕES PADRÃO */
@@ -435,8 +439,8 @@ body {
     border: none;
     font-family: 'Inter', sans-serif;
     font-weight: 800;
-    font-size: 13.5px;
-    padding: 10px 16px;
+    font-size: 13px;
+    padding: 9px 15px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -452,12 +456,12 @@ body {
 }
 
 .btn-secondary {
-    background: #182234;
+    background: #131e30;
     color: #cbd5e1;
-    border: 1px solid #3b4c68;
+    border: 1px solid #33486b;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 12.5px;
+    font-size: 12px;
     padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
@@ -465,35 +469,30 @@ body {
 }
 
 .btn-secondary:hover {
-    background: #233149;
+    background: #1e2d46;
     color: #fff;
 }
 
-/* CARDS EXPLICATIVOS DA FEBRACE (LIVRES DE PEDANTISMO) */
+/* CARDS DA FEBRACE (HUMANIZADOS) */
 .guide-card {
-    background: #0f172a;
+    background: #0c1626;
     border: 2px solid var(--border-pcb);
     border-radius: 10px;
-    padding: 18px;
-    margin-bottom: 16px;
-    transition: all 0.2s ease;
-}
-
-.guide-card:hover {
-    border-color: #3b82f6;
+    padding: 16px;
+    margin-bottom: 14px;
 }
 
 .guide-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
     gap: 8px;
 }
 
 .guide-card-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     color: #fff;
     display: flex;
@@ -512,52 +511,105 @@ body {
 }
 
 .guide-section-block {
-    margin-top: 10px;
-    padding: 10px 12px;
-    background: #090e18;
+    margin-top: 8px;
+    padding: 9px 12px;
+    background: #050a14;
     border-radius: 6px;
     border-left: 3px solid var(--copper-glow);
 }
 
 .guide-section-label {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 800;
     color: var(--copper-bright);
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     text-transform: uppercase;
 }
 
 .guide-section-text {
-    font-size: 13px;
+    font-size: 12.5px;
     color: #cbd5e1;
     line-height: 1.5;
 }
 
+/* CRONÔMETRO REGRESSIVO DA FEBRACE */
+.countdown-container {
+    background: linear-gradient(135deg, #101c2e, #070d17);
+    border: 2px solid var(--neon-blue);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.countdown-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--neon-blue);
+}
+
+.countdown-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
 /* PROGRESS BAR */
 .progress-bar-bg {
-    background: #182234;
+    background: #131e30;
     border-radius: 8px;
-    height: 16px;
+    height: 14px;
     overflow: hidden;
-    margin: 12px 0;
+    margin: 10px 0;
 }
 
 .progress-bar-fill {
     background: linear-gradient(90deg, #22c55e, #38bdf8);
     height: 100%;
-    transition: width 0.4s ease;
+    transition: width 0.3s ease;
+}
+
+/* QUADRO DE TAREFAS */
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 12.5px;
+}
+
+.task-table th, .task-table td {
+    padding: 8px 10px;
+    border: 1px solid #1e2c42;
+    text-align: left;
+}
+
+.task-table th {
+    background: #050a14;
+    color: var(--copper-bright);
+    font-weight: 800;
 }
 
 /* FORMULÁRIOS */
 .form-input {
     width: 100%;
-    background: #090e17;
-    border: 1px solid #334155;
+    background: #050a14;
+    border: 1px solid #2d4160;
     border-radius: 6px;
-    padding: 9px 12px;
+    padding: 8px 10px;
     color: #fff;
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 12.5px;
     margin-top: 4px;
 }
 
@@ -566,41 +618,33 @@ body {
     border-color: var(--copper-glow);
 }
 
-/* TRADUTOR DA BANCA (GLOSSÁRIO DESCOMPLICADO) */
+/* TRADUTOR DA BANCA */
 .translator-card {
-    background: #0f172a;
-    border: 1px solid #243550;
+    background: #0c1626;
+    border: 1px solid #1e2c42;
     border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
     transition: all 0.2s ease;
 }
 
 .translator-card:hover {
     border-color: var(--neon-blue);
-    background: #131e33;
+    background: #101c2e;
 }
 
 .translator-jurado {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 800;
     color: #38bdf8;
     margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.translator-arrow {
-    color: var(--copper-glow);
-    font-weight: 900;
 }
 
 .translator-real {
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 1.5;
     color: #e2e8f0;
-    background: #090e18;
+    background: #050a14;
     padding: 10px 12px;
     border-radius: 6px;
     border-left: 3px solid var(--neon-green);

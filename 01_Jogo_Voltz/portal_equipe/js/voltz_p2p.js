@@ -116,7 +116,7 @@ class VoltzP2PManager {
         if (this.isHost) {
             try {
                 if (actionType === 'PLAY_CARD') {
-                    this.engine.playCard(payload.playerId, payload.cardUid, payload.sectorId);
+                    this.engine.playCard(payload.playerId, payload.cardUid, payload.x, payload.y, payload.rotation || 0);
                 } else if (actionType === 'REFRESH_HAND') {
                     this.engine.refreshHand(payload.playerId);
                 } else if (actionType === 'START_GAME') {
