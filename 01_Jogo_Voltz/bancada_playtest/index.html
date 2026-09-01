@@ -300,6 +300,36 @@
                 renderAll();
             }
 
+            // Auto-detecção de link de sala na URL (ex: #sala=VLTZ-4821)
+            function checkUrlHashRoom() {
+                const hash = window.location.hash;
+                if (!hash) return false;
+
+                const params = new URLSearchParams(hash.replace('#', ''));
+                const salaId = params.get('sala');
+                if (salaId) {
+                    addLog(`Link de convite detectado na URL (#sala=${salaId}). Conectando...`, 'alert');
+                    initP2pClient(salaId);
+                    return true;
+                }
+                return false;
+            }
+
+            // Gerar link compartilhável para o WhatsApp
+            function copyShareLink(roomCode) {
+                const url = `${window.location.origin}${window.location.pathname}#sala=${roomCode}`;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(url).then(() => {
+                        addLog(`Link copiado para a área de transferência: ${url}`, 'success');
+                        alert(`Link da sala gerado com sucesso!\n\nEnvie este link no WhatsApp para seu amigo:\n${url}`);
+                    }).catch(() => {
+                        prompt('Copie o link abaixo para enviar:', url);
+                    });
+                } else {
+                    prompt('Copie o link abaixo para enviar:', url);
+                }
+            }
+
             // P2P WebRTC Host
             function initP2pHost() {
                 const code = 'VLTZ-' + Math.floor(1000 + Math.random() * 9000);
@@ -308,11 +338,13 @@
                     peer = new Peer(code);
                     peer.on('open', (id) => {
                         modeModal.style.display = 'none';
+                        currentMode = 'p2p';
                         gameModeBadge.textContent = `P2P SALA [${id}]`;
                         isP2pHost = true;
                         myPlayerId = 'p1';
                         engine.reset();
-                        addLog(`Sala P2P aberta. Código: ${id}. Aguardando colega...`, 'alert');
+                        addLog(`Sala P2P aberta. Código: ${id}.`, 'alert');
+                        copyShareLink(id);
                         renderAll();
                     });
 
@@ -320,11 +352,12 @@
                         p2pConn = conn;
                         addLog('Colega conectado via WebRTC! Partida iniciada.', 'success');
                         setupP2pListeners();
-                        sendP2pState();
+                        sendP2pState('Partida P2P iniciada.');
                     });
 
                     peer.on('error', (err) => {
-                        alert('Erro ao criar conexão P2P: ' + err.type);
+                        alert('Aviso P2P: ' + err.type + '. Alternando para modo Solo.');
+                        startSoloBotGame();
                     });
                 } catch (e) {
                     alert('PeerJS não disponível offline. Alternando para modo Solo.');
@@ -340,10 +373,11 @@
                         p2pConn = peer.connect(roomCode);
                         p2pConn.on('open', () => {
                             modeModal.style.display = 'none';
+                            currentMode = 'p2p';
                             gameModeBadge.textContent = `CONECTADO EM [${roomCode}]`;
                             isP2pHost = false;
                             myPlayerId = 'p2';
-                            addLog(`Conectado à sala ${roomCode}.`, 'success');
+                            addLog(`Conectado com sucesso à sala ${roomCode}.`, 'success');
                             setupP2pListeners();
                         });
                     });
@@ -644,8 +678,11 @@
 
             window.addEventListener('mouseup', () => { isPanning = false; });
 
-            // Inicia automaticamente no modo Solo Bot
-            startSoloBotGame();
+            // Se houver #sala= na URL, conecta automaticamente; caso contrário inicia Solo Bot
+            const isUrlRoom = checkUrlHashRoom();
+            if (!isUrlRoom) {
+                startSoloBotGame();
+            }
         });
     </script>
 </body>
