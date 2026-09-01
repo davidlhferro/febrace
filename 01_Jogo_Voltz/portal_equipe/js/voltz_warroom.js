@@ -1,7 +1,63 @@
 /**
- * PORTAL VOLTZ — Painel de Missões FEBRACE (Linguagem Descomplicada)
- * Cards explicativos que mostram exatamente o que fazer sem juridiquês ou termos pedantes.
+ * PORTAL VOLTZ — Painel da Jornada FEBRACE & Metas da Equipe
+ * Mapeia as 4 etapas da jornada: Submissão Virtual, Triagem, Feira Presencial na USP e Premiações/ISEF.
  */
+
+const FEBRACE_JOURNEY_STAGES = [
+    {
+        stage: 'Etapa 1',
+        title: 'Submissão Virtual (Até 02 de Outubro)',
+        badge: 'Inscrição no Site',
+        color: '#38bdf8',
+        icon: '💻',
+        items: [
+            'Plano de Pesquisa preenchido no padrão FEBRACE.',
+            'Relatório Científico Completo (em formato artigo ABNT).',
+            'Diário de Bordo digitalizado com fotos e atas de reuniões.',
+            'Vídeo de 3 minutos apresentando a equipe e o jogo na prática.',
+            'Resumo da pesquisa de até 2.500 caracteres.',
+            'Termos de Consentimento (TCLE/TALE) dos estudantes assinados.'
+        ]
+    },
+    {
+        stage: 'Etapa 2',
+        title: 'Avaliação & Triagem às Cegas (Outubro a Dezembro)',
+        badge: 'Comitê USP',
+        color: '#f59e0b',
+        icon: '🔍',
+        items: [
+            'Avaliação técnica por doutores e pesquisadores da USP.',
+            'Critérios de rigor metodológico, clareza do problema e análise estatística.',
+            'Divulgação oficial dos projetos finalistas e semifinalistas convidados.'
+        ]
+    },
+    {
+        stage: 'Etapa 3',
+        title: 'A Grande Feira Presencial na USP (São Paulo - Março)',
+        badge: 'Estande Oficial',
+        color: '#22c55e',
+        icon: '🏛️',
+        items: [
+            'Montagem do estande oficial na tenda da Poli-USP / InovaUSP.',
+            'Pôster científico impresso em lona (90cm x 120cm).',
+            'Bancada com o jogo VOLTZ físico pronto para os jurados jogarem 1 turno ao vivo.',
+            'Pitch oral de 5 minutos com domínio firme das Leis de Ohm e Kirchhoff.'
+        ]
+    },
+    {
+        stage: 'Etapa 4',
+        title: 'Premiação & Credenciais Internacionais (Final)',
+        badge: 'Medalhas & ISEF',
+        color: '#c084fc',
+        icon: '🏆',
+        items: [
+            'Medalhas de 1º, 2º, 3º e 4º lugar por categoria de Engenharia / Ciências Exatas.',
+            'Prêmios especiais da Sociedade Brasileira de Física (SBF) e InovaUSP.',
+            'Bolsas de Iniciação Científica Júnior do CNPq para os integrantes.',
+            'Credenciamento de delegação para a Regeneron ISEF (Maior feira mundial nos EUA).'
+        ]
+    }
+];
 
 const FEBRACE_CHECKLIST_DEFAULT = [
     {
@@ -57,17 +113,19 @@ const FEBRACE_CHECKLIST_DEFAULT = [
 ];
 
 const FEBRACE_TEAM_TASKS_DEFAULT = [
-    { task: 'Artigo & Estatística de Hake', responsible: 'David', status: 'Concluído 🟢' },
+    { task: 'Artigo & Estatística de Ganho de Hake', responsible: 'David', status: 'Concluído 🟢' },
     { task: 'Diário de Bordo & Playtests na Escola', responsible: 'João Vitor', status: 'Em Andamento 🟡' },
-    { task: 'Gravação do Vídeo de 3 Minutos', responsible: 'Parceiro 3 & David', status: 'Próxima Etapa ⏳' },
+    { task: 'Gravação do Vídeo de 3 Minutos na Mesa', responsible: 'Parceiro 3 & David', status: 'Próxima Etapa ⏳' },
     { task: 'Impressão do Pôster 90x120cm em Lona', responsible: 'Toda a Equipe', status: 'Aguardando ⏳' },
     { task: 'Formulário 4 e Termos de Consentimento (TCLE)', responsible: 'João Vitor', status: 'Concluído 🟢' }
 ];
 
 class VoltzWarRoom {
     constructor() {
-        this.storageKey = 'voltz_febrace_warroom_human_v2';
+        this.storageKey = 'voltz_febrace_warroom_human_v3';
         this.items = this.loadChecklist();
+        this.journey = FEBRACE_JOURNEY_STAGES;
+        this.tasks = FEBRACE_TEAM_TASKS_DEFAULT;
     }
 
     loadChecklist() {
@@ -105,5 +163,5 @@ class VoltzWarRoom {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { VoltzWarRoom, FEBRACE_CHECKLIST_DEFAULT };
+    module.exports = { VoltzWarRoom, FEBRACE_CHECKLIST_DEFAULT, FEBRACE_JOURNEY_STAGES, FEBRACE_TEAM_TASKS_DEFAULT };
 }

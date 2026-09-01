@@ -1,0 +1,652 @@
+/**
+ * PORTAL VOLTZ & CENTRAL FEBRACE — Folha de Estilos Oficial (Dark PCB FR-4 & Grade 2D)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;700&family=Inter:wght@400;500;600;700;800;900&family=Rubik:wght@700;900&display=swap');
+
+:root {
+    --bg-pcb: #070d17;
+    --bg-surface: #0f1828;
+    --bg-card: #162235;
+    --bg-card-hover: #1f3049;
+    
+    --copper-glow: #f59e0b;
+    --copper-bright: #fbbf24;
+    --copper-trace: #d97706;
+    --copper-enig: #eab308;
+    
+    --neon-green: #22c55e;
+    --neon-blue: #38bdf8;
+    --neon-red: #ef4444;
+    --neon-amber: #f59e0b;
+    --neon-purple: #c084fc;
+
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --border-pcb: #243550;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-pcb);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* NAVBAR SUPERIOR FIXA */
+.navbar {
+    background: #09101d;
+    border-bottom: 2px solid var(--border-pcb);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.brand-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-title {
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #f59e0b, #ea580c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-badge {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--neon-green);
+    border: 1px solid var(--neon-green);
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+/* NAVEGAÇÃO EM 4 ABAS FIXAS */
+.nav-tabs {
+    display: flex;
+    gap: 6px;
+    background: #050810;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid #1e293b;
+    flex-wrap: wrap;
+}
+
+.nav-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-tab-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-tab-btn.active {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #000;
+    font-weight: 800;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+}
+
+/* TUTORIAL VISUAL DE 1 MINUTO (ESTILO BANDIDO) */
+.tutorial-banner {
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.12), rgba(15, 24, 40, 0.95));
+    border: 2px solid var(--copper-trace);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+
+.tutorial-step-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.tutorial-step-card {
+    background: rgba(11, 17, 30, 0.9);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+
+.tutorial-step-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--copper-bright);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tutorial-step-desc {
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.45;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.main-container {
+    flex: 1;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: fadeIn 0.2s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ARENA MULTIPLAYER COM GRADE 2D */
+.arena-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 16px;
+}
+
+@media (max-width: 1024px) {
+    .arena-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.board-container {
+    background: #09101c;
+    border: 2px solid var(--border-pcb);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* VIEWPORT DA GRADE 2D COM PAN & ZOOM */
+.grid-viewport {
+    width: 100%;
+    height: 480px;
+    background: #040810;
+    background-image: 
+        radial-gradient(circle, #1a283e 1px, transparent 1px),
+        linear-gradient(to right, rgba(36, 53, 80, 0.2) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(36, 53, 80, 0.2) 1px, transparent 1px);
+    background-size: 20px 20px, 80px 80px, 80px 80px;
+    border: 2px solid #1e2c42;
+    border-radius: 8px;
+    position: relative;
+    overflow: auto;
+    cursor: grab;
+    user-select: none;
+}
+
+.grid-viewport:active {
+    cursor: grabbing;
+}
+
+.grid-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    gap: 8px;
+    padding: 100px;
+    transition: transform 0.1s ease-out;
+}
+
+/* TILES DA GRADE 2D (CARTAS NA MESA) */
+.grid-card-tile {
+    width: 84px;
+    height: 114px;
+    background: #0c1626;
+    border: 2px solid #2d4160;
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4px;
+    transition: all 0.2s ease;
+}
+
+.grid-card-tile.generator {
+    border-color: #f59e0b;
+    background: #192610;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.grid-card-tile.energized {
+    border-color: var(--neon-green);
+    background: rgba(34, 197, 94, 0.15);
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.4);
+}
+
+.grid-card-tile.burned {
+    border-color: var(--neon-red);
+    background: rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* TRILHAS DE COBRE ENIG NOS BORDOS DAS CARTAS */
+.track-north, .track-south, .track-east, .track-west {
+    position: absolute;
+    background: var(--copper-bright);
+    box-shadow: 0 0 6px var(--copper-glow);
+    z-index: 2;
+}
+
+.track-north {
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 18px;
+}
+
+.track-south {
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 18px;
+}
+
+.track-east {
+    right: 0; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 14px;
+}
+
+.track-west {
+    left: 0; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 14px;
+}
+
+/* SLOTS VÁLIDOS DE ENCAIXE (+) */
+.grid-slot-valid {
+    width: 84px;
+    height: 114px;
+    border: 2px dashed var(--neon-green);
+    background: rgba(34, 197, 94, 0.08);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--neon-green);
+    font-weight: 900;
+    font-size: 16px;
+    transition: all 0.15s ease;
+}
+
+.grid-slot-valid:hover {
+    background: rgba(34, 197, 94, 0.25);
+    transform: scale(1.04);
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+/* MÃO DO JOGADOR */
+.player-hand-container {
+    margin-top: 16px;
+    background: #09101c;
+    border: 2px solid var(--border-pcb);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.hand-card-tile {
+    width: 90px;
+    height: 122px;
+    background: #131e30;
+    border: 2px solid #33486b;
+    border-radius: 6px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.hand-card-tile:hover {
+    transform: translateY(-4px);
+    border-color: var(--copper-glow);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+}
+
+.hand-card-tile.selected {
+    border-color: var(--neon-green);
+    box-shadow: 0 0 16px var(--neon-green);
+    transform: translateY(-6px);
+    background: #182842;
+}
+
+/* ASSISTENTE VISUAL NA MESA */
+.visual-assistant-bar {
+    background: #050a14;
+    border: 2px solid #23344e;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.assistant-pill {
+    font-family: 'Fira Code', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: #131e30;
+    border: 1px solid #33486b;
+    color: var(--copper-bright);
+}
+
+/* PAINEL LATERAL */
+.side-panel {
+    background: #09101c;
+    border: 2px solid var(--border-pcb);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.log-box {
+    background: #040810;
+    border: 1px solid #1e2c42;
+    border-radius: 6px;
+    padding: 10px;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    height: 280px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.log-entry {
+    color: #cbd5e1;
+    line-height: 1.4;
+}
+
+.log-entry .time {
+    color: #64748b;
+    margin-right: 5px;
+}
+
+/* BOTÕES PADRÃO */
+.btn-primary {
+    background: linear-gradient(135deg, #ea580c, #d97706);
+    color: #fff;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 9px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 15px rgba(234, 88, 12, 0.4);
+}
+
+.btn-secondary {
+    background: #131e30;
+    color: #cbd5e1;
+    border: 1px solid #33486b;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+    background: #1e2d46;
+    color: #fff;
+}
+
+/* CARDS DA FEBRACE (HUMANIZADOS) */
+.guide-card {
+    background: #0c1626;
+    border: 2px solid var(--border-pcb);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.guide-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.guide-card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.guide-badge-pill {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--neon-blue);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.guide-section-block {
+    margin-top: 8px;
+    padding: 9px 12px;
+    background: #050a14;
+    border-radius: 6px;
+    border-left: 3px solid var(--copper-glow);
+}
+
+.guide-section-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--copper-bright);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+.guide-section-text {
+    font-size: 12.5px;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+/* CRONÔMETRO REGRESSIVO DA FEBRACE */
+.countdown-container {
+    background: linear-gradient(135deg, #101c2e, #070d17);
+    border: 2px solid var(--neon-blue);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.countdown-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--neon-blue);
+}
+
+.countdown-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* PROGRESS BAR */
+.progress-bar-bg {
+    background: #131e30;
+    border-radius: 8px;
+    height: 14px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar-fill {
+    background: linear-gradient(90deg, #22c55e, #38bdf8);
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* QUADRO DE TAREFAS */
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 12.5px;
+}
+
+.task-table th, .task-table td {
+    padding: 8px 10px;
+    border: 1px solid #1e2c42;
+    text-align: left;
+}
+
+.task-table th {
+    background: #050a14;
+    color: var(--copper-bright);
+    font-weight: 800;
+}
+
+/* FORMULÁRIOS */
+.form-input {
+    width: 100%;
+    background: #050a14;
+    border: 1px solid #2d4160;
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    margin-top: 4px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--copper-glow);
+}
+
+/* TRADUTOR DA BANCA */
+.translator-card {
+    background: #0c1626;
+    border: 1px solid #1e2c42;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+}
+
+.translator-card:hover {
+    border-color: var(--neon-blue);
+    background: #101c2e;
+}
+
+.translator-jurado {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #38bdf8;
+    margin-bottom: 6px;
+}
+
+.translator-real {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #e2e8f0;
+    background: #050a14;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border-left: 3px solid var(--neon-green);
+    margin-top: 6px;
+}

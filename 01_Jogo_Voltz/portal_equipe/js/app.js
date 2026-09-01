@@ -1,5 +1,5 @@
 /**
- * PORTAL VOLTZ & CENTRAL FEBRACE — Controlador Mestre 2D (Grade Canônica Bandido)
+ * PORTAL VOLTZ & CENTRAL FEBRACE — Controlador Mestre (Grade 2D, SVG Autêntico e Hub Científico)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const warRoom = new VoltzWarRoom();
     const diarioManager = new VoltzDiarioManager();
     const bancaCoach = new VoltzBancaCoach();
+    const researchManager = new VoltzResearchManager();
 
     let p2pManager = null;
     let selectedCardUid = null;
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetPane = document.getElementById(targetId);
             if (targetPane) targetPane.classList.add('active');
 
+            if (targetId === 'tab-pesquisa') renderPesquisa();
             if (targetId === 'tab-warroom') renderWarRoom();
             if (targetId === 'tab-diario') renderDiario();
             if (targetId === 'tab-banca') renderBanca();
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // -------------------------------------------------------------
-    // MÓDULO 1: ARENA MULTIPLAYER COM GRADE 2D
+    // MÓDULO 1: ARENA MULTIPLAYER COM GRADE 2D & SVG REAL
     // -------------------------------------------------------------
     const p2pStatusEl = document.getElementById('p2p-status');
     const roomCodeDisplay = document.getElementById('room-code-display');
@@ -199,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------
-    // RENDERIZAÇÃO DA GRADE 2D & MÃO DO JOGADOR
+    // RENDERIZAÇÃO DA GRADE 2D COM SVGs REAIS
     // -------------------------------------------------------------
     function renderGameState(state) {
         if (!state) return;
@@ -228,10 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
             turnIndicator.innerHTML = `Vez de: <strong style="color:${isMyTurn ? 'var(--neon-green)' : 'var(--neon-blue)'}; font-size:14px;">${curr.name}</strong> ${isMyTurn ? '<span style="background:var(--neon-green); color:#000; padding:2px 6px; border-radius:4px; font-weight:800; margin-left:6px;">👉 SUA VEZ! SELECIONE UMA CARTA E CLIQUE NO [+]</span>' : '<span style="color:var(--text-muted); font-size:12px; margin-left:6px;">(Aguardando jogada do amigo...)</span>'}`;
         }
 
-        // Renderiza a Grade 2D
         renderGridCanvas(state);
-
-        // Renderiza a Mão do Jogador Atual
         renderPlayerHand(state);
     }
 
@@ -242,7 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const grid = state.board.grid;
         const placedKeys = Object.keys(grid);
 
-        // Calcula limites da grade
         let minX = 0, maxX = 0, minY = 0, maxY = 0;
         placedKeys.forEach(k => {
             const [x, y] = k.split(',').map(Number);
@@ -252,10 +250,9 @@ document.addEventListener('DOMContentLoaded', () => {
             maxY = Math.max(maxY, y);
         });
 
-        // Expande 1 casa ao redor para os slots vazios (+)
         const startX = minX - 1;
         const endX = maxX + 1;
-        const startY = maxY + 1; // Y cresce para cima
+        const startY = maxY + 1;
         const endY = minY - 1;
 
         const cols = endX - startX + 1;
@@ -264,7 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
         gridCanvas.style.gridTemplateColumns = `repeat(${cols}, 84px)`;
         gridCanvas.style.gridTemplateRows = `repeat(${rows}, 114px)`;
 
-        // Pega a carta selecionada na mão
         const myPlayer = state.players.find(p => p.id === myPlayerId) || state.players[state.currentTurnPlayerIndex];
         let selectedCard = null;
         if (myPlayer && selectedCardUid) {
@@ -284,21 +280,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     tile.className = `grid-card-tile ${statusClass}`;
                     tile.style.transform = `rotate(${node.card.rotation || 0}deg)`;
-
-                    const ports = node.card.currentPorts || node.card.basePorts;
-                    tile.innerHTML = `
-                        ${ports.top ? '<div class="track-north"></div>' : ''}
-                        ${ports.south ? '<div class="track-south"></div>' : ''}
-                        ${ports.east ? '<div class="track-east"></div>' : ''}
-                        ${ports.west ? '<div class="track-west"></div>' : ''}
-                        <div style="font-size:8px; font-weight:800; color:var(--copper-bright); z-index:3; text-align:center;">${node.card.badge || ''}</div>
-                        <div style="font-size:22px; text-align:center; z-index:3;">${getCardIcon(node.card)}</div>
-                        <div style="font-size:7.5px; font-weight:700; text-align:center; white-space:nowrap; overflow:hidden; z-index:3; color:#f8fafc;">${node.card.name}</div>
-                    `;
+                    tile.innerHTML = typeof renderCardSvg === 'function' ? renderCardSvg(node.card) : `<div style="font-size:10px; color:#fff;">${node.card.name}</div>`;
 
                     gridCanvas.appendChild(tile);
                 } else {
-                    // Posição Vazia: Verifica se é um Slot Válido para a carta selecionada
+                    // Posição Vazia
                     if (selectedCard) {
                         const validation = engine.isValidPlacement(selectedCard, x, y, currentSelectedRotation);
                         if (validation.valid) {
@@ -324,11 +310,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
-                    // Espaço Vazio Normal
                     const empty = document.createElement('div');
                     empty.style.width = '84px';
                     empty.style.height = '114px';
-                    empty.style.opacity = '0.1';
+                    empty.style.opacity = '0.05';
                     gridCanvas.appendChild(empty);
                 }
             }
@@ -347,12 +332,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const tile = document.createElement('div');
             tile.className = `hand-card-tile ${isSelected ? 'selected' : ''}`;
 
+            const svgHtml = typeof renderCardSvg === 'function' ? renderCardSvg(card) : '';
+
             tile.innerHTML = `
-                <div style="font-size:9px; font-weight:800; color:var(--copper-bright);">${card.badge}</div>
-                <div style="font-size:26px; text-align:center; transform:rotate(${isSelected ? currentSelectedRotation : 0}deg); transition:transform 0.15s ease;">${getCardIcon(card)}</div>
-                <div style="font-size:9px; font-weight:700; color:#f8fafc; text-align:center;">${card.name}</div>
+                <div style="width:100%; height:82px; overflow:hidden; border-radius:4px; transform:rotate(${isSelected ? currentSelectedRotation : 0}deg); transition:transform 0.15s ease;">
+                    ${svgHtml}
+                </div>
+                <div style="font-size:9px; font-weight:800; color:var(--copper-bright); margin-top:2px; text-align:center;">${card.badge}</div>
                 ${isSelected ? `
-                    <button class="btn-primary btn-rotate-hand" style="padding:2px 6px; font-size:10px; width:100%; margin-top:2px;">
+                    <button class="btn-primary btn-rotate-hand" style="padding:2px 4px; font-size:9.5px; width:100%; margin-top:2px;">
                         🔄 Girar (${currentSelectedRotation}°)
                     </button>
                 ` : ''}
@@ -380,24 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             playerHandEl.appendChild(tile);
         });
-    }
-
-    function getCardIcon(card) {
-        if (card.type === 'generator') return '⚡';
-        if (card.type === 'resistor') return '🟢';
-        if (card.type === 'equipment') {
-            if (card.id === 'load_led') return '💡';
-            if (card.id === 'load_servidor') return '🖥️';
-            if (card.id === 'load_sirene') return '🚨';
-            if (card.id === 'load_motor') return '💧';
-            if (card.id === 'load_tomografo') return '🏥';
-            return '💡';
-        }
-        if (card.type === 'gnd') return '⏚';
-        if (card.type === 'fuse') return '🛡️';
-        if (card.type === 'node_y') return '🔀';
-        if (card.type === 'topology') return '➕';
-        return '⚡';
     }
 
     function updateVisualAssistant(card) {
@@ -431,11 +401,73 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------
-    // MÓDULO 2: PAINEL DA FEBRACE (CRONÔMETRO & CARDS EXPLICATIVOS)
+    // MÓDULO 2: HUB DE PLANEJAMENTO DA PESQUISA CIENTÍFICA
+    // -------------------------------------------------------------
+    function renderPesquisa() {
+        const container = document.getElementById('pesquisa-container');
+        if (!container) return;
+
+        const p = researchManager.data;
+        container.innerHTML = `
+            <div class="guide-card" style="border-left: 4px solid var(--neon-green); margin-bottom: 16px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+                    <div>
+                        <h2 style="font-size:18px; font-weight:900; color:#fff;">🔬 ${p.overview.title}</h2>
+                        <div style="font-size:12.5px; color:var(--text-muted); margin-top:3px;">
+                            Amostra: <strong>${p.overview.sample}</strong> | Local: <strong>${p.overview.school}</strong> | Duração: <strong>${p.overview.duration}</strong>
+                        </div>
+                    </div>
+                    <span class="guide-badge-pill" style="background:rgba(34,197,94,0.15); color:var(--neon-green); border-color:var(--neon-green);">Metodologia Blindada</span>
+                </div>
+                <div style="font-size:13px; color:#cbd5e1; line-height:1.5; margin-top:10px; background:#050a14; padding:10px 12px; border-radius:6px; border:1px solid #1e293b;">
+                    <strong>🎯 Hipótese da Pesquisa:</strong> ${p.overview.hypothesis}
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:16px;">
+                ${p.pillars.map(pillar => `
+                    <div class="guide-card" style="border-top: 3px solid ${pillar.color};">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <h3 style="font-size:15px; font-weight:800; color:#fff; display:flex; align-items:center; gap:6px;">
+                                <span>${pillar.icon}</span> ${pillar.title}
+                            </h3>
+                            <span class="guide-badge-pill" style="color:${pillar.color}; border-color:${pillar.color};">${pillar.badge}</span>
+                        </div>
+                        <div style="font-size:12.5px; color:#cbd5e1; margin-bottom:10px; line-height:1.45;">
+                            ${pillar.summary}
+                        </div>
+
+                        ${pillar.formula ? `
+                            <div style="background:#050a14; border:1px solid ${pillar.color}; padding:8px 12px; border-radius:6px; font-family:'Fira Code', monospace; font-size:13px; font-weight:800; color:${pillar.color}; text-align:center; margin-bottom:10px;">
+                                ${pillar.formula}
+                            </div>
+                        ` : ''}
+
+                        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">
+                            ${pillar.details.map(d => `
+                                <div style="font-size:12px; background:rgba(0,0,0,0.35); padding:6px 8px; border-radius:4px; line-height:1.4;">
+                                    <strong style="color:${pillar.color};">${d.label}</strong> ${d.text}
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="guide-section-block" style="border-left-color:${pillar.color}; margin-top:8px;">
+                            <div class="guide-section-label" style="color:${pillar.color};">🎯 Por que a banca da USP valoriza isso?</div>
+                            <div class="guide-section-text">${pillar.whyJudgesLove}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    // -------------------------------------------------------------
+    // MÓDULO 3: GUIA DA JORNADA FEBRACE (AS 4 ETAPAS & CHECKLIST)
     // -------------------------------------------------------------
     function renderWarRoom() {
         const scoreEl = document.getElementById('warroom-score');
         const barFill = document.getElementById('warroom-bar-fill');
+        const journeyContainer = document.getElementById('journey-stages-container');
         const checklistContainer = document.getElementById('checklist-container');
         const taskTableBody = document.getElementById('task-table-body');
 
@@ -445,6 +477,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (barFill) barFill.style.width = `${score}%`;
         }
 
+        // Renderiza as 4 Etapas da Jornada FEBRACE
+        if (journeyContainer) {
+            journeyContainer.innerHTML = warRoom.journey.map(j => `
+                <div class="guide-card" style="border-left: 3px solid ${j.color}; padding:12px 14px; margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <div style="font-size:13.5px; font-weight:800; color:#fff; display:flex; align-items:center; gap:6px;">
+                            <span>${j.icon}</span> <strong>${j.stage}:</strong> ${j.title}
+                        </div>
+                        <span class="guide-badge-pill" style="color:${j.color}; border-color:${j.color}; font-size:10px;">${j.badge}</span>
+                    </div>
+                    <ul style="font-size:12px; color:#cbd5e1; line-height:1.5; padding-left:18px;">
+                        ${j.items.map(it => `<li>${it}</li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        // Renderiza os 5 Cards de Documentos Obrigatórios
         if (checklistContainer) {
             checklistContainer.innerHTML = '';
             warRoom.items.forEach(item => {
@@ -488,8 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (taskTableBody) {
-            const tasks = typeof FEBRACE_TEAM_TASKS_DEFAULT !== 'undefined' ? FEBRACE_TEAM_TASKS_DEFAULT : [];
-            taskTableBody.innerHTML = tasks.map(t => `
+            taskTableBody.innerHTML = warRoom.tasks.map(t => `
                 <tr>
                     <td><strong>${t.task}</strong></td>
                     <td><span style="color:var(--copper-bright); font-weight:700;">${t.responsible}</span></td>
@@ -533,7 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startCountdown();
 
     // -------------------------------------------------------------
-    // MÓDULO 3: DIÁRIO DE BORDO COLETIVO
+    // MÓDULO 4: DIÁRIO DE BORDO & TRADUTOR DA BANCA USP
     // -------------------------------------------------------------
     function renderDiario() {
         const diarioList = document.getElementById('diario-entries-list');
@@ -620,9 +669,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // -------------------------------------------------------------
-    // MÓDULO 4: TRADUTOR DA BANCA USP
-    // -------------------------------------------------------------
     function renderBanca() {
         const bancaContainer = document.getElementById('banca-translator-container');
         if (!bancaContainer) return;

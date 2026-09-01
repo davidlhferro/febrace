@@ -3,508 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOLTZ: Circuit Break — Jogo Digital Multiplayer</title>
-    <link rel="stylesheet" href="css/voltz_web.css">
-    <!-- Biblioteca PeerJS para WebRTC P2P Serverless -->
+    <title>VOLTZ — Portal da Equipe & Central de Comando FEBRACE 2026</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- PeerJS WebRTC CDN -->
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 </head>
 <body>
 
-    <!-- CABEÇALHO GLOBAL -->
-    <header class="game-header">
-        <div class="brand-logo">
-            <span style="font-size: 1.3rem;">⚡</span>
-            <h1>VOLTZ: <span>CIRCUIT BREAK</span></h1>
+    <!-- NAVBAR DE COMANDO FIXA -->
+    <header class="navbar">
+        <div class="brand-header">
+            <div class="brand-title">⚡ VOLTZ: CIRCUIT BREAK</div>
+            <div class="brand-badge">Central FEBRACE 2026</div>
         </div>
-        <div class="header-status">
-            <div id="header-room-tag" class="room-badge" style="display: none;">SALA: <span id="header-room-code">---</span></div>
-            <button class="btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 0.75rem;" onclick="App.openPlayerAidModal()">📖 Tabela de Mesa</button>
-        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab-btn active" data-tab="tab-arena">⚡ 1. Jogo Multiplayer</button>
+            <button class="nav-tab-btn" data-tab="tab-pesquisa">🔬 2. Hub de Pesquisa</button>
+            <button class="nav-tab-btn" data-tab="tab-warroom">🏛️ 3. Jornada FEBRACE</button>
+            <button class="nav-tab-btn" data-tab="tab-diario-banca">📓 4. Diário & Tradutor USP</button>
+        </nav>
     </header>
 
-    <!-- ========================================================================= -->
-    <!-- 1. TELA DE LOBBY / ENTRADA NA SALA                                        -->
-    <!-- ========================================================================= -->
-    <div id="screen-lobby" class="lobby-container">
-        <div class="lobby-hero">⚡🔌</div>
-        <h2>SALA DE CONTINGÊNCIA ELÉTRICA</h2>
-        <p>Jogue online com sua equipe (2 a 4 jogadores) em tempo real pelo navegador. Restabeleçam a energia da metrópole!</p>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-container">
 
-        <!-- ETAPA 1: ESCOLHER CRIAR OU ENTRAR -->
-        <div id="lobby-step-initial">
-            <div class="form-group">
-                <label>Seu Nome ou Apelido de Engenheiro:</label>
-                <input type="text" id="input-player-name" class="form-input" placeholder="Ex: David, João, Maria..." value="David">
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: 16px;">
-                <button class="btn-primary" onclick="App.createRoom()">⚡ Criar Nova Sala</button>
-            </div>
-
-            <div style="margin: 20px 0; display: flex; align-items: center; gap: 10px;">
-                <div style="flex: 1; height: 1px; background: #334155;"></div>
-                <span style="font-size: 0.75rem; color: #64748b; font-weight: 700;">OU ENTRE EM UMA SALA</span>
-                <div style="flex: 1; height: 1px; background: #334155;"></div>
-            </div>
-
-            <div class="form-group">
-                <label>Código da Sala (Ex: VOLT-2026):</label>
-                <input type="text" id="input-room-code" class="form-input" placeholder="Digite o código da sala...">
-            </div>
-            <button class="btn-secondary" onclick="App.joinRoom()">🔗 Entrar na Sala</button>
-        </div>
-
-        <!-- ETAPA 2: SALA DE ESPERA (JOGADORES CONECTADOS) -->
-        <div id="lobby-step-waiting" style="display: none;">
-            <div style="background: #1e293b; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
-                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">CÓDIGO DE ACESSO DA SALA:</span>
-                <h3 id="display-room-code" style="font-size: 1.6rem; color: #38bdf8; font-family: 'JetBrains Mono', monospace; margin: 4px 0;">VOLT-XXXX</h3>
-                <span style="font-size: 0.72rem; color: #64748b;">Compartilhe este código com seus colegas de equipe!</span>
-            </div>
-
-            <label style="display: block; font-size: 0.75rem; font-weight: 700; color: #94a3b8; text-align: left; margin-bottom: 8px;">EQUIPE DE ENGENHEIROS (2 a 4 Jogadores):</label>
-            <div id="lobby-players-list" class="players-list">
-                <!-- Jogadores injetados dinamicamente -->
-            </div>
-
-            <button id="btn-start-game" class="btn-primary" onclick="App.startGame()" style="display: none;">🚀 Iniciar Partida Agora</button>
-            <p id="waiting-host-msg" style="font-size: 0.8rem; color: #94a3b8; margin-top: 12px; display: none;">Aguardando o líder da sala iniciar a partida...</p>
-        </div>
-    </div>
-
-    <!-- ========================================================================= -->
-    <!-- 2. TELA PRINCIPAL DO JOGO (SHARED BOARD + HAND + LOG)                     -->
-    <!-- ========================================================================= -->
-    <div id="screen-game" class="game-layout" style="display: none;">
-        
-        <!-- ÁREA CENTRAL: MESA DOS 4 SETORES E GERADOR 12V -->
-        <div class="main-board-area">
-            <div class="board-container">
+        <!-- ========================================================= -->
+        <!-- ABA 1: JOGO MULTIPLAYER COM GRADE 2D & SVG REAL           -->
+        <!-- ========================================================= -->
+        <section id="tab-arena" class="tab-pane active">
+            
+            <!-- TUTORIAL VISUAL DE 1 MINUTO (ESTILO BANDIDO) -->
+            <div class="tutorial-banner">
+                <div style="font-size:15px; font-weight:900; color:var(--copper-bright); display:flex; align-items:center; gap:8px;">
+                    <span>📖 Como Jogar em 1 Minuto (Regra Canônica do Bandido)</span>
+                    <span style="font-size:11px; background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:4px; color:#fff; border:1px solid #334155;">Tutorial Rápido</span>
+                </div>
                 
-                <!-- SETOR 1: HOSPITAL UTI (12V) -->
-                <div id="sector-box-hospital" class="sector-track-box">
-                    <div class="sector-header">
-                        <div class="sector-title" style="color: #dc2626;">🏥 SETOR 1: HOSPITAL REGIONAL</div>
-                        <span id="badge-sector-hospital" class="sector-badge-status blackout">🔴 APAGÃO</span>
+                <div class="tutorial-step-grid">
+                    <div class="tutorial-step-card">
+                        <div class="tutorial-step-title">⚡ 1. O Ponto de Partida</div>
+                        <div class="tutorial-step-desc">
+                            A mesa começa com <strong>1 única carta no centro (0,0)</strong>: o <strong>Gerador 12V</strong> com 4 saídas de barramento abertas. O time expande a malha ao redor dele!
+                        </div>
                     </div>
-                    <div style="font-size: 0.7rem; color: #94a3b8;">🎯 Meta: Tomógrafo UTI (12V / 4Ω) • Liga Direto em 12V (4 Blocos)</div>
-                    <div id="line-sector-hospital" class="sector-cards-line">
-                        <div class="generator-node">⚡ GERADOR<br/>PORTA N</div>
-                        <!-- Cartas jogadas no hospital entram aqui -->
+
+                    <div class="tutorial-step-card">
+                        <div class="tutorial-step-title">🔀 2. Encaixe Exato na Grade</div>
+                        <div class="tutorial-step-desc">
+                            As cartas devem conectar <strong>trilha com trilha</strong> em todos os vizinhos. Gire as cartas da mão (0°, 90°, 180°, 270°) e clique nos slots verdes <strong>(+)</strong>!
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step-card">
+                        <div class="tutorial-step-title">💥 3. Duplo Fechamento</div>
+                        <div class="tutorial-step-desc">
+                            O circuito fecha ao <strong>retornar ao Gerador (Loop)</strong> ou ao colocar um <strong>Cabo Terra (GND)</strong>. A voltagem no aparelho deve bater na meta para não queimar!
+                        </div>
                     </div>
                 </div>
-
-                <!-- SETOR 2: CENTRAL DE DADOS (4V) -->
-                <div id="sector-box-dados" class="sector-track-box">
-                    <div class="sector-header">
-                        <div class="sector-title" style="color: #2563eb;">🖥️ SETOR 2: CENTRAL DE DADOS</div>
-                        <span id="badge-sector-dados" class="sector-badge-status blackout">🔴 APAGÃO</span>
-                    </div>
-                    <div style="font-size: 0.7rem; color: #94a3b8;">🎯 Meta: Servidor Central (4V / 1Ω) • Exige 3 Blocos Totais (12V / 3 = 4V)</div>
-                    <div id="line-sector-dados" class="sector-cards-line">
-                        <div class="generator-node">⚡ GERADOR<br/>PORTA L</div>
-                        <!-- Cartas jogadas em dados entram aqui -->
-                    </div>
-                </div>
-
-                <!-- SETOR 3: TRATAMENTO DE ÁGUA (6V) -->
-                <div id="sector-box-agua" class="sector-track-box">
-                    <div class="sector-header">
-                        <div class="sector-title" style="color: #059669;">⚙️ SETOR 3: TRATAMENTO DE ÁGUA</div>
-                        <span id="badge-sector-agua" class="sector-badge-status blackout">🔴 APAGÃO</span>
-                    </div>
-                    <div style="font-size: 0.7rem; color: #94a3b8;">🎯 Meta: Motor de Bomba (6V / 2Ω) • Exige 4 Blocos Totais (12V · 2/4 = 6V)</div>
-                    <div id="line-sector-agua" class="sector-cards-line">
-                        <div class="generator-node">⚡ GERADOR<br/>PORTA S</div>
-                        <!-- Cartas jogadas na água entram aqui -->
-                    </div>
-                </div>
-
-                <!-- SETOR 4: REDE RESIDENCIAL (3V / 6V) -->
-                <div id="sector-box-residencial" class="sector-track-box">
-                    <div class="sector-header">
-                        <div class="sector-title" style="color: #7c3aed;">💡 SETOR 4: REDE RESIDENCIAL</div>
-                        <span id="badge-sector-residencial" class="sector-badge-status blackout">🔴 APAGÃO</span>
-                    </div>
-                    <div style="font-size: 0.7rem; color: #94a3b8;">🎯 Meta: LED Piloto (3V / 1Ω / 4 Blocos) ou Sirene (6V / 1Ω / 2 Blocos)</div>
-                    <div id="line-sector-residencial" class="sector-cards-line">
-                        <div class="generator-node">⚡ GERADOR<br/>PORTA O</div>
-                        <!-- Cartas jogadas no residencial entram aqui -->
-                    </div>
-                </div>
-
             </div>
 
-            <!-- GAVETA INFERIOR: MÃO PRIVADA DO JOGADOR -->
-            <div class="player-hand-drawer">
+            <!-- GRID PRINCIPAL DA ARENA -->
+            <div class="arena-grid">
+                
+                <!-- ÁREA ESQUERDA: MESA 2D & MÃO -->
                 <div>
-                    <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 800; text-transform: uppercase;">SUA MÃO PRIVADA DE CARTAS:</span>
-                    <div id="player-hand-cards" class="hand-cards-container" style="margin-top: 6px;">
-                        <!-- Cartas da mão do jogador -->
+                    <div class="board-container">
+                        <div class="board-header">
+                            <div>
+                                <h2 style="font-size:16px; font-weight:800; color:var(--copper-glow);">Bancada Virtual 2D (Grade Canônica)</h2>
+                                <div id="turn-indicator" style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">
+                                    Aguardando início da partida...
+                                </div>
+                            </div>
+                            
+                            <!-- CONTROLES DE ZOOM & STATUS -->
+                            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                                <div class="sector-meter" style="border-color:var(--copper-glow); color:var(--copper-glow);">
+                                    MONTE: <strong id="deck-count">69</strong>
+                                </div>
+                                <div class="sector-meter" style="border-color:var(--neon-green); color:var(--neon-green);">
+                                    VIDAS: <strong id="network-lives-display">3 / 3</strong> 🛡️
+                                </div>
+                                <div id="p2p-status" class="sector-meter">
+                                    <span style="color:var(--text-muted)">○ OFFLINE</span>
+                                </div>
+
+                                <div style="display:flex; gap:4px; margin-left:6px;">
+                                    <button id="btn-zoom-in" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Aproximar Mesa">🔍 +</button>
+                                    <button id="btn-zoom-out" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Afastar Mesa">🔍 -</button>
+                                    <button id="btn-zoom-reset" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Recentralizar">⌖</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ASSISTENTE VISUAL EM TEMPO REAL -->
+                        <div class="visual-assistant-bar" id="visual-assistant-bar">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="font-size:14px;">⚡</span>
+                                <span style="font-size:11.5px; font-weight:700; color:var(--text-muted);">ASSISTENTE:</span>
+                                <span id="assistant-status-text" style="font-size:12px; color:#fff; font-weight:600;">Selecione uma carta da sua mão para ver a rotação e os slots (+) disponíveis.</span>
+                            </div>
+                            <div class="assistant-pill" id="assistant-calc-pill" style="display:none;">
+                                12V // Ramo
+                            </div>
+                        </div>
+
+                        <!-- VIEWPORT DA GRADE 2D COM PAN & ZOOM -->
+                        <div class="grid-viewport" id="grid-viewport">
+                            <div class="grid-canvas" id="grid-canvas">
+                                <!-- Cartas e slots (+) gerados dinamicamente via app.js -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MÃO DE CARTAS DO JOGADOR -->
+                    <div class="player-hand-container">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                            <div style="font-weight:800; font-size:13.5px; color:#fff; display:flex; align-items:center; gap:8px;">
+                                <span>🎴 Suas 3 Cartas na Mão</span>
+                                <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">(Selecione, use o botão 🔄 Girar e clique no slot <strong>(+)</strong>)</span>
+                            </div>
+                            <button id="btn-refresh-hand" class="btn-secondary" style="font-size:11px; padding:6px 10px;" title="Descarta as 3 cartas para o fundo do monte e compra 3 novas">
+                                🔄 Sem Jogadas (Trocar 3 Cartas)
+                            </button>
+                        </div>
+                        <div style="display:flex; gap:12px; align-items:center; overflow-x:auto; padding-bottom:6px;" id="player-hand">
+                            <div style="color:var(--text-muted); font-size:12.5px;">Inicie uma partida no painel ao lado para receber suas cartas.</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="hand-meta-box">
-                    <div id="turn-status-text" class="turn-indicator">Vez de: ---</div>
-                    <div class="actions-badge">Ações Restantes: <span id="actions-count-display" style="color: var(--primary); font-weight: 900;">2</span> de 2</div>
-                    <div style="display: flex; gap: 8px; margin-top: 6px;">
-                        <button class="btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 0.75rem;" onclick="App.openDiscardModal()">🗑️ Descarte Ativo</button>
-                        <button class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.75rem;" onclick="App.passTurn()">⏩ Passar Turno</button>
+                <!-- ÁREA DIREITA: LOBBY SERVERLESS & TELEMETRIA -->
+                <div class="side-panel">
+                    <div class="guide-card" style="margin-bottom:0; padding:14px;">
+                        <h3 style="font-size:13.5px; font-weight:800; color:var(--neon-green); margin-bottom:10px;">👥 Sala para Jogar com Amigos</h3>
+                        
+                        <div style="margin-bottom:8px;">
+                            <label style="font-size:11px; color:var(--text-muted);">Seu Nome:</label>
+                            <input type="text" id="player-name-input" class="form-input" placeholder="Ex: David" value="David">
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                            <button id="btn-create-room" class="btn-primary" style="width:100%;">
+                                👑 1. Criar Sala (Host)
+                            </button>
+                            
+                            <div style="display:flex; gap:6px; margin-top:2px;">
+                                <input type="text" id="room-code-input" class="form-input" placeholder="CÓDIGO (4 letras)" style="margin-top:0; text-transform:uppercase; font-family:'Fira Code', monospace; text-align:center; font-weight:700;">
+                                <button id="btn-join-room" class="btn-secondary" style="white-space:nowrap;">
+                                    2. Entrar
+                                </button>
+                            </div>
+
+                            <div style="margin-top:8px; padding:8px; background:#050a14; border:1px solid #1e2c42; border-radius:6px;">
+                                <div style="font-size:10.5px; color:var(--text-muted); margin-bottom:4px; font-weight:700;">JOGADORES NA SALA:</div>
+                                <div id="players-list-display" style="font-size:11.5px; line-height:1.5; color:#cbd5e1;">
+                                    <em>Ninguém conectado ainda.</em>
+                                </div>
+                            </div>
+
+                            <button id="btn-start-multiplayer-game" class="btn-primary" style="width:100%; background:linear-gradient(135deg, #16a34a, #059669); margin-top:4px; display:none;">
+                                🚀 Começar Partida
+                            </button>
+
+                            <button id="btn-solo-3p" class="btn-secondary" style="width:100%; border-color:#2d4160; color:var(--neon-blue); margin-top:2px;">
+                                👥 Testar 3 Jogadores na Mesma Tela
+                            </button>
+                        </div>
+
+                        <div style="margin-top:12px; padding-top:10px; border-top:1px solid #1e2c42; font-size:11.5px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="color:var(--text-muted);">Código da Sala:</span>
+                            <strong id="room-code-display" style="font-family:'Fira Code', monospace; font-size:15px; color:var(--copper-glow); letter-spacing:2px; background:#050a14; padding:2px 8px; border-radius:4px; border:1px solid #1e2c42;">----</strong>
+                        </div>
+                    </div>
+
+                    <!-- MURAL DE AÇÕES AO VIVO -->
+                    <div>
+                        <div style="font-size:11.5px; font-weight:700; color:var(--text-muted); margin-bottom:4px; display:flex; justify-content:space-between;">
+                            <span>📟 Telemetria da Bancada</span>
+                            <span style="font-family:'Fira Code', monospace; font-size:10px; color:var(--neon-green);">LIVE</span>
+                        </div>
+                        <div class="log-box" id="log-box">
+                            <div class="log-entry"><span class="time">[SISTEMA]</span> Portal VOLTZ 2D pronto para jogo.</div>
+                        </div>
                     </div>
                 </div>
+
             </div>
-        </div>
+        </section>
 
-        <!-- BARRA LATERAL: LOG DE AÇÕES & STATUS DA EQUIPE -->
-        <div class="sidebar-panel">
-            <div class="sidebar-tab-header">
-                <span>📜 HISTÓRICO DE AÇÕES</span>
-                <span id="deck-remaining-count" style="color: #38bdf8; font-family: 'JetBrains Mono', monospace;">Baralho: 53</span>
+        <!-- ========================================================= -->
+        <!-- ABA 2: HUB DE PLANEJAMENTO DA PESQUISA CIENTÍFICA          -->
+        <!-- ========================================================= -->
+        <section id="tab-pesquisa" class="tab-pane">
+            <div id="pesquisa-container">
+                <!-- Injetado dinamicamente via voltz_pesquisa.js -->
             </div>
-            <div id="action-logs-container" class="action-log-list">
-                <!-- Logs em tempo real -->
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ABA 3: GUIA DA JORNADA FEBRACE (AS 4 ETAPAS & CHECKLIST)   -->
+        <!-- ========================================================= -->
+        <section id="tab-warroom" class="tab-pane">
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:16px;">
+                
+                <div>
+                    <!-- CRONÔMETRO REGRESSIVO ATÉ A DATA LIMITE (02/10) -->
+                    <div class="countdown-container">
+                        <div class="countdown-unit">
+                            <div class="countdown-num" id="cd-days">00</div>
+                            <div class="countdown-label">Dias</div>
+                        </div>
+                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num" id="cd-hours">00</div>
+                            <div class="countdown-label">Horas</div>
+                        </div>
+                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num" id="cd-minutes">00</div>
+                            <div class="countdown-label">Minutos</div>
+                        </div>
+                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num" id="cd-seconds">00</div>
+                            <div class="countdown-label">Segundos</div>
+                        </div>
+                    </div>
+
+                    <!-- AS 4 ETAPAS DA JORNADA FEBRACE -->
+                    <div class="guide-card" style="margin-bottom:14px;">
+                        <h2 style="font-size:16px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🗺️ Mapa da Jornada FEBRACE (Passo a Passo)</h2>
+                        <div id="journey-stages-container">
+                            <!-- Injetado dinamicamente via voltz_warroom.js -->
+                        </div>
+                    </div>
+
+                    <!-- PROGRESSO GERAL DA EQUIPE -->
+                    <div class="guide-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <h2 style="font-size:17px; font-weight:900; color:var(--neon-green);">Prontidão Geral dos Documentos</h2>
+                                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Checklist oficial dos 5 documentos obrigatórios da USP</div>
+                            </div>
+                            <div id="warroom-score" style="font-family:'Fira Code', monospace; font-size:28px; font-weight:900; color:var(--neon-green);">
+                                0%
+                            </div>
+                        </div>
+
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="warroom-bar-fill" style="width:0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- OS 5 CARDS EXPLICATIVOS SEM JARGÕES -->
+                    <div id="checklist-container">
+                        <!-- Injetado dinamicamente via voltz_warroom.js -->
+                    </div>
+                </div>
+
+                <!-- QUADRO DE TAREFAS & DICAS DA BANCA -->
+                <div>
+                    <div class="guide-card">
+                        <h3 style="font-size:14px; font-weight:800; color:var(--copper-bright); margin-bottom:8px;">👥 Divisão de Tarefas da Equipe</h3>
+                        <table class="task-table">
+                            <thead>
+                                <tr>
+                                    <th>Tarefa</th>
+                                    <th>Responsável</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="task-table-body">
+                                <!-- Injetado dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="guide-card">
+                        <h3 style="font-size:14px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🎯 O Que a Banca da USP Avalia?</h3>
+                        <ul style="font-size:12px; line-height:1.6; color:#cbd5e1; padding-left:16px;">
+                            <li><strong>1. Rigor do Jogo:</strong> As notas dos alunos subiram na prática?</li>
+                            <li><strong>2. Autenticidade:</strong> O Diário de Bordo mostra os erros corrigidos?</li>
+                            <li><strong>3. Custo Social:</strong> O kit custa menos de R$ 25 para escolas públicas?</li>
+                            <li><strong>4. Domínio da Equipe:</strong> Os alunos explicam a física sem ler papel?</li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
-        </div>
+        </section>
 
-    </div>
+        <!-- ========================================================= -->
+        <!-- ABA 4: DIÁRIO DE BORDO & TRADUTOR DA BANCA USP            -->
+        <!-- ========================================================= -->
+        <section id="tab-diario-banca" class="tab-pane">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                
+                <!-- COLUNA ESQUERDA: DIÁRIO DE BORDO -->
+                <div>
+                    <div class="guide-card">
+                        <h2 style="font-size:16px; font-weight:800; color:var(--copper-glow); margin-bottom:4px;">📝 Registrar Sessão de Testes</h2>
+                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Anote cada partida jogada com a turma ou reunião de equipe!</div>
+                        
+                        <form id="form-diario-entry">
+                            <div style="margin-bottom:10px;">
+                                <label style="font-size:11.5px; color:var(--text-muted);">Título da Atividade:</label>
+                                <input type="text" id="diario-title" class="form-input" placeholder="Ex: Partida 3P - Conexão do Servidor 4V via Loop" required>
+                            </div>
 
-    <!-- ========================================================================= -->
-    <!-- 3. MODAIS DE INTERAÇÃO (ESCOLHER SETOR, GND, TABELA DE MESA)              -->
-    <!-- ========================================================================= -->
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                                <div>
+                                    <label style="font-size:11.5px; color:var(--text-muted);">Tipo de Atividade:</label>
+                                    <select id="diario-type" class="form-input">
+                                        <option>Playtest com Amigos</option>
+                                        <option>Teste em Sala de Aula</option>
+                                        <option>Reunião com Orientador</option>
+                                        <option>Ajuste nas Regras da Grade</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size:11.5px; color:var(--text-muted);">Integrantes Presentes:</label>
+                                    <input type="text" id="diario-author" class="form-input" value="David, João e Parceiro 3">
+                                </div>
+                            </div>
 
-    <!-- MODAL 1: SELECIONAR SETOR PARA JOGAR CARTA -->
-    <div id="modal-sector-picker" class="modal-backdrop" style="display: none;">
-        <div class="modal-content">
-            <h3 id="sector-picker-title">⚡ Onde deseja conectar esta carta?</h3>
-            <p>Selecione um dos 4 setores da metrópole para estender a trilha de circuito:</p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
-                <button class="btn-secondary" style="border-color: #dc2626; color: #f87171;" onclick="App.confirmPlayCard('sector_hospital')">🏥 Setor 1: Hospital (12V)</button>
-                <button class="btn-secondary" style="border-color: #2563eb; color: #60a5fa;" onclick="App.confirmPlayCard('sector_dados')">🖥️ Setor 2: Dados (4V)</button>
-                <button class="btn-secondary" style="border-color: #059669; color: #34d399;" onclick="App.confirmPlayCard('sector_agua')">⚙️ Setor 3: Água (6V)</button>
-                <button class="btn-secondary" style="border-color: #7c3aed; color: #c084fc;" onclick="App.confirmPlayCard('sector_residencial')">💡 Setor 4: Residencial (3V/6V)</button>
+                            <div style="margin-bottom:10px;">
+                                <label style="font-size:11.5px; color:var(--text-muted);">Fatos e Procedimentos Realizados:</label>
+                                <textarea id="diario-desc" class="form-input" rows="3" placeholder="Descreva os passos e como a grade foi montada..." required></textarea>
+                            </div>
+
+                            <div style="margin-bottom:10px;">
+                                <label style="font-size:11.5px; color:var(--text-muted);">O que aprendemos / Falhas Encontradas:</label>
+                                <textarea id="diario-findings" class="form-input" rows="2" placeholder="O que deu certo? Houve sobretensão ou curto?"></textarea>
+                            </div>
+
+                            <div style="margin-bottom:12px;">
+                                <label style="font-size:11.5px; color:var(--text-muted);">Decisões e Próximos Passos:</label>
+                                <input type="text" id="diario-actions" class="form-input" placeholder="Ex: Incluir fusível 1A no ramo para evitar queima">
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="width:100%;">
+                                💾 Salvar no Diário de Bordo
+                            </button>
+                        </form>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin:12px 0; flex-wrap:wrap; gap:6px;">
+                        <h3 style="font-size:14px; font-weight:800; color:#fff;">Histórico de Sessões</h3>
+                        <div style="display:flex; gap:6px;">
+                            <button id="btn-export-md" class="btn-secondary" style="font-size:11px;">
+                                📥 Baixar Markdown (.md)
+                            </button>
+                            <button id="btn-export-pdf" class="btn-primary" style="font-size:11px; padding:6px 10px;">
+                                🖨️ Imprimir Diário (PDF)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="diario-entries-list">
+                        <!-- Injetado dinamicamente via voltz_diario.js -->
+                    </div>
+                </div>
+
+                <!-- COLUNA DIREITA: TRADUTOR DA BANCA USP -->
+                <div>
+                    <div class="guide-card" style="margin-bottom:12px;">
+                        <h2 style="font-size:16px; font-weight:900; color:var(--neon-blue);">🎓 Tradutor da Banca da USP</h2>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                            Tradução do juradês para o português claro e respostas na ponta da língua!
+                        </div>
+                    </div>
+
+                    <div id="banca-translator-container">
+                        <!-- Injetado dinamicamente via voltz_banca.js -->
+                    </div>
+                </div>
+
             </div>
-            <button class="btn-secondary" onclick="App.closeModal('modal-sector-picker')">Cancelar</button>
-        </div>
-    </div>
+        </section>
 
-    <!-- MODAL 2: DIAGNÓSTICO DO CABO TERRA (GND) -->
-    <div id="modal-gnd-result" class="modal-backdrop" style="display: none;">
-        <div class="modal-content">
-            <div id="gnd-modal-icon" style="font-size: 2.5rem; margin-bottom: 6px;">⚡</div>
-            <h3 id="gnd-modal-title" style="color: #34d399;">🟢 SUCESSO! SETOR ENERGIZADO!</h3>
-            <div id="gnd-modal-math" style="background: #1e293b; padding: 10px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin: 12px 0; color: #38bdf8;">
-                V = 12V · (1Ω / 3Ω) = 4.0V
-            </div>
-            <p id="gnd-modal-message">Mensagem de diagnóstico detalhada...</p>
-            <button class="btn-primary" onclick="App.closeModal('modal-gnd-result')">Continuar Partida</button>
-        </div>
-    </div>
+    </main>
 
-    <!-- MODAL 3: TABELA DE MESA (PLAYER AID) -->
-    <div id="modal-player-aid" class="modal-backdrop" style="display: none;">
-        <div class="modal-content" style="max-width: 620px; text-align: left;">
-            <h3 style="color: var(--primary);">📖 Guia Rápido de Mesa (Player Aid)</h3>
-            <p style="margin-bottom: 12px;">Consulta de cálculo dos 4 equipamentos da metrópole (Fonte 12V):</p>
-            
-            <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 16px;">
-                <thead>
-                    <tr style="background: #0f172a; color: #38bdf8; border-bottom: 1px solid #334155;">
-                        <th style="padding: 6px; text-align: left;">EQUIPAMENTO</th>
-                        <th style="padding: 6px;">VNOM</th>
-                        <th style="padding: 6px;">R BASE</th>
-                        <th style="padding: 6px;">🎯 META DE BLOCOS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom: 1px solid #1e293b;">
-                        <td style="padding: 6px;">💡 LED Piloto</td><td>3V</td><td>1Ω [■]</td><td style="color:#34d399; font-weight:900;">4 Blocos Totais (12V / 4 = 3V)</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #1e293b;">
-                        <td style="padding: 6px;">🖥️ Servidor Central</td><td>4V</td><td>1Ω [■]</td><td style="color:#34d399; font-weight:900;">3 Blocos Totais (12V / 3 = 4V)</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #1e293b;">
-                        <td style="padding: 6px;">🚨 Sirene de Alarme</td><td>6V</td><td>1Ω [■]</td><td style="color:#34d399; font-weight:900;">2 Blocos Totais (12V / 2 = 6V)</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #1e293b;">
-                        <td style="padding: 6px;">⚙️ Motor de Bomba</td><td>6V</td><td>2Ω [■■]</td><td style="color:#34d399; font-weight:900;">4 Blocos Totais (12V · 2/4 = 6V)</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 6px;">🏥 Tomógrafo UTI</td><td>12V</td><td>4Ω [■■■■]</td><td style="color:#34d399; font-weight:900;">4 Blocos (Liga Direto em 12V)</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <button class="btn-primary" onclick="App.closeModal('modal-player-aid')">Fechar Guia</button>
-        </div>
-    </div>
-
-    <!-- SCRIPTS DO JOGO -->
+    <!-- SCRIPTS DA APLICAÇÃO -->
+    <script src="js/voltz_card_svg.js"></script>
     <script src="js/voltz_cards_data.js"></script>
     <script src="js/voltz_engine.js"></script>
-    <script src="js/voltz_render.js"></script>
-    <script src="js/voltz_multiplayer.js"></script>
-
-    <!-- CONTROLADOR PRINCIPAL DA APLICAÇÃO -->
-    <script>
-        const App = {
-            engine: new VoltzEngine(),
-            net: null,
-            myPlayerId: 'p_' + Math.random().toString(36).substr(2, 6),
-            selectedCardUid: null,
-            selectedCardAction: null,
-
-            init() {
-                // Instancia a camada de rede com callbacks
-                this.net = new VoltzMultiplayer({
-                    onPeerReady: (roomId, isHost) => {
-                        document.getElementById('display-room-code').innerText = roomId;
-                        document.getElementById('header-room-code').innerText = roomId;
-                        document.getElementById('header-room-tag').style.display = 'block';
-
-                        document.getElementById('lobby-step-initial').style.display = 'none';
-                        document.getElementById('lobby-step-waiting').style.display = 'block';
-
-                        if (isHost) {
-                            // Host adiciona a si mesmo na engine
-                            const name = document.getElementById('input-player-name').value || 'Host';
-                            this.engine.addPlayer(this.net.myPlayerId, name, true);
-                            document.getElementById('btn-start-game').style.display = 'block';
-                            this.updateLobbyPlayersList();
-                        } else {
-                            document.getElementById('waiting-host-msg').style.display = 'block';
-                        }
-                    },
-                    onHostReceiveAction: (msg, conn) => {
-                        this.handleHostAction(msg, conn);
-                    },
-                    onStateSync: (gameState) => {
-                        this.engine.gameState = gameState;
-                        this.renderGame();
-                    },
-                    onGNDModal: (diag) => {
-                        this.showGNDModal(diag);
-                    }
-                });
-            },
-
-            createRoom() {
-                const name = document.getElementById('input-player-name').value || 'Host';
-                this.net.createRoom(name);
-            },
-
-            joinRoom() {
-                const name = document.getElementById('input-player-name').value || 'Jogador';
-                const code = document.getElementById('input-room-code').value;
-                if (!code) return alert('Por favor, informe o código da sala.');
-                this.net.joinRoom(name, code);
-            },
-
-            handleHostAction(msg, conn) {
-                try {
-                    if (msg.type === 'JOIN_REQUEST') {
-                        this.engine.addPlayer(msg.playerId, msg.playerName, false);
-                        this.updateLobbyPlayersList();
-                        this.net.broadcastState(this.engine.gameState);
-                    } else if (msg.type === 'ACTION_PLAY_CARD') {
-                        this.engine.playCard(msg.playerId, msg.cardUid, msg.sectorId);
-                        this.net.broadcastState(this.engine.gameState);
-                        if (this.engine.gameState.lastGNDDiagnostic) {
-                            this.net.broadcastGNDModal(this.engine.gameState.lastGNDDiagnostic);
-                            this.showGNDModal(this.engine.gameState.lastGNDDiagnostic);
-                        }
-                        this.renderGame();
-                    } else if (msg.type === 'ACTION_PASS_TURN') {
-                        this.engine.endTurn(msg.playerId);
-                        this.net.broadcastState(this.engine.gameState);
-                        this.renderGame();
-                    } else if (msg.type === 'ACTION_DISCARD') {
-                        this.engine.activeDiscard(msg.playerId, msg.cardUids);
-                        this.net.broadcastState(this.engine.gameState);
-                        this.renderGame();
-                    }
-                } catch (e) {
-                    console.error('[Host Action Error]:', e);
-                    alert(e.message);
-                }
-            },
-
-            updateLobbyPlayersList() {
-                const list = document.getElementById('lobby-players-list');
-                list.innerHTML = '';
-                for (const p of this.engine.gameState.players) {
-                    const item = document.createElement('div');
-                    item.className = 'player-item';
-                    item.innerHTML = `
-                        <span>👤 <b>${p.name}</b> ${p.isHost ? '<span style="color:var(--primary); font-size:0.7rem;">(Líder)</span>' : ''}</span>
-                        <span style="color:#34d399; font-size:0.75rem; font-family:'JetBrains Mono';">● Conectado</span>
-                    `;
-                    list.appendChild(item);
-                }
-            },
-
-            startGame() {
-                try {
-                    this.engine.startGame();
-                    document.getElementById('screen-lobby').style.display = 'none';
-                    document.getElementById('screen-game').style.display = 'flex';
-                    this.net.broadcastState(this.engine.gameState);
-                    this.renderGame();
-                } catch (e) {
-                    alert(e.message);
-                }
-            },
-
-            renderGame() {
-                const gs = this.engine.gameState;
-                if (gs.status === 'playing') {
-                    document.getElementById('screen-lobby').style.display = 'none';
-                    document.getElementById('screen-game').style.display = 'flex';
-                }
-
-                // Renderiza os 4 Setores
-                for (const [sectorKey, sector] of Object.entries(gs.board.sectors)) {
-                    const lineEl = document.getElementById(`line-${sectorKey.replace('sector_', 'sector-')}`);
-                    const badgeEl = document.getElementById(`badge-${sectorKey.replace('sector_', 'sector-')}`);
-                    const boxEl = document.getElementById(`sector-box-${sectorKey.replace('sector_', '')}`);
-
-                    if (badgeEl) {
-                        badgeEl.className = `sector-badge-status ${sector.status}`;
-                        badgeEl.innerText = sector.status === 'energized' ? '🟢 ENERGIZADO!' : '🔴 APAGÃO';
-                    }
-                    if (boxEl) {
-                        boxEl.className = `sector-track-box status-${sector.status}`;
-                    }
-
-                    if (lineEl) {
-                        let html = `<div class="generator-node">⚡ GERADOR<br/>PORTA</div>`;
-                        for (const card of sector.cards) {
-                            html += VoltzRender.renderCardHTML(card, { isHand: false });
-                        }
-                        lineEl.innerHTML = html;
-                    }
-                }
-
-                // Renderiza a mão do jogador atual
-                const myPlayer = gs.players.find(p => p.id === this.net.myPlayerId) || gs.players[0];
-                const handContainer = document.getElementById('player-hand-cards');
-                if (handContainer && myPlayer) {
-                    let handHtml = '';
-                    const isMyTurn = gs.players[gs.currentTurnPlayerIndex]?.id === myPlayer.id;
-                    for (const card of myPlayer.hand) {
-                        handHtml += VoltzRender.renderCardHTML(card, { isHand: true, showActions: isMyTurn });
-                    }
-                    handContainer.innerHTML = handHtml || '<div style="color:#64748b; font-size:0.8rem;">Sua mão está vazia.</div>';
-                }
-
-                // Renderiza os dados do turno
-                const currPlayer = gs.players[gs.currentTurnPlayerIndex];
-                if (currPlayer) {
-                    const isMe = currPlayer.id === (myPlayer ? myPlayer.id : '');
-                    document.getElementById('turn-status-text').innerHTML = `Vez de: <b>${currPlayer.name}</b> ${isMe ? '<span style="color:#34d399;">(VOCÊ!)</span>' : ''}`;
-                    document.getElementById('actions-count-display').innerText = gs.actionsRemaining;
-                }
-
-                // Renderiza logs de ação
-                const logContainer = document.getElementById('action-logs-container');
-                if (logContainer) {
-                    logContainer.innerHTML = gs.actionLogs.map(l => `
-                        <div class="log-item">
-                            <span class="time">${l.time}</span> ${l.message}
-                        </div>
-                    `).join('');
-                }
-
-                // Contador de cartas do baralho
-                document.getElementById('deck-remaining-count').innerText = `Baralho: ${gs.deck.length}`;
-            },
-
-            openSectorPicker(cardUid, action) {
-                this.selectedCardUid = cardUid;
-                this.selectedCardAction = action;
-                document.getElementById('modal-sector-picker').style.display = 'flex';
-            },
-
-            confirmPlayCard(sectorId) {
-                this.closeModal('modal-sector-picker');
-                if (this.net.isHost) {
-                    try {
-                        this.engine.playCard(this.net.myPlayerId, this.selectedCardUid, sectorId);
-                        this.net.broadcastState(this.engine.gameState);
-                        if (this.engine.gameState.lastGNDDiagnostic) {
-                            this.showGNDModal(this.engine.gameState.lastGNDDiagnostic);
-                            this.net.broadcastGNDModal(this.engine.gameState.lastGNDDiagnostic);
-                        }
-                        this.renderGame();
-                    } catch (e) {
-                        alert(e.message);
-                    }
-                } else {
-                    this.net.sendToHost({
-                        type: 'ACTION_PLAY_CARD',
-                        playerId: this.net.myPlayerId,
-                        cardUid: this.selectedCardUid,
-                        sectorId: sectorId
-                    });
-                }
-            },
-
-            passTurn() {
-                if (this.net.isHost) {
-                    try {
-                        this.engine.endTurn(this.net.myPlayerId);
-                        this.net.broadcastState(this.engine.gameState);
-                        this.renderGame();
-                    } catch (e) {
-                        alert(e.message);
-                    }
-                } else {
-                    this.net.sendToHost({
-                        type: 'ACTION_PASS_TURN',
-                        playerId: this.net.myPlayerId
-                    });
-                }
-            },
-
-            openDiscardModal() {
-                const myPlayer = this.engine.gameState.players.find(p => p.id === this.net.myPlayerId);
-                if (!myPlayer || myPlayer.hand.length === 0) return alert('Você não tem cartas na mão para descartar.');
-                const card = myPlayer.hand[0];
-                if (confirm(`Deseja descartar [${card.name}] e comprar uma nova carta?`)) {
-                    if (this.net.isHost) {
-                        this.engine.activeDiscard(this.net.myPlayerId, [card.uid]);
-                        this.net.broadcastState(this.engine.gameState);
-                        this.renderGame();
-                    } else {
-                        this.net.sendToHost({
-                            type: 'ACTION_DISCARD',
-                            playerId: this.net.myPlayerId,
-                            cardUids: [card.uid]
-                        });
-                    }
-                }
-            },
-
-            showGNDModal(diag) {
-                if (!diag) return;
-                document.getElementById('gnd-modal-title').innerText = diag.title;
-                document.getElementById('gnd-modal-title').style.color = diag.color || '#34d399';
-                document.getElementById('gnd-modal-message').innerText = diag.message;
-                document.getElementById('gnd-modal-math').innerText = `V = 12V · (${diag.rEquip}Ω / ${diag.rTotal}Ω) = ${diag.vCalculated}V (Vnom = ${diag.vNom}V)`;
-                document.getElementById('modal-gnd-result').style.display = 'flex';
-            },
-
-            openPlayerAidModal() {
-                document.getElementById('modal-player-aid').style.display = 'flex';
-            },
-
-            closeModal(modalId) {
-                document.getElementById(modalId).style.display = 'none';
-            }
-        };
-
-        window.onload = () => {
-            App.init();
-        };
-    </script>
+    <script src="js/voltz_pesquisa.js"></script>
+    <script src="js/voltz_p2p.js"></script>
+    <script src="js/voltz_warroom.js"></script>
+    <script src="js/voltz_diario.js"></script>
+    <script src="js/voltz_banca.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

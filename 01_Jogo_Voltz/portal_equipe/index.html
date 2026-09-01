@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOLTZ — Portal da Equipe & Central FEBRACE 2026</title>
+    <title>VOLTZ — Portal da Equipe & Central de Comando FEBRACE 2026</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- PeerJS WebRTC CDN -->
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
@@ -19,9 +19,9 @@
 
         <nav class="nav-tabs">
             <button class="nav-tab-btn active" data-tab="tab-arena">⚡ 1. Jogo Multiplayer</button>
-            <button class="nav-tab-btn" data-tab="tab-warroom">📊 2. Painel FEBRACE & Metas</button>
-            <button class="nav-tab-btn" data-tab="tab-diario">📓 3. Diário de Bordo</button>
-            <button class="nav-tab-btn" data-tab="tab-banca">🎓 4. Tradutor da Banca USP</button>
+            <button class="nav-tab-btn" data-tab="tab-pesquisa">🔬 2. Hub de Pesquisa</button>
+            <button class="nav-tab-btn" data-tab="tab-warroom">🏛️ 3. Jornada FEBRACE</button>
+            <button class="nav-tab-btn" data-tab="tab-diario-banca">📓 4. Diário & Tradutor USP</button>
         </nav>
     </header>
 
@@ -29,7 +29,7 @@
     <main class="main-container">
 
         <!-- ========================================================= -->
-        <!-- ABA 1: JOGO MULTIPLAYER COM GRADE 2D                      -->
+        <!-- ABA 1: JOGO MULTIPLAYER COM GRADE 2D & SVG REAL           -->
         <!-- ========================================================= -->
         <section id="tab-arena" class="tab-pane active">
             
@@ -195,7 +195,16 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- ABA 2: PAINEL DA FEBRACE & METAS                          -->
+        <!-- ABA 2: HUB DE PLANEJAMENTO DA PESQUISA CIENTÍFICA          -->
+        <!-- ========================================================= -->
+        <section id="tab-pesquisa" class="tab-pane">
+            <div id="pesquisa-container">
+                <!-- Injetado dinamicamente via voltz_pesquisa.js -->
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ABA 3: GUIA DA JORNADA FEBRACE (AS 4 ETAPAS & CHECKLIST)   -->
         <!-- ========================================================= -->
         <section id="tab-warroom" class="tab-pane">
             <div style="display:grid; grid-template-columns: 2fr 1fr; gap:16px;">
@@ -224,14 +233,22 @@
                         </div>
                     </div>
 
+                    <!-- AS 4 ETAPAS DA JORNADA FEBRACE -->
+                    <div class="guide-card" style="margin-bottom:14px;">
+                        <h2 style="font-size:16px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🗺️ Mapa da Jornada FEBRACE (Passo a Passo)</h2>
+                        <div id="journey-stages-container">
+                            <!-- Injetado dinamicamente via voltz_warroom.js -->
+                        </div>
+                    </div>
+
                     <!-- PROGRESSO GERAL DA EQUIPE -->
                     <div class="guide-card">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <h2 style="font-size:18px; font-weight:900; color:var(--neon-green);">Prontidão Geral da Equipe</h2>
-                                <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">Checklist oficial dos 5 documentos obrigatórios da USP</div>
+                                <h2 style="font-size:17px; font-weight:900; color:var(--neon-green);">Prontidão Geral dos Documentos</h2>
+                                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Checklist oficial dos 5 documentos obrigatórios da USP</div>
                             </div>
-                            <div id="warroom-score" style="font-family:'Fira Code', monospace; font-size:30px; font-weight:900; color:var(--neon-green);">
+                            <div id="warroom-score" style="font-family:'Fira Code', monospace; font-size:28px; font-weight:900; color:var(--neon-green);">
                                 0%
                             </div>
                         </div>
@@ -280,69 +297,68 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- ABA 3: CENTRAL DO DIÁRIO DE BORDO                         -->
+        <!-- ABA 4: DIÁRIO DE BORDO & TRADUTOR DA BANCA USP            -->
         <!-- ========================================================= -->
-        <section id="tab-diario" class="tab-pane">
+        <section id="tab-diario-banca" class="tab-pane">
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
                 
-                <!-- FORMULÁRIO DE NOVO REGISTRO -->
-                <div class="guide-card">
-                    <h2 style="font-size:17px; font-weight:800; color:var(--copper-glow); margin-bottom:6px;">📝 Registrar Nova Sessão de Testes</h2>
-                    <div style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Anote cada partida jogada com a turma ou reunião de equipe para anexar no relatório oficial!</div>
-                    
-                    <form id="form-diario-entry">
-                        <div style="margin-bottom:10px;">
-                            <label style="font-size:11.5px; color:var(--text-muted);">Título da Atividade:</label>
-                            <input type="text" id="diario-title" class="form-input" placeholder="Ex: Partida 3P - Conexão do Servidor 4V via Loop Fechado" required>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
-                            <div>
-                                <label style="font-size:11.5px; color:var(--text-muted);">Tipo de Atividade:</label>
-                                <select id="diario-type" class="form-input">
-                                    <option>Playtest com Amigos</option>
-                                    <option>Teste em Sala de Aula</option>
-                                    <option>Reunião com Orientador</option>
-                                    <option>Ajuste nas Regras da Grade</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label style="font-size:11.5px; color:var(--text-muted);">Integrantes Presentes:</label>
-                                <input type="text" id="diario-author" class="form-input" value="David, João e Parceiro 3">
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom:10px;">
-                            <label style="font-size:11.5px; color:var(--text-muted);">Fatos e Procedimentos Realizados:</label>
-                            <textarea id="diario-desc" class="form-input" rows="3" placeholder="Descreva os passos e como a grade foi montada..." required></textarea>
-                        </div>
-
-                        <div style="margin-bottom:10px;">
-                            <label style="font-size:11.5px; color:var(--text-muted);">O que aprendemos / Falhas Encontradas:</label>
-                            <textarea id="diario-findings" class="form-input" rows="2" placeholder="O que deu certo? Houve sobretensão ou curto?"></textarea>
-                        </div>
-
-                        <div style="margin-bottom:14px;">
-                            <label style="font-size:11.5px; color:var(--text-muted);">Decisões e Próximos Passos:</label>
-                            <input type="text" id="diario-actions" class="form-input" placeholder="Ex: Incluir fusível 1A no ramo para evitar queima">
-                        </div>
-
-                        <button type="submit" class="btn-primary" style="width:100%;">
-                            💾 Salvar no Diário de Bordo
-                        </button>
-                    </form>
-                </div>
-
-                <!-- LISTA DE ENTRADAS & EXPORTAÇÃO -->
+                <!-- COLUNA ESQUERDA: DIÁRIO DE BORDO -->
                 <div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:6px;">
-                        <h3 style="font-size:15px; font-weight:800; color:#fff;">Histórico Cronológico</h3>
+                    <div class="guide-card">
+                        <h2 style="font-size:16px; font-weight:800; color:var(--copper-glow); margin-bottom:4px;">📝 Registrar Sessão de Testes</h2>
+                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Anote cada partida jogada com a turma ou reunião de equipe!</div>
+                        
+                        <form id="form-diario-entry">
+                            <div style="margin-bottom:10px;">
+                                <label style="font-size:11.5px; color:var(--text-muted);">Título da Atividade:</label>
+                                <input type="text" id="diario-title" class="form-input" placeholder="Ex: Partida 3P - Conexão do Servidor 4V via Loop" required>
+                            </div>
+
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                                <div>
+                                    <label style="font-size:11.5px; color:var(--text-muted);">Tipo de Atividade:</label>
+                                    <select id="diario-type" class="form-input">
+                                        <option>Playtest com Amigos</option>
+                                        <option>Teste em Sala de Aula</option>
+                                        <option>Reunião com Orientador</option>
+                                        <option>Ajuste nas Regras da Grade</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size:11.5px; color:var(--text-muted);">Integrantes Presentes:</label>
+                                    <input type="text" id="diario-author" class="form-input" value="David, João e Parceiro 3">
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:10px;">
+                                <label style="font-size:11.5px; color:var(--text-muted);">Fatos e Procedimentos Realizados:</label>
+                                <textarea id="diario-desc" class="form-input" rows="3" placeholder="Descreva os passos e como a grade foi montada..." required></textarea>
+                            </div>
+
+                            <div style="margin-bottom:10px;">
+                                <label style="font-size:11.5px; color:var(--text-muted);">O que aprendemos / Falhas Encontradas:</label>
+                                <textarea id="diario-findings" class="form-input" rows="2" placeholder="O que deu certo? Houve sobretensão ou curto?"></textarea>
+                            </div>
+
+                            <div style="margin-bottom:12px;">
+                                <label style="font-size:11.5px; color:var(--text-muted);">Decisões e Próximos Passos:</label>
+                                <input type="text" id="diario-actions" class="form-input" placeholder="Ex: Incluir fusível 1A no ramo para evitar queima">
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="width:100%;">
+                                💾 Salvar no Diário de Bordo
+                            </button>
+                        </form>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin:12px 0; flex-wrap:wrap; gap:6px;">
+                        <h3 style="font-size:14px; font-weight:800; color:#fff;">Histórico de Sessões</h3>
                         <div style="display:flex; gap:6px;">
                             <button id="btn-export-md" class="btn-secondary" style="font-size:11px;">
                                 📥 Baixar Markdown (.md)
                             </button>
                             <button id="btn-export-pdf" class="btn-primary" style="font-size:11px; padding:6px 10px;">
-                                🖨️ Baixar Diário Oficial (PDF)
+                                🖨️ Imprimir Diário (PDF)
                             </button>
                         </div>
                     </div>
@@ -352,30 +368,30 @@
                     </div>
                 </div>
 
-            </div>
-        </section>
+                <!-- COLUNA DIREITA: TRADUTOR DA BANCA USP -->
+                <div>
+                    <div class="guide-card" style="margin-bottom:12px;">
+                        <h2 style="font-size:16px; font-weight:900; color:var(--neon-blue);">🎓 Tradutor da Banca da USP</h2>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                            Tradução do juradês para o português claro e respostas na ponta da língua!
+                        </div>
+                    </div>
 
-        <!-- ========================================================= -->
-        <!-- ABA 4: TRADUTOR DA BANCA USP & FAQ                        -->
-        <!-- ========================================================= -->
-        <section id="tab-banca" class="tab-pane">
-            <div class="guide-card" style="margin-bottom:14px;">
-                <h2 style="font-size:18px; font-weight:900; color:var(--neon-blue);">🎓 Tradutor da Banca da USP & 10 Perguntas Frequentes</h2>
-                <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">
-                    Tradução do juradês para o português claro e respostas-modelo de alto nível para a equipe se destacar na arguição oral!
+                    <div id="banca-translator-container">
+                        <!-- Injetado dinamicamente via voltz_banca.js -->
+                    </div>
                 </div>
-            </div>
 
-            <div id="banca-translator-container">
-                <!-- Injetado dinamicamente via voltz_banca.js -->
             </div>
         </section>
 
     </main>
 
     <!-- SCRIPTS DA APLICAÇÃO -->
+    <script src="js/voltz_card_svg.js"></script>
     <script src="js/voltz_cards_data.js"></script>
     <script src="js/voltz_engine.js"></script>
+    <script src="js/voltz_pesquisa.js"></script>
     <script src="js/voltz_p2p.js"></script>
     <script src="js/voltz_warroom.js"></script>
     <script src="js/voltz_diario.js"></script>
