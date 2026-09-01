@@ -401,64 +401,241 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------
-    // MÓDULO 2: HUB DE PLANEJAMENTO DA PESQUISA CIENTÍFICA
+    // MÓDULO 2: HUB DE PLANEJAMENTO DA PESQUISA CIENTÍFICA & BRAÇO 1
     // -------------------------------------------------------------
     function renderPesquisa() {
         const container = document.getElementById('pesquisa-container');
         if (!container) return;
 
-        const p = researchManager.data;
+        const proposals = researchManager.proposals;
+        const maxVotes = Math.max(...proposals.map(p => p.votes));
+
         container.innerHTML = `
-            <div class="guide-card" style="border-left: 4px solid var(--neon-green); margin-bottom: 16px;">
+            <!-- HEADER DA PESQUISA -->
+            <div class="guide-card" style="border-left: 4px solid var(--neon-green); margin-bottom: 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
                     <div>
-                        <h2 style="font-size:18px; font-weight:900; color:#fff;">🔬 ${p.overview.title}</h2>
+                        <h2 style="font-size:18px; font-weight:900; color:#fff;">🔬 Central da Pesquisa & Decisão do Braço 1</h2>
                         <div style="font-size:12.5px; color:var(--text-muted); margin-top:3px;">
-                            Amostra: <strong>${p.overview.sample}</strong> | Local: <strong>${p.overview.school}</strong> | Duração: <strong>${p.overview.duration}</strong>
+                            Amostra: <strong>N = 75 Estudantes (3º Ano Ensino Médio)</strong> | Local: <strong>Escola Pública Estadual</strong>
                         </div>
                     </div>
-                    <span class="guide-badge-pill" style="background:rgba(34,197,94,0.15); color:var(--neon-green); border-color:var(--neon-green);">Metodologia Blindada</span>
+                    <span class="guide-badge-pill" style="background:rgba(34,197,94,0.15); color:var(--neon-green); border-color:var(--neon-green);">Delineamento Blindado USP</span>
                 </div>
                 <div style="font-size:13px; color:#cbd5e1; line-height:1.5; margin-top:10px; background:#050a14; padding:10px 12px; border-radius:6px; border:1px solid #1e293b;">
-                    <strong>🎯 Hipótese da Pesquisa:</strong> ${p.overview.hypothesis}
+                    <strong>🎯 Nossa Hipótese Central:</strong> O jogo <strong>VOLTZ</strong> alcança ganho de aprendizagem de Hake superior (g ≥ 0.65) e taxa de sucesso em bancada (>80%), destravando especialmente quem tinha nota baixa no pré-teste.
                 </div>
             </div>
 
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:16px;">
-                ${p.pillars.map(pillar => `
-                    <div class="guide-card" style="border-top: 3px solid ${pillar.color};">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                            <h3 style="font-size:15px; font-weight:800; color:#fff; display:flex; align-items:center; gap:6px;">
-                                <span>${pillar.icon}</span> ${pillar.title}
-                            </h3>
-                            <span class="guide-badge-pill" style="color:${pillar.color}; border-color:${pillar.color};">${pillar.badge}</span>
-                        </div>
-                        <div style="font-size:12.5px; color:#cbd5e1; margin-bottom:10px; line-height:1.45;">
-                            ${pillar.summary}
-                        </div>
+            <!-- SEÇÃO A: CENTRAL DE DECISÃO DO BRAÇO 1 (PROPOSTAS & VOTAÇÃO) -->
+            <div style="margin-bottom: 24px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                    <div>
+                        <h3 style="font-size:16px; font-weight:900; color:#fff;">🗳️ Votação da Equipe: Qual Jogo Produzir para o Braço 1?</h3>
+                        <p style="font-size:12px; color:var(--text-muted);">O Braço 2 já é o VOLTZ. Escolha a proposta que gera o melhor contraste científico na sala de aula:</p>
+                    </div>
+                    <span style="font-size:11px; background:#1e293b; color:var(--copper-bright); padding:4px 10px; border-radius:12px; font-weight:700; border:1px solid var(--copper-dark);">
+                        Votação da Equipe Ativa
+                    </span>
+                </div>
 
-                        ${pillar.formula ? `
-                            <div style="background:#050a14; border:1px solid ${pillar.color}; padding:8px 12px; border-radius:6px; font-family:'Fira Code', monospace; font-size:13px; font-weight:800; color:${pillar.color}; text-align:center; margin-bottom:10px;">
-                                ${pillar.formula}
-                            </div>
-                        ` : ''}
-
-                        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">
-                            ${pillar.details.map(d => `
-                                <div style="font-size:12px; background:rgba(0,0,0,0.35); padding:6px 8px; border-radius:4px; line-height:1.4;">
-                                    <strong style="color:${pillar.color};">${d.label}</strong> ${d.text}
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:16px;">
+                    ${proposals.map(prop => {
+                        const isLeading = prop.votes === maxVotes && prop.votes > 0;
+                        return `
+                            <div class="guide-card" style="border-top: 3px solid ${prop.color}; position:relative;">
+                                ${isLeading ? `
+                                    <div style="position:absolute; top:-10px; right:12px; background:${prop.color}; color:#000; font-size:10px; font-weight:900; padding:2px 8px; border-radius:8px; text-transform:uppercase;">
+                                        ⭐ Mais Votada
+                                    </div>
+                                ` : ''}
+                                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                                    <h4 style="font-size:14.5px; font-weight:800; color:#fff; display:flex; align-items:center; gap:6px;">
+                                        <span>${prop.icon}</span> ${prop.name}
+                                    </h4>
+                                    <span class="guide-badge-pill" style="color:${prop.color}; border-color:${prop.color}; font-size:10px;">${prop.badge}</span>
                                 </div>
-                            `).join('')}
-                        </div>
+                                <p style="font-size:12px; color:#cbd5e1; margin-bottom:10px; line-height:1.45;">${prop.summary}</p>
+                                
+                                <div style="font-size:11.5px; background:rgba(0,0,0,0.4); padding:8px; border-radius:6px; margin-bottom:8px;">
+                                    <strong style="color:${prop.color};">🎮 Como se joga:</strong> ${prop.comoJoga}
+                                </div>
+                                <div style="font-size:11.5px; background:rgba(0,0,0,0.4); padding:8px; border-radius:6px; margin-bottom:8px;">
+                                    <strong style="color:var(--neon-green);">⚔️ Contraste com VOLTZ:</strong> ${prop.contrasteVoltz}
+                                </div>
+                                <div style="font-size:11.5px; background:rgba(0,0,0,0.4); padding:8px; border-radius:6px; margin-bottom:12px;">
+                                    <strong style="color:var(--neon-blue);">🎯 Na Banca da USP:</strong> ${prop.opiniaoBanca}
+                                </div>
 
-                        <div class="guide-section-block" style="border-left-color:${pillar.color}; margin-top:8px;">
-                            <div class="guide-section-label" style="color:${pillar.color};">🎯 Por que a banca da USP valoriza isso?</div>
-                            <div class="guide-section-text">${pillar.whyJudgesLove}</div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #1e293b; padding-top:10px;">
+                                    <span style="font-size:12px; color:#94a3b8; font-weight:700;">
+                                        Votos: <strong style="color:#fff; font-size:14px;">${prop.votes}</strong>
+                                    </span>
+                                    <button class="btn btn-sm btn-vote" data-id="${prop.id}" style="background:${prop.color}; color:#000; font-weight:800; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:11.5px;">
+                                        🗳️ Votar Nesta Proposta
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+
+            <!-- SEÇÃO B: CALCULADORA INTERATIVA DE GANHO DE HAKE & ESTRATIFICAÇÃO -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin-bottom:24px;">
+                <!-- CALCULADORA DE HAKE -->
+                <div class="guide-card" style="border-left: 3px solid var(--neon-amber);">
+                    <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                        <span>🧮</span> Calculadora Interativa de Ganho de Hake (g)
+                    </div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+                        Simule a nota de um aluno antes e depois da aula para ver o índice que mede o aprendizado real:
+                    </p>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
+                        <div>
+                            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-bottom:4px;">Nota Pré-Teste (%):</label>
+                            <input type="number" id="hake-input-pre" value="20" min="0" max="99" style="width:100%; background:#050a14; border:1px solid #334155; color:#fff; padding:6px 8px; border-radius:4px; font-size:13px;">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-bottom:4px;">Nota Pós-Teste (%):</label>
+                            <input type="number" id="hake-input-pos" value="80" min="1" max="100" style="width:100%; background:#050a14; border:1px solid #334155; color:#fff; padding:6px 8px; border-radius:4px; font-size:13px;">
                         </div>
                     </div>
-                `).join('')}
+                    <div id="hake-calc-result" style="background:#050a14; border:1px solid var(--neon-amber); padding:10px; border-radius:6px; text-align:center;">
+                        <div style="font-size:11px; color:#94a3b8;">Ganho Normalizado de Hake:</div>
+                        <div id="hake-calc-val" style="font-size:20px; font-weight:900; color:var(--neon-amber); margin:2px 0;">g = 0.750</div>
+                        <div id="hake-calc-badge" style="font-size:11px; font-weight:700; color:var(--neon-green);">🌟 Alto Ganho (g ≥ 0.70)</div>
+                    </div>
+                </div>
+
+                <!-- ESTRATIFICAÇÃO POR NÍVEL DE PROFICIÊNCIA -->
+                <div class="guide-card" style="border-left: 3px solid var(--neon-blue);">
+                    <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                        <span>📊</span> Divisão da Turma em 3 Níveis (Estratificação)
+                    </div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">
+                        Para a pesquisa ser justa, cada um dos 3 grupos recebe alunos de todos os níveis:
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <div style="font-size:11.5px; background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; padding:6px 8px; border-radius:4px;">
+                            <strong style="color:#ef4444;">🔴 Nível Inicial (&lt; 40%):</strong> Alunos que acham que a corrente "gasta" no 1º resistor.
+                        </div>
+                        <div style="font-size:11.5px; background:rgba(245,158,11,0.1); border-left:3px solid #f59e0b; padding:6px 8px; border-radius:4px;">
+                            <strong style="color:#f59e0b;">🟡 Nível Médio (40% - 70%):</strong> Sabem aplicar V = R·I mas erram divisores e curto-circuito.
+                        </div>
+                        <div style="font-size:11.5px; background:rgba(34,197,94,0.1); border-left:3px solid #22c55e; padding:6px 8px; border-radius:4px;">
+                            <strong style="color:#22c55e;">🟢 Nível Avançado (&gt; 70%):</strong> Compreendem conservação de carga e circuitos mistos.
+                        </div>
+                    </div>
+                    <div style="font-size:11px; color:#94a3b8; margin-top:8px;">
+                        💡 <em>Por que a banca adora:</em> Prova que o VOLTZ salva especialmente os alunos do Nível Inicial!
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO C: VISUALIZADOR INTERATIVO DO BANCO DIRECT (PRÉ VS PÓS) -->
+            <div class="guide-card" style="border-top: 3px solid var(--neon-purple); margin-bottom: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                    <div>
+                        <h3 style="font-size:16px; font-weight:900; color:#fff;">📝 Visualizador do Teste Padronizado (DIRECT)</h3>
+                        <p style="font-size:12px; color:var(--text-muted);">Veja as perguntas rápidas que aplicamos antes e depois de jogar:</p>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                        <button id="btn-tab-pre" class="btn btn-sm" style="background:var(--neon-blue); color:#000; font-weight:800; padding:4px 10px; border-radius:4px; font-size:11px;">Pré-Teste (T0)</button>
+                        <button id="btn-tab-pos" class="btn btn-sm" style="background:#1e293b; color:#cbd5e1; font-weight:700; padding:4px 10px; border-radius:4px; font-size:11px;">Pós-Teste Isomórfico (T1)</button>
+                    </div>
+                </div>
+
+                <div id="direct-items-container" style="display:flex; flex-direction:column; gap:8px;"></div>
             </div>
         `;
+
+        // Ativação dos botões de votação
+        container.querySelectorAll('.btn-vote').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const propId = e.currentTarget.getAttribute('data-id');
+                researchManager.voteProposal(propId);
+                renderPesquisa();
+            });
+        });
+
+        // Lógica da Calculadora de Hake
+        const inPre = document.getElementById('hake-input-pre');
+        const inPos = document.getElementById('hake-input-pos');
+        const calcVal = document.getElementById('hake-calc-val');
+        const calcBadge = document.getElementById('hake-calc-badge');
+
+        function updateHakeCalc() {
+            if (!inPre || !inPos || !calcVal || !calcBadge) return;
+            const pre = Math.max(0, Math.min(99, parseFloat(inPre.value) || 0));
+            const pos = Math.max(0, Math.min(100, parseFloat(inPos.value) || 0));
+            if (pos <= pre) {
+                calcVal.textContent = 'g = 0.000';
+                calcBadge.textContent = '⚠️ Sem Ganho (Nota pós menor ou igual ao pré)';
+                calcBadge.style.color = '#ef4444';
+                return;
+            }
+            const g = (pos - pre) / (100 - pre);
+            calcVal.textContent = `g = ${g.toFixed(3)}`;
+            if (g >= 0.70) {
+                calcBadge.textContent = '🌟 Alto Ganho (g ≥ 0.70) — Padrão Ouro!';
+                calcBadge.style.color = 'var(--neon-green)';
+            } else if (g >= 0.30) {
+                calcBadge.textContent = '⚡ Médio Ganho (0.30 ≤ g < 0.70)';
+                calcBadge.style.color = 'var(--neon-amber)';
+            } else {
+                calcBadge.textContent = '⚠️ Baixo Ganho (g < 0.30) — Nível Tradicional';
+                calcBadge.style.color = '#ef4444';
+            }
+        }
+
+        if (inPre && inPos) {
+            inPre.addEventListener('input', updateHakeCalc);
+            inPos.addEventListener('input', updateHakeCalc);
+        }
+
+        // Visualizador de Itens DIRECT
+        const btnTabPre = document.getElementById('btn-tab-pre');
+        const btnTabPos = document.getElementById('btn-tab-pos');
+        const itemsContainer = document.getElementById('direct-items-container');
+
+        let activeDirectTab = 'pre';
+        function renderDirectItems() {
+            if (!itemsContainer) return;
+            const items = activeDirectTab === 'pre' ? researchManager.preItems : researchManager.postItems;
+            itemsContainer.innerHTML = items.map(item => `
+                <div style="background:#050a14; border:1px solid #1e293b; padding:10px 12px; border-radius:6px;">
+                    <div style="font-size:12.5px; font-weight:800; color:#fff; margin-bottom:4px;">${item.title}</div>
+                    <div style="font-size:12px; color:#cbd5e1; margin-bottom:6px;">${item.question}</div>
+                    <div style="font-size:11.5px; color:var(--neon-green); margin-bottom:3px;">
+                        <strong>✅ Resposta Correta:</strong> ${item.correctAnswer}
+                    </div>
+                    <div style="font-size:11px; color:#94a3b8;">
+                        <strong>❌ Pegadinha / Erro Comum:</strong> ${item.distractor}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        if (btnTabPre && btnTabPos) {
+            btnTabPre.addEventListener('click', () => {
+                activeDirectTab = 'pre';
+                btnTabPre.style.background = 'var(--neon-blue)';
+                btnTabPre.style.color = '#000';
+                btnTabPos.style.background = '#1e293b';
+                btnTabPos.style.color = '#cbd5e1';
+                renderDirectItems();
+            });
+            btnTabPos.addEventListener('click', () => {
+                activeDirectTab = 'pos';
+                btnTabPos.style.background = 'var(--neon-purple)';
+                btnTabPos.style.color = '#fff';
+                btnTabPre.style.background = '#1e293b';
+                btnTabPre.style.color = '#cbd5e1';
+                renderDirectItems();
+            });
+        }
+        renderDirectItems();
     }
 
     // -------------------------------------------------------------
@@ -535,6 +712,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 checklistContainer.appendChild(card);
             });
+        }
+
+        // Renderiza o Roteiro do Pitch Oral de 5 Minutos
+        const pitchContainer = document.getElementById('pitch-script-container');
+        if (pitchContainer && warRoom.pitch) {
+            pitchContainer.innerHTML = warRoom.pitch.map(p => `
+                <div style="background:#050a14; border-left:3px solid var(--copper-bright); padding:10px 12px; border-radius:4px; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <strong style="color:var(--copper-bright); font-size:12.5px;">⏱️ ${p.minuto} — ${p.foco}</strong>
+                    </div>
+                    <div style="font-size:12px; color:#cbd5e1; line-height:1.45; font-style:italic;">
+                        "${p.fala}"
+                    </div>
+                </div>
+            `).join('');
         }
 
         if (taskTableBody) {

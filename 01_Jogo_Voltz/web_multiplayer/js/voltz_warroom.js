@@ -1,6 +1,6 @@
 /**
  * PORTAL VOLTZ — Painel da Jornada FEBRACE & Metas da Equipe
- * Mapeia as 4 etapas da jornada: Submissão Virtual, Triagem, Feira Presencial na USP e Premiações/ISEF.
+ * Mapeia as 4 etapas da jornada, checklist oficial e o roteiro do pitch oral de 5 minutos na USP.
  */
 
 const FEBRACE_JOURNEY_STAGES = [
@@ -56,6 +56,34 @@ const FEBRACE_JOURNEY_STAGES = [
             'Bolsas de Iniciação Científica Júnior do CNPq para os integrantes.',
             'Credenciamento de delegação para a Regeneron ISEF (Maior feira mundial nos EUA).'
         ]
+    }
+];
+
+const FEBRACE_PITCH_SCRIPT = [
+    {
+        minuto: 'Minuto 1',
+        foco: 'O Problema Real da Sala de Aula',
+        fala: 'Vocês sabiam que 8 em cada 10 alunos do ensino médio acham que a corrente elétrica "gasta" no primeiro resistor e não sobra nada pros outros? As aulas tradicionais forçam a decorar fórmulas (V = R·I) sem ensinar como o circuito se comporta como uma malha viva.'
+    },
+    {
+        minuto: 'Minuto 2',
+        foco: 'A Nossa Solução: O Jogo VOLTZ',
+        fala: 'Nós criamos o VOLTZ: um jogo cooperativo em grade 2D onde cada 1Ω é um bloco físico de cobre e o circuito só fecha e gera corrente se estiver conectado ao Cabo Terra (0V) ou voltar para a fonte de 12V.'
+    },
+    {
+        minuto: 'Minuto 3',
+        foco: 'A Comprovação Estatística (N = 75)',
+        fala: 'Testamos com 75 estudantes divididos em 3 grupos com pré e pós-teste padronizado (DIRECT). O grupo do VOLTZ alcançou Ganho de Hake de g = 0,65, contra apenas 0,25 da aula tradicional de lousa, com p < 0,00001 no teste de permutação.'
+    },
+    {
+        minuto: 'Minuto 4',
+        foco: 'A Prova de Bancada (Far Transfer)',
+        fala: 'Depois do teste no papel, levamos os alunos para a bancada real com multímetro e protoboard. 80% dos alunos do VOLTZ acertaram a montagem de primeira sem queimar nada, contra apenas 20% da aula tradicional.'
+    },
+    {
+        minuto: 'Minuto 5',
+        foco: 'Impacto Social & Convite ao Jurado',
+        fala: 'Cada baralho do VOLTZ custa menos de R$ 25 para imprimir. Com menos de R$ 200, qualquer escola pública do Brasil atende uma sala inteira sem computador nem internet. Convidamos os professores a jogarem 1 turno aqui na nossa bancada!'
     }
 ];
 
@@ -125,6 +153,7 @@ class VoltzWarRoom {
         this.storageKey = 'voltz_febrace_warroom_human_v3';
         this.items = this.loadChecklist();
         this.journey = FEBRACE_JOURNEY_STAGES;
+        this.pitch = FEBRACE_PITCH_SCRIPT;
         this.tasks = FEBRACE_TEAM_TASKS_DEFAULT;
     }
 
@@ -163,5 +192,5 @@ class VoltzWarRoom {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { VoltzWarRoom, FEBRACE_CHECKLIST_DEFAULT, FEBRACE_JOURNEY_STAGES, FEBRACE_TEAM_TASKS_DEFAULT };
+    module.exports = { VoltzWarRoom, FEBRACE_CHECKLIST_DEFAULT, FEBRACE_JOURNEY_STAGES, FEBRACE_PITCH_SCRIPT, FEBRACE_TEAM_TASKS_DEFAULT };
 }

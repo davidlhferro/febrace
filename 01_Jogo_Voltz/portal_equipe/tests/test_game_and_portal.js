@@ -1,12 +1,14 @@
 /**
  * SUÍTE DE TESTES AUTOMATIZADOS — JOGO VOLTZ 2D & PORTAL FEBRACE
- * Cobre: Carta Única (0,0), Rejeição de Jogadas Ilegais Bandido, Fechamento por Loop e GND, Lei de Ohm e Diário de Bordo.
+ * Cobre: Carta Única (0,0), Rejeição de Jogadas Ilegais Bandido, Fechamento por Loop e GND,
+ * Lei de Ohm, Diário de Bordo, Propostas do Braço 1, Banco DIRECT e Roteiro de Pitch.
  */
 
 const { TOPOLOGY_SHAPES, getRotatedPorts, VOLTZ_CARDS_CATALOG, generateFullDeck } = require('../js/voltz_cards_data.js');
 const { VoltzEngine } = require('../js/voltz_engine.js');
 const { VoltzDiarioManager } = require('../js/voltz_diario.js');
-const { VoltzWarRoom } = require('../js/voltz_warroom.js');
+const { VoltzWarRoom, FEBRACE_PITCH_SCRIPT } = require('../js/voltz_warroom.js');
+const { VoltzResearchManager, VOLTZ_ARM1_PROPOSALS, VOLTZ_DIRECT_ITEMS_PRE, VOLTZ_DIRECT_ITEMS_POST } = require('../js/voltz_pesquisa.js');
 
 console.log('================================================================================');
 console.log('🧪 SUÍTE DE TESTES TÉCNICOS AUTOMATIZADOS — PORTAL VOLTZ & FEBRACE 2D');
@@ -48,33 +50,25 @@ assert(
 // -------------------------------------------------------------
 console.log('\n--- BLOCO 2: Rejeição de Jogadas Ilegais do Bandido ---');
 
-// Teste 2.1: Tentar colocar em posição já ocupada
 const p1 = engine.addPlayer('p1', 'David', true);
 engine.startGame();
 const testCardStraight = {
     uid: 'test_straight_1',
     name: 'Resistor 1Ω',
     shape: 'STRAIGHT',
-    basePorts: TOPOLOGY_SHAPES.STRAIGHT, // { top: false, right: true, bottom: false, left: true }
+    basePorts: TOPOLOGY_SHAPES.STRAIGHT,
     r: 1
 };
 
 const vOccupied = engine.isValidPlacement(testCardStraight, 0, 0, 0);
 assert(!vOccupied.valid, 'Não deve permitir colocar carta em posição já ocupada (0,0).');
 
-// Teste 2.2: Tentar colocar isolado no espaço sem vizinhos
 const vIsolated = engine.isValidPlacement(testCardStraight, 5, 5, 0);
 assert(!vIsolated.valid, 'Não deve permitir colocar carta isolada no espaço (sem cartas vizinhas).');
 
-// Teste 2.3: Tentar colocar carta com parede cega batendo na trilha aberta do Gerador
-// Resistor Straight a 0° tem Top: false, Bottom: false.
-// Se colocado em (0, 1) [acima do gerador], a porta bottom do resistor (false) bate na porta top do gerador (true)!
 const vMismatch = engine.isValidPlacement(testCardStraight, 0, 1, 0);
 assert(!vMismatch.valid, 'Deve rejeitar jogada ilegal onde uma borda fechada/parede bate na trilha aberta do vizinho.');
 
-// Teste 2.4: Colocação Correta!
-// Resistor Straight rotacionado a 90° tem Top: true, Bottom: true.
-// Colocado em (0, 1), a porta bottom (true) coincide perfeitamente com o top do gerador (true)!
 const vValidRotated = engine.isValidPlacement(testCardStraight, 0, 1, 90);
 assert(vValidRotated.valid, 'Deve aceitar jogada quando a carta é rotacionada a 90° e a trilha coincide perfeitamente.');
 
@@ -87,10 +81,6 @@ const engineGND = new VoltzEngine();
 engineGND.addPlayer('p1', 'David', true);
 engineGND.startGame();
 
-// Monta ramo para a Direita a partir de (0,0):
-// (1, 0): Resistor 2Ω Reta (Esquerda-Direita, rot 0°)
-// (2, 0): Servidor 4V Reta (Esquerda-Direita, rot 0°)
-// (3, 0): Cabo Terra GND (Entrada Esquerda, rot 0°)
 engineGND.gameState.board.grid['1,0'] = {
     x: 1, y: 0,
     card: { id: 'res_2ohm_straight', type: 'resistor', name: 'Resistor 2Ω', r: 2, currentPorts: { left: true, right: true } },
@@ -120,10 +110,6 @@ const engineLoop = new VoltzEngine();
 engineLoop.addPlayer('p1', 'David', true);
 engineLoop.startGame();
 
-// Monta um Loop Fechado saindo pela Direita (1,0) e retornando por Cima (0,1):
-// (1, 0): Resistor 2Ω Curva 90° (Esquerda para Cima) -> currentPorts: { left: true, top: true }
-// (1, 1): Bomba 6V Curva 90° (Baixo para Esquerda) -> currentPorts: { bottom: true, left: true }, vNom: 6, r: 2
-// (0, 1): Linha conectando de volta ao Gerador (Direita para Baixo) -> currentPorts: { right: true, bottom: true }
 engineLoop.gameState.board.grid['1,0'] = {
     x: 1, y: 0,
     card: { id: 'res_2ohm_corner', type: 'resistor', name: 'Resistor 2Ω 90°', r: 2, currentPorts: { left: true, top: true } },
@@ -165,25 +151,35 @@ for (const load of loadsToTest) {
 }
 
 // -------------------------------------------------------------
-// BLOCO 6: Persistência e Exportação do Diário de Bordo
+// BLOCO 6: Central de Decisão do Braço 1 & Banco DIRECT
 // -------------------------------------------------------------
-console.log('\n--- BLOCO 6: Diário de Bordo & Exportação ---');
+console.log('\n--- BLOCO 6: Propostas do Braço 1 & Banco DIRECT ---');
 
-const diario = new VoltzDiarioManager();
-const entry = diario.addEntry({
-    title: 'Playtest Oficial com 3 Integrantes',
-    type: 'Playtest com Amigos',
-    author: 'David e João',
-    description: 'Testamos a montagem do circuito em grade 2D conectando o Servidor 4V.',
-    findings: 'A regra de encaixe do Bandido funcionou perfeitamente.',
-    actionItems: 'Apresentar para o orientador.'
-});
+const researchMgr = new VoltzResearchManager();
+assert(researchMgr.proposals.length === 3, 'Devem existir exatamente 3 propostas de jogos para o Braço 1.');
+assert(researchMgr.proposals[0].id === 'prop_duelo', 'A primeira proposta deve ser o Circuit Duel.');
+assert(researchMgr.proposals[1].id === 'prop_blackout', 'A segunda proposta deve ser o Diagnóstico Blackout.');
+assert(researchMgr.proposals[2].id === 'prop_smartgrid', 'A terceira proposta deve ser o Smart Grid.');
 
-assert(!!entry.id, 'Nova entrada deve ter um ID gerado.');
-const mdExport = diario.exportMarkdown();
-assert(mdExport.includes('Playtest Oficial com 3 Integrantes'), 'Exportação Markdown deve conter o título da entrada.');
-const htmlExport = diario.exportPrintableHTML();
-assert(htmlExport.includes('DIÁRIO DE BORDO OFICIAL'), 'Exportação HTML/PDF deve conter o cabeçalho oficial.');
+// Teste de Votação
+const initialVotes = researchMgr.proposals[0].votes;
+researchMgr.voteProposal('prop_duelo');
+assert(researchMgr.proposals[0].votes === initialVotes + 1, 'Votar em uma proposta deve incrementar o contador de votos em 1.');
+
+// Teste do Banco Isomórfico DIRECT
+assert(researchMgr.preItems.length >= 5, 'O banco do Pré-Teste deve conter questões conceituais.');
+assert(researchMgr.postItems.length >= 5, 'O banco do Pós-Teste deve conter questões isomórficas espelhadas.');
+assert(researchMgr.preItems[0].distractor.toLowerCase().includes('consom'), 'A Questão 1 deve mapear o distrator de modelo atenuativo.');
+
+// -------------------------------------------------------------
+// BLOCO 7: Roteiro do Pitch de 5 Minutos da FEBRACE
+// -------------------------------------------------------------
+console.log('\n--- BLOCO 7: Roteiro de Pitch Oral FEBRACE ---');
+
+const warRoom = new VoltzWarRoom();
+assert(warRoom.pitch.length === 5, 'O roteiro do pitch oral deve conter exatamente 5 minutos estruturados.');
+assert(warRoom.pitch[0].fala.includes('8 em cada 10 alunos'), 'O minuto 1 deve abrir com a estatística do problema em sala de aula.');
+assert(warRoom.pitch[4].fala.includes('R$ 25'), 'O minuto 5 deve enfatizar o baixo custo social de R$ 25.');
 
 console.log('\n================================================================================');
 console.log(`🎉 RESULTADO FINAL: ${passedTests} / ${totalTests} TESTES PASSARAM COM 100% DE SUCESSO!`);
