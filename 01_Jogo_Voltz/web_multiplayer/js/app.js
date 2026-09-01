@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------
-    // MÓDULO 2: HUB DE PLANEJAMENTO DA PESQUISA CIENTÍFICA & BRAÇO 1
+    // MÓDULO 2: CENTRAL DA PESQUISA TEÓRICA & VESTIBULARES (ENEM / FUVEST)
     // -------------------------------------------------------------
     function renderPesquisa() {
         const container = document.getElementById('pesquisa-container');
@@ -412,37 +412,114 @@ document.addEventListener('DOMContentLoaded', () => {
         const steps = researchManager.steps || [];
         const rationale = researchManager.rationale || { cards: [] };
         const portfolio = researchManager.portfolio || [];
+        const hakeTheory = researchManager.hakeTheory || { tiers: [] };
 
         container.innerHTML = `
             <!-- HEADER DA PESQUISA -->
             <div class="guide-card" style="border-left: 4px solid var(--neon-green); margin-bottom: 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
                     <div>
-                        <h2 style="font-size:18px; font-weight:900; color:#fff;">🔬 Central da Pesquisa & Decisão do Braço 1</h2>
+                        <h2 style="font-size:18px; font-weight:900; color:#fff;">🔬 Central da Pesquisa Teórica & Conceitual</h2>
                         <div style="font-size:12.5px; color:var(--text-muted); margin-top:3px;">
-                            Amostra: <strong>N = 75 Estudantes (3º Ano Ensino Médio)</strong> | Local: <strong>Escola Pública Estadual</strong>
+                            Foco: <strong>Questões de Circuitos do ENEM, FUVEST e UNICAMP</strong> | Amostra: <strong>N = 75 Estudantes da Escola Pública</strong>
                         </div>
                     </div>
-                    <span class="guide-badge-pill" style="background:rgba(34,197,94,0.15); color:var(--neon-green); border-color:var(--neon-green);">Delineamento Blindado USP</span>
+                    <span class="guide-badge-pill" style="background:rgba(34,197,94,0.15); color:var(--neon-green); border-color:var(--neon-green);">Padrão Ouro PER</span>
                 </div>
                 <div style="font-size:13px; color:#cbd5e1; line-height:1.5; margin-top:10px; background:#050a14; padding:10px 12px; border-radius:6px; border:1px solid #1e293b;">
-                    <strong>🎯 Nossa Hipótese Central:</strong> O jogo <strong>VOLTZ</strong> alcança ganho de aprendizagem de Hake superior (g ≥ 0.65) e taxa de sucesso em bancada (>80%), destravando especialmente quem tinha nota baixa no pré-teste.
+                    <strong>🎯 Nossa Hipótese Central:</strong> O jogo <strong>VOLTZ</strong> alcança ganho de aprendizagem de Hake superior (g ≥ 0.65) na resolução de questões conceituais de vestibular, resgatando especialmente os alunos com maior defasagem inicial.
                 </div>
             </div>
 
-            <!-- PORTFÓLIO DE 4 ESTUDOS EXPERIMENTAIS (DIMENSIONAMENTO & PODER ESTATÍSTICO) -->
+            <!-- SEÇÃO DE DESTAQUE: O QUE É O GANHO DE HAKE (g) E POR QUE ELE IMPORTA -->
+            <div class="guide-card" style="border-top: 3px solid var(--neon-amber); margin-bottom: 24px;">
+                <div style="margin-bottom: 12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <h3 style="font-size:16px; font-weight:900; color:var(--neon-amber); display:flex; align-items:center; gap:8px;">
+                                <span>📊</span> ${hakeTheory.title || 'O Que É o Ganho de Hake (g) e Por Que Ele Importa?'}
+                            </h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                                A métrica estatística padrão internacional em Educação em Física (Richard Hake, 1998):
+                            </p>
+                        </div>
+                        <span class="guide-badge-pill" style="background:rgba(245,158,11,0.15); color:var(--neon-amber); border-color:var(--neon-amber);">Fórmula Canônica PER</span>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-bottom:14px;">
+                    <div style="background:#050a14; border:1px solid #1e293b; padding:12px; border-radius:6px;">
+                        <strong style="color:var(--neon-blue); font-size:12.5px; display:block; margin-bottom:4px;">💡 A Ideia Central (Em Português Claro):</strong>
+                        <p style="font-size:12px; color:#cbd5e1; line-height:1.45; margin-bottom:6px;">
+                            <em>"${hakeTheory.coreConcept}"</em>
+                        </p>
+                        <div style="background:rgba(0,0,0,0.5); padding:6px 10px; border-radius:4px; font-family:'Fira Code', monospace; color:var(--copper-bright); font-size:12px; text-align:center; margin:6px 0;">
+                            ${hakeTheory.formula}
+                        </div>
+                        <p style="font-size:11.5px; color:#94a3b8; line-height:1.4;">
+                            ${hakeTheory.example}
+                        </p>
+                    </div>
+
+                    <div style="background:#050a14; border:1px solid #1e293b; padding:12px; border-radius:6px; display:flex; flex-direction:column; justify-content:space-between;">
+                        <strong style="color:var(--neon-green); font-size:12.5px; display:block; margin-bottom:6px;">📚 As 3 Faixas Oficiais da Literatura Científica:</strong>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            ${(hakeTheory.tiers || []).map(t => `
+                                <div style="font-size:11.5px; border-left:3px solid ${t.color}; padding:4px 8px; background:rgba(0,0,0,0.3); border-radius:4px;">
+                                    <strong style="color:${t.color};">${t.range} — ${t.label}:</strong>
+                                    <span style="color:#cbd5e1; display:block; font-size:11px; margin-top:2px;">${t.desc}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIMULADOR INTERATIVO DE GANHO DE HAKE -->
+                <div style="background:#0a101d; border:1px solid #2d4160; padding:14px; border-radius:8px;">
+                    <div style="font-size:13.5px; font-weight:800; color:#fff; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                        <span>🧮</span> Simulador Interativo: Arraste as Notas e Calcule o Ganho (g)
+                    </div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+                        <div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+                                <label style="font-size:11px; color:#cbd5e1; font-weight:700;">Nota Pré-Teste (%):</label>
+                                <span id="hake-val-pre-display" style="font-size:12px; font-weight:800; color:var(--neon-blue);">20%</span>
+                            </div>
+                            <input type="range" id="hake-range-pre" min="0" max="95" value="20" style="width:100%; accent-color:var(--neon-blue); cursor:pointer;">
+                        </div>
+                        <div>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+                                <label style="font-size:11px; color:#cbd5e1; font-weight:700;">Nota Pós-Teste (%):</label>
+                                <span id="hake-val-pos-display" style="font-size:12px; font-weight:800; color:var(--neon-green);">80%</span>
+                            </div>
+                            <input type="range" id="hake-range-pos" min="5" max="100" value="80" style="width:100%; accent-color:var(--neon-green); cursor:pointer;">
+                        </div>
+                    </div>
+
+                    <div id="hake-calc-result" style="background:#050a14; border:1px solid var(--neon-amber); padding:10px 14px; border-radius:6px; text-align:center;">
+                        <div style="font-size:11px; color:#94a3b8;">Ganho Normalizado de Aprendizagem:</div>
+                        <div id="hake-calc-val" style="font-size:24px; font-weight:900; color:var(--neon-amber); margin:2px 0;">g = 0.750</div>
+                        <div id="hake-calc-badge" style="font-size:11.5px; font-weight:800; color:var(--neon-green);">🌟 Alto Ganho (g ≥ 0.70) — Padrão Ouro!</div>
+                        <div style="margin-top:8px; background:#1e293b; border-radius:4px; height:8px; overflow:hidden;">
+                            <div id="hake-calc-bar" style="height:100%; width:75%; background:var(--neon-green); transition:width 0.2s ease;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OS 4 ESTUDOS DA PESQUISA (FOCO 100% EM TEORIA & VESTIBULARES) -->
             <div class="guide-card" style="border-top: 3px solid var(--neon-purple); margin-bottom: 24px;">
                 <div style="margin-bottom: 14px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                         <div>
                             <h3 style="font-size:16px; font-weight:900; color:var(--neon-purple); display:flex; align-items:center; gap:8px;">
-                                <span>📊</span> Portfólio dos 4 Estudos Experimentais (Amostra Escassa N=75)
+                                <span>🎯</span> Os Nossos 4 Estudos (Foco Total em Teoria & Questões de Vestibular)
                             </h3>
                             <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                                Delineamento quase-experimental paralelo + sub-estudos aninhados de bancada, cognição e retenção tardia:
+                                Como provamos cientificamente que o VOLTZ faz o estudante dominar circuitos no ENEM, FUVEST e UNICAMP:
                             </p>
                         </div>
-                        <span class="guide-badge-pill" style="background:rgba(192,132,252,0.15); color:var(--neon-purple); border-color:var(--neon-purple);">Poder Estatístico 1-β ≥ 86.9%</span>
+                        <span class="guide-badge-pill" style="background:rgba(192,132,252,0.15); color:var(--neon-purple); border-color:var(--neon-purple);">4 Frentes Conectadas</span>
                     </div>
                 </div>
 
@@ -582,54 +659,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
 
-            <!-- SEÇÃO B: CALCULADORA INTERATIVA DE GANHO DE HAKE & ESTRATIFICAÇÃO -->
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin-bottom:24px;">
-                <!-- CALCULADORA DE HAKE -->
-                <div class="guide-card" style="border-left: 3px solid var(--neon-amber);">
-                    <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
-                        <span>🧮</span> Calculadora Interativa de Ganho de Hake (g)
-                    </div>
-                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-                        Simule a nota de um aluno antes e depois da aula para ver o índice que mede o aprendizado real:
-                    </p>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px;">
-                        <div>
-                            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-bottom:4px;">Nota Pré-Teste (%):</label>
-                            <input type="number" id="hake-input-pre" value="20" min="0" max="99" style="width:100%; background:#050a14; border:1px solid #334155; color:#fff; padding:6px 8px; border-radius:4px; font-size:13px;">
-                        </div>
-                        <div>
-                            <label style="font-size:11px; color:#cbd5e1; font-weight:700; display:block; margin-bottom:4px;">Nota Pós-Teste (%):</label>
-                            <input type="number" id="hake-input-pos" value="80" min="1" max="100" style="width:100%; background:#050a14; border:1px solid #334155; color:#fff; padding:6px 8px; border-radius:4px; font-size:13px;">
-                        </div>
-                    </div>
-                    <div id="hake-calc-result" style="background:#050a14; border:1px solid var(--neon-amber); padding:10px; border-radius:6px; text-align:center;">
-                        <div style="font-size:11px; color:#94a3b8;">Ganho Normalizado de Hake:</div>
-                        <div id="hake-calc-val" style="font-size:20px; font-weight:900; color:var(--neon-amber); margin:2px 0;">g = 0.750</div>
-                        <div id="hake-calc-badge" style="font-size:11px; font-weight:700; color:var(--neon-green);">🌟 Alto Ganho (g ≥ 0.70)</div>
-                    </div>
+            <!-- SEÇÃO B: ESTRATIFICAÇÃO POR NÍVEL DE PROFICIÊNCIA -->
+            <div class="guide-card" style="border-left: 3px solid var(--neon-blue); margin-bottom: 24px;">
+                <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    <span>📊</span> Divisão da Turma em 3 Níveis (Estratificação em Blocos)
                 </div>
-
-                <!-- ESTRATIFICAÇÃO POR NÍVEL DE PROFICIÊNCIA -->
-                <div class="guide-card" style="border-left: 3px solid var(--neon-blue);">
-                    <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
-                        <span>📊</span> Divisão da Turma em 3 Níveis (Estratificação)
+                <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">
+                    Para a pesquisa ser justa, cada um dos 3 grupos recebe alunos de todos os níveis:
+                </p>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:10px;">
+                    <div style="font-size:11.5px; background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; padding:8px 10px; border-radius:4px;">
+                        <strong style="color:#ef4444;">🔴 Nível Inicial (&lt; 40%):</strong> Alunos que acreditam no modelo atenuativo (acham que a corrente "gasta" no 1º resistor).
                     </div>
-                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">
-                        Para a pesquisa ser justa, cada um dos 3 grupos recebe alunos de todos os níveis:
-                    </p>
-                    <div style="display:flex; flex-direction:column; gap:6px;">
-                        <div style="font-size:11.5px; background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; padding:6px 8px; border-radius:4px;">
-                            <strong style="color:#ef4444;">🔴 Nível Inicial (&lt; 40%):</strong> Alunos que acham que a corrente "gasta" no 1º resistor.
-                        </div>
-                        <div style="font-size:11.5px; background:rgba(245,158,11,0.1); border-left:3px solid #f59e0b; padding:6px 8px; border-radius:4px;">
-                            <strong style="color:#f59e0b;">🟡 Nível Médio (40% - 70%):</strong> Sabem aplicar V = R·I mas erram divisores e curto-circuito.
-                        </div>
-                        <div style="font-size:11.5px; background:rgba(34,197,94,0.1); border-left:3px solid #22c55e; padding:6px 8px; border-radius:4px;">
-                            <strong style="color:#22c55e;">🟢 Nível Avançado (&gt; 70%):</strong> Compreendem conservação de carga e circuitos mistos.
-                        </div>
+                    <div style="font-size:11.5px; background:rgba(245,158,11,0.1); border-left:3px solid #f59e0b; padding:8px 10px; border-radius:4px;">
+                        <strong style="color:#f59e0b;">🟡 Nível Médio (40% - 70%):</strong> Sabem aplicar V = R·I mas erram divisores de tensão e curto-circuito.
                     </div>
-                    <div style="font-size:11px; color:#94a3b8; margin-top:8px;">
-                        💡 <em>Por que a banca adora:</em> Prova que o VOLTZ salva especialmente os alunos do Nível Inicial!
+                    <div style="font-size:11.5px; background:rgba(34,197,94,0.1); border-left:3px solid #22c55e; padding:8px 10px; border-radius:4px;">
+                        <strong style="color:#22c55e;">🟢 Nível Avançado (&gt; 70%):</strong> Compreendem conservação de carga e circuitos mistos de vestibular.
                     </div>
                 </div>
             </div>
@@ -638,8 +684,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="guide-card" style="border-top: 3px solid var(--neon-purple); margin-bottom: 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
                     <div>
-                        <h3 style="font-size:16px; font-weight:900; color:#fff;">📝 Visualizador do Teste Padronizado (DIRECT)</h3>
-                        <p style="font-size:12px; color:var(--text-muted);">Veja as perguntas rápidas que aplicamos antes e depois de jogar:</p>
+                        <h3 style="font-size:16px; font-weight:900; color:#fff;">📝 Visualizador do Teste Padronizado de Vestibular (DIRECT)</h3>
+                        <p style="font-size:12px; color:var(--text-muted);">Veja as 10 perguntas conceituais estilo ENEM/FUVEST aplicadas antes e depois de jogar:</p>
                     </div>
                     <div style="display:flex; gap:6px;">
                         <button id="btn-tab-pre" class="btn btn-sm" style="background:var(--neon-blue); color:#000; font-weight:800; padding:4px 10px; border-radius:4px; font-size:11px;">Pré-Teste (T0)</button>
@@ -660,39 +706,58 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Lógica da Calculadora de Hake
-        const inPre = document.getElementById('hake-input-pre');
-        const inPos = document.getElementById('hake-input-pos');
+        // Lógica do Simulador Interativo de Hake com Sliders e Barra Dinâmica
+        const rangePre = document.getElementById('hake-range-pre');
+        const rangePos = document.getElementById('hake-range-pos');
+        const preDisplay = document.getElementById('hake-val-pre-display');
+        const posDisplay = document.getElementById('hake-val-pos-display');
         const calcVal = document.getElementById('hake-calc-val');
         const calcBadge = document.getElementById('hake-calc-badge');
+        const calcBar = document.getElementById('hake-calc-bar');
 
         function updateHakeCalc() {
-            if (!inPre || !inPos || !calcVal || !calcBadge) return;
-            const pre = Math.max(0, Math.min(99, parseFloat(inPre.value) || 0));
-            const pos = Math.max(0, Math.min(100, parseFloat(inPos.value) || 0));
+            if (!rangePre || !rangePos || !calcVal || !calcBadge) return;
+            const pre = parseInt(rangePre.value, 10);
+            let pos = parseInt(rangePos.value, 10);
+
+            if (preDisplay) preDisplay.textContent = `${pre}%`;
+            if (posDisplay) posDisplay.textContent = `${pos}%`;
+
             if (pos <= pre) {
                 calcVal.textContent = 'g = 0.000';
                 calcBadge.textContent = '⚠️ Sem Ganho (Nota pós menor ou igual ao pré)';
                 calcBadge.style.color = '#ef4444';
+                if (calcBar) {
+                    calcBar.style.width = '0%';
+                    calcBar.style.background = '#ef4444';
+                }
                 return;
             }
+
             const g = (pos - pre) / (100 - pre);
             calcVal.textContent = `g = ${g.toFixed(3)}`;
+            const barWidth = Math.min(100, Math.max(0, Math.round(g * 100)));
+            if (calcBar) calcBar.style.width = `${barWidth}%`;
+
             if (g >= 0.70) {
-                calcBadge.textContent = '🌟 Alto Ganho (g ≥ 0.70) — Padrão Ouro!';
+                calcBadge.textContent = '🌟 Alto Ganho (g ≥ 0.70) — Nível de Excelência Máxima!';
                 calcBadge.style.color = 'var(--neon-green)';
+                if (calcBar) calcBar.style.background = 'var(--neon-green)';
             } else if (g >= 0.30) {
-                calcBadge.textContent = '⚡ Médio Ganho (0.30 ≤ g < 0.70)';
+                calcBadge.textContent = '⚡ Médio Ganho (0.30 ≤ g ≤ 0.70) — Padrão de Sucesso PER!';
                 calcBadge.style.color = 'var(--neon-amber)';
+                if (calcBar) calcBar.style.background = 'var(--neon-amber)';
             } else {
-                calcBadge.textContent = '⚠️ Baixo Ganho (g < 0.30) — Nível Tradicional';
+                calcBadge.textContent = '⚠️ Baixo Ganho (g < 0.30) — Típico de Aula Tradicional';
                 calcBadge.style.color = '#ef4444';
+                if (calcBar) calcBar.style.background = '#ef4444';
             }
         }
 
-        if (inPre && inPos) {
-            inPre.addEventListener('input', updateHakeCalc);
-            inPos.addEventListener('input', updateHakeCalc);
+        if (rangePre && rangePos) {
+            rangePre.addEventListener('input', updateHakeCalc);
+            rangePos.addEventListener('input', updateHakeCalc);
+            updateHakeCalc();
         }
 
         // Visualizador de Itens DIRECT
@@ -712,7 +777,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong>✅ Resposta Correta:</strong> ${item.correctAnswer}
                     </div>
                     <div style="font-size:11px; color:#94a3b8;">
-                        <strong>❌ Pegadinha / Erro Comum:</strong> ${item.distractor}
+                        <strong>❌ Pegadinha de Vestibular / Erro Comum:</strong> ${item.distractor}
                     </div>
                 </div>
             `).join('');
@@ -735,7 +800,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnTabPre.style.color = '#cbd5e1';
                 renderDirectItems();
             });
-        }
         renderDirectItems();
     }
 

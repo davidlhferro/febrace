@@ -181,17 +181,21 @@ console.log('\n--- BLOCO 7: Guia do Experimento na Escola (5 Passos) ---');
 assert(researchMgr.steps.length === 5, 'O guia do experimento deve conter exatamente 5 passos sequenciais.');
 assert(researchMgr.steps[0].title.includes('Pré-Teste'), 'O Passo 1 deve ser o Pré-Teste Diagnóstico (10 min).');
 assert(researchMgr.steps[1].title.includes('Estratificação'), 'O Passo 2 deve ser a Estratificação em 3 Níveis e formação de grupos justos.');
-assert(researchMgr.steps[2].title.includes('Intervenção Lúdica'), 'O Passo 3 deve ser a Intervenção com os 3 Jogos (30 min).');
+assert(researchMgr.steps[2].title.includes('Jogos Didáticos') || researchMgr.steps[2].title.includes('Partida'), 'O Passo 3 deve ser a Partida com os Jogos Didáticos (30 min).');
 assert(researchMgr.steps[3].title.includes('Pós-Teste'), 'O Passo 4 deve ser o Pós-Teste Isomórfico (10 min).');
 assert(researchMgr.steps[4].title.includes('Ganho de Hake'), 'O Passo 5 deve ser o Cálculo do Ganho de Hake.');
 assert(researchMgr.rationale.cards.length === 3, 'A justificativa dos 3 jogos deve conter 3 pilares de contraste.');
 
-// Validação dos 4 Estudos do Portfólio de Pesquisa
-assert(researchMgr.portfolio.length === 4, 'O portfólio de pesquisa deve conter exatamente 4 estudos interconectados.');
-assert(researchMgr.portfolio[0].id === 'study_1', 'Estudo 1 deve ser a Eficácia Conceitual com N=75.');
-assert(researchMgr.portfolio[1].id === 'study_2', 'Estudo 2 deve ser a Transferência Prática Far Transfer com N=30.');
-assert(researchMgr.portfolio[2].id === 'study_3', 'Estudo 3 deve ser a Microanálise Cognitiva Think-Aloud com N=6.');
-assert(researchMgr.portfolio[3].id === 'study_4', 'Estudo 4 deve ser a Retenção Tardia a 28 dias com N=50.');
+// Validação da Teoria de Hake (1998)
+assert(researchMgr.hakeTheory && researchMgr.hakeTheory.tiers.length === 3, 'A fundamentação de Hake deve conter as 3 faixas oficiais da literatura.');
+assert(researchMgr.hakeTheory.formula.includes('%Pós'), 'A fórmula de Hake deve ser calculada a partir do Pré e Pós-teste.');
+
+// Validação dos 4 Estudos do Portfólio de Pesquisa (Foco Teórico & Vestibulares)
+assert(researchMgr.portfolio.length === 4, 'O portfólio de pesquisa deve conter exatamente 4 estudos conceituais.');
+assert(researchMgr.portfolio[0].id === 'study_1', 'Estudo 1 deve ser o Salto Conceitual Imediato em Vestibulares com N=75.');
+assert(researchMgr.portfolio[1].id === 'study_2', 'Estudo 2 deve ser a Retenção de Longo Prazo a 14 dias com N=50.');
+assert(researchMgr.portfolio[2].id === 'study_3', 'Estudo 3 deve ser o Resgate dos Alunos com Defasagem (Estratificação).');
+assert(researchMgr.portfolio[3].id === 'study_4', 'Estudo 4 deve ser o Comparativo de Eficácia dos Jogos da Equipe.');
 assert(researchMgr.portfolio[0].power.includes('86.9%'), 'Estudo 1 deve atingir poder estatístico ≥ 86.9%.');
 
 // -------------------------------------------------------------

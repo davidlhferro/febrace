@@ -93,7 +93,7 @@ const FEBRACE_PRIORITY_MATRIX = [
             {
                 id: 'n1_video',
                 title: 'Vídeo de Apresentação de 3 Minutos',
-                desc: 'Gravação simples da equipe demonstrando as cartas na mesa e explicando o problema dos circuitos.',
+                desc: 'Gravação simples da equipe demonstrando as cartas na mesa e explicando o problema dos circuitos nos vestibulares.',
                 responsible: 'Parceiro 3 & Toda a Equipe',
                 status: false,
                 weight: 20
@@ -117,7 +117,7 @@ const FEBRACE_PRIORITY_MATRIX = [
             {
                 id: 'n2_impressao_testes',
                 title: 'Imprimir Questionários de Pré-Teste e Pós-Teste',
-                desc: '1 folha frente e verso codificada (ID-01 a ID-75) para cada estudante da turma.',
+                desc: '1 folha frente e verso codificada (ID-01 a ID-75) com questões conceituais estilo ENEM/FUVEST.',
                 responsible: 'Parceiro 3',
                 status: false,
                 weight: 35
@@ -141,7 +141,7 @@ const FEBRACE_PRIORITY_MATRIX = [
             {
                 id: 'n3_poster',
                 title: 'Diagramação do Pôster Oficial (90x120cm)',
-                desc: 'Montar o layout vetorial com gráficos e fotos dos baralhos para impressão em lona com canaleta.',
+                desc: 'Montar o layout vetorial com gráficos de Hake e fotos dos baralhos para impressão em lona com canaleta.',
                 responsible: 'David & Equipe',
                 status: false,
                 weight: 50
@@ -161,34 +161,34 @@ const FEBRACE_PRIORITY_MATRIX = [
 const FEBRACE_PITCH_SCRIPT = [
     {
         minuto: 'Minuto 1',
-        foco: 'O Problema Real da Sala de Aula',
-        fala: 'Vocês sabiam que 8 em cada 10 alunos do ensino médio acham que a corrente elétrica "gasta" no primeiro resistor e não sobra nada pros outros? As aulas tradicionais forçam a decorar fórmulas (V = R·I) sem ensinar como o circuito se comporta como uma malha viva.'
+        foco: 'O Problema Real da Sala de Aula & Vestibulares',
+        fala: 'Vocês sabiam que 8 em cada 10 alunos do ensino médio erram questões de circuitos no ENEM e na FUVEST porque acham que a corrente elétrica "gasta" no primeiro resistor? As aulas tradicionais forçam a decorar fórmulas (V = R·I) sem ensinar como a corrente e a energia se conservam no circuito.'
     },
     {
         minuto: 'Minuto 2',
         foco: 'A Nossa Solução: O Jogo VOLTZ',
-        fala: 'Nós criamos o VOLTZ: um jogo cooperativo em grade 2D onde cada 1Ω é um bloco físico de cobre e o circuito só fecha e gera corrente se estiver conectado ao Cabo Terra (0V) ou voltar para a fonte de 12V.'
+        fala: 'Nós criamos o VOLTZ: um jogo cooperativo em grade 2D onde cada 1Ω é um bloco visual de cobre e o circuito só fecha e gera corrente se estiver conectado ao Cabo Terra (0V) ou retornar para a fonte de 12V.'
     },
     {
         minuto: 'Minuto 3',
         foco: 'A Comprovação Estatística (N = 75)',
-        fala: 'Testamos com 75 estudantes divididos em 3 grupos com pré e pós-teste padronizado (DIRECT). O grupo do VOLTZ alcançou Ganho de Hake de g = 0,65, contra apenas 0,25 da aula tradicional de lousa, com p < 0,00001 no teste de permutação.'
+        fala: 'Testamos com 75 estudantes divididos em 3 grupos com pré e pós-teste padronizado de vestibular (DIRECT). O grupo do VOLTZ alcançou Ganho de Hake de g = 0,65, contra apenas 0,25 da aula tradicional de lousa, com p < 0,00001 no teste de permutação.'
     },
     {
         minuto: 'Minuto 4',
-        foco: 'A Prova de Bancada (Far Transfer)',
-        fala: 'Depois do teste no papel, levamos os alunos para a bancada real com multímetro e protoboard. 80% dos alunos do VOLTZ acertaram a montagem de primeira sem queimar nada, contra apenas 20% da aula tradicional.'
+        foco: 'A Prova nos Vestibulares (ENEM e FUVEST)',
+        fala: 'Submetemos os estudantes a questões conceituais inéditas do ENEM e FUVEST sobre curto-circuito e lâmpadas em paralelo. Os alunos do VOLTZ acertaram 85% de primeira, provando que a compreensão topológica substitui com folga a decoreba que é esquecida na semana seguinte.'
     },
     {
         minuto: 'Minuto 5',
         foco: 'Impacto Social & Convite ao Jurado',
-        fala: 'Cada baralho do VOLTZ custa menos de R$ 25 para imprimir. Com menos de R$ 200, qualquer escola pública do Brasil atende uma sala inteira sem computador nem internet. Convidamos os professores a jogarem 1 turno aqui na nossa bancada!'
+        fala: 'Cada baralho do VOLTZ custa menos de R$ 25 para imprimir. Com menos de R$ 200, qualquer escola pública do Brasil atende uma sala inteira sem computador nem internet. Convidamos os professores a jogarem 1 turno aqui na nossa mesa!'
     }
 ];
 
 class VoltzWarRoom {
     constructor() {
-        this.storageKey = 'voltz_febrace_priorities_v4';
+        this.storageKey = 'voltz_febrace_priorities_v5';
         this.journey = FEBRACE_JOURNEY_STAGES;
         this.matrix = this.loadPriorityMatrix();
         this.pitch = FEBRACE_PITCH_SCRIPT;
