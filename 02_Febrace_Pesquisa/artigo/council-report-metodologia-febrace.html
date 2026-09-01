@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Council Report — Auditoria Metodológica Experimental FEBRACE / PER</title>
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --surface: #111827;
+            --surface-hover: #1f2937;
+            --border: #374151;
+            --text: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent: #f59e0b;
+            --green: #10b981;
+            --blue: #38bdf8;
+            --red: #ef4444;
+            --purple: #c084fc;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 30px 20px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+        .header h1 { font-size: 24px; color: var(--accent); margin-bottom: 6px; }
+        .header .meta { font-size: 13px; color: var(--text-muted); }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .verdict-box {
+            border-left: 4px solid var(--green);
+            background: rgba(16, 185, 129, 0.08);
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+        .warning-box {
+            border-left: 4px solid var(--red);
+            background: rgba(239, 68, 68, 0.08);
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+        .pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .pill-green { background: rgba(16, 185, 129, 0.2); color: var(--green); }
+        .pill-amber { background: rgba(245, 158, 11, 0.2); color: var(--accent); }
+        .pill-blue { background: rgba(56, 189, 248, 0.2); color: var(--blue); }
+        .pill-red { background: rgba(239, 68, 68, 0.2); color: var(--red); }
+        
+        details {
+            background: #161f30;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+        }
+        summary {
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--blue);
+            outline: none;
+        }
+        .advisor-content {
+            margin-top: 12px;
+            font-size: 13.5px;
+            color: #d1d5db;
+            line-height: 1.6;
+        }
+        ul { padding-left: 20px; margin: 8px 0; }
+        li { margin-bottom: 6px; }
+        strong { color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚖️ LLM Council Report — Auditoria da Metodologia Científica (FEBRACE / PER)</h1>
+            <div class="meta">
+                Protocolo: <strong>Desenho Experimental Comparativo dos 3 Jogos (PER & Psicometria)</strong> | Data: 01/09/2026 | Avaliadores: 5 Especialistas Independentes
+            </div>
+        </div>
+
+        <!-- VEREDITO DO CHAIRMAN -->
+        <div class="card">
+            <div class="card-title">🏆 Veredito Final do Chairman do Conselho</div>
+            
+            <div class="verdict-box">
+                <h3 style="color:var(--green); font-size:15px; margin-bottom:6px;">Decisão do Conselho: APROVADO COM BLINDAGEM METODOLÓGICA MANDATÓRIA</h3>
+                <p style="font-size:13.5px; color:#e5e7eb;">
+                    O conselho reconhece o altíssimo potencial epistemológico da pesquisa (avaliação de ganho conceitual em Eletrodinâmica via DIRECT e Hake), mas identificou <strong>quatro vulnerabilidades fatais</strong> que precisam de blindagem antes da submissão na FEBRACE e apresentação perante a banca de doutores da USP.
+                </p>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:16px;">
+                <div style="background:#161f30; padding:12px; border-radius:6px; border:1px solid var(--border);">
+                    <div style="font-size:12px; font-weight:800; color:var(--green); text-transform:uppercase;">✅ Pontos de Convergência do Conselho</div>
+                    <ul style="font-size:12.5px; margin-top:6px; color:#cbd5e1;">
+                        <li><strong>Abandono do Crossover AB-BA:</strong> Mudança conceitual em física é irreversível; o aluno não desaprende entre blocos.</li>
+                        <li><strong>Subestratificação Exploratória:</strong> $N=75$ não suporta ANCOVA confirmatória em subcélulas de $n=6\text{--}8$. A análise primária deve ser global por grupo.</li>
+                        <li><strong>Pós-Teste Tardio ($T_2$ a 21 dias):</strong> 50 minutos medem apenas <em>priming</em>; retenção longitudinal comprova mudança perene.</li>
+                        <li><strong>Conformidade Ética Formal:</strong> Termos TCLE/TALE e anonimização obrigatórios (Resolução CNS 510/2016).</li>
+                    </ul>
+                </div>
+
+                <div style="background:#161f30; padding:12px; border-radius:6px; border:1px solid var(--border);">
+                    <div style="font-size:12px; font-weight:800; color:var(--red); text-transform:uppercase;">⚠️ Ameaças Críticas Identificadas</div>
+                    <ul style="font-size:12.5px; margin-top:6px; color:#cbd5e1;">
+                        <li><strong>Viés de Confirmação (Efeito Strawman):</strong> O projeto se chama VOLTZ e compara o VOLTZ contra jogos da própria equipe.</li>
+                        <li><strong>Bundle Confounding:</strong> Variar mecânica de circuito e interação social (cooperativo vs. competitivo) em bloco.</li>
+                        <li><strong>Efeito do Facilitador:</strong> Autores aplicando os jogos geram viés de entusiasmo diferencial.</li>
+                        <li><strong>Psicometria dos 10 Itens:</strong> Necessidade de calibração exata de dificuldade e equivalência isomórfica.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <div style="font-weight:800; font-size:13px; color:var(--red); margin-bottom:4px;">🎯 Ação Prática Imediata nº 1:</div>
+                <div style="font-size:13px; color:#f3f4f6;">
+                    Estruturar o grupo controle como <strong>Controle Ativo Padrão-Ouro (Aula Tradicional + PhET Interactive Simulations)</strong> e os dois braços lúdicos como <strong>Modelagem Topológica Cooperativa (VOLTZ)</strong> vs. <strong>Simulação Analítica Competitiva (Jogo de Tabuleiro)</strong>, eliminando qualquer aspecto de "espantalho" e cegando a mediação com um guia gráfico padronizado.
+                </div>
+            </div>
+        </div>
+
+        <!-- PAINEL DE ADVISORS (COLAPSÁVEL) -->
+        <div class="card">
+            <div class="card-title">🔍 Pareceres Individuais dos 5 Conselheiros</div>
+
+            <details>
+                <summary>🔴 The Contrarian (Auditor de Riscos e Vieses Fatais)</summary>
+                <div class="advisor-content">
+                    <strong>Alerta Central:</strong> Apontou quatro pontos críticos: 1) Conflito de interesses e viés do facilitador; 2) Ilusão dos 50 minutos que captura apenas efeito novidade; 3) Morte amostral ao fatiar N=75 em estratos de proficiência (células microscópicas de n=6 a 8); 4) Crossover invalidado por efeito de arraste conceitual.<br><br>
+                    <em>Recomendação:</em> Abortar o crossover, usar instrutores cegados, aplicar pós-teste postergado de 21 dias e restringir análise de estratos a caráter exploratório.
+                </div>
+            </details>
+
+            <details>
+                <summary>🧠 The First Principles Thinker (Fundamentos da Cognição e PER)</summary>
+                <div class="advisor-content">
+                    <strong>Alerta Central:</strong> Identificou a convalidação multivariável em bloco (<em>bundle confounding</em>). Variar simultaneamente ontologia representacional (topológica vs simbólica) e dinâmica social (cooperativa vs competitiva) impede isolar se o ganho de aprendizagem decorre da mecânica de GND ou da verbalização em grupo.<br><br>
+                    <em>Recomendação:</em> Desacoplar a modelagem topológica através do teste de <em>Far Transfer</em> em protoboard individual (onde o aluno atua sem auxílio de pares) e itens específicos do DIRECT sobre continuidade de malha.
+                </div>
+            </details>
+
+            <details>
+                <summary>🚀 The Expansionist (Potencial de Impacto Internacional e Publicação A1)</summary>
+                <div class="advisor-content">
+                    <strong>Alerta Central:</strong> O projeto vai muito além de uma feira escolar: é a validação de um novo framework epistemológico em PER. Propôs modelagem de transição de estados conceituais e retenção longitudinal a 60 dias para publicação no <em>American Journal of Physics</em> (AJP) e credenciamento na Regeneron ISEF.
+                </div>
+            </details>
+
+            <details>
+                <summary>👁️ The Outsider (Visão Imparcial de Banca Externa)</summary>
+                <div class="advisor-content">
+                    <strong>Alerta Central:</strong> A comparação de 3 jogos da própria equipe soa como "disputa de egos" e gera suspeita imediata de que os Jogos 1 e 3 foram feitos como protótipos frágeis para coroar o VOLTZ. O uso de jargões estatísticos complexos não compensa uma premissa com viés de confirmação aparente.<br><br>
+                    <em>Recomendação:</em> Alinhar a comparação com a literatura internacional de PER, definindo claramente o objetivo de investigar a mecânica de modelagem topológica contra o ensino analítico e a simulação virtual.
+                </div>
+            </details>
+
+            <details>
+                <summary>⚡ The Executor (Logística de Sala de Aula e Protocolo de Coleta)</summary>
+                <div class="advisor-content">
+                    <strong>Plano Operacional Minuto a Minuto:</strong> Kit com 75 envelopes codificados invioláveis (Pré-teste A/B individual, Guia Gráfico de 1 página e Pós-teste lacrado). Cronograma de 50 minutos: 10 min Pré-teste, 3 min briefing gráfico, 23 min jogo/Think-Aloud, 10 min Pós-teste lacrado e 2 min auditoria de recolhimento.
+                </div>
+            </details>
+        </div>
+
+        <!-- DESTAQUES DO PEER REVIEW -->
+        <div class="card">
+            <div class="card-title">🤝 Destaques da Rodada de Peer Review Anônimo</div>
+            <div style="font-size:13px; color:#cbd5e1; line-height:1.6;">
+                <p><strong>1. Parecer mais forte:</strong> A resposta do Contrarian (B) foi eleita por unanimidade como a mais consistente por diagnosticar a perda de poder estatístico em subestratificações ($n=6\text{--}8$) e a irreversibilidade da mudança conceitual que mata o desenho Crossover.</p>
+                <p style="margin-top:8px;"><strong>2. Maior ponto cego identificado:</strong> O Executor (D) focou excessivamente em envelopes e timers, esquecendo que uma execução operacional perfeita de um desenho enviesado só produz dados inválidos organizados.</p>
+                <p style="margin-top:8px;"><strong>3. Alerta esquecido por todos:</strong> A necessidade de autorização ética expressa (TCLE/TALE) para estudantes menores de idade e validação psicométrica dos 10 itens do DIRECT (coeficiente de discriminação e alfa de Cronbach).</p>
+            </div>
+        </div>
+
+        <div style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:20px;">
+            Documento gerado pelo protocolo LLM Council para o Projeto VOLTZ — FEBRACE 2026.
+        </div>
+    </div>
+</body>
+</html>
