@@ -82,6 +82,57 @@ const VOLTZ_THREE_GAMES_RATIONALE = {
     ]
 };
 
+const VOLTZ_RESEARCH_PORTFOLIO_STUDIES = [
+    {
+        id: 'study_1',
+        title: 'Estudo 1: Eficácia Conceitual & Remediação de Modelos (Principal)',
+        icon: '📝',
+        badge: 'N = 75 (3x n=25)',
+        power: '86.9% a 97.4%',
+        color: '#38bdf8',
+        metric: 'Ganho Normalizado de Hake ⟨g⟩ + ANCOVA',
+        question: 'A modelagem topológica em grade 2D supera a aula expositiva e o jogo competitivo na superação do modelo de atenuação sequencial?',
+        procedure: 'Pré-teste DIRECT (10 itens), estratificação em 3 níveis basais, intervenção pareada em 30 min e pós-teste isomórfico imediato.',
+        hypothesis: 'VOLTZ atinge ⟨g⟩ ≥ 0.65 com maior magnitude de resgate no estrato mais fraco (<40%), contra ⟨g⟩ < 0.30 do controle tradicional.'
+    },
+    {
+        id: 'study_2',
+        title: 'Estudo 2: Transferência Distante para Bancada Real (Far Transfer)',
+        icon: '⚡',
+        badge: 'N = 30 (3x n=10)',
+        power: '81.7% (p1=0.80, p2=0.20)',
+        color: '#22c55e',
+        metric: 'Taxa de Acerto na Protoboard com Multímetro',
+        question: 'O raciocínio de malhas e 1Ω desenvolvido nas cartas se transfere para a montagem prática de circuitos reais sem queimar componentes?',
+        procedure: 'Desafio individual cego de 3 minutos na protoboard física com fonte 12V, resistores e LED piloto 3V.',
+        hypothesis: '80% dos alunos do VOLTZ acertam a montagem na protoboard de primeira, contra apenas 20% do controle tradicional.'
+    },
+    {
+        id: 'study_3',
+        title: 'Estudo 3: Microanálise Cognitiva & Protocolo Think-Aloud',
+        icon: '🧠',
+        badge: 'N = 6 (Quali-Quanti)',
+        power: 'Profundidade Epistêmica',
+        color: '#f59e0b',
+        metric: 'Taxonomia de Raciocínio (Ericsson & Simon / Chi 1997)',
+        question: 'Qual é o mecanismo cognitivo verbal que os alunos usam ao analisar nós e divisores de tensão após jogarem?',
+        procedure: 'Gravação audiovisual individual resolvendo 3 quebra-cabeças elétricos em voz alta, com codificação em 3 taxonomias mentais.',
+        hypothesis: 'Alunos do VOLTZ verbalizam argumentos holísticos de circuito fechado (GND) em vez de raciocínio sequencial atenuativo.'
+    },
+    {
+        id: 'study_4',
+        title: 'Estudo 4: Retenção Tardia a Longo Prazo (Follow-up 28 Dias)',
+        icon: '⏳',
+        badge: 'N = 50 (Re-teste Pareado)',
+        power: '93.4% (d=0.50)',
+        color: '#c084fc',
+        metric: 'Curva de Retenção e Decaimento Conceitual (T1 vs T_ret)',
+        question: 'O aprendizado prático com cartas táteis é duradouro no cérebro ou sofre o esquecimento rápido da decoreba?',
+        procedure: 'Re-aplicação de teste isomórfico reduzido 4 semanas após a intervenção sem aviso prévio.',
+        hypothesis: 'Alunos do VOLTZ mantêm ≥ 85% do ganho de aprendizagem, enquanto o grupo tradicional decai para a média basal inicial.'
+    }
+];
+
 const VOLTZ_ARM1_PROPOSALS = [
     {
         id: 'prop_duelo',
@@ -203,6 +254,7 @@ class VoltzResearchManager {
         this.proposals = this.loadProposals();
         this.steps = VOLTZ_EXPERIMENT_STEPS;
         this.rationale = VOLTZ_THREE_GAMES_RATIONALE;
+        this.portfolio = VOLTZ_RESEARCH_PORTFOLIO_STUDIES;
         this.preItems = VOLTZ_DIRECT_ITEMS_PRE;
         this.postItems = VOLTZ_DIRECT_ITEMS_POST;
     }
@@ -245,6 +297,7 @@ if (typeof module !== 'undefined' && module.exports) {
         VoltzResearchManager,
         VOLTZ_EXPERIMENT_STEPS,
         VOLTZ_THREE_GAMES_RATIONALE,
+        VOLTZ_RESEARCH_PORTFOLIO_STUDIES,
         VOLTZ_ARM1_PROPOSALS,
         VOLTZ_DIRECT_ITEMS_PRE,
         VOLTZ_DIRECT_ITEMS_POST

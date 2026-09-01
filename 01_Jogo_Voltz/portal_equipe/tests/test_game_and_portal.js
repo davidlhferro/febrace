@@ -186,6 +186,14 @@ assert(researchMgr.steps[3].title.includes('Pós-Teste'), 'O Passo 4 deve ser o 
 assert(researchMgr.steps[4].title.includes('Ganho de Hake'), 'O Passo 5 deve ser o Cálculo do Ganho de Hake.');
 assert(researchMgr.rationale.cards.length === 3, 'A justificativa dos 3 jogos deve conter 3 pilares de contraste.');
 
+// Validação dos 4 Estudos do Portfólio de Pesquisa
+assert(researchMgr.portfolio.length === 4, 'O portfólio de pesquisa deve conter exatamente 4 estudos interconectados.');
+assert(researchMgr.portfolio[0].id === 'study_1', 'Estudo 1 deve ser a Eficácia Conceitual com N=75.');
+assert(researchMgr.portfolio[1].id === 'study_2', 'Estudo 2 deve ser a Transferência Prática Far Transfer com N=30.');
+assert(researchMgr.portfolio[2].id === 'study_3', 'Estudo 3 deve ser a Microanálise Cognitiva Think-Aloud com N=6.');
+assert(researchMgr.portfolio[3].id === 'study_4', 'Estudo 4 deve ser a Retenção Tardia a 28 dias com N=50.');
+assert(researchMgr.portfolio[0].power.includes('86.9%'), 'Estudo 1 deve atingir poder estatístico ≥ 86.9%.');
+
 // -------------------------------------------------------------
 // BLOCO 8: Matriz de Prioridades em 3 Níveis (Nível 1, 2 e 3)
 // -------------------------------------------------------------

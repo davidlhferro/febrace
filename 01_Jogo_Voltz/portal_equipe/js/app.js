@@ -411,6 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxVotes = Math.max(...proposals.map(p => p.votes));
         const steps = researchManager.steps || [];
         const rationale = researchManager.rationale || { cards: [] };
+        const portfolio = researchManager.portfolio || [];
 
         container.innerHTML = `
             <!-- HEADER DA PESQUISA -->
@@ -426,6 +427,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div style="font-size:13px; color:#cbd5e1; line-height:1.5; margin-top:10px; background:#050a14; padding:10px 12px; border-radius:6px; border:1px solid #1e293b;">
                     <strong>🎯 Nossa Hipótese Central:</strong> O jogo <strong>VOLTZ</strong> alcança ganho de aprendizagem de Hake superior (g ≥ 0.65) e taxa de sucesso em bancada (>80%), destravando especialmente quem tinha nota baixa no pré-teste.
+                </div>
+            </div>
+
+            <!-- PORTFÓLIO DE 4 ESTUDOS EXPERIMENTAIS (DIMENSIONAMENTO & PODER ESTATÍSTICO) -->
+            <div class="guide-card" style="border-top: 3px solid var(--neon-purple); margin-bottom: 24px;">
+                <div style="margin-bottom: 14px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <h3 style="font-size:16px; font-weight:900; color:var(--neon-purple); display:flex; align-items:center; gap:8px;">
+                                <span>📊</span> Portfólio dos 4 Estudos Experimentais (Amostra Escassa N=75)
+                            </h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                                Delineamento quase-experimental paralelo + sub-estudos aninhados de bancada, cognição e retenção tardia:
+                            </p>
+                        </div>
+                        <span class="guide-badge-pill" style="background:rgba(192,132,252,0.15); color:var(--neon-purple); border-color:var(--neon-purple);">Poder Estatístico 1-β ≥ 86.9%</span>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">
+                    ${portfolio.map(st => `
+                        <div style="background:#050a14; border:1px solid #1e293b; border-left:3px solid ${st.color}; padding:12px; border-radius:6px;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+                                <div style="font-size:13px; font-weight:800; color:#fff; display:flex; align-items:center; gap:6px;">
+                                    <span>${st.icon}</span> ${st.title}
+                                </div>
+                                <span class="guide-badge-pill" style="color:${st.color}; border-color:${st.color}; font-size:10px;">${st.badge}</span>
+                            </div>
+                            <div style="font-size:11px; color:var(--neon-amber); margin-bottom:6px; font-weight:700;">
+                                ⚡ Poder Estatístico: <span>${st.power}</span> | Métrica: <span>${st.metric}</span>
+                            </div>
+                            <div style="font-size:11.5px; color:#cbd5e1; margin-bottom:6px; line-height:1.4;">
+                                <strong>❓ Pergunta:</strong> ${st.question}
+                            </div>
+                            <div style="font-size:11px; background:rgba(0,0,0,0.4); padding:6px 8px; border-radius:4px; margin-bottom:6px; color:#94a3b8;">
+                                <strong>🛠️ Procedimento:</strong> ${st.procedure}
+                            </div>
+                            <div style="font-size:11.5px; color:var(--neon-green); background:rgba(34,197,94,0.08); padding:6px 8px; border-radius:4px;">
+                                <strong>🎯 Hipótese H1:</strong> ${st.hypothesis}
+                            </div>
+                        </div>
+                    `).join('')}
                 </div>
             </div>
 
