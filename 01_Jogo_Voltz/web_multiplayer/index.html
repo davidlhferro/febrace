@@ -3,25 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>VOLTZ — Portal da Equipe & Central de Comando FEBRACE 2026</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=20260901_reset_uiux">
     <!-- PeerJS WebRTC CDN -->
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 </head>
 <body>
 
-    <!-- NAVBAR DE COMANDO FIXA -->
+    <!-- NAVBAR DE COMANDO TÉCNICA -->
     <header class="navbar">
         <div class="brand-header">
-            <div class="brand-title">⚡ VOLTZ: CIRCUIT BREAK</div>
-            <div class="brand-badge">Central FEBRACE 2026</div>
+            <div class="brand-title">VOLTZ: CIRCUIT BREAK</div>
+            <div class="brand-badge">FEBRACE 2026 // REDE PUBLICA</div>
         </div>
 
         <nav class="nav-tabs">
-            <button class="nav-tab-btn active" data-tab="tab-arena">⚡ 1. Jogo Multiplayer</button>
-            <button class="nav-tab-btn" data-tab="tab-pesquisa">🔬 2. Hub de Pesquisa</button>
-            <button class="nav-tab-btn" data-tab="tab-warroom">🏛️ 3. Jornada FEBRACE</button>
-            <button class="nav-tab-btn" data-tab="tab-diario-banca">📓 4. Diário & Tradutor USP</button>
+            <button class="nav-tab-btn active" data-tab="tab-arena">[ 01 // BANCADA DE TESTES ]</button>
+            <button class="nav-tab-btn" data-tab="tab-pesquisa">[ 02 // HUB DE PESQUISA ]</button>
+            <button class="nav-tab-btn" data-tab="tab-warroom">[ 03 // JORNADA FEBRACE ]</button>
+            <button class="nav-tab-btn" data-tab="tab-diario-banca">[ 04 // DIARIO & BANCA USP ]</button>
         </nav>
     </header>
 
@@ -33,32 +36,32 @@
         <!-- ========================================================= -->
         <section id="tab-arena" class="tab-pane active">
             
-            <!-- TUTORIAL VISUAL DE 1 MINUTO (ESTILO BANDIDO) -->
+            <!-- TUTORIAL TÉCNICO DE OPERAÇÃO DA GRADE -->
             <div class="tutorial-banner">
-                <div style="font-size:15px; font-weight:900; color:var(--copper-bright); display:flex; align-items:center; gap:8px;">
-                    <span>📖 Como Jogar em 1 Minuto (Regra Canônica do Bandido)</span>
-                    <span style="font-size:11px; background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:4px; color:#fff; border:1px solid #334155;">Tutorial Rápido</span>
+                <div style="font-size:14px; font-weight:800; color:var(--copper-bright); display:flex; align-items:center; gap:8px;">
+                    <span>GUIA DE OPERAÇÃO // REGRAS DA GRADE TOPOLÓGICA</span>
+                    <span class="guide-badge-pill" style="color:var(--text-muted); border-color:var(--border-medium);">PROTOCOLO PADRÃO</span>
                 </div>
                 
                 <div class="tutorial-step-grid">
                     <div class="tutorial-step-card">
-                        <div class="tutorial-step-title">⚡ 1. O Ponto de Partida</div>
+                        <div class="tutorial-step-title">[01] Ponto de Início e Origem</div>
                         <div class="tutorial-step-desc">
-                            A mesa começa com <strong>1 única carta no centro (0,0)</strong>: o <strong>Gerador 12V</strong> com 4 saídas de barramento abertas. O time expande a malha ao redor dele!
+                            A bancada inicia com <strong>1 única carta no centro (0,0)</strong>: o <strong>Gerador 12V</strong> com 4 saídas de barramento condutivo abertas. A equipe expande a malha a partir desse nó.
                         </div>
                     </div>
 
                     <div class="tutorial-step-card">
-                        <div class="tutorial-step-title">🔀 2. Encaixe Exato na Grade</div>
+                        <div class="tutorial-step-title">[02] Continuidade Condutiva 2D</div>
                         <div class="tutorial-step-desc">
-                            As cartas devem conectar <strong>trilha com trilha</strong> em todos os vizinhos. Gire as cartas da mão (0°, 90°, 180°, 270°) e clique nos slots verdes <strong>(+)</strong>!
+                            As cartas devem conectar <strong>trilha com trilha</strong> em todos os vizinhos ortogonais. Ajuste a rotação (0°, 90°, 180°, 270°) e selecione os slots disponíveis <strong>(+)</strong>.
                         </div>
                     </div>
 
                     <div class="tutorial-step-card">
-                        <div class="tutorial-step-title">💥 3. Duplo Fechamento</div>
+                        <div class="tutorial-step-title">[03] Fechamento Nodal Obrigatório</div>
                         <div class="tutorial-step-desc">
-                            O circuito fecha ao <strong>retornar ao Gerador (Loop)</strong> ou ao colocar um <strong>Cabo Terra (GND)</strong>. A voltagem no aparelho deve bater na meta para não queimar!
+                            A energização exige o <strong>retorno à fonte (Loop)</strong> ou a inserção do <strong>Cabo Terra (GND 0V)</strong>. A d.d.p. sobre o aparelho deve corresponder à tensão nominal.
                         </div>
                     </div>
                 </div>
@@ -72,45 +75,44 @@
                     <div class="board-container">
                         <div class="board-header">
                             <div>
-                                <h2 style="font-size:16px; font-weight:800; color:var(--copper-glow);">Bancada Virtual 2D (Grade Canônica)</h2>
-                                <div id="turn-indicator" style="font-size:12.5px; color:var(--text-muted); margin-top:2px;">
-                                    Aguardando início da partida...
+                                <h2 style="font-size:15px; font-weight:800; color:var(--copper-bright);">Bancada Virtual 2D // Grade Topológica</h2>
+                                <div id="turn-indicator" style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                                    Aguardando início da sessão de bancada...
                                 </div>
                             </div>
                             
-                            <!-- CONTROLES DE ZOOM & STATUS -->
+                            <!-- CONTROLES DE TELEMETRIA & ZOOM -->
                             <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                                <div class="sector-meter" style="border-color:var(--copper-glow); color:var(--copper-glow);">
+                                <div class="sector-meter" style="border-color:var(--copper-base); color:var(--copper-bright);">
                                     MONTE: <strong id="deck-count">69</strong>
                                 </div>
-                                <div class="sector-meter" style="border-color:var(--neon-green); color:var(--neon-green);">
-                                    VIDAS: <strong id="network-lives-display">3 / 3</strong> 🛡️
+                                <div class="sector-meter" style="border-color:var(--signal-green); color:var(--signal-green);">
+                                    VIDAS: <strong id="network-lives-display">3 / 3</strong>
                                 </div>
                                 <div id="p2p-status" class="sector-meter">
-                                    <span style="color:var(--text-muted)">○ OFFLINE</span>
+                                    <span style="color:var(--text-muted)">○ LOCAL / OFFLINE</span>
                                 </div>
 
                                 <div style="display:flex; gap:4px; margin-left:6px;">
-                                    <button id="btn-zoom-in" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Aproximar Mesa">🔍 +</button>
-                                    <button id="btn-zoom-out" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Afastar Mesa">🔍 -</button>
-                                    <button id="btn-zoom-reset" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Recentralizar">⌖</button>
+                                    <button id="btn-zoom-in" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Aproximar Mesa">ZOOM +</button>
+                                    <button id="btn-zoom-out" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Afastar Mesa">ZOOM -</button>
+                                    <button id="btn-zoom-reset" class="btn-secondary" style="padding:4px 8px; font-size:11px;" title="Recentralizar Origem">ORIGEM</button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- ASSISTENTE VISUAL EM TEMPO REAL -->
+                        <!-- ASSISTENTE DE DIVISÃO DE TENSÃO -->
                         <div class="visual-assistant-bar" id="visual-assistant-bar">
                             <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="font-size:14px;">⚡</span>
-                                <span style="font-size:11.5px; font-weight:700; color:var(--text-muted);">ASSISTENTE:</span>
-                                <span id="assistant-status-text" style="font-size:12px; color:#fff; font-weight:600;">Selecione uma carta da sua mão para ver a rotação e os slots (+) disponíveis.</span>
+                                <span style="font-size:11px; font-weight:700; color:var(--text-muted);">ASSISTENTE:</span>
+                                <span id="assistant-status-text" style="font-size:12px; color:var(--text-primary); font-weight:500;">Selecione uma carta da mão para visualizar opções de rotação e slots válidos (+).</span>
                             </div>
                             <div class="assistant-pill" id="assistant-calc-pill" style="display:none;">
                                 12V // Ramo
                             </div>
                         </div>
 
-                        <!-- VIEWPORT DA GRADE 2D COM PAN & ZOOM -->
+                        <!-- VIEWPORT DA GRADE 2D (PAN & ZOOM) -->
                         <div class="grid-viewport" id="grid-viewport">
                             <div class="grid-canvas" id="grid-canvas">
                                 <!-- Cartas e slots (+) gerados dinamicamente via app.js -->
@@ -118,75 +120,75 @@
                         </div>
                     </div>
 
-                    <!-- MÃO DE CARTAS DO JOGADOR -->
+                    <!-- MÃO DE CARTAS DO OPERADOR -->
                     <div class="player-hand-container">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-                            <div style="font-weight:800; font-size:13.5px; color:#fff; display:flex; align-items:center; gap:8px;">
-                                <span>🎴 Suas 3 Cartas na Mão</span>
-                                <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">(Selecione, use o botão 🔄 Girar e clique no slot <strong>(+)</strong>)</span>
+                            <div style="font-weight:800; font-size:13px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                                <span>Cartas Ativas na Mão (3 Slots)</span>
+                                <span style="font-size:11px; color:var(--text-muted); font-weight:normal;">(Selecione, utilize Girar e clique no slot <strong>(+)</strong>)</span>
                             </div>
-                            <button id="btn-refresh-hand" class="btn-secondary" style="font-size:11px; padding:6px 10px;" title="Descarta as 3 cartas para o fundo do monte e compra 3 novas">
-                                🔄 Sem Jogadas (Trocar 3 Cartas)
+                            <button id="btn-refresh-hand" class="btn-secondary" style="font-size:11px; padding:6px 10px;" title="Descarta as cartas para a base do monte e compra novas unidades">
+                                Trocar Cartas da Mão
                             </button>
                         </div>
                         <div style="display:flex; gap:12px; align-items:center; overflow-x:auto; padding-bottom:6px;" id="player-hand">
-                            <div style="color:var(--text-muted); font-size:12.5px;">Inicie uma partida no painel ao lado para receber suas cartas.</div>
+                            <div style="color:var(--text-muted); font-size:12px;">Inicie uma partida no painel lateral para carregar a mão de cartas.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ÁREA DIREITA: LOBBY SERVERLESS & TELEMETRIA -->
+                <!-- ÁREA DIREITA: PAINEL DE SESSÃO & TELEMETRIA -->
                 <div class="side-panel">
                     <div class="guide-card" style="margin-bottom:0; padding:14px;">
-                        <h3 style="font-size:13.5px; font-weight:800; color:var(--neon-green); margin-bottom:10px;">👥 Sala para Jogar com Amigos</h3>
+                        <h3 style="font-size:13px; font-weight:800; color:var(--signal-green); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;">Sessão de Bancada / Multiplayer</h3>
                         
                         <div style="margin-bottom:8px;">
-                            <label style="font-size:11px; color:var(--text-muted);">Seu Nome:</label>
+                            <label style="font-size:11px; color:var(--text-muted);">Nome do Operador:</label>
                             <input type="text" id="player-name-input" class="form-input" placeholder="Ex: David" value="David">
                         </div>
 
                         <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
                             <button id="btn-create-room" class="btn-primary" style="width:100%;">
-                                👑 1. Criar Sala (Host)
+                                Criar Sala (Host)
                             </button>
                             
                             <div style="display:flex; gap:6px; margin-top:2px;">
-                                <input type="text" id="room-code-input" class="form-input" placeholder="CÓDIGO (4 letras)" style="margin-top:0; text-transform:uppercase; font-family:'Fira Code', monospace; text-align:center; font-weight:700;">
+                                <input type="text" id="room-code-input" class="form-input" placeholder="CODIGO (4 LETRAS)" style="margin-top:0; text-transform:uppercase; font-family:'JetBrains Mono', monospace; text-align:center; font-weight:700;">
                                 <button id="btn-join-room" class="btn-secondary" style="white-space:nowrap;">
-                                    2. Entrar
+                                    Conectar
                                 </button>
                             </div>
 
-                            <div style="margin-top:8px; padding:8px; background:#050a14; border:1px solid #1e2c42; border-radius:6px;">
-                                <div style="font-size:10.5px; color:var(--text-muted); margin-bottom:4px; font-weight:700;">JOGADORES NA SALA:</div>
-                                <div id="players-list-display" style="font-size:11.5px; line-height:1.5; color:#cbd5e1;">
-                                    <em>Ninguém conectado ainda.</em>
+                            <div style="margin-top:8px; padding:8px; background:var(--bg-inset); border:1px solid var(--border-subtle); border-radius:4px;">
+                                <div style="font-size:10.5px; color:var(--text-muted); margin-bottom:4px; font-weight:700;">OPERADORES NA SESSÃO:</div>
+                                <div id="players-list-display" style="font-size:11.5px; line-height:1.5; color:var(--text-secondary);">
+                                    <em>Nenhum cliente remoto conectado.</em>
                                 </div>
                             </div>
 
-                            <button id="btn-start-multiplayer-game" class="btn-primary" style="width:100%; background:linear-gradient(135deg, #16a34a, #059669); margin-top:4px; display:none;">
-                                🚀 Começar Partida
+                            <button id="btn-start-multiplayer-game" class="btn-primary" style="width:100%; background:linear-gradient(180deg, #22c55e, #16a34a); margin-top:4px; display:none;">
+                                Iniciar Partida
                             </button>
 
-                            <button id="btn-solo-3p" class="btn-secondary" style="width:100%; border-color:#2d4160; color:var(--neon-blue); margin-top:2px;">
-                                👥 Testar 3 Jogadores na Mesma Tela
+                            <button id="btn-solo-3p" class="btn-secondary" style="width:100%; color:var(--signal-blue); margin-top:2px;">
+                                Modo Bancada Local (3 Operadores)
                             </button>
                         </div>
 
-                        <div style="margin-top:12px; padding-top:10px; border-top:1px solid #1e2c42; font-size:11.5px; display:flex; justify-content:space-between; align-items:center;">
-                            <span style="color:var(--text-muted);">Código da Sala:</span>
-                            <strong id="room-code-display" style="font-family:'Fira Code', monospace; font-size:15px; color:var(--copper-glow); letter-spacing:2px; background:#050a14; padding:2px 8px; border-radius:4px; border:1px solid #1e2c42;">----</strong>
+                        <div style="margin-top:12px; padding-top:10px; border-top:1px solid var(--border-subtle); font-size:11.5px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="color:var(--text-muted);">Código da Sessão:</span>
+                            <strong id="room-code-display" style="font-family:'JetBrains Mono', monospace; font-size:14px; color:var(--copper-bright); letter-spacing:2px; background:var(--bg-inset); padding:2px 8px; border-radius:4px; border:1px solid var(--border-subtle);">----</strong>
                         </div>
                     </div>
 
-                    <!-- MURAL DE AÇÕES AO VIVO -->
+                    <!-- MURAL DE TELEMETRIA -->
                     <div>
-                        <div style="font-size:11.5px; font-weight:700; color:var(--text-muted); margin-bottom:4px; display:flex; justify-content:space-between;">
-                            <span>📟 Telemetria da Bancada</span>
-                            <span style="font-family:'Fira Code', monospace; font-size:10px; color:var(--neon-green);">LIVE</span>
+                        <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-bottom:4px; display:flex; justify-content:space-between;">
+                            <span>Telemetria do Circuito</span>
+                            <span style="font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--signal-green);">STATUS // ATIVO</span>
                         </div>
                         <div class="log-box" id="log-box">
-                            <div class="log-entry"><span class="time">[SISTEMA]</span> Portal VOLTZ 2D pronto para jogo.</div>
+                            <div class="log-entry"><span class="time">[SISTEMA]</span> Motor de topologia 2D carregado e calibrado.</div>
                         </div>
                     </div>
                 </div>
@@ -216,17 +218,17 @@
                             <div class="countdown-num" id="cd-days">00</div>
                             <div class="countdown-label">Dias</div>
                         </div>
-                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div style="font-size:20px; color:var(--text-muted); font-weight:900;">:</div>
                         <div class="countdown-unit">
                             <div class="countdown-num" id="cd-hours">00</div>
                             <div class="countdown-label">Horas</div>
                         </div>
-                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div style="font-size:20px; color:var(--text-muted); font-weight:900;">:</div>
                         <div class="countdown-unit">
                             <div class="countdown-num" id="cd-minutes">00</div>
                             <div class="countdown-label">Minutos</div>
                         </div>
-                        <div style="font-size:24px; color:var(--text-muted); font-weight:900;">:</div>
+                        <div style="font-size:20px; color:var(--text-muted); font-weight:900;">:</div>
                         <div class="countdown-unit">
                             <div class="countdown-num" id="cd-seconds">00</div>
                             <div class="countdown-label">Segundos</div>
@@ -237,10 +239,10 @@
                     <div class="guide-card" style="margin-bottom:14px;">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <h2 style="font-size:17px; font-weight:900; color:var(--neon-green);">Prontidão Geral das Tarefas</h2>
-                                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Matriz de Prioridades Oficial — FEBRACE 2026</div>
+                                <h2 style="font-size:16px; font-weight:800; color:var(--signal-green);">Índice de Prontidão das Tarefas</h2>
+                                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Matriz de Prioridades Oficial // FEBRACE 2026</div>
                             </div>
-                            <div id="warroom-score" style="font-family:'Fira Code', monospace; font-size:28px; font-weight:900; color:var(--neon-green);">
+                            <div id="warroom-score" style="font-family:'JetBrains Mono', monospace; font-size:26px; font-weight:800; color:var(--signal-green);">
                                 0%
                             </div>
                         </div>
@@ -257,7 +259,7 @@
 
                     <!-- AS 4 ETAPAS DA JORNADA FEBRACE -->
                     <div class="guide-card" style="margin-top:16px;">
-                        <h2 style="font-size:16px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🗺️ Mapa da Jornada FEBRACE (Passo a Passo)</h2>
+                        <h2 style="font-size:15px; font-weight:800; color:var(--signal-blue); margin-bottom:8px;">Cronograma da Jornada FEBRACE // Etapas Oficiais</h2>
                         <div id="journey-stages-container">
                             <!-- Injetado dinamicamente via voltz_warroom.js -->
                         </div>
@@ -267,22 +269,22 @@
                 <!-- SIDEBAR: DICAS DA BANCA & ROTEIRO DO PITCH -->
                 <div>
                     <div class="guide-card">
-                        <h3 style="font-size:14px; font-weight:800; color:var(--neon-blue); margin-bottom:8px;">🎯 O Que a Banca da USP Avalia?</h3>
-                        <ul style="font-size:12px; line-height:1.6; color:#cbd5e1; padding-left:16px;">
-                            <li><strong>1. Rigor Científico:</strong> Pré/Pós-teste padronizado e ganho de Hake.</li>
-                            <li><strong>2. Autenticidade:</strong> O Diário de Bordo mostra os erros corrigidos.</li>
-                            <li><strong>3. Custo Social:</strong> O kit custa menos de R$ 25 para escolas públicas.</li>
-                            <li><strong>4. Domínio da Equipe:</strong> Os alunos explicam a física sem ler papel.</li>
+                        <h3 style="font-size:13.5px; font-weight:800; color:var(--signal-blue); margin-bottom:8px;">Critérios de Avaliação da Banca USP</h3>
+                        <ul style="font-size:12px; line-height:1.6; color:var(--text-secondary); padding-left:16px;">
+                            <li><strong>1. Rigor Metodológico:</strong> Pré e Pós-teste padronizados com Ganho de Hake.</li>
+                            <li><strong>2. Autenticidade Experimental:</strong> Diário de Bordo registrando iterações e falhas.</li>
+                            <li><strong>3. Viabilidade Social:</strong> Custo unitário inferior a R$ 25,00 para escolas públicas.</li>
+                            <li><strong>4. Domínio Conceitual:</strong> Explicação articulada das Leis de Kirchhoff sem memorização mecânica.</li>
                         </ul>
                     </div>
 
                     <!-- ROTEIRO DO PITCH ORAL DE 5 MINUTOS NA USP -->
-                    <div class="guide-card" style="border-top: 3px solid var(--copper-bright);">
-                        <h3 style="font-size:14px; font-weight:800; color:var(--copper-bright); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
-                            <span>🎙️</span> Roteiro do Pitch Oral na USP (5 Min)
+                    <div class="guide-card" style="border-top: 2px solid var(--copper-bright); margin-top:14px;">
+                        <h3 style="font-size:13.5px; font-weight:800; color:var(--copper-bright); margin-bottom:6px;">
+                            Roteiro de Pitch Oral na USP (5 Minutos)
                         </h3>
                         <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
-                            O que falar minuto a minuto quando a banca parar no nosso estande:
+                            Estrutura cronometrada da defesa no estande oficial:
                         </p>
                         <div id="pitch-script-container">
                             <!-- Injetado dinamicamente via voltz_warroom.js -->
@@ -302,23 +304,23 @@
                 <!-- COLUNA ESQUERDA: DIÁRIO DE BORDO -->
                 <div>
                     <div class="guide-card">
-                        <h2 style="font-size:16px; font-weight:800; color:var(--copper-glow); margin-bottom:4px;">📝 Registrar Sessão de Testes</h2>
-                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Anote cada partida jogada com a turma ou reunião de equipe!</div>
+                        <h2 style="font-size:15px; font-weight:800; color:var(--copper-bright); margin-bottom:4px;">Registro de Sessão Experimental</h2>
+                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Registro datado para composição do Diário de Bordo Oficial.</div>
                         
                         <form id="form-diario-entry">
                             <div style="margin-bottom:10px;">
                                 <label style="font-size:11.5px; color:var(--text-muted);">Título da Atividade:</label>
-                                <input type="text" id="diario-title" class="form-input" placeholder="Ex: Partida 3P - Conexão do Servidor 4V via Loop" required>
+                                <input type="text" id="diario-title" class="form-input" placeholder="Ex: Sessão 04 - Validação do divisor de tensão no Servidor 4V" required>
                             </div>
 
                             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
                                 <div>
                                     <label style="font-size:11.5px; color:var(--text-muted);">Tipo de Atividade:</label>
                                     <select id="diario-type" class="form-input">
-                                        <option>Playtest com Amigos</option>
-                                        <option>Teste em Sala de Aula</option>
-                                        <option>Reunião com Orientador</option>
-                                        <option>Ajuste nas Regras da Grade</option>
+                                        <option>Playtest de Bancada</option>
+                                        <option>Aplicação em Sala de Aula</option>
+                                        <option>Reunião de Alinhamento com Orientador</option>
+                                        <option>Ajuste de Regras Topológicas</option>
                                     </select>
                                 </div>
                                 <div>
@@ -329,33 +331,33 @@
 
                             <div style="margin-bottom:10px;">
                                 <label style="font-size:11.5px; color:var(--text-muted);">Fatos e Procedimentos Realizados:</label>
-                                <textarea id="diario-desc" class="form-input" rows="3" placeholder="Descreva os passos e como a grade foi montada..." required></textarea>
+                                <textarea id="diario-desc" class="form-input" rows="3" placeholder="Descreva os procedimentos experimentais e a configuração da grade..." required></textarea>
                             </div>
 
                             <div style="margin-bottom:10px;">
-                                <label style="font-size:11.5px; color:var(--text-muted);">O que aprendemos / Falhas Encontradas:</label>
-                                <textarea id="diario-findings" class="form-input" rows="2" placeholder="O que deu certo? Houve sobretensão ou curto?"></textarea>
+                                <label style="font-size:11.5px; color:var(--text-muted);">Observações / Falhas Identificadas:</label>
+                                <textarea id="diario-findings" class="form-input" rows="2" placeholder="Ocorreu subtensão ou curto-circuito durante o fechamento nodal?"></textarea>
                             </div>
 
                             <div style="margin-bottom:12px;">
-                                <label style="font-size:11.5px; color:var(--text-muted);">Decisões e Próximos Passos:</label>
-                                <input type="text" id="diario-actions" class="form-input" placeholder="Ex: Incluir fusível 1A no ramo para evitar queima">
+                                <label style="font-size:11.5px; color:var(--text-muted);">Decisões e Próximos Encaminhamentos:</label>
+                                <input type="text" id="diario-actions" class="form-input" placeholder="Ex: Ajustar o valor nominal do fusível de proteção no ramo">
                             </div>
 
                             <button type="submit" class="btn-primary" style="width:100%;">
-                                💾 Salvar no Diário de Bordo
+                                Salvar Registro no Diário de Bordo
                             </button>
                         </form>
                     </div>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; margin:12px 0; flex-wrap:wrap; gap:6px;">
-                        <h3 style="font-size:14px; font-weight:800; color:#fff;">Histórico de Sessões</h3>
+                        <h3 style="font-size:13.5px; font-weight:800; color:var(--text-primary);">Histórico de Registros</h3>
                         <div style="display:flex; gap:6px;">
                             <button id="btn-export-md" class="btn-secondary" style="font-size:11px;">
-                                📥 Baixar Markdown (.md)
+                                Exportar Markdown (.md)
                             </button>
                             <button id="btn-export-pdf" class="btn-primary" style="font-size:11px; padding:6px 10px;">
-                                🖨️ Imprimir Diário (PDF)
+                                Imprimir Diário (PDF)
                             </button>
                         </div>
                     </div>
@@ -368,12 +370,12 @@
                 <!-- COLUNA DIREITA: GUIA DA BANCA USP & SIMULADOR DE DEFESA -->
                 <div>
                     <!-- MÓDULO 3: O QUE A BANCA QUER VER NOS RELATÓRIOS -->
-                    <div class="guide-card" style="border-top: 3px solid var(--neon-blue); margin-bottom:16px;">
-                        <h2 style="font-size:15px; font-weight:800; color:var(--neon-blue); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-                            <span>📑</span> O Que a Banca da USP Quer Ver nos Nossos Relatórios
+                    <div class="guide-card" style="border-top: 2px solid var(--signal-blue); margin-bottom:16px;">
+                        <h2 style="font-size:14.5px; font-weight:800; color:var(--signal-blue); margin-bottom:4px;">
+                            Requisitos de Avaliação nos Relatórios Técnicos
                         </h2>
                         <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
-                            O que os doutores e pesquisadores buscam ao avaliar nossos textos e gráficos:
+                            Parâmetros avaliados pelo comitê de docentes da USP:
                         </div>
                         <div id="banca-requirements-container">
                             <!-- Injetado dinamicamente via voltz_banca.js -->
@@ -381,12 +383,12 @@
                     </div>
 
                     <!-- MÓDULO 4: SIMULADOR DE OBJEÇÕES DA BANCA -->
-                    <div class="guide-card" style="border-top: 3px solid var(--neon-amber); margin-bottom:16px;">
-                        <h2 style="font-size:15px; font-weight:800; color:var(--neon-amber); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-                            <span>🛡️</span> Simulador de Objeções da Banca & Guia de Defesa
+                    <div class="guide-card" style="border-top: 2px solid var(--signal-amber); margin-bottom:16px;">
+                        <h2 style="font-size:14.5px; font-weight:800; color:var(--copper-bright); margin-bottom:4px;">
+                            Simulador de Objeções da Banca USP
                         </h2>
                         <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
-                            Treine as 5 perguntas capciosas mais perigosas com respostas científicas ensaiadas:
+                            Treinamento com as 5 principais arguições críticas e respostas fundamentadas:
                         </div>
                         <div id="banca-objections-container">
                             <!-- Injetado dinamicamente via voltz_banca.js -->
@@ -394,12 +396,12 @@
                     </div>
 
                     <!-- TRADUTOR DE JURADÊS -->
-                    <div class="guide-card" style="border-top: 3px solid var(--neon-green);">
-                        <h2 style="font-size:15px; font-weight:800; color:var(--neon-green); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-                            <span>🎓</span> Tradutor da Banca USP (Glossário Rápido)
+                    <div class="guide-card" style="border-top: 2px solid var(--signal-green);">
+                        <h2 style="font-size:14.5px; font-weight:800; color:var(--signal-green); margin-bottom:4px;">
+                            Glossário de Tradução Conceitual (Termos USP)
                         </h2>
                         <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
-                            Tradução do juradês acadêmico para o português claro e direto:
+                            Tradução direta do jargão acadêmico para fundamentação objetiva:
                         </div>
                         <div id="banca-translator-container">
                             <!-- Injetado dinamicamente via voltz_banca.js -->
@@ -413,14 +415,14 @@
     </main>
 
     <!-- SCRIPTS DA APLICAÇÃO -->
-    <script src="js/voltz_card_svg.js"></script>
-    <script src="js/voltz_cards_data.js"></script>
-    <script src="js/voltz_engine.js"></script>
-    <script src="js/voltz_pesquisa.js"></script>
-    <script src="js/voltz_p2p.js"></script>
-    <script src="js/voltz_warroom.js"></script>
-    <script src="js/voltz_diario.js"></script>
-    <script src="js/voltz_banca.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/voltz_card_svg.js?v=20260901_clean"></script>
+    <script src="js/voltz_cards_data.js?v=20260901_clean"></script>
+    <script src="js/voltz_engine.js?v=20260901_clean"></script>
+    <script src="js/voltz_pesquisa.js?v=20260901_clean"></script>
+    <script src="js/voltz_p2p.js?v=20260901_clean"></script>
+    <script src="js/voltz_warroom.js?v=20260901_clean"></script>
+    <script src="js/voltz_diario.js?v=20260901_clean"></script>
+    <script src="js/voltz_banca.js?v=20260901_clean"></script>
+    <script src="js/app.js?v=20260901_clean"></script>
 </body>
 </html>

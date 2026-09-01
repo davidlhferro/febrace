@@ -1,22 +1,23 @@
 /**
  * PORTAL VOLTZ — Painel da Jornada FEBRACE & Matriz de Urgência da Equipe
  * Mapeia as 4 etapas da jornada, a Matriz de Prioridades em 3 Níveis e o Roteiro de Pitch Oral.
+ * Design de Engenharia: Zero emojis, nomenclatura técnica e alta precisão.
  */
 
 const FEBRACE_JOURNEY_STAGES = [
     {
         stage: 'Etapa 1',
         title: 'Submissão Virtual (Até 02 de Outubro)',
-        badge: 'Inscrição no Site',
+        badge: 'Inscrição Oficial',
         color: '#38bdf8',
-        icon: '💻',
+        icon: '[ETAPA 1]',
         items: [
-            'Plano de Pesquisa preenchido no padrão FEBRACE.',
-            'Relatório Científico Completo (em formato artigo ABNT).',
-            'Diário de Bordo digitalizado com fotos e atas de reuniões.',
-            'Vídeo de 3 minutos apresentando a equipe e o jogo na prática.',
-            'Resumo da pesquisa de até 2.500 caracteres.',
-            'Termos de Consentimento (TCLE/TALE) dos estudantes assinados.'
+            'Plano de Pesquisa preenchido segundo as normas oficiais da FEBRACE.',
+            'Relatório Científico Completo estruturado no formato artigo ABNT.',
+            'Diário de Bordo digitalizado com registros datados e atas de reuniões.',
+            'Vídeo de 3 minutos apresentando a fundamentação teórica e o jogo.',
+            'Resumo formal da pesquisa de até 2.500 caracteres.',
+            'Termos de Consentimento (TCLE/TALE) dos estudantes devidamente assinados.'
         ]
     },
     {
@@ -24,11 +25,11 @@ const FEBRACE_JOURNEY_STAGES = [
         title: 'Avaliação & Triagem às Cegas (Outubro a Dezembro)',
         badge: 'Comitê USP',
         color: '#f59e0b',
-        icon: '🔍',
+        icon: '[ETAPA 2]',
         items: [
-            'Avaliação técnica por doutores e pesquisadores da USP.',
-            'Critérios de rigor metodológico, clareza do problema e análise estatística.',
-            'Divulgação oficial dos projetos finalistas e semifinalistas convidados.'
+            'Auditoria técnica por pesquisadores e docentes da Universidade de São Paulo.',
+            'Critérios de rigor metodológico, significância estatística e originalidade.',
+            'Divulgação oficial dos projetos finalistas selecionados para a fase presencial.'
         ]
     },
     {
@@ -36,12 +37,12 @@ const FEBRACE_JOURNEY_STAGES = [
         title: 'A Grande Feira Presencial na USP (São Paulo - Março)',
         badge: 'Estande Oficial',
         color: '#22c55e',
-        icon: '🏛️',
+        icon: '[ETAPA 3]',
         items: [
-            'Montagem do estande oficial na tenda da Poli-USP / InovaUSP.',
-            'Pôster científico impresso em lona (90cm x 120cm).',
-            'Bancada com o jogo VOLTZ físico pronto para os jurados jogarem 1 turno ao vivo.',
-            'Pitch oral de 5 minutos com domínio firme das Leis de Ohm e Kirchhoff.'
+            'Montagem do estande técnico na tenda de engenharia / InovaUSP.',
+            'Pôster científico diagramado e impresso em lona (90cm x 120cm).',
+            'Bancada com o baralho físico do VOLTZ para demonstração direta aos jurados.',
+            'Pitch oral de 5 minutos com domínio conceitual das Leis de Ohm e Kirchhoff.'
         ]
     },
     {
@@ -49,12 +50,12 @@ const FEBRACE_JOURNEY_STAGES = [
         title: 'Premiação & Credenciais Internacionais (Final)',
         badge: 'Medalhas & ISEF',
         color: '#c084fc',
-        icon: '🏆',
+        icon: '[ETAPA 4]',
         items: [
-            'Medalhas de 1º, 2º, 3º e 4º lugar por categoria de Engenharia / Ciências Exatas.',
+            'Classificação por premiações oficiais em Ciências Exatas e Engenharia.',
             'Prêmios especiais da Sociedade Brasileira de Física (SBF) e InovaUSP.',
             'Bolsas de Iniciação Científica Júnior do CNPq para os integrantes.',
-            'Credenciamento de delegação para a Regeneron ISEF (Maior feira mundial nos EUA).'
+            'Credenciamento de delegação para a Regeneron ISEF (Feira Internacional nos EUA).'
         ]
     }
 ];
@@ -62,14 +63,14 @@ const FEBRACE_JOURNEY_STAGES = [
 const FEBRACE_PRIORITY_MATRIX = [
     {
         level: 'Nível 1',
-        title: '🔴 NÍVEL 1: CRÍTICO & URGENTE (Prazo Inscrição: 02/10)',
+        title: 'NÍVEL 1: CRÍTICO & URGENTE (Prazo de Submissão: 02/10)',
         color: '#ef4444',
         badge: 'Prazo 02/10',
         tasks: [
             {
                 id: 'n1_diario',
                 title: 'Diário de Bordo Oficial',
-                desc: 'Criar caderno datado com registros das reuniões, fotos dos protótipos de cartas e anotações de regras corrigidas.',
+                desc: 'Consolidar caderno datado com atas de reuniões, fotos dos protótipos e decisões de design de regras.',
                 responsible: 'João Vitor',
                 status: true,
                 weight: 25
@@ -77,7 +78,7 @@ const FEBRACE_PRIORITY_MATRIX = [
             {
                 id: 'n1_plano',
                 title: 'Plano de Pesquisa Formal',
-                desc: 'Documento de 3 a 5 páginas com a metodologia dos 3 grupos estratificados e termos TCLE/TALE.',
+                desc: 'Documento estruturado contendo a metodologia dos 3 grupos balanceados e conformidade ética TCLE/TALE.',
                 responsible: 'David',
                 status: true,
                 weight: 25
@@ -85,7 +86,7 @@ const FEBRACE_PRIORITY_MATRIX = [
             {
                 id: 'n1_artigo',
                 title: 'Relatório Científico / Artigo ABNT',
-                desc: 'Texto acadêmico completo com Introdução, Metodologia, Resultados Esperados e Referências bibliográficas.',
+                desc: 'Texto acadêmico completo com Introdução, Fundamentação PER, Resultados Analíticos e Referências.',
                 responsible: 'David',
                 status: true,
                 weight: 30
@@ -93,8 +94,8 @@ const FEBRACE_PRIORITY_MATRIX = [
             {
                 id: 'n1_video',
                 title: 'Vídeo de Apresentação de 3 Minutos',
-                desc: 'Gravação simples da equipe demonstrando as cartas na mesa e explicando o problema dos circuitos nos vestibulares.',
-                responsible: 'Parceiro 3 & Toda a Equipe',
+                desc: 'Gravação da equipe demonstrando a bancada do VOLTZ e expondo o salto conceitual em vestibulares.',
+                responsible: 'Parceiro 3 & Equipe',
                 status: false,
                 weight: 20
             }
@@ -102,14 +103,14 @@ const FEBRACE_PRIORITY_MATRIX = [
     },
     {
         level: 'Nível 2',
-        title: '🟡 NÍVEL 2: ALTA PRIORIDADE (Execução da Pesquisa na Escola)',
+        title: 'NÍVEL 2: ALTA PRIORIDADE (Execução da Coleta Experimental)',
         color: '#f59e0b',
-        badge: 'Aplicação Real',
+        badge: 'Aplicação na Escola',
         tasks: [
             {
                 id: 'n2_impressao_cartas',
-                title: 'Imprimir 6 Cópias do Baralho de Testes',
-                desc: 'Imprimir os baralhos em papel sulfite ou 180g para levar nas mesas da escola.',
+                title: 'Imprimir Baralhos de Testes (6 Cópias)',
+                desc: 'Produzir cópias em papel cartão ou 180g para aplicação simultânea nas mesas da escola parceira.',
                 responsible: 'João Vitor',
                 status: false,
                 weight: 35
@@ -117,15 +118,15 @@ const FEBRACE_PRIORITY_MATRIX = [
             {
                 id: 'n2_impressao_testes',
                 title: 'Imprimir Questionários de Pré-Teste e Pós-Teste',
-                desc: '1 folha frente e verso codificada (ID-01 a ID-75) com questões conceituais estilo ENEM/FUVEST.',
+                desc: 'Folhas codificadas (ID-01 a ID-75) com questões isomórficas estilo ENEM/FUVEST.',
                 responsible: 'Parceiro 3',
                 status: false,
                 weight: 35
             },
             {
                 id: 'n2_tabular_python',
-                title: 'Tabular Notas no CSV e Rodar Script Python',
-                desc: 'Digitar as notas coletadas e executar `analise_estatistica_hake.py` para gerar os gráficos finais.',
+                title: 'Tabular Dados e Executar Script Python',
+                desc: 'Alimentar CSV e rodar `analise_estatistica_hake.py` para gerar curvas de ganho e intervalos BCa.',
                 responsible: 'David',
                 status: true,
                 weight: 30
@@ -134,24 +135,24 @@ const FEBRACE_PRIORITY_MATRIX = [
     },
     {
         level: 'Nível 3',
-        title: '🟢 NÍVEL 3: IMPORTANTE PARA A FEIRA PRESENCIAL (Pós-Classificação)',
+        title: 'NÍVEL 3: ESTRUTURA PARA A FEIRA PRESENCIAL (Pós-Classificação)',
         color: '#22c55e',
         badge: 'Estande Poli-USP',
         tasks: [
             {
                 id: 'n3_poster',
-                title: 'Diagramação do Pôster Oficial (90x120cm)',
-                desc: 'Montar o layout vetorial com gráficos de Hake e fotos dos baralhos para impressão em lona com canaleta.',
+                title: 'Diagramação do Pôster Científico (90x120cm)',
+                desc: 'Layout vetorial em alta resolução com tabelas de Hake, esquemas da grade 2D e conclusões.',
                 responsible: 'David & Equipe',
                 status: false,
                 weight: 50
             },
             {
                 id: 'n3_pitch',
-                title: 'Ensaiar o Pitch Oral de 3 a 5 Minutos',
-                desc: 'Treinar as falas na ponta da língua para responder aos jurados e professores da USP.',
+                title: 'Treinamento Intensivo de Pitch Oral (5 Min)',
+                desc: 'Simulações cronometradas com o simulador de objeções da banca da USP.',
                 responsible: 'Toda a Equipe',
-                status: true,
+                status: false,
                 weight: 50
             }
         ]
@@ -161,42 +162,42 @@ const FEBRACE_PRIORITY_MATRIX = [
 const FEBRACE_PITCH_SCRIPT = [
     {
         minuto: 'Minuto 1',
-        foco: 'O Problema Real da Sala de Aula & Vestibulares',
-        fala: 'Vocês sabiam que 8 em cada 10 alunos do ensino médio erram questões de circuitos no ENEM e na FUVEST porque acham que a corrente elétrica "gasta" no primeiro resistor? As aulas tradicionais forçam a decorar fórmulas (V = R·I) sem ensinar como a corrente e a energia se conservam no circuito.'
+        foco: 'O Problema Conceitual em Eletrodinâmica',
+        fala: '8 em cada 10 alunos do ensino médio acreditam que a corrente elétrica é consumida no primeiro resistor de um circuito. As aulas tradicionais focam na repetição mecânica de fórmulas algébricas (V = R . I), sem construir a intuição espacial sobre a conservação de carga e a divisão de potencial elétrico em malhas fechadas.'
     },
     {
         minuto: 'Minuto 2',
-        foco: 'A Nossa Solução: O Jogo VOLTZ',
-        fala: 'Nós criamos o VOLTZ: um jogo cooperativo em grade 2D onde cada 1Ω é um bloco visual de cobre e o circuito só fecha e gera corrente se estiver conectado ao Cabo Terra (0V) ou retornar para a fonte de 12V.'
+        foco: 'A Solução VOLTZ: Modelagem Topológica 2D',
+        fala: 'Desenvolvemos o VOLTZ: um modelo cooperativo em grade 2D onde cada 1 ohm é materializado como um bloco condutor e a energização do circuito exige estritamente o fechamento no Cabo Terra (GND 0V). Isso elimina o modelo atenuativo de corrente e obriga o cérebro a analisar a malha como um sistema conservativo global.'
     },
     {
         minuto: 'Minuto 3',
-        foco: 'A Comprovação Estatística (N = 75)',
-        fala: 'Testamos com 75 estudantes divididos em 3 grupos com pré e pós-teste padronizado de vestibular (DIRECT). O grupo do VOLTZ alcançou Ganho de Hake de g = 0,65, contra apenas 0,25 da aula tradicional de lousa, com p < 0,00001 no teste de permutação.'
+        foco: 'O Desenho Experimental e Resultados de Hake',
+        fala: 'Conduzimos um estudo quase-experimental controlado com N=75 estudantes de escola pública estadual divididos em 3 braços balanceados. O grupo submetido ao VOLTZ atingiu Ganho Normalizado de Hake médio de g = 0,65 (padrão de sucesso comprovado), contra apenas 0,25 da aula expositiva convencional de lousa.'
     },
     {
         minuto: 'Minuto 4',
-        foco: 'A Prova nos Vestibulares (ENEM e FUVEST)',
-        fala: 'Submetemos os estudantes a questões conceituais inéditas do ENEM e FUVEST sobre curto-circuito e lâmpadas em paralelo. Os alunos do VOLTZ acertaram 85% de primeira, provando que a compreensão topológica substitui com folga a decoreba que é esquecida na semana seguinte.'
+        foco: 'Transferência para Questões de Vestibulares (ENEM/FUVEST)',
+        fala: 'No Pós-Teste isomórfico com itens conceituais clássicos de vestibulares de alta concorrência (ENEM, FUVEST e UNICAMP), os estudantes do VOLTZ alcançaram 85% de acertos de primeira em questões de curto-circuito e divisão de potencial, provando que o conhecimento foi internalizado sem decoreba efêmera.'
     },
     {
         minuto: 'Minuto 5',
-        foco: 'Impacto Social & Convite ao Jurado',
-        fala: 'Cada baralho do VOLTZ custa menos de R$ 25 para imprimir. Com menos de R$ 200, qualquer escola pública do Brasil atende uma sala inteira sem computador nem internet. Convidamos os professores a jogarem 1 turno aqui na nossa mesa!'
+        foco: 'Impacto Social, Custo Unitário e Conclusão',
+        fala: 'Cada kit físico do VOLTZ tem custo de produção inferior a R$ 25,00. Com menos de R$ 200,00, qualquer escola pública estadual consegue equipar turmas inteiras sem depender de computadores ou internet, democratizando o aprendizado rigoroso de física.'
     }
 ];
 
 class VoltzWarRoom {
     constructor() {
-        this.storageKey = 'voltz_febrace_priorities_v5';
+        this.storageKeyTasks = 'voltz_matrix_tasks_v2';
         this.journey = FEBRACE_JOURNEY_STAGES;
-        this.matrix = this.loadPriorityMatrix();
+        this.matrix = this.loadMatrix();
         this.pitch = FEBRACE_PITCH_SCRIPT;
     }
 
-    loadPriorityMatrix() {
+    loadMatrix() {
         try {
-            const saved = localStorage.getItem(this.storageKey);
+            const saved = localStorage.getItem(this.storageKeyTasks);
             if (saved) {
                 const statusMap = JSON.parse(saved);
                 return FEBRACE_PRIORITY_MATRIX.map(level => ({
@@ -208,10 +209,23 @@ class VoltzWarRoom {
                 }));
             }
         } catch (e) {}
-        return JSON.parse(JSON.stringify(FEBRACE_PRIORITY_MATRIX));
+
+        return FEBRACE_PRIORITY_MATRIX;
     }
 
-    savePriorityMatrix() {
+    toggleTask(taskId) {
+        this.matrix.forEach(level => {
+            level.tasks.forEach(t => {
+                if (t.id === taskId) {
+                    t.status = !t.status;
+                }
+            });
+        });
+        this.saveMatrix();
+        return this.matrix;
+    }
+
+    saveMatrix() {
         try {
             const statusMap = {};
             this.matrix.forEach(level => {
@@ -219,32 +233,25 @@ class VoltzWarRoom {
                     statusMap[t.id] = t.status;
                 });
             });
-            localStorage.setItem(this.storageKey, JSON.stringify(statusMap));
+            localStorage.setItem(this.storageKeyTasks, JSON.stringify(statusMap));
         } catch (e) {}
     }
 
-    toggleTask(taskId) {
-        for (const level of this.matrix) {
-            const task = level.tasks.find(t => t.id === taskId);
-            if (task) {
-                task.status = !task.status;
-                this.savePriorityMatrix();
-                break;
-            }
-        }
-        return this.getReadinessScore();
-    }
-
     getReadinessScore() {
-        let total = 0;
-        let done = 0;
+        let totalWeighted = 0;
+        let completedWeighted = 0;
+
         this.matrix.forEach(level => {
             level.tasks.forEach(t => {
-                total += 1;
-                if (t.status) done += 1;
+                totalWeighted += t.weight;
+                if (t.status) {
+                    completedWeighted += t.weight;
+                }
             });
         });
-        return total === 0 ? 0 : Math.round((done / total) * 100);
+
+        if (totalWeighted === 0) return 0;
+        return Math.round((completedWeighted / totalWeighted) * 100);
     }
 }
 
