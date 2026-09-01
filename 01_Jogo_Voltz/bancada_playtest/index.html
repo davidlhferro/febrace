@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>VOLTZ — Bancada de Teste Rápido de Game Design & Física</title>
+    <link rel="stylesheet" href="style.css?v=20260901_playtest">
+    <!-- PeerJS WebRTC CDN -->
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+
+    <!-- NAVBAR DE TELEMETRIA SUPERIOR -->
+    <header class="app-header">
+        <div class="brand-area">
+            <div class="brand-title">VOLTZ // BANCADA DE TESTE RAPIDO</div>
+            <div class="brand-tag" id="game-mode-badge">MODO: SOLO + BOT IA</div>
+        </div>
+
+        <div class="top-telemetry">
+            <div class="meter-pill" style="color:var(--copper-bright); border-color:var(--copper-base);">
+                BARALHO: <strong id="top-deck-count">69</strong>
+            </div>
+            <div class="meter-pill" style="color:var(--signal-green); border-color:var(--signal-green);">
+                VIDAS: <strong id="top-lives-count">3 / 3</strong>
+            </div>
+            <div class="meter-pill" id="turn-badge" style="color:var(--signal-blue); border-color:var(--signal-blue);">
+                TURNO: <strong id="top-turn-player">SUA VEZ (OPERADOR)</strong>
+            </div>
+            <button id="btn-change-mode" class="btn btn-secondary" style="font-size:11px; padding:4px 8px;">
+                Mudar Modo
+            </button>
+        </div>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL -->
+    <main class="main-layout">
+        
+        <!-- COLUNA ESQUERDA: MESA 2D & MÃO -->
+        <section class="board-section">
+            
+            <!-- VIEWPORT 2D DA GRADE -->
+            <div class="viewport-container">
+                <div class="viewport-toolbar">
+                    <div class="toolbar-title">Grade Topológica 2D (Origem em 0,0)</div>
+                    <div style="display:flex; gap:6px;">
+                        <button id="btn-zoom-in" class="btn btn-secondary" style="padding:3px 8px; font-size:11px;">ZOOM +</button>
+                        <button id="btn-zoom-out" class="btn btn-secondary" style="padding:3px 8px; font-size:11px;">ZOOM -</button>
+                        <button id="btn-zoom-reset" class="btn btn-secondary" style="padding:3px 8px; font-size:11px;">ORIGEM (0,0)</button>
+                    </div>
+                </div>
+
+                <div class="grid-viewport" id="grid-viewport">
+                    <div class="grid-canvas" id="grid-canvas">
+                        <!-- Renderizado via game.js -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÃO DO JOGADOR -->
+            <div class="hand-section">
+                <div class="hand-header">
+                    <div>
+                        <strong style="color:var(--text-primary); font-size:13px;">Suas Cartas Ativas (3 Slots)</strong>
+                        <span style="font-size:11px; color:var(--text-muted); margin-left:6px;">
+                            (Clique na carta para selecionar, use Girar e clique no slot <strong>+</strong> verde)
+                        </span>
+                    </div>
+                    <button id="btn-discard-pass" class="btn btn-secondary" style="font-size:11px;">
+                        Descartar 3 e Passar Vez
+                    </button>
+                </div>
+
+                <div class="hand-cards-list" id="player-hand">
+                    <!-- Renderizado dinamicamente -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- COLUNA DIREITA: TELEMETRIA & DEBUG -->
+        <aside class="telemetry-sidebar">
+            
+            <!-- PAINEL 1: CÁLCULO DE ELETRODINÂMICA EM TEMPO REAL -->
+            <div class="tech-panel">
+                <div class="panel-title">
+                    <span>Telemetria do Ramo</span>
+                    <span style="color:var(--signal-green); font-size:10px;">AO VIVO</span>
+                </div>
+
+                <div class="telemetry-grid">
+                    <div class="telemetry-item">
+                        <div class="telemetry-label">Resistência ΣR</div>
+                        <div class="telemetry-value" id="telemetry-req">0 Ω</div>
+                    </div>
+                    <div class="telemetry-item">
+                        <div class="telemetry-label">Corrente I (12V/Req)</div>
+                        <div class="telemetry-value" id="telemetry-current">0.00 A</div>
+                    </div>
+                </div>
+
+                <!-- VEREDITO DO CIRCUITO -->
+                <div class="verdict-banner" id="verdict-banner">
+                    <div class="verdict-status" id="verdict-status" style="color:var(--signal-blue);">
+                        STATUS: MALHA ABERTA
+                    </div>
+                    <div id="verdict-desc" style="color:var(--text-secondary);">
+                        A bancada começa no Gerador 12V. Conecte resistores e finalize com o Cabo Terra (GND) para fechar o circuito.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAINEL 2: LOG DE OPERAÇÕES & AÇÕES DO BOT -->
+            <div class="tech-panel" style="border-top-color:var(--signal-blue);">
+                <div class="panel-title">
+                    <span>Console de Operações</span>
+                    <button id="btn-clear-log" class="btn btn-secondary" style="font-size:9.5px; padding:2px 6px;">LIMPAR</button>
+                </div>
+
+                <div class="log-box" id="system-log">
+                    <div class="log-row"><span class="t">[00:00]</span> Bancada de testes inicializada. Origem (0,0) energizada com 12V.</div>
+                </div>
+            </div>
+
+            <!-- PAINEL 3: REGRAS RÁPIDAS DE TESTE -->
+            <div class="tech-panel" style="border-top-color:var(--border-medium); font-size:11.5px; color:var(--text-secondary); line-height:1.45;">
+                <div style="font-weight:700; color:var(--text-primary); margin-bottom:4px;">REGRAS DO TESTE RÁPIDO:</div>
+                <ul style="padding-left:14px; display:flex; flex-direction:column; gap:4px;">
+                    <li><strong>Encaixe Bandido:</strong> Trilha conecta com trilha, parede com parede.</li>
+                    <li><strong>Divisão de Tensão:</strong> V_carga = 12V * (R_carga / R_total).</li>
+                    <li><strong>Sobretensão:</strong> Se V_carga > V_nominal, queima e perde 1 vida.</li>
+                </ul>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- MODAL INICIAL DE SELEÇÃO DE MODO DE TESTE -->
+    <div class="mode-modal-backdrop" id="mode-modal">
+        <div class="mode-modal-card">
+            <div class="mode-modal-header">
+                <div class="mode-modal-title">BANCADA DE TESTES VOLTZ</div>
+                <div class="mode-modal-sub">Selecione o modo para iniciar o playtest das regras de física</div>
+            </div>
+
+            <div class="mode-options-grid">
+                <!-- OPÇÃO 1: TESTAR SOZINHO COM BOT IA (1 CLIQUE) -->
+                <button class="mode-option-btn active-opt" id="opt-solo-bot">
+                    <div class="mode-option-title">
+                        <span>[MODO 1] Testar Sozinho com Bot de Teste</span>
+                        <span style="color:var(--signal-green); font-size:11px; font-weight:800;">INÍCIO IMEDIATO</span>
+                    </div>
+                    <div class="mode-option-desc">
+                        Inicia a partida instantaneamente. Você joga com 3 cartas e o Bot de Teste calcula e executa jogadas legais automáticas na grade 2D.
+                    </div>
+                </button>
+
+                <!-- OPÇÃO 2: TESTAR COM COLEGA P2P (WEBRTC) -->
+                <button class="mode-option-btn" id="opt-p2p">
+                    <div class="mode-option-title">
+                        <span>[MODO 2] Testar com Colega (P2P WebRTC)</span>
+                        <span style="color:var(--signal-blue); font-size:11px; font-weight:800;">MULTIPLAYER</span>
+                    </div>
+                    <div class="mode-option-desc">
+                        Crie uma sala com código ou conecte-se ao navegador de outro integrante da equipe via conexão direta WebRTC.
+                    </div>
+                </button>
+            </div>
+
+            <!-- SUB-FORMULÁRIO P2P -->
+            <div class="p2p-subform" id="p2p-subform">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:8px;">
+                    <div>
+                        <label style="font-size:10px; color:var(--text-muted); display:block; margin-bottom:2px;">Seu Nome:</label>
+                        <input type="text" id="p2p-player-name" class="form-input" value="David">
+                    </div>
+                    <div>
+                        <label style="font-size:10px; color:var(--text-muted); display:block; margin-bottom:2px;">Código da Sala (4 Letras):</label>
+                        <input type="text" id="p2p-room-code-input" class="form-input" placeholder="Ex: TEST">
+                    </div>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button id="btn-p2p-create" class="btn btn-primary" style="flex:1;">Criar Sala (Host)</button>
+                    <button id="btn-p2p-join" class="btn btn-secondary" style="flex:1;">Entrar em Sala</button>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+                <button id="btn-start-selected-mode" class="btn btn-primary" style="width:100%; padding:10px;">
+                    Iniciar Bancada de Testes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS DA APLICAÇÃO -->
+    <script src="game.js?v=20260901_playtest"></script>
+    <script>
+        // Controlador da Interface da Bancada
+        document.addEventListener('DOMContentLoaded', () => {
+            const engine = new VoltzPlaytestEngine();
+            let currentMode = 'bot'; // 'bot' | 'p2p'
+            let isP2pHost = false;
+            let peer = null;
+            let p2pConn = null;
+            let myPlayerId = 'p1';
+
+            let selectedCardUid = null;
+            let selectedRotation = 0;
+
+            // Pan & Zoom da Grade 2D
+            let zoom = 1.0;
+            let panX = 0;
+            let panY = 0;
+            let isPanning = false;
+            let startX = 0, startY = 0;
+
+            const gridViewport = document.getElementById('grid-viewport');
+            const gridCanvas = document.getElementById('grid-canvas');
+            const playerHandEl = document.getElementById('player-hand');
+            const logBox = document.getElementById('system-log');
+            const modeModal = document.getElementById('mode-modal');
+            const p2pSubform = document.getElementById('p2p-subform');
+
+            const telemetryReq = document.getElementById('telemetry-req');
+            const telemetryCurrent = document.getElementById('telemetry-current');
+            const verdictStatus = document.getElementById('verdict-status');
+            const verdictDesc = document.getElementById('verdict-desc');
+            const topDeckCount = document.getElementById('top-deck-count');
+            const topLivesCount = document.getElementById('top-lives-count');
+            const topTurnPlayer = document.getElementById('top-turn-player');
+            const gameModeBadge = document.getElementById('game-mode-badge');
+
+            function addLog(msg, type = '') {
+                if (!logBox) return;
+                const div = document.createElement('div');
+                div.className = `log-row ${type}`;
+                const time = new Date().toLocaleTimeString('pt-BR', { hour12: false });
+                div.innerHTML = `<span class="t">[${time}]</span> ${msg}`;
+                logBox.appendChild(div);
+                logBox.scrollTop = logBox.scrollHeight;
+            }
+
+            // Seleção de Modos no Modal
+            const optSoloBot = document.getElementById('opt-solo-bot');
+            const optP2p = document.getElementById('opt-p2p');
+            const btnStartSelected = document.getElementById('btn-start-selected-mode');
+
+            optSoloBot.addEventListener('click', () => {
+                currentMode = 'bot';
+                optSoloBot.classList.add('active-opt');
+                optP2p.classList.remove('active-opt');
+                p2pSubform.classList.remove('active');
+            });
+
+            optP2p.addEventListener('click', () => {
+                currentMode = 'p2p';
+                optP2p.classList.add('active-opt');
+                optSoloBot.classList.remove('active-opt');
+                p2pSubform.classList.add('active');
+            });
+
+            btnStartSelected.addEventListener('click', () => {
+                if (currentMode === 'bot') {
+                    startSoloBotGame();
+                } else {
+                    // P2P padrão cria sala
+                    initP2pHost();
+                }
+            });
+
+            document.getElementById('btn-p2p-create').addEventListener('click', () => {
+                initP2pHost();
+            });
+
+            document.getElementById('btn-p2p-join').addEventListener('click', () => {
+                const code = document.getElementById('p2p-room-code-input').value.trim().toUpperCase();
+                if (!code) return alert('Digite o código da sala.');
+                initP2pClient(code);
+            });
+
+            document.getElementById('btn-change-mode').addEventListener('click', () => {
+                modeModal.style.display = 'flex';
+            });
+
+            document.getElementById('btn-clear-log').addEventListener('click', () => {
+                if (logBox) logBox.innerHTML = '';
+            });
+
+            function startSoloBotGame() {
+                modeModal.style.display = 'none';
+                gameModeBadge.textContent = 'MODO: SOLO + BOT IA';
+                engine.reset();
+                myPlayerId = 'p1';
+                addLog('Partida Solo iniciada contra o Bot de Teste. Seu turno (Operador).', 'success');
+                renderAll();
+            }
+
+            // P2P WebRTC Host
+            function initP2pHost() {
+                const code = 'VLTZ-' + Math.floor(1000 + Math.random() * 9000);
+                addLog(`Iniciando host P2P com código [${code}]...`);
+                try {
+                    peer = new Peer(code);
+                    peer.on('open', (id) => {
+                        modeModal.style.display = 'none';
+                        gameModeBadge.textContent = `P2P SALA [${id}]`;
+                        isP2pHost = true;
+                        myPlayerId = 'p1';
+                        engine.reset();
+                        addLog(`Sala P2P aberta. Código: ${id}. Aguardando colega...`, 'alert');
+                        renderAll();
+                    });
+
+                    peer.on('connection', (conn) => {
+                        p2pConn = conn;
+                        addLog('Colega conectado via WebRTC! Partida iniciada.', 'success');
+                        setupP2pListeners();
+                        sendP2pState();
+                    });
+
+                    peer.on('error', (err) => {
+                        alert('Erro ao criar conexão P2P: ' + err.type);
+                    });
+                } catch (e) {
+                    alert('PeerJS não disponível offline. Alternando para modo Solo.');
+                    startSoloBotGame();
+                }
+            }
+
+            // P2P WebRTC Client
+            function initP2pClient(roomCode) {
+                try {
+                    peer = new Peer();
+                    peer.on('open', () => {
+                        p2pConn = peer.connect(roomCode);
+                        p2pConn.on('open', () => {
+                            modeModal.style.display = 'none';
+                            gameModeBadge.textContent = `CONECTADO EM [${roomCode}]`;
+                            isP2pHost = false;
+                            myPlayerId = 'p2';
+                            addLog(`Conectado à sala ${roomCode}.`, 'success');
+                            setupP2pListeners();
+                        });
+                    });
+                } catch (e) {
+                    alert('Erro ao conectar P2P.');
+                }
+            }
+
+            function setupP2pListeners() {
+                if (!p2pConn) return;
+                p2pConn.on('data', (data) => {
+                    if (data.type === 'SYNC_STATE') {
+                        engine.grid = data.grid;
+                        engine.deck = data.deck;
+                        engine.networkLives = data.networkLives;
+                        engine.turnIndex = data.turnIndex;
+                        engine.players = data.players;
+                        engine.lastCircuitAnalysis = data.lastCircuitAnalysis;
+                        if (data.logMsg) addLog(data.logMsg, data.logType || '');
+                        renderAll();
+                    }
+                });
+            }
+
+            function sendP2pState(logMsg = '', logType = '') {
+                if (p2pConn && p2pConn.open) {
+                    p2pConn.send({
+                        type: 'SYNC_STATE',
+                        grid: engine.grid,
+                        deck: engine.deck,
+                        networkLives: engine.networkLives,
+                        turnIndex: engine.turnIndex,
+                        players: engine.players,
+                        lastCircuitAnalysis: engine.lastCircuitAnalysis,
+                        logMsg,
+                        logType
+                    });
+                }
+            }
+
+            // RENDERIZAÇÃO DA GRADE 2D & TELEMETRIA
+            function renderAll() {
+                renderBoard();
+                renderHand();
+                renderTelemetry();
+
+                if (topDeckCount) topDeckCount.textContent = engine.deck.length;
+                if (topLivesCount) topLivesCount.textContent = `${engine.networkLives} / 3`;
+
+                const isMyTurn = (currentMode === 'bot' && engine.turnIndex === 0) ||
+                                 (currentMode === 'p2p' && ((isP2pHost && engine.turnIndex === 0) || (!isP2pHost && engine.turnIndex === 1)));
+
+                if (topTurnPlayer) {
+                    topTurnPlayer.textContent = isMyTurn ? 'SUA VEZ (OPERADOR)' : (currentMode === 'bot' ? 'BOT DE TESTE CALCULANDO...' : 'VEZ DO COLEGA');
+                    topTurnPlayer.style.color = isMyTurn ? 'var(--signal-green)' : 'var(--signal-blue)';
+                }
+
+                // Gatilho do Bot de Teste
+                if (currentMode === 'bot' && engine.turnIndex === 1 && !engine.gameOver) {
+                    triggerBotTurn();
+                }
+            }
+
+            function renderBoard() {
+                if (!gridCanvas) return;
+                gridCanvas.innerHTML = '';
+
+                const CARD_W = 140;
+                const CARD_H = 98;
+
+                // Renderiza cartas da mesa
+                Object.keys(engine.grid).forEach(key => {
+                    const node = engine.grid[key];
+                    const [gx, gy] = key.split(',').map(Number);
+
+                    const el = document.createElement('div');
+                    el.className = 'board-card-node';
+                    el.style.left = `${gx * CARD_W}px`;
+                    el.style.top = `${gy * CARD_H}px`;
+
+                    el.innerHTML = renderCardSVG(node.card, node.card.rotation || 0, {
+                        width: CARD_W,
+                        height: CARD_H,
+                        isPlaced: true
+                    });
+
+                    gridCanvas.appendChild(el);
+                });
+
+                // Renderiza slots válidos (+) se for a vez do jogador e houver carta selecionada
+                const isMyTurn = (currentMode === 'bot' && engine.turnIndex === 0) ||
+                                 (currentMode === 'p2p' && ((isP2pHost && engine.turnIndex === 0) || (!isP2pHost && engine.turnIndex === 1)));
+
+                if (isMyTurn && selectedCardUid && !engine.gameOver) {
+                    const curPlayer = engine.players.find(p => p.id === myPlayerId);
+                    const selCard = curPlayer ? curPlayer.hand.find(c => c.uid === selectedCardUid) : null;
+
+                    if (selCard) {
+                        const validSlots = engine.getValidSlotsForCard(selCard, selectedRotation);
+
+                        validSlots.forEach(slot => {
+                            const slotEl = document.createElement('div');
+                            slotEl.className = 'board-slot-target';
+                            slotEl.style.left = `${slot.x * CARD_W}px`;
+                            slotEl.style.top = `${slot.y * CARD_H}px`;
+                            slotEl.textContent = '+';
+                            slotEl.title = `Encaixar em (${slot.x}, ${slot.y})`;
+
+                            slotEl.addEventListener('click', () => {
+                                handlePlaceCard(slot.x, slot.y, selectedCardUid, selectedRotation);
+                            });
+
+                            gridCanvas.appendChild(slotEl);
+                        });
+                    }
+                }
+            }
+
+            function renderHand() {
+                if (!playerHandEl) return;
+                playerHandEl.innerHTML = '';
+
+                const curPlayer = engine.players.find(p => p.id === myPlayerId);
+                if (!curPlayer || curPlayer.hand.length === 0) {
+                    playerHandEl.innerHTML = '<div style="font-size:11.5px; color:var(--text-muted);">Sem cartas na mão.</div>';
+                    return;
+                }
+
+                curPlayer.hand.forEach(card => {
+                    const wrapper = document.createElement('div');
+                    const isSelected = card.uid === selectedCardUid;
+                    wrapper.className = `hand-card-wrapper ${isSelected ? 'selected' : ''}`;
+
+                    const rot = isSelected ? selectedRotation : (card.rotation || 0);
+
+                    const cardSvg = renderCardSVG(card, rot, { width: 130, height: 90 });
+                    const svgContainer = document.createElement('div');
+                    svgContainer.innerHTML = cardSvg;
+                    svgContainer.style.cursor = 'pointer';
+
+                    svgContainer.addEventListener('click', () => {
+                        if (selectedCardUid === card.uid) {
+                            selectedRotation = (selectedRotation + 90) % 360;
+                        } else {
+                            selectedCardUid = card.uid;
+                            selectedRotation = card.rotation || 0;
+                        }
+                        renderAll();
+                    });
+
+                    wrapper.appendChild(svgContainer);
+
+                    // Botão Girar
+                    const btnRotate = document.createElement('button');
+                    btnRotate.className = 'btn btn-secondary';
+                    btnRotate.style.fontSize = '10px';
+                    btnRotate.style.padding = '3px 6px';
+                    btnRotate.style.width = '100%';
+                    btnRotate.textContent = `Girar (${rot}°)`;
+
+                    btnRotate.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        selectedCardUid = card.uid;
+                        selectedRotation = (rot + 90) % 360;
+                        renderAll();
+                    });
+
+                    wrapper.appendChild(btnRotate);
+                    playerHandEl.appendChild(wrapper);
+                });
+            }
+
+            function renderTelemetry() {
+                const analysis = engine.lastCircuitAnalysis || engine.analyzeCircuits();
+                const branch = analysis.primaryBranch || {};
+
+                if (telemetryReq) telemetryReq.textContent = `${branch.rTotal || 0} Ω`;
+                if (telemetryCurrent) telemetryCurrent.textContent = `${branch.iTheoretical || '0.00'} A`;
+
+                if (verdictStatus && verdictDesc) {
+                    if (branch.verdict === 'NOMINAL') {
+                        verdictStatus.textContent = 'STATUS: OPERAÇÃO NOMINAL';
+                        verdictStatus.style.color = 'var(--signal-green)';
+                        verdictDesc.textContent = branch.explanation;
+                    } else if (branch.verdict === 'SOBRETENSAO') {
+                        verdictStatus.textContent = 'STATUS: SOBRETENSÃO / CURTO';
+                        verdictStatus.style.color = 'var(--signal-red)';
+                        verdictDesc.textContent = branch.explanation;
+                    } else if (branch.verdict === 'SUBTENSAO') {
+                        verdictStatus.textContent = 'STATUS: SUBTENSÃO (SEGURO)';
+                        verdictStatus.style.color = 'var(--signal-amber)';
+                        verdictDesc.textContent = branch.explanation;
+                    } else {
+                        verdictStatus.textContent = 'STATUS: MALHA ABERTA';
+                        verdictStatus.style.color = 'var(--signal-blue)';
+                        verdictDesc.textContent = branch.explanation || 'Circuito em expansão.';
+                    }
+                }
+            }
+
+            function handlePlaceCard(x, y, cardUid, rotation) {
+                const curPlayer = engine.players.find(p => p.id === myPlayerId);
+                const card = curPlayer.hand.find(c => c.uid === cardUid);
+
+                const result = engine.playCard(myPlayerId, x, y, cardUid, rotation);
+                if (result.success) {
+                    addLog(`Operador jogou ${card.name} em (${x}, ${y}) a ${rotation}°.`, 'success');
+                    selectedCardUid = null;
+                    selectedRotation = 0;
+
+                    if (result.analysis && result.analysis.primaryBranch && result.analysis.primaryBranch.isClosed) {
+                        addLog(`[CIRCUITO] ${result.analysis.primaryBranch.explanation}`, result.analysis.primaryBranch.verdict === 'SOBRETENSAO' ? 'danger' : 'alert');
+                    }
+
+                    if (currentMode === 'p2p') {
+                        sendP2pState(`Colega jogou ${card.name} em (${x}, ${y}).`, 'success');
+                    }
+
+                    renderAll();
+                } else {
+                    alert('Jogada inválida: ' + result.reason);
+                }
+            }
+
+            // Descarte de 3 cartas
+            document.getElementById('btn-discard-pass').addEventListener('click', () => {
+                const isMyTurn = (currentMode === 'bot' && engine.turnIndex === 0) ||
+                                 (currentMode === 'p2p' && ((isP2pHost && engine.turnIndex === 0) || (!isP2pHost && engine.turnIndex === 1)));
+
+                if (!isMyTurn) return alert('Aguarde o seu turno.');
+
+                if (confirm('Deseja descartar as 3 cartas e passar o turno?')) {
+                    engine.discardAndPass(myPlayerId);
+                    addLog('Operador descartou a mão e comprou 3 novas cartas.', 'alert');
+                    selectedCardUid = null;
+                    selectedRotation = 0;
+                    if (currentMode === 'p2p') {
+                        sendP2pState('Colega descartou a mão.', 'alert');
+                    }
+                    renderAll();
+                }
+            });
+
+            // Turno do Bot com IA
+            let botThinking = false;
+            function triggerBotTurn() {
+                if (botThinking) return;
+                botThinking = true;
+
+                setTimeout(() => {
+                    const botMove = engine.getBestBotMove();
+                    if (botMove) {
+                        const res = engine.playCard('p2', botMove.x, botMove.y, botMove.cardUid, botMove.rotation);
+                        if (res.success) {
+                            addLog(`[BOT IA] Jogou ${botMove.cardName} em (${botMove.x}, ${botMove.y}) a ${botMove.rotation}°.`, 'bot');
+                            if (res.analysis && res.analysis.primaryBranch && res.analysis.primaryBranch.isClosed) {
+                                addLog(`[CIRCUITO] ${res.analysis.primaryBranch.explanation}`, res.analysis.primaryBranch.verdict === 'SOBRETENSAO' ? 'danger' : 'alert');
+                            }
+                        }
+                    } else {
+                        // Sem movimentos legais -> descarta
+                        engine.discardAndPass('p2');
+                        addLog('[BOT IA] Sem jogadas válidas na grade. Descartou 3 cartas e passou a vez.', 'alert');
+                    }
+
+                    botThinking = false;
+                    renderAll();
+                }, 750); // Delay natural de 750ms para sensação de IA analisando a mesa
+            }
+
+            // Controles de Pan e Zoom
+            const btnZoomIn = document.getElementById('btn-zoom-in');
+            const btnZoomOut = document.getElementById('btn-zoom-out');
+            const btnZoomReset = document.getElementById('btn-zoom-reset');
+
+            function updateTransform() {
+                if (!gridCanvas) return;
+                gridCanvas.style.transform = `translate(calc(-50% + ${panX}px), calc(-50% + ${panY}px)) scale(${zoom})`;
+            }
+
+            btnZoomIn.addEventListener('click', () => { zoom = Math.min(zoom + 0.15, 2.2); updateTransform(); });
+            btnZoomOut.addEventListener('click', () => { zoom = Math.max(zoom - 0.15, 0.45); updateTransform(); });
+            btnZoomReset.addEventListener('click', () => { zoom = 1.0; panX = 0; panY = 0; updateTransform(); });
+
+            gridViewport.addEventListener('mousedown', (e) => {
+                if (e.target.closest('.board-slot-target')) return;
+                isPanning = true;
+                startX = e.clientX - panX;
+                startY = e.clientY - panY;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isPanning) return;
+                panX = e.clientX - startX;
+                panY = e.clientY - startY;
+                updateTransform();
+            });
+
+            window.addEventListener('mouseup', () => { isPanning = false; });
+
+            // Inicia automaticamente no modo Solo Bot
+            startSoloBotGame();
+        });
+    </script>
+</body>
+</html>
