@@ -22,10 +22,13 @@
 
         <div class="top-telemetry">
             <div class="meter-pill" style="color:var(--copper-bright); border-color:var(--copper-base);">
-                BARALHO: <strong id="top-deck-count">69</strong>
+                BARALHO: <strong id="top-deck-count">65</strong>
             </div>
             <div class="meter-pill" style="color:var(--signal-green); border-color:var(--signal-green);">
                 VIDAS: <strong id="top-lives-count">3 / 3</strong>
+            </div>
+            <div class="meter-pill" style="color:var(--signal-blue); border-color:var(--signal-blue);">
+                SALVOS: <strong id="top-saved-count">0</strong>
             </div>
             <div class="meter-pill" id="turn-badge" style="color:var(--signal-blue); border-color:var(--signal-blue);">
                 TURNO: <strong id="top-turn-player">SUA VEZ (OPERADOR)</strong>
@@ -232,6 +235,7 @@
             const verdictDesc = document.getElementById('verdict-desc');
             const topDeckCount = document.getElementById('top-deck-count');
             const topLivesCount = document.getElementById('top-lives-count');
+            const topSavedCount = document.getElementById('top-saved-count');
             const topTurnPlayer = document.getElementById('top-turn-player');
             const gameModeBadge = document.getElementById('game-mode-badge');
 
@@ -426,6 +430,7 @@
 
                 if (topDeckCount) topDeckCount.textContent = engine.deck.length;
                 if (topLivesCount) topLivesCount.textContent = `${engine.networkLives} / 3`;
+                if (topSavedCount) topSavedCount.textContent = `${engine.savedEquipments || 0}`;
 
                 const isMyTurn = (currentMode === 'bot' && engine.turnIndex === 0) ||
                                  (currentMode === 'p2p' && ((isP2pHost && engine.turnIndex === 0) || (!isP2pHost && engine.turnIndex === 1)));
