@@ -55,6 +55,20 @@
         </div>
     </div>
 
+    <!-- HUD TOOLTIP NODAL INTERATIVO -->
+    <div id="circuit-hud-tooltip" class="circuit-hud-tooltip">
+        <div class="hud-title"><span id="hud-card-name">COMPONENTE</span> <span id="hud-coord" style="font-size:10px; color:#94a3b8;">(0,0)</span></div>
+        <div class="hud-grid">
+            <div class="hud-item"><span class="hud-label">Nó Entrada:</span> <span class="hud-val" id="hud-v-in">0.0V</span></div>
+            <div class="hud-item"><span class="hud-label">Nó Saída:</span> <span class="hud-val" id="hud-v-out">0.0V</span></div>
+            <div class="hud-item"><span class="hud-label">Queda ΔV:</span> <span class="hud-val" id="hud-delta-v">0.0V</span></div>
+            <div class="hud-item"><span class="hud-label">Corrente I:</span> <span class="hud-val" id="hud-current">0.00A</span></div>
+            <div class="hud-item"><span class="hud-label">Potência P:</span> <span class="hud-val" id="hud-power">0.0W</span></div>
+            <div class="hud-item"><span class="hud-label">Resistência R:</span> <span class="hud-val" id="hud-res">0Ω</span></div>
+        </div>
+        <div class="hud-status" id="hud-status">STATUS DA MALHA</div>
+    </div>
+
     <!-- LAYOUT PRINCIPAL -->
     <main class="main-layout">
         
@@ -502,6 +516,73 @@
                 }
             }
 
+            // Controles do HUD Tooltip Nodal
+            const hudTooltip = document.getElementById('circuit-hud-tooltip');
+            const hudCardName = document.getElementById('hud-card-name');
+            const hudCoord = document.getElementById('hud-coord');
+            const hudVIn = document.getElementById('hud-v-in');
+            const hudVOut = document.getElementById('hud-v-out');
+            const hudDeltaV = document.getElementById('hud-delta-v');
+            const hudCurrent = document.getElementById('hud-current');
+            const hudPower = document.getElementById('hud-power');
+            const hudRes = document.getElementById('hud-res');
+            const hudStatus = document.getElementById('hud-status');
+
+            function showHUDTooltip(e, card, gx, gy) {
+                if (!hudTooltip) return;
+                const telem = card.telemetry || { vIn: 0, vOut: 0, deltaV: 0, current: 0, power: 0, status: 'DESCONECTADO' };
+
+                if (hudCardName) hudCardName.textContent = card.name;
+                if (hudCoord) hudCoord.textContent = `(${gx}, ${gy})`;
+                if (hudVIn) hudVIn.textContent = `${(telem.vIn || 0).toFixed(1)}V`;
+                if (hudVOut) hudVOut.textContent = `${(telem.vOut || 0).toFixed(1)}V`;
+                if (hudDeltaV) hudDeltaV.textContent = `${(telem.deltaV || 0).toFixed(1)}V`;
+                if (hudCurrent) hudCurrent.textContent = `${(telem.current || 0).toFixed(2)}A`;
+                if (hudPower) hudPower.textContent = `${(telem.power || 0).toFixed(1)}W`;
+                if (hudRes) hudRes.textContent = `${card.r !== undefined ? card.r + 'Ω' : '0Ω'}`;
+
+                if (hudStatus) {
+                    hudStatus.className = 'hud-status';
+                    if (telem.status === 'NOMINAL' || telem.status === 'FONTE_12V') {
+                        hudStatus.classList.add('nominal');
+                        hudStatus.textContent = card.type === 'equipment' ? '🟢 OPERAÇÃO NOMINAL (SALVO)' : '⚡ FONTE 12V ATIVA';
+                    } else if (telem.status === 'SOBRETENSAO' || card.isBurned) {
+                        hudStatus.classList.add('overvoltage');
+                        hudStatus.textContent = '💥 SOBRETENSÃO / QUEIMADO';
+                    } else if (telem.current > 0.001) {
+                        hudStatus.textContent = `⚡ CORRENTE ATIVA (${(telem.current).toFixed(2)}A)`;
+                    } else {
+                        hudStatus.textContent = '⚪ MALHA ABERTA (0.00A)';
+                    }
+                }
+
+                hudTooltip.style.display = 'block';
+                positionHUDTooltip(e);
+            }
+
+            function positionHUDTooltip(e) {
+                if (!hudTooltip) return;
+                const tipW = 280;
+                const tipH = 140;
+
+                let left = e.clientX + 16;
+                let top = e.clientY + 16;
+
+                if (left + tipW > window.innerWidth) {
+                    left = e.clientX - tipW - 16;
+                }
+                if (top + tipH > window.innerHeight) {
+                    top = e.clientY - tipH - 16;
+                }
+
+                hudTooltip.style.left = `${left}px`;
+                hudTooltip.style.top = `${top}px`;
+            }
+
+            function hideHUDTooltip() {
+                if (hudTooltip) hudTooltip.style.display = 'none';
+            }
+
             function renderBoard() {
                 if (!gridCanvas) return;
                 gridCanvas.innerHTML = '';
@@ -509,14 +590,20 @@
                 const CARD_W = 140;
                 const CARD_H = 98;
 
-                // Renderiza cartas da mesa
+                // Renderiza cartas da mesa com suporte a MNA e fuligem
                 Object.keys(engine.grid).forEach(key => {
                     const node = engine.grid[key];
                     const [gx, gy] = key.split(',').map(Number);
                     const isBurned = !!(node.card && node.card.isBurned);
+                    const telem = node.card.telemetry || {};
 
                     const el = document.createElement('div');
-                    el.className = isBurned ? 'board-card-node card-burned' : 'board-card-node';
+                    const classList = ['board-card-node'];
+                    if (isBurned) classList.push('card-burned');
+                    else if (telem.status === 'NOMINAL') classList.push('card-nominal-active');
+                    else if (telem.current > 0.05) classList.push('card-active-current');
+
+                    el.className = classList.join(' ');
                     el.style.left = `${gx * CARD_W}px`;
                     el.style.top = `${gy * CARD_H}px`;
 
@@ -525,6 +612,11 @@
                         height: CARD_H,
                         isPlaced: true
                     });
+
+                    // Eventos de Telemetria Nodal Interativa (Hover)
+                    el.addEventListener('mouseenter', (e) => showHUDTooltip(e, node.card, gx, gy));
+                    el.addEventListener('mousemove', (e) => positionHUDTooltip(e));
+                    el.addEventListener('mouseleave', () => hideHUDTooltip());
 
                     gridCanvas.appendChild(el);
                 });
@@ -615,16 +707,17 @@
             function renderTelemetry() {
                 const analysis = engine.lastCircuitAnalysis || engine.analyzeCircuits();
                 const branch = analysis.primaryBranch || {};
+                const mna = analysis.mna || {};
 
                 if (telemetryReq) telemetryReq.textContent = `${branch.rTotal || 0} Ω`;
-                if (telemetryCurrent) telemetryCurrent.textContent = `${branch.iTheoretical || '0.00'} A`;
+                if (telemetryCurrent) telemetryCurrent.textContent = `${mna.maxCurrent !== undefined ? mna.maxCurrent.toFixed(2) : branch.iTheoretical || '0.00'} A`;
 
                 if (verdictStatus && verdictDesc) {
-                    if (branch.verdict === 'NOMINAL') {
+                    if (branch.verdict === 'NOMINAL' || (mna.equipmentsSummary && mna.equipmentsSummary.some(e => e.status === 'NOMINAL'))) {
                         verdictStatus.textContent = 'STATUS: OPERAÇÃO NOMINAL';
                         verdictStatus.style.color = 'var(--signal-green)';
                         verdictDesc.textContent = branch.explanation;
-                    } else if (branch.verdict === 'SOBRETENSAO') {
+                    } else if (branch.verdict === 'SOBRETENSAO' || mna.deadShort || (mna.equipmentsSummary && mna.equipmentsSummary.some(e => e.status === 'SOBRETENSAO'))) {
                         verdictStatus.textContent = 'STATUS: SOBRETENSÃO / CURTO';
                         verdictStatus.style.color = 'var(--signal-red)';
                         verdictDesc.textContent = branch.explanation;

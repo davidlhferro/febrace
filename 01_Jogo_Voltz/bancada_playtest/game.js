@@ -1,7 +1,7 @@
 /**
  * BANCADA DE TESTE RÁPIDO VOLTZ — Motor Principal & IA de Teste
- * Arquitetura Unslop: Regras Canônicas de Bandido, Física de Circuitos (Lei de Ohm e Divisores),
- * One-Shot Penalties, IA Preventiva Algébrica do Bot (Anti-Suicídio) e Sistema de Diagnóstico de Sobretensão.
+ * Arquitetura Unslop: Regras Canônicas de Bandido, Análise Nodal Modificada (MNA / Kirchhoff em Grafos),
+ * Solucionador Linear Gaussiano de Alta Precisão, Telemetria Física Nodal (V, I, P) e IA Preditiva.
  */
 
 // -------------------------------------------------------------
@@ -203,7 +203,317 @@ function renderCardSVG(card, rotation = 0, options = {}) {
 }
 
 // -------------------------------------------------------------
-// 3. MOTOR DA GRADE 2D & FÍSICA DOS CIRCUITOS
+// 3. SOLUCIONADOR ELÉTRICO NODAL MODIFICADO (MNA / KIRCHHOFF)
+// -------------------------------------------------------------
+function solveCircuitMNA(grid) {
+    const parent = {};
+    function find(i) {
+        if (!parent[i]) parent[i] = i;
+        if (parent[i] === i) return i;
+        parent[i] = find(parent[i]);
+        return parent[i];
+    }
+    function union(i, j) {
+        const rootI = find(i);
+        const rootJ = find(j);
+        if (rootI !== rootJ) {
+            parent[rootI] = rootJ;
+        }
+    }
+
+    const gridKeys = Object.keys(grid);
+    if (gridKeys.length === 0 || !grid['0,0']) {
+        return { success: false, nodeVoltages: {}, branches: [], maxCurrent: 0, deadShort: false, equipmentsSummary: [] };
+    }
+
+    // A. Unir contatos externos entre cartas vizinhas
+    gridKeys.forEach(key => {
+        const node = grid[key];
+        const [x, y] = key.split(',').map(Number);
+        const ports = node.card.currentPorts || getRotatedPorts(node.card.basePorts, node.card.rotation || 0);
+
+        // Vizinho à direita (right -> left)
+        if (ports.right && grid[`${x+1},${y}`]) {
+            const nbPorts = grid[`${x+1},${y}`].card.currentPorts || getRotatedPorts(grid[`${x+1},${y}`].card.basePorts, grid[`${x+1},${y}`].card.rotation || 0);
+            if (nbPorts.left) {
+                union(`${x},${y}@right`, `${x+1},${y}@left`);
+            }
+        }
+        // Vizinho abaixo (bottom -> top)
+        if (ports.bottom && grid[`${x},${y+1}`]) {
+            const nbPorts = grid[`${x},${y+1}`].card.currentPorts || getRotatedPorts(grid[`${x},${y+1}`].card.basePorts, grid[`${x},${y+1}`].card.rotation || 0);
+            if (nbPorts.top) {
+                union(`${x},${y}@bottom`, `${x},${y+1}@top`);
+            }
+        }
+    });
+
+    // B. Unir portas internas de condutores 0Ω (wire, fuse, generator)
+    gridKeys.forEach(key => {
+        const node = grid[key];
+        const [x, y] = key.split(',').map(Number);
+        const card = node.card;
+        const ports = card.currentPorts || getRotatedPorts(card.basePorts, card.rotation || 0);
+        const activeSides = ['top', 'right', 'bottom', 'left'].filter(s => ports[s]);
+
+        if (card.type === 'generator' || card.type === 'wire' || card.type === 'fuse') {
+            for (let i = 1; i < activeSides.length; i++) {
+                union(`${x},${y}@${activeSides[0]}`, `${x},${y}@${activeSides[i]}`);
+            }
+        }
+    });
+
+    // C. Identificar supernós fixos (Gerador = 12V, GND = 0V)
+    const fixedVoltages = {};
+    let deadShort = false;
+
+    // Gerador 12V em (0,0)
+    const genNode = grid['0,0'];
+    const genPorts = genNode.card.currentPorts || getRotatedPorts(genNode.card.basePorts, genNode.card.rotation || 0);
+    const genActiveSide = ['top', 'right', 'bottom', 'left'].find(s => genPorts[s]) || 'top';
+    const genSupernode = find(`0,0@${genActiveSide}`);
+    fixedVoltages[genSupernode] = 12.0;
+
+    // GNDs 0V
+    gridKeys.forEach(key => {
+        const node = grid[key];
+        const [x, y] = key.split(',').map(Number);
+        const card = node.card;
+        if (card.type === 'gnd') {
+            const ports = card.currentPorts || getRotatedPorts(card.basePorts, card.rotation || 0);
+            const activeSide = ['top', 'right', 'bottom', 'left'].find(s => ports[s]);
+            if (activeSide) {
+                const gndSupernode = find(`${x},${y}@${activeSide}`);
+                if (fixedVoltages[gndSupernode] === 12.0) {
+                    deadShort = true; // Curto direto 0Ω entre fonte e terra!
+                }
+                fixedVoltages[gndSupernode] = 0.0;
+            }
+        }
+    });
+
+    // D. Coletar todos os ramos resistivos (Resistores e Aparelhos)
+    const branches = [];
+    gridKeys.forEach(key => {
+        const node = grid[key];
+        const [x, y] = key.split(',').map(Number);
+        const card = node.card;
+        const ports = card.currentPorts || getRotatedPorts(card.basePorts, card.rotation || 0);
+        const activeSides = ['top', 'right', 'bottom', 'left'].filter(s => ports[s]);
+
+        if (card.type === 'resistor' || card.type === 'equipment') {
+            if (activeSides.length >= 2) {
+                const nodeU = find(`${x},${y}@${activeSides[0]}`);
+                const nodeV = find(`${x},${y}@${activeSides[1]}`);
+                const r = Math.max(0.1, card.r || 1);
+                branches.push({
+                    card,
+                    x, y,
+                    u: nodeU,
+                    v: nodeV,
+                    r,
+                    g: 1 / r,
+                    termU: `${x},${y}@${activeSides[0]}`,
+                    termV: `${x},${y}@${activeSides[1]}`
+                });
+            }
+        }
+    });
+
+    // E. Coletar lista de todos os supernós do grafo
+    const allSupernodesSet = new Set();
+    gridKeys.forEach(key => {
+        const node = grid[key];
+        const [x, y] = key.split(',').map(Number);
+        const ports = node.card.currentPorts || getRotatedPorts(node.card.basePorts, node.card.rotation || 0);
+        ['top', 'right', 'bottom', 'left'].forEach(s => {
+            if (ports[s]) {
+                allSupernodesSet.add(find(`${x},${y}@${s}`));
+            }
+        });
+    });
+
+    const allSupernodes = Array.from(allSupernodesSet);
+    const freeSupernodes = allSupernodes.filter(sn => fixedVoltages[sn] === undefined);
+
+    const freeIdxMap = {};
+    freeSupernodes.forEach((sn, idx) => { freeIdxMap[sn] = idx; });
+
+    const N = freeSupernodes.length;
+    const nodeVoltages = { ...fixedVoltages };
+
+    if (N > 0) {
+        // Monta matriz de condutância G [N x N] e vetor I [N]
+        const G = Array.from({ length: N }, () => new Float64Array(N));
+        const I = new Float64Array(N);
+
+        branches.forEach(b => {
+            const isUFree = freeIdxMap[b.u] !== undefined;
+            const isVFree = freeIdxMap[b.v] !== undefined;
+
+            if (isUFree && isVFree) {
+                const uIdx = freeIdxMap[b.u];
+                const vIdx = freeIdxMap[b.v];
+                G[uIdx][uIdx] += b.g;
+                G[vIdx][vIdx] += b.g;
+                G[uIdx][vIdx] -= b.g;
+                G[vIdx][uIdx] -= b.g;
+            } else if (isUFree && !isVFree) {
+                const uIdx = freeIdxMap[b.u];
+                G[uIdx][uIdx] += b.g;
+                I[uIdx] += b.g * (fixedVoltages[b.v] || 0);
+            } else if (!isUFree && isVFree) {
+                const vIdx = freeIdxMap[b.v];
+                G[vIdx][vIdx] += b.g;
+                I[vIdx] += b.g * (fixedVoltages[b.u] || 0);
+            }
+        });
+
+        // Eliminação Gaussiana com Pivotamento Parcial
+        for (let i = 0; i < N; i++) {
+            let maxRow = i;
+            let maxVal = Math.abs(G[i][i]);
+            for (let r = i + 1; r < N; r++) {
+                if (Math.abs(G[r][i]) > maxVal) {
+                    maxVal = Math.abs(G[r][i]);
+                    maxRow = r;
+                }
+            }
+
+            if (maxVal < 1e-12) {
+                continue;
+            }
+
+            if (maxRow !== i) {
+                const tempRow = G[i];
+                G[i] = G[maxRow];
+                G[maxRow] = tempRow;
+                const tempI = I[i];
+                I[i] = I[maxRow];
+                I[maxRow] = tempI;
+            }
+
+            for (let r = i + 1; r < N; r++) {
+                if (Math.abs(G[r][i]) > 1e-12) {
+                    const factor = G[r][i] / G[i][i];
+                    for (let c = i; c < N; c++) {
+                        G[r][c] -= factor * G[i][c];
+                    }
+                    I[r] -= factor * I[i];
+                }
+            }
+        }
+
+        // Substituição Regressiva
+        const solV = new Float64Array(N);
+        for (let i = N - 1; i >= 0; i--) {
+            if (Math.abs(G[i][i]) > 1e-12) {
+                let sum = I[i];
+                for (let c = i + 1; c < N; c++) {
+                    sum -= G[i][c] * solV[c];
+                }
+                solV[i] = sum / G[i][i];
+            } else {
+                solV[i] = 0.0;
+            }
+        }
+
+        freeSupernodes.forEach((sn, idx) => {
+            nodeVoltages[sn] = Math.round(solV[idx] * 100) / 100;
+        });
+    }
+
+    // F. Calcular parâmetros físicos para cada componente
+    let maxCurrent = 0;
+    const equipmentsSummary = [];
+
+    const solvedBranches = branches.map(b => {
+        const vU = nodeVoltages[b.u] !== undefined ? nodeVoltages[b.u] : 0;
+        const vV = nodeVoltages[b.v] !== undefined ? nodeVoltages[b.v] : 0;
+        const deltaV = Math.abs(vU - vV);
+        const current = deltaV / b.r;
+        const power = deltaV * current;
+        if (current > maxCurrent) maxCurrent = current;
+
+        let status = 'ABERTO';
+        const vNom = b.card.vNom || 4;
+
+        if (b.card.type === 'equipment') {
+            if (current < 0.001) {
+                status = 'SUBTENSAO';
+            } else if (deltaV > vNom + 0.3) {
+                status = 'SOBRETENSAO';
+            } else if (Math.abs(deltaV - vNom) <= 0.3) {
+                status = 'NOMINAL';
+            } else {
+                status = 'SUBTENSAO';
+            }
+
+            equipmentsSummary.push({
+                x: b.x,
+                y: b.y,
+                name: b.card.name,
+                vNom,
+                vReceived: Math.round(deltaV * 10) / 10,
+                current: Math.round(current * 100) / 100,
+                status
+            });
+        } else {
+            status = current > 0.001 ? 'OPERANDO' : 'ABERTO';
+        }
+
+        const branchData = {
+            card: b.card,
+            x: b.x,
+            y: b.y,
+            vIn: Math.round(Math.max(vU, vV) * 100) / 100,
+            vOut: Math.round(Math.min(vU, vV) * 100) / 100,
+            deltaV: Math.round(deltaV * 100) / 100,
+            current: Math.round(current * 100) / 100,
+            power: Math.round(power * 100) / 100,
+            status,
+            r: b.r
+        };
+
+        // Salva telemetria diretamente na carta da grade
+        if (grid[`${b.x},${b.y}`]) {
+            grid[`${b.x},${b.y}`].card.telemetry = branchData;
+        }
+
+        return branchData;
+    });
+
+    // Atualiza telemetria de condutores, fusíveis, gerador e GND
+    gridKeys.forEach(key => {
+        const node = grid[key];
+        const [x, y] = key.split(',').map(Number);
+        const card = node.card;
+        if (card.type === 'generator') {
+            card.telemetry = { vIn: 12.0, vOut: 12.0, deltaV: 0, current: Math.round(maxCurrent * 100) / 100, power: Math.round(12 * maxCurrent * 100) / 100, status: 'FONTE_12V' };
+        } else if (card.type === 'gnd') {
+            card.telemetry = { vIn: 0.0, vOut: 0.0, deltaV: 0, current: Math.round(maxCurrent * 100) / 100, power: 0, status: 'TERRA_0V' };
+        } else if (card.type === 'wire' || card.type === 'fuse') {
+            const ports = card.currentPorts || getRotatedPorts(card.basePorts, card.rotation || 0);
+            const activeSide = ['top', 'right', 'bottom', 'left'].find(s => ports[s]);
+            const sn = activeSide ? find(`${x},${y}@${activeSide}`) : null;
+            const v = sn && nodeVoltages[sn] !== undefined ? Math.round(nodeVoltages[sn] * 100) / 100 : 0;
+            card.telemetry = { vIn: v, vOut: v, deltaV: 0, current: Math.round(maxCurrent * 100) / 100, power: 0, status: maxCurrent > 0.001 ? 'CONDUTOR_ATIVO' : 'ABERTO' };
+        }
+    });
+
+    return {
+        success: true,
+        nodeVoltages,
+        branches: solvedBranches,
+        maxCurrent: Math.round(maxCurrent * 100) / 100,
+        deadShort,
+        equipmentsSummary,
+        findSupernode: find
+    };
+}
+
+// -------------------------------------------------------------
+// 4. MOTOR DA GRADE 2D & FÍSICA DOS CIRCUITOS
 // -------------------------------------------------------------
 class VoltzPlaytestEngine {
     constructor() {
@@ -299,9 +609,6 @@ class VoltzPlaytestEngine {
                 const myPortActive = !!myPorts[nb.dir];
                 const neighborPortActive = !!neighborPorts[nb.opp];
 
-                // REGRA DE OURO DO BANDIDO:
-                // Se minha porta é cobre, a do vizinho DEVE ser cobre.
-                // Se minha porta é parede (fechada), a do vizinho DEVE ser parede (fechada).
                 if (myPortActive !== neighborPortActive) {
                     return {
                         valid: false,
@@ -330,7 +637,6 @@ class VoltzPlaytestEngine {
     getValidSlotsForCard(card, rotation = 0) {
         const potentialCoords = new Set();
 
-        // Pega todos os vizinhos vazios das cartas atuais da mesa
         Object.keys(this.grid).forEach(key => {
             const [gx, gy] = key.split(',').map(Number);
             const candidates = [
@@ -392,7 +698,7 @@ class VoltzPlaytestEngine {
             player.hand.push(this.deck.pop());
         }
 
-        // Análise de circuito em tempo real aplicando penalidade apenas no fechamento (One-Shot Penalty)
+        // Análise Nodal MNA em tempo real
         this.lastCircuitAnalysis = this.analyzeCircuits(true);
 
         if (this.networkLives <= 0) {
@@ -417,12 +723,10 @@ class VoltzPlaytestEngine {
         const player = this.players.find(p => p.id === playerId);
         if (!player) return false;
 
-        // Devolve as cartas para o fundo do monte
         while (player.hand.length > 0) {
             this.deck.unshift(player.hand.pop());
         }
 
-        // Compra 3 novas
         for (let i = 0; i < 3; i++) {
             if (this.deck.length > 0) {
                 player.hand.push(this.deck.pop());
@@ -433,26 +737,9 @@ class VoltzPlaytestEngine {
         return true;
     }
 
-    // Análise de Física do Circuito (Traçado a partir do Gerador 0,0)
+    // Análise Nodal Global e Traçado de Malhas
     analyzeCircuits(applyPenalties = false) {
-        const genNode = this.grid['0,0'];
-        if (!genNode) {
-            return {
-                branches: [],
-                primaryBranch: { rTotal: 0, iTheoretical: '0.00', isClosed: false, verdict: 'ABERTO', explanation: 'Gerador ausente.' },
-                newOvervoltagesCount: 0,
-                newSuccessCount: 0,
-                deckCount: this.deck.length,
-                networkLives: this.networkLives,
-                savedEquipments: this.savedEquipments,
-                overvoltageEvent: null
-            };
-        }
-
-        const branches = [];
-        let newOvervoltagesCount = 0;
-        let newSuccessCount = 0;
-        let overvoltageEvent = null;
+        const mna = solveCircuitMNA(this.grid);
 
         const genOutputs = [
             { dir: 'top', startX: 0, startY: -1, enterFrom: 'bottom' },
@@ -460,6 +747,11 @@ class VoltzPlaytestEngine {
             { dir: 'bottom', startX: 0, startY: 1, enterFrom: 'top' },
             { dir: 'left', startX: -1, startY: 0, enterFrom: 'right' }
         ];
+
+        const branches = [];
+        let newOvervoltagesCount = 0;
+        let newSuccessCount = 0;
+        let overvoltageEvent = null;
 
         genOutputs.forEach((out, branchIndex) => {
             const branch = this.traceBranch(out.startX, out.startY, out.enterFrom);
@@ -471,8 +763,6 @@ class VoltzPlaytestEngine {
                 };
                 branches.push(branchObj);
 
-                // CONTROLE DE PUNIÇÃO ÚNICA (ONE-SHOT PENALTY):
-                // Só processa penalidade ou sucesso quando o ramo é FECHADO por GND ou Loop!
                 if (branch.isClosed) {
                     const lastCard = branch.cards[branch.cards.length - 1];
                     const branchSig = `${out.dir}@${lastCard.x},${lastCard.y}@${branch.isClosedGnd ? 'GND' : 'LOOP'}`;
@@ -481,7 +771,7 @@ class VoltzPlaytestEngine {
                     if (!this.processedClosedBranches.has(branchSig)) {
                         branchObj.isNewlyClosed = true;
 
-                        if (branch.verdict === 'SOBRETENSAO') {
+                        if (branch.verdict === 'SOBRETENSAO' || mna.deadShort) {
                             newOvervoltagesCount += 1;
                             overvoltageEvent = {
                                 occurred: true,
@@ -495,7 +785,6 @@ class VoltzPlaytestEngine {
                                 this.processedClosedBranches.add(branchSig);
                                 this.networkLives = Math.max(0, this.networkLives - 1);
 
-                                // Marca visualmente os nós queimados na grade permanente
                                 if (branch.burnedNodes && branch.burnedNodes.length > 0) {
                                     branch.burnedNodes.forEach(bNode => {
                                         const key = `${bNode.x},${bNode.y}`;
@@ -530,6 +819,7 @@ class VoltzPlaytestEngine {
         return {
             branches,
             primaryBranch,
+            mna,
             newOvervoltagesCount,
             newSuccessCount,
             deckCount: this.deck.length,
@@ -559,7 +849,6 @@ class VoltzPlaytestEngine {
 
             const ports = node.card.currentPorts || getRotatedPorts(node.card.basePorts, node.card.rotation || 0);
             if (!ports[incomingSide]) {
-                // Não há conexão de entrada compatível
                 break;
             }
 
@@ -583,15 +872,12 @@ class VoltzPlaytestEngine {
                 break;
             }
 
-            // Descobre a próxima saída condutora
             const otherSides = Object.keys(ports).filter(s => s !== incomingSide && ports[s]);
 
             if (otherSides.length === 0) {
-                // Trilha aberta sem continuação
                 break;
             }
 
-            // Segue a saída condutora
             const nextSide = otherSides[0];
             if (nextSide === 'top') { currY -= 1; incomingSide = 'bottom'; }
             else if (nextSide === 'bottom') { currY += 1; incomingSide = 'top'; }
@@ -670,7 +956,7 @@ class VoltzPlaytestEngine {
     }
 
     // -------------------------------------------------------------
-    // 4. IA DE TESTE AVANÇADA (INTELIGÊNCIA PREVENTIVA ALGÉBRICA)
+    // 5. IA DE TESTE AVANÇADA COM CONSULTA NODAL MNA
     // -------------------------------------------------------------
     getBestBotMove() {
         const bot = this.players.find(p => p.id === 'p2') || this.players[1];
@@ -697,20 +983,19 @@ class VoltzPlaytestEngine {
                         }
                     };
 
-                    // Análise de circuito na simulação (sem aplicar penalidades permanentes)
+                    // Análise MNA na simulação temporária
+                    const simMNA = solveCircuitMNA(this.grid);
                     const simAnalysis = this.analyzeCircuits(false);
 
                     // Reverte imediatamente a simulação
                     delete this.grid[`${slot.x},${slot.y}`];
 
-                    // Identifica o ramo específico onde esta carta foi inserida
+                    // Identifica o ramo onde esta carta foi inserida
                     const branchWithSlot = simAnalysis.branches.find(b => b.cards.some(n => n.x === slot.x && n.y === slot.y));
-
-                    // Resistência prévia acumulada no ramo que chega até este slot (sem contar a própria carta)
                     const rPrior = branchWithSlot ? Math.max(0, branchWithSlot.rTotal - (card.r || 0)) : 0;
 
                     let score = 0;
-                    let causedNewOvervoltage = false;
+                    let causedNewOvervoltage = simMNA.deadShort;
                     let causedNewNominalSuccess = false;
                     let causedNewSubvoltage = false;
                     let closedEmptyBranch = false;
@@ -735,68 +1020,62 @@ class VoltzPlaytestEngine {
                         }
                     });
 
-                    // =========================================================================
-                    // REGRAS ALGÉBRICAS DE INTELIGÊNCIA PREVENTIVA DO BOT:
-                    // =========================================================================
+                    // Verifica se qualquer aparelho no MNA sofreu sobretensão
+                    if (simMNA.equipmentsSummary.some(e => e.status === 'SOBRETENSAO')) {
+                        causedNewOvervoltage = true;
+                    }
 
                     // 1. CHECAGEM CRÍTICA DE FECHAMENTO (CURTO OU SOBRETENSÃO)
                     if (causedNewOvervoltage) {
-                        // 🚫 Penalidade Máxima: NUNCA fechar malha em curto (0Ω) ou sobretensão
                         score = -1000;
                     } else if (causedNewNominalSuccess) {
-                        // ⭐ Recompensa Máxima: Fecha circuito salvando aparelho na tensão nominal perfeita
-                        score = +300;
+                        score = +350; // Recompensa máxima por salvar aparelho
                     }
 
-                    // 2. CHECAGEM PREVENTIVA DE APARELHO EM RAMO ABERTO (FIM DAS JOGADAS SUICIDAS)
+                    // 2. CHECAGEM PREVENTIVA DE APARELHOS EM RAMOS ABERTOS
                     else if (card.type === 'equipment') {
                         const minPriorNeeded = this.getEquipmentMinPriorResistance(card);
 
                         if (rPrior < minPriorNeeded) {
-                            // 🚫 PREVENÇÃO MATEMÁTICA: O ramo NÃO possui resistores suficientes antes do aparelho!
-                            // Ex: LED 3V (exige >= 3Ω) colocado em linha de 0Ω -> Bloqueado!
+                            // Bloqueado preventivamente contra queima!
                             score = -800;
                         } else if (rPrior === minPriorNeeded) {
-                            // ⭐ Tensão nominal exata já garantida pelos resistores prévios!
-                            score = +160;
+                            score = +180; // Ponto ideal de inserção
                         } else {
-                            // Subtensão segura (seguro, mas subalimentado)
-                            score = +70;
+                            score = +70; // Subtensão segura
                         }
                     }
 
-                    // 3. CABO TERRA (GND) NO MOMENTO EXATO
+                    // 3. CABO TERRA (GND)
                     else if (card.type === 'gnd') {
                         if (closedEmptyBranch) {
-                            score = -150; // GND em ramo vazio desperdiça carta
+                            score = -150;
                         } else if (causedNewSubvoltage) {
-                            score = +15; // Subtensão é segura
+                            score = +15;
                         } else if (!branchWithSlot || !branchWithSlot.isClosed) {
-                            score = -200; // GND colocado sem fechar circuito
+                            score = -200;
                         }
                     }
 
-                    // 4. CONSTRUÇÃO E EXPANSÃO SEGURA COM RESISTORES
+                    // 4. RESISTORES (CONSTRUÇÃO DE MALHA)
                     else if (card.type === 'resistor') {
-                        // Resistor ajuda a construir a linha segura de alimentação
-                        score = +75 + ((card.r || 1) * 15);
+                        score = +80 + ((card.r || 1) * 15);
 
-                        // Bônus se o Bot tiver em mãos um aparelho que precisa exatamente dessa resistência
                         const hasEquipmentInHand = bot.hand.some(c => {
                             if (c.type !== 'equipment') return false;
                             const needed = this.getEquipmentMinPriorResistance(c);
                             return (rPrior + (card.r || 0)) <= needed;
                         });
                         if (hasEquipmentInHand) {
-                            score += 40;
+                            score += 45;
                         }
                     }
 
                     // 5. CONDUTORES E FUSÍVEIS
                     else if (card.type === 'fuse') {
-                        score = +50; // Protege o circuito
+                        score = +50;
                     } else if (card.type === 'wire') {
-                        score = +35; // Expande a malha
+                        score = +35;
                     } else {
                         score = +20;
                     }
@@ -814,22 +1093,19 @@ class VoltzPlaytestEngine {
             });
         });
 
-        // Filtra apenas movimentos positivos e seguros (score > 0)
         const safeMoves = evaluatedMoves.filter(m => m.score > 0);
 
         if (safeMoves.length === 0) {
-            // Se todas as opções levariam a curto/sobretensão ou não há jogadas seguras: descarta e passa!
-            return null;
+            return null; // Descarte consciente
         }
 
-        // Ordena pelo maior score e escolhe o movimento mais inteligente
         safeMoves.sort((a, b) => b.score - a.score);
         return safeMoves[0];
     }
 }
 
 // -------------------------------------------------------------
-// 5. EXPORTAÇÃO PARA NAVEGADOR E NODE.JS
+// 6. EXPORTAÇÃO PARA NAVEGADOR E NODE.JS
 // -------------------------------------------------------------
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -838,6 +1114,7 @@ if (typeof module !== 'undefined' && module.exports) {
         CARDS_CATALOG,
         generateFullDeck,
         VoltzPlaytestEngine,
+        solveCircuitMNA,
         renderCardSVG
     };
 }

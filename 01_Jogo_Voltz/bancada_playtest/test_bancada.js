@@ -10,6 +10,7 @@
  * 7. Renderizador SVG de Alta Fidelidade
  * 8. TESTE DO BOT PREVENTIVO (Fim das Jogadas Suicidas com LED/Servidor em 0Ω)
  * 9. TESTE DO GATILHO DE SOBRETENSÃO (Diagnóstico Físico, Queima e Marcação de Fuligem)
+ * 10. TESTE DO SOLUCIONADOR NODAL MNA (Divisores de Tensão, Paralelos e Curto 0Ω)
  */
 
 const {
@@ -18,6 +19,7 @@ const {
     CARDS_CATALOG,
     generateFullDeck,
     VoltzPlaytestEngine,
+    solveCircuitMNA,
     renderCardSVG
 } = require('./game.js');
 
@@ -243,31 +245,26 @@ assert(svgRes.includes('<svg') && svgRes.includes('1Ω'), 'renderCardSVG deve ge
 console.log('\n--- TESTE 8: Inteligência Preventiva Algébrica do Bot ---');
 const prevEngine = new VoltzPlaytestEngine();
 
-// Cenário 8.1: A mesa está vazia (apenas Gerador 12V em 0,0 com 0Ω de saída).
-// A mão do Bot contém apenas cargas que exigem resistores prévios (LED 3V, Servidor 4V, Sirene 6V).
 prevEngine.players[1].hand = [
     { id: 'load_led_3v', type: 'equipment', name: 'LED Piloto (3V // 1Ω)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, vNom: 3, r: 1, uid: 'bot_led_3v' },
     { id: 'load_servidor_4v', type: 'equipment', name: 'Servidor Central (4V // 1Ω)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, vNom: 4, r: 1, uid: 'bot_srv_4v' },
     { id: 'load_sirene_6v', type: 'equipment', name: 'Sirene de Alarme (6V // 1Ω)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, vNom: 6, r: 1, uid: 'bot_sir_6v' }
 ];
 
-// O Bot avalia a mesa:
 const suicidalEquipmentMove = prevEngine.getBestBotMove();
 assert(suicidalEquipmentMove === null, 'O Bot DEVE REJEITAR colocar LED 3V, Servidor 4V ou Sirene 6V direto no Gerador 12V (0Ω prévios).');
 
-// Cenário 8.2: Simulação de 20 turnos autônomos do Bot comprovando que nenhum aparelho é colocado prematuramente
+// Simulação de 20 turnos autônomos do Bot comprovando que nenhum aparelho é colocado prematuramente
 const sim20Engine = new VoltzPlaytestEngine();
 let prematureEquipmentPlacements = 0;
 
 for (let t = 0; t < 20; t++) {
-    // Força o turno do Bot
     sim20Engine.turnIndex = 1;
     const bestMove = sim20Engine.getBestBotMove();
 
     if (bestMove) {
         const candidateCard = sim20Engine.players[1].hand.find(c => c.uid === bestMove.cardUid);
         if (candidateCard && candidateCard.type === 'equipment') {
-            // Verifica a resistência prévia antes da jogada
             const sim = sim20Engine.playCard('p2', bestMove.x, bestMove.y, bestMove.cardUid, bestMove.rotation);
             const branch = sim.analysis.branches.find(b => b.cards.some(n => n.x === bestMove.x && n.y === bestMove.y));
             const rPrior = branch ? (branch.rTotal - candidateCard.r) : 0;
@@ -291,7 +288,6 @@ assert(prematureEquipmentPlacements === 0, 'Em 20 turnos simulados, o Bot JAMAIS
 console.log('\n--- TESTE 9: Gatilho de Queima, Fuligem e Diagnóstico Elétrico ---');
 const burnEngine = new VoltzPlaytestEngine();
 
-// Passo 9.1: Operador joga LED 3V (1Ω) em (1,0) direto no gerador 12V (0Ω)
 burnEngine.players[0].hand[0] = {
     id: 'load_led_3v',
     type: 'equipment',
@@ -306,7 +302,6 @@ const p1 = burnEngine.playCard('p1', 1, 0, 'led_burn_test', 0);
 assert(p1.success, 'LED posicionado com sucesso em (1,0).');
 assert(burnEngine.networkLives === 3, 'Enquanto a malha estiver aberta, vidas permanecem 3/3.');
 
-// Passo 9.2: Operador fecha o circuito conectando GND em (2,0)
 burnEngine.players[0].hand[0] = {
     id: 'gnd_burn_trigger',
     type: 'gnd',
@@ -319,7 +314,6 @@ burnEngine.players[0].hand[0] = {
 const p2 = burnEngine.playCard('p1', 2, 0, 'gnd_burn_uid', 0);
 assert(p2.success, 'GND posicionado fechando a malha em (2,0).');
 
-// Passo 9.3: Validar que a Sobretensão foi detectada e o evento disparado
 assert(p2.overvoltageEvent && p2.overvoltageEvent.occurred === true, 'Evento de sobretensão deve ser emitido com occurred = true.');
 assert(burnEngine.networkLives === 2, 'A rede deve consumir exatamente 1 vida pela sobrecarga (Vidas atuais: 2).');
 assert(
@@ -328,13 +322,48 @@ assert(
     'O texto de diagnóstico deve explicar detalhadamente a tensão de 12.0V aplicada sobre o LED 3V.'
 );
 
-// Passo 9.4: Validar que a carta do LED na mesa recebeu a marcação de queimada (Fuligem)
 const burnedNode = burnEngine.grid['1,0'];
 assert(!!burnedNode && burnedNode.card.isBurned === true, 'A carta de LED que sofreu sobretensão deve receber isBurned = true.');
 
-// Passo 9.5: Validar renderização SVG com estética de falha
 const svgBurned = renderCardSVG(burnedNode.card, 0);
 assert(svgBurned.includes('FALHA') && svgBurned.includes('#ef4444'), 'renderCardSVG deve renderizar a carta queimada com indicador de FALHA e cores de advertência.');
+
+// -------------------------------------------------------------
+// TESTE 10: SOLUCIONADOR NODAL MNA (DIVISORES DE TENSÃO & PARALELO)
+// -------------------------------------------------------------
+console.log('\n--- TESTE 10: Solucionador Elétrico Nodal MNA ---');
+
+// Cenário 10.1: Divisor de Tensão Série 12V -> 2Ω -> 1Ω -> GND
+// Nó 0: 12.0V | Nó 1: 4.0V | Nó 2: 0.0V
+const mnaGrid = {
+    '0,0': { x: 0, y: 0, card: { id: 'gen_12v', type: 'generator', currentPorts: { right: true, top: true, bottom: true, left: true }, rotation: 0, r: 0 } },
+    '1,0': { x: 1, y: 0, card: { id: 'res_2ohm', type: 'resistor', name: 'Resistor 2Ω', r: 2, currentPorts: { left: true, right: true }, rotation: 0 } },
+    '2,0': { x: 2, y: 0, card: { id: 'load_servidor', type: 'equipment', name: 'Servidor Central', vNom: 4, r: 1, currentPorts: { left: true, right: true }, rotation: 0 } },
+    '3,0': { x: 3, y: 0, card: { id: 'gnd', type: 'gnd', name: 'Cabo Terra', r: 0, currentPorts: { left: true }, rotation: 0 } }
+};
+
+const mnaResult = solveCircuitMNA(mnaGrid);
+assert(mnaResult.success, 'solveCircuitMNA deve resolver a rede nodal com sucesso.');
+assert(mnaResult.deadShort === false, 'O circuito em série não possui curto direto 0Ω.');
+
+// Verifica os ramos
+const res2Branch = mnaResult.branches.find(b => b.x === 1 && b.y === 0);
+const srvBranch = mnaResult.branches.find(b => b.x === 2 && b.y === 0);
+
+assert(!!res2Branch && res2Branch.vIn === 12.0 && res2Branch.vOut === 4.0, 'Resistor 2Ω deve ter Nó In = 12.0V e Nó Out = 4.0V (ΔV = 8.0V).');
+assert(res2Branch.deltaV === 8.0 && res2Branch.current === 4.0, 'Resistor 2Ω deve conduzir exatamente 4.0A.');
+assert(!!srvBranch && srvBranch.vIn === 4.0 && srvBranch.vOut === 0.0, 'Servidor 4V deve ter Nó In = 4.0V e Nó Out = 0.0V (ΔV = 4.0V).');
+assert(srvBranch.deltaV === 4.0 && srvBranch.status === 'NOMINAL', 'Servidor 4V deve operar em STATUS NOMINAL perfeito.');
+
+// Cenário 10.2: Detecção de Curto 0Ω Direto no Gerador
+const shortGrid = {
+    '0,0': { x: 0, y: 0, card: { id: 'gen_12v', type: 'generator', currentPorts: { right: true, top: true, bottom: true, left: true }, rotation: 0, r: 0 } },
+    '1,0': { x: 1, y: 0, card: { id: 'wire', type: 'wire', currentPorts: { left: true, right: true }, rotation: 0, r: 0 } },
+    '2,0': { x: 2, y: 0, card: { id: 'gnd', type: 'gnd', currentPorts: { left: true }, rotation: 0, r: 0 } }
+};
+
+const shortResult = solveCircuitMNA(shortGrid);
+assert(shortResult.deadShort === true, 'solveCircuitMNA deve detectar curto-circuito 0Ω direto entre Gerador e Terra.');
 
 console.log('\n================================================================================');
 console.log(`🎉 SUCESSO TOTAL: ${passedTests} / ${totalTests} TESTES PASSARAM COM 100% DE APROVAÇÃO!`);
