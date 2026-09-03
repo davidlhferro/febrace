@@ -1,10 +1,8 @@
-# 📋 Status dos Planos de Desenvolvimento & Pesquisa — FEBRACE 2026
+# Status dos Planos do Projeto VOLTZ
 
-| Plano | Arquivo | Status | Última Atualização |
-| :--- | :--- | :--- | :--- |
-| **Estudo Amostral & Portfólio de 4 Estudos** | `.llms/plans/plano-estudo-amostral-e-pesquisa-experimental.plan.md` | `in-progress` 🔄 | 01/09/2026 |
-| **Metodologia Experimental & 3 Jogos** | `.llms/plans/plano-metodologia-experimental-e-protocolo-3jogos.md` | `done` ✅ | 01/09/2026 |
-| **Mecânica Bandido & VOLTZ SSOT** | `.llms/project/mecanica-bandido-e-voltz-ssot.md` | `done` ✅ | 30/08/2026 |
-| **Portal & Central de Comando FEBRACE** | `.llms/plans/plano-versao-digital-multiplayer.md` | `done` ✅ | 01/09/2026 |
-| **Design Neo-Risograph Editorial Suíço** | `.llms/plans/plano-arte-editorial-e-verso-cartas.md` | `done` ✅ | 30/08/2026 |
-| **Produção do Jogo do Braço 1 (PnP)** | A ser criado após votação da equipe | `pending` ⏳ | 01/09/2026 |
+| ID / Slug | Título | Status | Criado em | Última Atualização |
+| :--- | :--- | :---: | :---: | :---: |
+| `solucionador-nodal-mna-eletrico` | Solucionador Elétrico Nodal Preciso (MNA) para VOLTZ | `done` | 2026-09-03 | 2026-09-03 |
+| `plano-versao-digital-multiplayer` | Arquitetura Multiplayer WebRTC P2P | `done` | 2026-08-26 | 2026-09-02 |
+| `plano-circuito-visivel-alta-clareza` | Renderizador Vetorial SVG de Alta Precisão | `done` | 2026-08-26 | 2026-08-30 |
+| `plano-arte-editorial-e-verso-cartas` | Direção de Arte Dark PCB e Verso de Cartas | `done` | 2026-08-30 | 2026-08-30 |
