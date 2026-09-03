@@ -39,6 +39,22 @@
         </div>
     </header>
 
+    <!-- TOAST / CARD FLUTUANTE CENTRAL DE DIAGNÓSTICO ELÉTRICO -->
+    <div id="overvoltage-toast" class="overvoltage-toast-overlay" style="display:none;">
+        <div class="overvoltage-toast-card">
+            <div class="toast-header">
+                <span class="toast-icon">💥</span>
+                <span class="toast-title">ALERTA DE SOBRECARGA ELÉTRICA</span>
+            </div>
+            <div class="toast-body" id="overvoltage-toast-msg">
+                ALERTA DE SOBRETENSÃO: O aparelho recebeu tensão acima da nominal.
+            </div>
+            <div class="toast-footer">
+                <span class="toast-badge">🔥 FUSÍVEL DE REDE ROMPIDO (-1 VIDA)</span>
+            </div>
+        </div>
+    </div>
+
     <!-- LAYOUT PRINCIPAL -->
     <main class="main-layout">
         
@@ -446,6 +462,46 @@
                 }
             }
 
+            function triggerOvervoltageFeedback(event) {
+                if (!event || !event.occurred) return;
+
+                // 1. Screen shake na mesa 2D
+                const viewport = document.getElementById('grid-viewport');
+                if (viewport) {
+                    viewport.classList.remove('circuit-shake-active');
+                    void viewport.offsetWidth;
+                    viewport.classList.add('circuit-shake-active');
+                    setTimeout(() => viewport.classList.remove('circuit-shake-active'), 650);
+                }
+
+                // 2. Flash vermelho na tela inteira
+                document.body.classList.remove('circuit-flash-active');
+                void document.body.offsetWidth;
+                document.body.classList.add('circuit-flash-active');
+                setTimeout(() => document.body.classList.remove('circuit-flash-active'), 700);
+
+                // 3. Efeito de fusível rompido no painel de vidas
+                const topLives = document.getElementById('top-lives-count');
+                if (topLives && topLives.parentElement) {
+                    const pill = topLives.parentElement;
+                    pill.classList.remove('fuse-blown');
+                    void pill.offsetWidth;
+                    pill.classList.add('fuse-blown');
+                    setTimeout(() => pill.classList.remove('fuse-blown'), 1500);
+                }
+
+                // 4. Toast flutuante central de diagnóstico elétrico
+                const toastOverlay = document.getElementById('overvoltage-toast');
+                const toastMsg = document.getElementById('overvoltage-toast-msg');
+                if (toastOverlay && toastMsg) {
+                    toastMsg.textContent = event.diagnosisMsg || 'Alerta de sobrecarga elétrica! Fusível de proteção rompido.';
+                    toastOverlay.style.display = 'block';
+                    setTimeout(() => {
+                        toastOverlay.style.display = 'none';
+                    }, 4000);
+                }
+            }
+
             function renderBoard() {
                 if (!gridCanvas) return;
                 gridCanvas.innerHTML = '';
@@ -457,9 +513,10 @@
                 Object.keys(engine.grid).forEach(key => {
                     const node = engine.grid[key];
                     const [gx, gy] = key.split(',').map(Number);
+                    const isBurned = !!(node.card && node.card.isBurned);
 
                     const el = document.createElement('div');
-                    el.className = 'board-card-node';
+                    el.className = isBurned ? 'board-card-node card-burned' : 'board-card-node';
                     el.style.left = `${gx * CARD_W}px`;
                     el.style.top = `${gy * CARD_H}px`;
 
@@ -593,7 +650,10 @@
                     selectedCardUid = null;
                     selectedRotation = 0;
 
-                    if (result.analysis && result.analysis.primaryBranch && result.analysis.primaryBranch.isClosed) {
+                    if (result.overvoltageEvent && result.overvoltageEvent.occurred) {
+                        triggerOvervoltageFeedback(result.overvoltageEvent);
+                        addLog(`[ALERTA DE FALHA] ${result.overvoltageEvent.diagnosisMsg}`, 'danger');
+                    } else if (result.analysis && result.analysis.primaryBranch && result.analysis.primaryBranch.isClosed) {
                         addLog(`[CIRCUITO] ${result.analysis.primaryBranch.explanation}`, result.analysis.primaryBranch.verdict === 'SOBRETENSAO' ? 'danger' : 'alert');
                     }
 
@@ -638,14 +698,18 @@
                         const res = engine.playCard('p2', botMove.x, botMove.y, botMove.cardUid, botMove.rotation);
                         if (res.success) {
                             addLog(`[BOT IA] Jogou ${botMove.cardName} em (${botMove.x}, ${botMove.y}) a ${botMove.rotation}°.`, 'bot');
-                            if (res.analysis && res.analysis.primaryBranch && res.analysis.primaryBranch.isClosed) {
+
+                            if (res.overvoltageEvent && res.overvoltageEvent.occurred) {
+                                triggerOvervoltageFeedback(res.overvoltageEvent);
+                                addLog(`[ALERTA DE FALHA] ${res.overvoltageEvent.diagnosisMsg}`, 'danger');
+                            } else if (res.analysis && res.analysis.primaryBranch && res.analysis.primaryBranch.isClosed) {
                                 addLog(`[CIRCUITO] ${res.analysis.primaryBranch.explanation}`, res.analysis.primaryBranch.verdict === 'SOBRETENSAO' ? 'danger' : 'alert');
                             }
                         }
                     } else {
-                        // Sem movimentos legais -> descarta
+                        // Sem movimentos legais ou seguros -> descarta
                         engine.discardAndPass('p2');
-                        addLog('[BOT IA] Sem jogadas válidas na grade. Descartou 3 cartas e passou a vez.', 'alert');
+                        addLog('[BOT IA] Sem jogadas seguras na grade. Descartou 3 cartas e passou a vez.', 'alert');
                     }
 
                     botThinking = false;

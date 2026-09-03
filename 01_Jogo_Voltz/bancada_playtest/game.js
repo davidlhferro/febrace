@@ -1,7 +1,7 @@
 /**
  * BANCADA DE TESTE RÁPIDO VOLTZ — Motor Principal & IA de Teste
  * Arquitetura Unslop: Regras Canônicas de Bandido, Física de Circuitos (Lei de Ohm e Divisores),
- * One-Shot Penalties (Zero bug de perda infinita de vidas), Bot Autônomo com Simulação Heurística e Suporte P2P.
+ * One-Shot Penalties, IA Preventiva Algébrica do Bot (Anti-Suicídio) e Sistema de Diagnóstico de Sobretensão.
  */
 
 // -------------------------------------------------------------
@@ -92,7 +92,7 @@ function renderCardSVG(card, rotation = 0, options = {}) {
     const rot = (rotation % 360 + 360) % 360;
 
     let bodyVisual = '';
-    const pipeColor = '#d97706';
+    const pipeColor = card.isBurned ? '#475569' : '#d97706';
     const pipeStroke = '#04070e';
     const pipeWidth = 28;
 
@@ -132,12 +132,14 @@ function renderCardSVG(card, rotation = 0, options = {}) {
         }
     } else if (card.type === 'equipment') {
         const vNom = card.vNom || 4;
+        const screenColor = card.isBurned ? '#7f1d1d' : '#020617';
+        const txtColor = card.isBurned ? '#ef4444' : '#38bdf8';
         bodyVisual = `
             <rect x="0" y="35" width="140" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
             <!-- Chassi do Aparelho -->
             <rect x="30" y="20" width="80" height="58" rx="4" fill="#0f172a" stroke="${pipeStroke}" stroke-width="3"/>
-            <rect x="36" y="26" width="68" height="34" rx="2" fill="#020617" stroke="#334155" stroke-width="1.5"/>
-            <text x="70" y="47" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="800" fill="#38bdf8" text-anchor="middle">${vNom}V</text>
+            <rect x="36" y="26" width="68" height="34" rx="2" fill="${screenColor}" stroke="${card.isBurned ? '#ef4444' : '#334155'}" stroke-width="1.5"/>
+            <text x="70" y="47" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="800" fill="${txtColor}" text-anchor="middle">${card.isBurned ? 'FALHA' : vNom + 'V'}</text>
             <text x="70" y="72" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#94a3b8" text-anchor="middle">${card.name.split(' ')[0]}</text>
         `;
     } else if (card.type === 'gnd') {
@@ -187,13 +189,13 @@ function renderCardSVG(card, rotation = 0, options = {}) {
     }
 
     return `
-    <svg width="${w}" height="${h}" viewBox="0 0 140 98" style="display:block; border-radius:4px; overflow:hidden; background:#08101e; border:1px solid #1e293b;">
+    <svg width="${w}" height="${h}" viewBox="0 0 140 98" style="display:block; border-radius:4px; overflow:hidden; background:#08101e; border:1px solid ${card.isBurned ? '#ef4444' : '#1e293b'};">
         <g transform="rotate(${rot} 70 49)">
             <!-- Fundo da Placa -->
-            <rect width="140" height="98" fill="#08101e"/>
+            <rect width="140" height="98" fill="${card.isBurned ? '#1c1012' : '#08101e'}"/>
             <!-- Malha milimétrica interna -->
-            <line x1="0" y1="49" x2="140" y2="49" stroke="#0f1c33" stroke-width="0.5"/>
-            <line x1="70" y1="0" x2="70" y2="98" stroke="#0f1c33" stroke-width="0.5"/>
+            <line x1="0" y1="49" x2="140" y2="49" stroke="${card.isBurned ? '#450a0a' : '#0f1c33'}" stroke-width="0.5"/>
+            <line x1="70" y1="0" x2="70" y2="98" stroke="${card.isBurned ? '#450a0a' : '#0f1c33'}" stroke-width="0.5"/>
             ${bodyVisual}
         </g>
     </svg>
@@ -257,6 +259,17 @@ class VoltzPlaytestEngine {
 
     getCardAt(x, y) {
         return this.grid[`${x},${y}`] || null;
+    }
+
+    // Calcula a resistência prévia mínima necessária na linha para um aparelho não queimar:
+    // R_alvo = (12 * r_eq) / V_nom
+    // R_min_previo = R_alvo - r_eq
+    getEquipmentMinPriorResistance(card) {
+        if (card.type !== 'equipment') return 0;
+        const vNom = card.vNom || 4;
+        const rEq = card.r || 1;
+        const rAlvo = (12 * rEq) / vNom;
+        return Math.max(0, Math.round((rAlvo - rEq) * 10) / 10);
     }
 
     // Validação estrita das regras de conexão de Bandido
@@ -368,7 +381,8 @@ class VoltzPlaytestEngine {
             card: {
                 ...card,
                 rotation,
-                currentPorts
+                currentPorts,
+                isBurned: false
             }
         };
 
@@ -391,6 +405,7 @@ class VoltzPlaytestEngine {
         return {
             success: true,
             analysis: this.lastCircuitAnalysis,
+            overvoltageEvent: this.lastCircuitAnalysis.overvoltageEvent || null,
             gameOver: this.gameOver,
             networkLives: this.networkLives,
             savedEquipments: this.savedEquipments
@@ -418,7 +433,7 @@ class VoltzPlaytestEngine {
         return true;
     }
 
-    // Análise de Física do Circuito (Traçado BFS a partir do Gerador 0,0)
+    // Análise de Física do Circuito (Traçado a partir do Gerador 0,0)
     analyzeCircuits(applyPenalties = false) {
         const genNode = this.grid['0,0'];
         if (!genNode) {
@@ -429,14 +444,15 @@ class VoltzPlaytestEngine {
                 newSuccessCount: 0,
                 deckCount: this.deck.length,
                 networkLives: this.networkLives,
-                savedEquipments: this.savedEquipments
+                savedEquipments: this.savedEquipments,
+                overvoltageEvent: null
             };
         }
 
-        // Rastreamento das 4 saídas ortogonais do gerador
         const branches = [];
         let newOvervoltagesCount = 0;
         let newSuccessCount = 0;
+        let overvoltageEvent = null;
 
         const genOutputs = [
             { dir: 'top', startX: 0, startY: -1, enterFrom: 'bottom' },
@@ -467,9 +483,27 @@ class VoltzPlaytestEngine {
 
                         if (branch.verdict === 'SOBRETENSAO') {
                             newOvervoltagesCount += 1;
+                            overvoltageEvent = {
+                                occurred: true,
+                                branchId: branchIndex + 1,
+                                direction: out.dir,
+                                diagnosisMsg: branch.diagnosisMsg || branch.explanation,
+                                burnedCards: branch.burnedNodes || []
+                            };
+
                             if (applyPenalties) {
                                 this.processedClosedBranches.add(branchSig);
                                 this.networkLives = Math.max(0, this.networkLives - 1);
+
+                                // Marca visualmente os nós queimados na grade permanente
+                                if (branch.burnedNodes && branch.burnedNodes.length > 0) {
+                                    branch.burnedNodes.forEach(bNode => {
+                                        const key = `${bNode.x},${bNode.y}`;
+                                        if (this.grid[key]) {
+                                            this.grid[key].card.isBurned = true;
+                                        }
+                                    });
+                                }
                             }
                         } else if (branch.verdict === 'NOMINAL') {
                             newSuccessCount += 1;
@@ -491,7 +525,6 @@ class VoltzPlaytestEngine {
             }
         });
 
-        // Resistência equivalente da malha mais ativa
         const primaryBranch = branches[0] || { rTotal: 0, iTheoretical: '0.00', isClosed: false, verdict: 'ABERTO', explanation: 'Nenhuma trilha conectada ao gerador.' };
 
         return {
@@ -501,7 +534,8 @@ class VoltzPlaytestEngine {
             newSuccessCount,
             deckCount: this.deck.length,
             networkLives: this.networkLives,
-            savedEquipments: this.savedEquipments
+            savedEquipments: this.savedEquipments,
+            overvoltageEvent
         };
     }
 
@@ -536,7 +570,7 @@ class VoltzPlaytestEngine {
             rTotal += (card.r || 0);
 
             if (card.type === 'equipment') {
-                equipments.push(card);
+                equipments.push({ ...card, nodeX: currX, nodeY: currY });
             }
 
             if (card.type === 'gnd') {
@@ -570,11 +604,17 @@ class VoltzPlaytestEngine {
 
         let verdict = 'ABERTO';
         let explanation = 'Malha aberta. Continue expandindo com resistores ou finalize com Cabo Terra (GND).';
+        let diagnosisMsg = '';
+        const burnedNodes = [];
 
         if (isClosed) {
             if (rTotal === 0) {
                 verdict = 'SOBRETENSAO';
                 explanation = 'Curto-circuito de 0Ω fechado direto no gerador! Perde 1 vida.';
+                diagnosisMsg = 'ALERTA DE CURTO-CIRCUITO: Malha fechada com 0Ω direto no Gerador 12V (Corrente infinita). O fusível de rede rompeu e consumiu 1 vida!';
+                if (branchCards.length > 0) {
+                    burnedNodes.push(branchCards[branchCards.length - 1]);
+                }
             } else if (equipments.length > 0) {
                 let hasOvervoltage = false;
                 let hasExactNominal = true;
@@ -588,6 +628,7 @@ class VoltzPlaytestEngine {
 
                     if (vEq > eq.vNom + 0.25) {
                         hasOvervoltage = true;
+                        burnedNodes.push({ x: eq.nodeX, y: eq.nodeY, cardName: eq.name, vReceived: vFormatted, vNom: eq.vNom });
                     }
                     if (Math.abs(vEq - eq.vNom) > 0.25) {
                         hasExactNominal = false;
@@ -596,7 +637,10 @@ class VoltzPlaytestEngine {
 
                 if (hasOvervoltage) {
                     verdict = 'SOBRETENSAO';
+                    const mainBurned = burnedNodes[0];
+                    const excessV = (parseFloat(mainBurned.vReceived) - mainBurned.vNom).toFixed(1);
                     explanation = `Sobretensão! ${details.join(' | ')}. Queimou fusível da rede.`;
+                    diagnosisMsg = `ALERTA DE SOBRETENSÃO: O aparelho ${mainBurned.cardName} (${mainBurned.vNom}V) recebeu ${mainBurned.vReceived}V (Excesso de +${excessV}V). O aparelho queimou e a rede consumiu 1 vida!`;
                 } else if (hasExactNominal) {
                     verdict = 'NOMINAL';
                     explanation = `Sucesso! Tensão exata operando aparelhos: ${details.join(' | ')}.`;
@@ -619,12 +663,14 @@ class VoltzPlaytestEngine {
             isClosedGnd,
             isClosedLoop,
             verdict,
-            explanation
+            explanation,
+            diagnosisMsg,
+            burnedNodes
         };
     }
 
     // -------------------------------------------------------------
-    // 4. IA DE TESTE AVANÇADA (SIMULAÇÃO HEURÍSTICA ANTES DE JOGAR)
+    // 4. IA DE TESTE AVANÇADA (INTELIGÊNCIA PREVENTIVA ALGÉBRICA)
     // -------------------------------------------------------------
     getBestBotMove() {
         const bot = this.players.find(p => p.id === 'p2') || this.players[1];
@@ -646,17 +692,23 @@ class VoltzPlaytestEngine {
                         card: {
                             ...card,
                             rotation: rot,
-                            currentPorts
+                            currentPorts,
+                            isBurned: false
                         }
                     };
 
-                    // Análise de circuito na simulação (sem aplicar penalidades na vida real)
+                    // Análise de circuito na simulação (sem aplicar penalidades permanentes)
                     const simAnalysis = this.analyzeCircuits(false);
 
                     // Reverte imediatamente a simulação
                     delete this.grid[`${slot.x},${slot.y}`];
 
-                    // Avaliação Heurística de Score
+                    // Identifica o ramo específico onde esta carta foi inserida
+                    const branchWithSlot = simAnalysis.branches.find(b => b.cards.some(n => n.x === slot.x && n.y === slot.y));
+
+                    // Resistência prévia acumulada no ramo que chega até este slot (sem contar a própria carta)
+                    const rPrior = branchWithSlot ? Math.max(0, branchWithSlot.rTotal - (card.r || 0)) : 0;
+
                     let score = 0;
                     let causedNewOvervoltage = false;
                     let causedNewNominalSuccess = false;
@@ -683,35 +735,70 @@ class VoltzPlaytestEngine {
                         }
                     });
 
-                    // REGRAS ESTRATÉGICAS DE PONTUAÇÃO DO BOT:
+                    // =========================================================================
+                    // REGRAS ALGÉBRICAS DE INTELIGÊNCIA PREVENTIVA DO BOT:
+                    // =========================================================================
+
+                    // 1. CHECAGEM CRÍTICA DE FECHAMENTO (CURTO OU SOBRETENSÃO)
                     if (causedNewOvervoltage) {
-                        // 🚫 PENALIDADE MÁXIMA: NUNCA fechar em curto de 0Ω ou queimar aparelho
+                        // 🚫 Penalidade Máxima: NUNCA fechar malha em curto (0Ω) ou sobretensão
                         score = -1000;
                     } else if (causedNewNominalSuccess) {
-                        // ⭐ RECOMPENSA MÁXIMA: Salva o aparelho com tensão nominal perfeita
-                        score = +250;
-                    } else if (card.type === 'gnd') {
-                        // Se for Cabo Terra (GND), só joga se fechar com sucesso
+                        // ⭐ Recompensa Máxima: Fecha circuito salvando aparelho na tensão nominal perfeita
+                        score = +300;
+                    }
+
+                    // 2. CHECAGEM PREVENTIVA DE APARELHO EM RAMO ABERTO (FIM DAS JOGADAS SUICIDAS)
+                    else if (card.type === 'equipment') {
+                        const minPriorNeeded = this.getEquipmentMinPriorResistance(card);
+
+                        if (rPrior < minPriorNeeded) {
+                            // 🚫 PREVENÇÃO MATEMÁTICA: O ramo NÃO possui resistores suficientes antes do aparelho!
+                            // Ex: LED 3V (exige >= 3Ω) colocado em linha de 0Ω -> Bloqueado!
+                            score = -800;
+                        } else if (rPrior === minPriorNeeded) {
+                            // ⭐ Tensão nominal exata já garantida pelos resistores prévios!
+                            score = +160;
+                        } else {
+                            // Subtensão segura (seguro, mas subalimentado)
+                            score = +70;
+                        }
+                    }
+
+                    // 3. CABO TERRA (GND) NO MOMENTO EXATO
+                    else if (card.type === 'gnd') {
                         if (closedEmptyBranch) {
-                            score = -50; // GND em ramo vazio desperdiça carta
+                            score = -150; // GND em ramo vazio desperdiça carta
                         } else if (causedNewSubvoltage) {
-                            score = +10; // Subtensão é segura mas não ideal
-                        } else {
-                            score = -100; // GND colocado aleatoriamente sem fechar circuito
+                            score = +15; // Subtensão é segura
+                        } else if (!branchWithSlot || !branchWithSlot.isClosed) {
+                            score = -200; // GND colocado sem fechar circuito
                         }
+                    }
+
+                    // 4. CONSTRUÇÃO E EXPANSÃO SEGURA COM RESISTORES
+                    else if (card.type === 'resistor') {
+                        // Resistor ajuda a construir a linha segura de alimentação
+                        score = +75 + ((card.r || 1) * 15);
+
+                        // Bônus se o Bot tiver em mãos um aparelho que precisa exatamente dessa resistência
+                        const hasEquipmentInHand = bot.hand.some(c => {
+                            if (c.type !== 'equipment') return false;
+                            const needed = this.getEquipmentMinPriorResistance(c);
+                            return (rPrior + (card.r || 0)) <= needed;
+                        });
+                        if (hasEquipmentInHand) {
+                            score += 40;
+                        }
+                    }
+
+                    // 5. CONDUTORES E FUSÍVEIS
+                    else if (card.type === 'fuse') {
+                        score = +50; // Protege o circuito
+                    } else if (card.type === 'wire') {
+                        score = +35; // Expande a malha
                     } else {
-                        // Construção e expansão segura em ramos abertos:
-                        if (card.type === 'resistor') {
-                            score = +60 + ((card.r || 1) * 10); // Prioriza construir resistência
-                        } else if (card.type === 'equipment') {
-                            score = +50; // Conecta aparelhos na bancada
-                        } else if (card.type === 'wire') {
-                            score = +35; // Expande trilha
-                        } else if (card.type === 'fuse') {
-                            score = +40; // Proteção da rede
-                        } else {
-                            score = +20;
-                        }
+                        score = +20;
                     }
 
                     evaluatedMoves.push({
@@ -731,11 +818,11 @@ class VoltzPlaytestEngine {
         const safeMoves = evaluatedMoves.filter(m => m.score > 0);
 
         if (safeMoves.length === 0) {
-            // Se todas as opções possíveis levariam a curto/sobretensão, ou se não há jogadas legais: descarta!
+            // Se todas as opções levariam a curto/sobretensão ou não há jogadas seguras: descarta e passa!
             return null;
         }
 
-        // Ordena pelo maior score e escolhe a melhor jogada
+        // Ordena pelo maior score e escolhe o movimento mais inteligente
         safeMoves.sort((a, b) => b.score - a.score);
         return safeMoves[0];
     }

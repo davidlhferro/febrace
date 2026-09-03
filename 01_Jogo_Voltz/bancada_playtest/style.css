@@ -558,3 +558,166 @@ body {
     outline: none;
     border-color: var(--copper-base);
 }
+
+/* =============================================================
+   SISTEMA DE ANIMAÇÕES DE SOBRETENSÃO & QUEIMA DE FUSÍVEL
+   ============================================================= */
+
+/* 1. SCREEN SHAKE NA VIEWPORT DA MESA */
+.circuit-shake-active {
+    animation: circuit-shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes circuit-shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    15% { transform: translate(-8px, 6px) rotate(-0.6deg); }
+    30% { transform: translate(8px, -6px) rotate(0.6deg); }
+    45% { transform: translate(-6px, -4px) rotate(-0.4deg); }
+    60% { transform: translate(6px, 4px) rotate(0.4deg); }
+    75% { transform: translate(-3px, 2px) rotate(-0.2deg); }
+    90% { transform: translate(3px, -1px) rotate(0.1deg); }
+}
+
+/* 2. FLASH VERMELHO NA TELA */
+.circuit-flash-active {
+    animation: red-screen-flash 0.7s ease-out;
+}
+
+@keyframes red-screen-flash {
+    0% { box-shadow: inset 0 0 0 0 rgba(239, 68, 68, 0); }
+    25% { box-shadow: inset 0 0 100px 40px rgba(239, 68, 68, 0.75); }
+    100% { box-shadow: inset 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* 3. CARTA QUEIMADA COM FULIGEM E FAÍSCAS */
+.board-card-node.card-burned {
+    filter: contrast(160%) brightness(65%) sepia(60%) hue-rotate(-50deg);
+    border: 2px solid #ef4444 !important;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.9), inset 0 0 20px rgba(245, 158, 11, 0.8) !important;
+    animation: burned-sparks-pulse 0.7s infinite alternate ease-in-out;
+    z-index: 50;
+}
+
+.board-card-node.card-burned::after {
+    content: '💥 SOBRETENSÃO! QUEIMOU';
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ef4444;
+    color: #ffffff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+    z-index: 100;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.9);
+    letter-spacing: 0.5px;
+}
+
+@keyframes burned-sparks-pulse {
+    0% {
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.7), inset 0 0 10px rgba(239, 68, 68, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 35px rgba(245, 158, 11, 1), 0 0 50px rgba(239, 68, 68, 0.9), inset 0 0 25px rgba(245, 158, 11, 0.9);
+    }
+}
+
+/* 4. ANIMAÇÃO DE FUSÍVEL ROMPIDO NO PAINEL */
+.meter-pill.fuse-blown {
+    animation: fuse-blow-animation 1.4s ease-in-out;
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.3) !important;
+}
+
+@keyframes fuse-blow-animation {
+    0% { transform: scale(1); filter: brightness(1); }
+    15% { transform: scale(1.2); filter: brightness(2.5); background: rgba(239, 68, 68, 0.8); }
+    35% { transform: scale(0.92); }
+    55% { transform: scale(1.1); filter: brightness(1.8); }
+    75% { transform: scale(0.98); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* 5. TOAST / CARD FLUTUANTE CENTRAL DE DIAGNÓSTICO ELÉTRICO */
+.overvoltage-toast-overlay {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    pointer-events: none;
+    animation: toast-fade-in 0.35s ease-out;
+}
+
+@keyframes toast-fade-in {
+    0% { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
+    100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+.overvoltage-toast-card {
+    background: #0d1527;
+    border: 2px solid #ef4444;
+    border-top: 4px solid #ef4444;
+    border-radius: 8px;
+    padding: 16px 20px;
+    max-width: 520px;
+    width: 90vw;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(239, 68, 68, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.toast-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toast-icon {
+    font-size: 20px;
+}
+
+.toast-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 800;
+    color: #ef4444;
+    letter-spacing: 0.5px;
+}
+
+.toast-body {
+    font-size: 12px;
+    color: #e2e8f0;
+    line-height: 1.5;
+    background: #050a14;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border-left: 3px solid #f59e0b;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.toast-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.toast-badge {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+

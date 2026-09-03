@@ -1,13 +1,15 @@
 /**
- * SUÍTE DE TESTES AUTOMATIZADOS — BANCADA DE PLAYTEST VOLTZ
+ * SUÍTE DE TESTES DE ALTA PRECISÃO — BANCADA DE PLAYTEST VOLTZ
  * Verificações Mandatórias:
  * 1. Inicialização (0,0) e Baralho
  * 2. Regras Topológicas de Bandido
- * 3. Teste de Não-Perda de Vida: Jogar 5 resistores normais em ramos abertos (Vidas permanecem 3/3)
- * 4. Teste de Punição Única (One-Shot Penalty): Fechar em sobretensão perde 1 vida, jogadas seguintes NÃO perdem vida
+ * 3. Teste de Não-Perda de Vida em Jogadas Intermediárias Abertas
+ * 4. Teste de Punição Única (One-Shot Penalty) no Fechamento
  * 5. Teste de Inteligência do Bot (Prevenção de Curto e Fechamento com Sucesso Nominal)
  * 6. Simulação de 10 Turnos Contínuos
- * 7. Renderizador SVG
+ * 7. Renderizador SVG de Alta Fidelidade
+ * 8. TESTE DO BOT PREVENTIVO (Fim das Jogadas Suicidas com LED/Servidor em 0Ω)
+ * 9. TESTE DO GATILHO DE SOBRETENSÃO (Diagnóstico Físico, Queima e Marcação de Fuligem)
  */
 
 const {
@@ -101,7 +103,6 @@ const movesToPlay = [
 ];
 
 movesToPlay.forEach((m, idx) => {
-    // Força carta na mão do jogador 1
     const uid = `card_test_open_${idx}`;
     openPlayEngine.players[0].hand[0] = { ...m.card, uid };
     const res = openPlayEngine.playCard('p1', m.x, m.y, uid, m.rot);
@@ -119,7 +120,6 @@ const penaltyEngine = new VoltzPlaytestEngine();
 const gndShortCard = { id: 'gnd_short', type: 'gnd', name: 'Cabo Terra', shape: 'DEAD_END', basePorts: TOPOLOGY_SHAPES.DEAD_END, r: 0, uid: 'gnd_short_uid' };
 penaltyEngine.players[0].hand[0] = gndShortCard;
 
-// A 90°, a porta left do DEAD_END aponta para TOP (encaixa em 0,1 no bottom do gerador)
 const gndResult = penaltyEngine.playCard('p1', 0, 1, 'gnd_short_uid', 90);
 assert(gndResult.success, 'Deve aceitar posicionar o GND fechando o ramo Sul.');
 assert(penaltyEngine.networkLives === 2, `O fechamento em curto de 0Ω deve subtrair exatamente 1 vida (Vidas atuais: ${penaltyEngine.networkLives}).`);
@@ -153,13 +153,11 @@ botEngine.players[1].hand = [
 const suicidalMove = botEngine.getBestBotMove();
 assert(suicidalMove === null, 'O Bot inteligente DEVE REJEITAR jogadas de GND que resultem em curto de 0Ω (Score -1000).');
 
-// Como o movimento é nulo, o Bot descarta com segurança
 const discardSuccess = botEngine.discardAndPass('p2');
 assert(discardSuccess, 'O Bot deve realizar descarte consciente quando todas as cartas forem perigosas.');
 assert(botEngine.networkLives === 3, 'O descarte do Bot preserva 100% das 3 vidas.');
 
 // Cenário 5.2: Montar um circuito quase fechado no ramo Leste que necessita de GND para salvar um Servidor 4V
-// Gerador (0,0) -> Resistor 2Ω (1,0) -> Servidor 4V 1Ω (2,0) -> Slot livre em (3,0)
 botEngine.grid['1,0'] = {
     x: 1, y: 0,
     card: { id: 'res_2', type: 'resistor', name: 'Resistor 2Ω', r: 2, currentPorts: { left: true, right: true } }
@@ -169,7 +167,6 @@ botEngine.grid['2,0'] = {
     card: { id: 'load_servidor', type: 'equipment', name: 'Servidor Central', vNom: 4, r: 1, currentPorts: { left: true, right: true } }
 };
 
-// Coloca na mão do Bot uma carta GND e um Resistor qualquer
 botEngine.players[1].hand = [
     { id: 'gnd_win', type: 'gnd', name: 'Cabo Terra', shape: 'DEAD_END', basePorts: TOPOLOGY_SHAPES.DEAD_END, r: 0, uid: 'bot_gnd_winner' },
     { id: 'res_1', type: 'resistor', name: 'Resistor 1Ω', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, r: 1, uid: 'bot_res_alt' }
@@ -181,7 +178,6 @@ assert(smartMove.cardUid === 'bot_gnd_winner', 'O Bot deve escolher a carta de G
 assert(smartMove.x === 3 && smartMove.y === 0, 'O Bot deve posicionar o GND exatamente em (3, 0).');
 assert(smartMove.rotation === 0, 'O Bot deve usar rotação 0° (porta left conectando na saída right do servidor).');
 
-// Executa a jogada do Bot
 const botPlayResult = botEngine.playCard('p2', smartMove.x, smartMove.y, smartMove.cardUid, smartMove.rotation);
 assert(botPlayResult.success, 'A jogada do Bot deve ser executada com sucesso.');
 assert(botEngine.networkLives === 3, 'Nenhuma vida deve ser perdida no fechamento nominal de 4V.');
@@ -199,7 +195,6 @@ for (let t = 0; t < 10; t++) {
     const curPlayer = simEngine.players[simEngine.turnIndex];
 
     if (curPlayerId === 'p1') {
-        // Operador tenta jogar a primeira carta segura ou descarta
         let played = false;
         for (const card of curPlayer.hand) {
             for (const rot of [0, 90, 180, 270]) {
@@ -218,7 +213,6 @@ for (let t = 0; t < 10; t++) {
             simEngine.discardAndPass('p1');
         }
     } else {
-        // Bot usa algoritmo de simulação heurística
         const move = simEngine.getBestBotMove();
         if (move) {
             simEngine.playCard('p2', move.x, move.y, move.cardUid, move.rotation);
@@ -242,6 +236,105 @@ assert(svgGen.includes('<svg') && svgGen.includes('GERADOR 12V'), 'renderCardSVG
 
 const svgRes = renderCardSVG(cardStraight, 90);
 assert(svgRes.includes('<svg') && svgRes.includes('1Ω'), 'renderCardSVG deve gerar SVG válido para Resistores.');
+
+// -------------------------------------------------------------
+// TESTE 8: INTELIGÊNCIA PREVENTIVA DO BOT (ANTI-SUICÍDIO EM 0Ω)
+// -------------------------------------------------------------
+console.log('\n--- TESTE 8: Inteligência Preventiva Algébrica do Bot ---');
+const prevEngine = new VoltzPlaytestEngine();
+
+// Cenário 8.1: A mesa está vazia (apenas Gerador 12V em 0,0 com 0Ω de saída).
+// A mão do Bot contém apenas cargas que exigem resistores prévios (LED 3V, Servidor 4V, Sirene 6V).
+prevEngine.players[1].hand = [
+    { id: 'load_led_3v', type: 'equipment', name: 'LED Piloto (3V // 1Ω)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, vNom: 3, r: 1, uid: 'bot_led_3v' },
+    { id: 'load_servidor_4v', type: 'equipment', name: 'Servidor Central (4V // 1Ω)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, vNom: 4, r: 1, uid: 'bot_srv_4v' },
+    { id: 'load_sirene_6v', type: 'equipment', name: 'Sirene de Alarme (6V // 1Ω)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, vNom: 6, r: 1, uid: 'bot_sir_6v' }
+];
+
+// O Bot avalia a mesa:
+const suicidalEquipmentMove = prevEngine.getBestBotMove();
+assert(suicidalEquipmentMove === null, 'O Bot DEVE REJEITAR colocar LED 3V, Servidor 4V ou Sirene 6V direto no Gerador 12V (0Ω prévios).');
+
+// Cenário 8.2: Simulação de 20 turnos autônomos do Bot comprovando que nenhum aparelho é colocado prematuramente
+const sim20Engine = new VoltzPlaytestEngine();
+let prematureEquipmentPlacements = 0;
+
+for (let t = 0; t < 20; t++) {
+    // Força o turno do Bot
+    sim20Engine.turnIndex = 1;
+    const bestMove = sim20Engine.getBestBotMove();
+
+    if (bestMove) {
+        const candidateCard = sim20Engine.players[1].hand.find(c => c.uid === bestMove.cardUid);
+        if (candidateCard && candidateCard.type === 'equipment') {
+            // Verifica a resistência prévia antes da jogada
+            const sim = sim20Engine.playCard('p2', bestMove.x, bestMove.y, bestMove.cardUid, bestMove.rotation);
+            const branch = sim.analysis.branches.find(b => b.cards.some(n => n.x === bestMove.x && n.y === bestMove.y));
+            const rPrior = branch ? (branch.rTotal - candidateCard.r) : 0;
+            const minNeeded = sim20Engine.getEquipmentMinPriorResistance(candidateCard);
+            if (rPrior < minNeeded) {
+                prematureEquipmentPlacements++;
+            }
+        } else {
+            sim20Engine.playCard('p2', bestMove.x, bestMove.y, bestMove.cardUid, bestMove.rotation);
+        }
+    } else {
+        sim20Engine.discardAndPass('p2');
+    }
+}
+
+assert(prematureEquipmentPlacements === 0, 'Em 20 turnos simulados, o Bot JAMAIS realizou uma jogada prematura de aparelho em linha com resistência insuficiente.');
+
+// -------------------------------------------------------------
+// TESTE 9: GATILHO DE SOBRETENSÃO, ANIMAÇÃO & MARCAÇÃO DE FULIGEM
+// -------------------------------------------------------------
+console.log('\n--- TESTE 9: Gatilho de Queima, Fuligem e Diagnóstico Elétrico ---');
+const burnEngine = new VoltzPlaytestEngine();
+
+// Passo 9.1: Operador joga LED 3V (1Ω) em (1,0) direto no gerador 12V (0Ω)
+burnEngine.players[0].hand[0] = {
+    id: 'load_led_3v',
+    type: 'equipment',
+    name: 'LED Piloto (3V // 1Ω)',
+    shape: 'STRAIGHT',
+    basePorts: TOPOLOGY_SHAPES.STRAIGHT,
+    vNom: 3,
+    r: 1,
+    uid: 'led_burn_test'
+};
+const p1 = burnEngine.playCard('p1', 1, 0, 'led_burn_test', 0);
+assert(p1.success, 'LED posicionado com sucesso em (1,0).');
+assert(burnEngine.networkLives === 3, 'Enquanto a malha estiver aberta, vidas permanecem 3/3.');
+
+// Passo 9.2: Operador fecha o circuito conectando GND em (2,0)
+burnEngine.players[0].hand[0] = {
+    id: 'gnd_burn_trigger',
+    type: 'gnd',
+    name: 'Cabo Terra (GND)',
+    shape: 'DEAD_END',
+    basePorts: TOPOLOGY_SHAPES.DEAD_END,
+    r: 0,
+    uid: 'gnd_burn_uid'
+};
+const p2 = burnEngine.playCard('p1', 2, 0, 'gnd_burn_uid', 0);
+assert(p2.success, 'GND posicionado fechando a malha em (2,0).');
+
+// Passo 9.3: Validar que a Sobretensão foi detectada e o evento disparado
+assert(p2.overvoltageEvent && p2.overvoltageEvent.occurred === true, 'Evento de sobretensão deve ser emitido com occurred = true.');
+assert(burnEngine.networkLives === 2, 'A rede deve consumir exatamente 1 vida pela sobrecarga (Vidas atuais: 2).');
+assert(
+    p2.overvoltageEvent.diagnosisMsg.includes('LED Piloto') &&
+    p2.overvoltageEvent.diagnosisMsg.includes('12.0V'),
+    'O texto de diagnóstico deve explicar detalhadamente a tensão de 12.0V aplicada sobre o LED 3V.'
+);
+
+// Passo 9.4: Validar que a carta do LED na mesa recebeu a marcação de queimada (Fuligem)
+const burnedNode = burnEngine.grid['1,0'];
+assert(!!burnedNode && burnedNode.card.isBurned === true, 'A carta de LED que sofreu sobretensão deve receber isBurned = true.');
+
+// Passo 9.5: Validar renderização SVG com estética de falha
+const svgBurned = renderCardSVG(burnedNode.card, 0);
+assert(svgBurned.includes('FALHA') && svgBurned.includes('#ef4444'), 'renderCardSVG deve renderizar a carta queimada com indicador de FALHA e cores de advertência.');
 
 console.log('\n================================================================================');
 console.log(`🎉 SUCESSO TOTAL: ${passedTests} / ${totalTests} TESTES PASSARAM COM 100% DE APROVAÇÃO!`);
