@@ -161,11 +161,28 @@ function renderCardSVG(card, rotation = 0, options = {}) {
         `;
     } else if (card.type === 'resistor') {
         const rColor = card.r === 1 ? '#2e7d32' : (card.r === 2 ? '#1565c0' : '#ea580c');
-        bodyVisual = getTubes(card.shape) + `
-            <rect x="40" y="27" width="60" height="44" rx="10" fill="#f5eedc" stroke="#0a0908" stroke-width="3"/>
-            <rect x="50" y="27" width="6" height="44" fill="${rColor}" stroke="#0a0908" stroke-width="1"/>
-            <rect x="62" y="27" width="6" height="44" fill="#0a0908"/>
-            <rect x="74" y="27" width="6" height="44" fill="#e07a1e" stroke="#0a0908" stroke-width="1"/>
+        let resBody = '';
+        if (card.shape === 'CORNER_90') {
+            resBody = `
+                <g transform="translate(57.75, 61.25) rotate(45)">
+                    <rect x="-24" y="-15" width="48" height="30" rx="8" fill="#f5eedc" stroke="#0a0908" stroke-width="3"/>
+                    <rect x="-14" y="-15" width="4" height="30" fill="${rColor}" stroke="#0a0908" stroke-width="1"/>
+                    <rect x="-2" y="-15" width="4" height="30" fill="#0a0908"/>
+                    <rect x="10" y="-15" width="4" height="30" fill="#e07a1e" stroke="#0a0908" stroke-width="1"/>
+                </g>
+            `;
+        } else {
+            resBody = `
+                <g transform="translate(70, 49)">
+                    <rect x="-30" y="-22" width="60" height="44" rx="10" fill="#f5eedc" stroke="#0a0908" stroke-width="3"/>
+                    <rect x="-20" y="-22" width="6" height="44" fill="${rColor}" stroke="#0a0908" stroke-width="1"/>
+                    <rect x="-8" y="-22" width="6" height="44" fill="#0a0908"/>
+                    <rect x="4" y="-22" width="6" height="44" fill="#e07a1e" stroke="#0a0908" stroke-width="1"/>
+                </g>
+            `;
+        }
+        
+        bodyVisual = getTubes(card.shape) + resBody + `
             <circle cx="70" cy="12" r="12" fill="#0a0908"/><circle cx="70" cy="12" r="10" fill="${rColor}"/>
             <text x="70" y="16" font-family="'Rubik', sans-serif" font-size="10" font-weight="900" fill="#ffffff" text-anchor="middle">${card.r}Ω</text>
         `;
