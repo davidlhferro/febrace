@@ -38,20 +38,20 @@
         .a4-page {
             width: 297mm; height: 210mm; /* A4 Paisagem */
             background: #ffffff;
-            padding: 10mm 13.5mm; /* Margens para centralizar 270x189 no 297x210 */
+            padding: 7mm 8.5mm; /* Margens para centralizar 280x196 no 297x210 */
             margin-bottom: 20px;
             position: relative;
             display: grid;
-            grid-template-columns: repeat(3, 90mm);
-            grid-template-rows: repeat(3, 63mm);
+            grid-template-columns: repeat(4, 70mm);
+            grid-template-rows: repeat(4, 49mm);
             gap: 0; /* Corte direto */
             page-break-after: always;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .card-container {
-            width: 90mm;
-            height: 63mm;
+            width: 70mm;
+            height: 49mm;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -79,7 +79,7 @@
     <div class="no-print-bar">
         <div>
             <h1>🖨️ VOLTZ — Print and Play (Aesthetic Digital)</h1>
-            <p>Layout configurado para 9 cartas (90x63mm) por página A4 Paisagem. Exatas 8 páginas (72 cartas).</p>
+            <p>Layout configurado para 16 cartas (70x49mm) por página A4 Paisagem. Exatas 5 páginas (72 cartas).</p>
         </div>
         <button class="btn-print" onclick="window.print()">Imprimir PDF (A4 Paisagem)</button>
     </div>
@@ -135,8 +135,8 @@
         }
 
         function renderCardSVG(card) {
-            const w = "90mm";
-            const h = "63mm";
+            const w = "70mm";
+            const h = "49mm";
             const rot = 0;
 
             const pipeCore = card.isBurned ? '#475569' : '#e07a1e';
@@ -317,12 +317,12 @@
         const deck = generateFullDeck();
         const container = document.getElementById('pages-container');
 
-        for (let i = 0; i < deck.length; i += 9) {
-            const pageCards = deck.slice(i, i + 9);
+        for (let i = 0; i < deck.length; i += 16) {
+            const pageCards = deck.slice(i, i + 16);
             let pageHtml = `<div class="a4-page">
                 <div class="page-header-tag">
                     <span>VOLTZ: CIRCUIT BREAK // EDIÇÃO PNP (VIRTUAL AESTHETIC)</span>
-                    <span>PÁGINA ${Math.floor(i/9) + 1} / 8</span>
+                    <span>PÁGINA ${Math.floor(i/16) + 1} / 5</span>
                 </div>`;
             
             pageCards.forEach(card => {
