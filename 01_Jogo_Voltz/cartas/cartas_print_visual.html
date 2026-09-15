@@ -36,36 +36,37 @@
         }
 
         .a4-page {
-            width: 297mm; height: 210mm; /* A4 Paisagem */
+            width: 210mm; height: 297mm; /* A4 Retrato */
             background: #ffffff;
-            padding: 7mm 8.5mm; /* Margens para centralizar 280x196 no 297x210 */
+            padding: 21mm 15mm; /* Margens para centralizar 180x255 no 210x297 */
             margin-bottom: 20px;
             position: relative;
             display: grid;
-            grid-template-columns: repeat(4, 70mm);
-            grid-template-rows: repeat(4, 49mm);
+            grid-template-columns: repeat(3, 60mm);
+            grid-template-rows: repeat(3, 85mm);
             gap: 0; /* Corte direto */
             page-break-after: always;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .card-container {
-            width: 70mm;
-            height: 49mm;
+            width: 60mm;
+            height: 85mm;
             display: flex;
             justify-content: center;
             align-items: center;
             border: 0.5px dashed #ccc; /* Linha de corte */
+            overflow: hidden;
         }
 
         .page-header-tag {
-            position: absolute; top: 3mm; left: 10mm; right: 10mm;
+            position: absolute; top: 5mm; left: 15mm; right: 15mm;
             display: flex; justify-content: space-between;
             font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #94a3b8;
             font-weight: 900;
         }
 
-        @page { size: A4 landscape; margin: 0; }
+        @page { size: A4 portrait; margin: 0; }
         @media print {
             body { background: none; padding: 0; margin: 0; }
             .no-print-bar { display: none; }
@@ -78,10 +79,10 @@
 
     <div class="no-print-bar">
         <div>
-            <h1>🖨️ VOLTZ — Print and Play (Aesthetic Digital)</h1>
-            <p>Layout configurado para 16 cartas (70x49mm) por página A4 Paisagem. Exatas 5 páginas (72 cartas).</p>
+            <h1>🖨️ VOLTZ — Print and Play (Formato Bandido)</h1>
+            <p>Layout configurado para 9 cartas (60x85mm, verticais) por página A4 Retrato. Exatas 8 páginas (72 cartas).</p>
         </div>
-        <button class="btn-print" onclick="window.print()">Imprimir PDF (A4 Paisagem)</button>
+        <button class="btn-print" onclick="window.print()">Imprimir PDF (A4 Retrato)</button>
     </div>
 
     <div id="pages-container"></div>
@@ -135,8 +136,8 @@
         }
 
         function renderCardSVG(card) {
-            const w = "70mm";
-            const h = "49mm";
+            const w = "85mm";
+            const h = "60mm";
             const rot = 0;
 
             const pipeCore = card.isBurned ? '#475569' : '#e07a1e';
@@ -304,7 +305,7 @@
             }
 
             return `
-            <svg width="${w}" height="${h}" viewBox="0 0 140 98" style="display:block; border-radius:6px; overflow:hidden; border:1px solid #1e1b18;">
+            <svg width="${w}" height="${h}" viewBox="0 0 140 98" style="display:block; transform: rotate(90deg); transform-origin: center;">
                 <g transform="rotate(${rot} 70 49)">
                     ${baseVisual}
                     ${bodyVisual}
@@ -317,12 +318,12 @@
         const deck = generateFullDeck();
         const container = document.getElementById('pages-container');
 
-        for (let i = 0; i < deck.length; i += 16) {
-            const pageCards = deck.slice(i, i + 16);
+        for (let i = 0; i < deck.length; i += 9) {
+            const pageCards = deck.slice(i, i + 9);
             let pageHtml = `<div class="a4-page">
                 <div class="page-header-tag">
                     <span>VOLTZ: CIRCUIT BREAK // EDIÇÃO PNP (VIRTUAL AESTHETIC)</span>
-                    <span>PÁGINA ${Math.floor(i/16) + 1} / 5</span>
+                    <span>PÁGINA ${Math.floor(i/9) + 1} / 8</span>
                 </div>`;
             
             pageCards.forEach(card => {
