@@ -1,0 +1,126 @@
+\documentclass[12pt,a4paper,landscape]{article}
+
+% --- PACOTES PRINCIPAIS ---
+\usepackage[utf8]{inputenc}
+\usepackage[pt-BR]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{top=2cm, bottom=2cm, left=1.5cm, right=1.5cm} % Margens reduzidas para caber a tabela
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    pdftitle={Metodologia de Testes - Projeto FEBRACE},
+    pdfauthor={Equipe FEBRACE}
+}
+
+\title{\textbf{Metodologia de Testes: Comparativo de Retenção Teórica em Eletrodinâmica}}
+\author{\textbf{Projeto de Física} \\ Feira Brasileira de Ciências e Engenharia (FEBRACE)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Este documento estabelece o protocolo experimental para comparar de forma imparcial dois jogos de tabuleiro educacionais. O objetivo é isolar como as diferentes mecânicas (foco lúdico vs. foco exato) afetam o desempenho dos alunos na resolução de problemas de circuitos elétricos.
+\end{abstract}
+
+\section{Comparação entre os Jogos e Hipóteses de Impacto}
+
+Para garantir imparcialidade, a tabela abaixo levanta as qualidades e diferenças estruturais de ambos os projetos, descrevendo como essas escolhas afetam a aprendizagem e como podemos comprovar isso experimentalmente.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{} >{\bfseries}p{2.8cm} X X X X @{}}
+\toprule
+Aspecto de Design & \textbf{Jogo do JV (Colega)} & \textbf{Jogo do David (VOLTZ)} & \textbf{Possível Impacto no Aluno} & \textbf{Como Testar e Comprovar} \\
+\midrule
+
+Formato da Montagem & Tabuleiro e conexões baseadas na lógica do jogo e em mecânicas tradicionais de cartas. & Cartas que se encaixam visualmente borda a borda, desenhando o fio elétrico contínuo na mesa. & O Jogo do JV pode estimular mais o raciocínio abstrato e a criatividade no uso de recursos. O Jogo do David pode facilitar a visão espacial entre circuitos em série e paralelo. & \textbf{Teste de Topologia:} Apresentar circuitos desenhados de forma confusa. Medir qual grupo reescreve o circuito no formato padrão (quadrado) com menos erros. \\
+\addlinespace
+
+Sistema de Regras & Regras focadas em pontuação, gerenciamento de turnos e mecânicas lúdicas de competição. & Regras focadas estritamente na validação da física real (cálculo de resistência e voltagem). & O Jogo do JV pode reter a atenção do aluno por mais tempo devido ao engajamento lúdico. O Jogo do David pode gerar maior precisão matemática por exigir cálculo frequente. & \textbf{Teste de Retenção e Cálculo:} Comparar o tempo total que os alunos jogam voluntariamente vs. a taxa de acerto em uma prova de aplicação da Lei de Ohm ($V=R \cdot I$). \\
+\addlinespace
+
+Identificação de Erros & A validação ocorre no final de uma rodada, turno, ou contabilização de pontos. & A validação é imediata: peças "queimam" se a conta algébrica de corrente/tensão não fechar na hora. & O feedback demorado (JV) ensina o aluno a planejar estratégias globais a longo prazo. O feedback imediato (David) força a correção repetitiva de erros pontuais na mesma hora. & \textbf{Teste de Curva de Erro:} Analisar o número de jogadas incorretas da 1ª partida até a 5ª partida. O grupo de feedback imediato deve zerar o erro mecânico mais rápido. \\
+\addlinespace
+
+Liberdade Estratégica & Peças e montagens que seguem missões e objetivos direcionados pelo jogo. & Estrutura aberta ("sandbox"), onde o próprio jogador inventa a malha, limitada apenas pela física. & Missões guiadas (JV) ajudam alunos que não sabem por onde começar. A estrutura aberta (David) desenvolve tentativa e erro exploratório. & \textbf{Teste de Montagem Livre:} Entregar componentes soltos (baterias, lâmpadas) e pedir para o aluno criar o circuito de maior ou menor potência possível. \\
+
+\bottomrule
+\end{tabularx}
+\caption{Matriz de comparação imparcial e testes para validação científica das diferenças mecânicas.}
+\label{tab:comparacao}
+\end{table}
+
+\newpage
+
+\section{Fluxograma do Protocolo de Testes Principais}
+
+A intervenção primária utilizará um modelo pré-teste e pós-teste em grupos separados para isolar as variáveis descritas na tabela.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    block/.style={rectangle, draw=blue!70, fill=blue!5, rounded corners, minimum width=4cm, minimum height=1.2cm, align=center, font=\small},
+    group/.style={rectangle, draw=orange!80, fill=orange!5, rounded corners, minimum width=4cm, minimum height=1.2cm, align=center, font=\small},
+    arrow/.style={-Stealth, thick, draw=blue!80}
+]
+
+    % Nós
+    \node (pre) [block] {\textbf{Fase 1: Pré-Teste (T0)}\\10 Questões de Vestibular (Nível Base)};
+    
+    \node (gA) [group, below left=1.2cm and 1cm of pre] {\textbf{Grupo A}\\Joga o \textbf{Jogo do JV}\\(Foco Lúdico / Pontuação)};
+    \node (gB) [group, below right=1.2cm and 1cm of pre] {\textbf{Grupo B}\\Joga o \textbf{Jogo do David}\\(Foco Espacial / Precisão)};
+    
+    \node (pos) [block, below right=1.2cm and 1cm of gA] {\textbf{Fase 3: Pós-Teste (T1)}\\10 Questões Isomórficas (Mesmo Nível)};
+    \node (analise) [block, below=1cm of pos] {\textbf{Análise Quantitativa}\\Comparação de $\Delta\%$ de Acertos e Tempo};
+
+    % Conexões
+    \draw [arrow] (pre) -| (gA);
+    \draw [arrow] (pre) -| (gB);
+    \draw [arrow] (gA) |- (pos);
+    \draw [arrow] (gB) |- (pos);
+    \draw [arrow] (pos) -- (analise);
+
+\end{tikzpicture}
+\caption{Desenho experimental para coleta de dados de impacto no aprendizado.}
+\label{fig:fluxograma}
+\end{figure}
+
+\section{Outros Testes Recomendados (Expansão do Estudo)}
+
+Para comprovar experimentalmente todas as diferenças levantadas na Tabela 1, o projeto executará os seguintes testes complementares:
+
+\begin{enumerate}
+    \item \textbf{Teste de Retenção a Longo Prazo (Após 30 Dias):}
+    \begin{itemize}
+        \item \textbf{O que é:} Aplicar uma terceira prova 30 dias após os alunos terem jogado, sem aviso prévio.
+        \item \textbf{O que explora:} Mede se o alto engajamento (esperado no Jogo do JV) retém o conhecimento por mais tempo, ou se o rigor matemático (do Jogo do David) consolidou melhor a memória de longo prazo das Leis de Kirchhoff.
+    \end{itemize}
+
+    \item \textbf{Teste de Transferência Prática (Laboratório Real):}
+    \begin{itemize}
+        \item \textbf{O que é:} Levar os alunos dos dois grupos para um laboratório com fios, pilhas reais e \textit{protoboards}.
+        \item \textbf{O que explora:} Testar qual grupo consegue traduzir melhor o conhecimento do papel/tabuleiro para a vida real. Isso medirá de forma definitiva se a \textit{Montagem Visual borda a borda} do Jogo do David previne curto-circuitos práticos melhor do que a lógica tradicional.
+    \end{itemize}
+
+    \item \textbf{Teste de Fadiga e Carga Cognitiva:}
+    \begin{itemize}
+        \item \textbf{O que é:} Medir o tempo cronometrado que os alunos demoram para responder uma questão difícil logo após terem jogado 40 minutos diretos do jogo.
+        \item \textbf{O que explora:} Avaliar se as regras de pontuação do Jogo do JV causam cansaço mental ou se relaxam o aluno, em comparação com os cálculos rigorosos do Jogo do David, que podem gerar desgaste cognitivo mais rápido.
+    \end{itemize}
+\end{enumerate}
+
+\end{document}

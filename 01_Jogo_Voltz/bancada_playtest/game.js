@@ -91,115 +91,147 @@ function renderCardSVG(card, rotation = 0, options = {}) {
     const h = options.height || 98;
     const rot = (rotation % 360 + 360) % 360;
 
-    let bodyVisual = '';
-    const pipeColor = card.isBurned ? '#475569' : '#d97706';
-    const pipeStroke = '#04070e';
-    const pipeWidth = 28;
+    // Aesthetic Colors
+    const pipeCore = card.isBurned ? '#475569' : '#e07a1e';
+    const pipeStroke = '#0a0908';
+    
+    // Background and Ground Texture
+    const baseVisual = `
+        <rect width="140" height="98" fill="#1e1b18"/>
+        <circle cx="15" cy="20" r="1.5" fill="#2d2924"/><circle cx="120" cy="80" r="2" fill="#12100e"/>
+        <circle cx="100" cy="15" r="1" fill="#2d2924"/><circle cx="25" cy="85" r="1.5" fill="#12100e"/>
+    `;
 
-    if (card.id === 'gen_12v') {
-        bodyVisual = `
-            <!-- 4 Barramentos Principais -->
-            <rect x="56" y="0" width="28" height="98" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-            <rect x="0" y="35" width="140" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-            <!-- Núcleo do Gerador -->
-            <circle cx="70" cy="49" r="26" fill="#04070e" stroke="${pipeColor}" stroke-width="3"/>
-            <circle cx="70" cy="49" r="16" fill="#78350f"/>
-            <polygon points="70,36 61,50 68,50 65,62 79,46 72,46" fill="#fbbf24"/>
-            <text x="70" y="88" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#fbbf24" text-anchor="middle">GERADOR 12V</text>
-        `;
-    } else if (card.type === 'resistor') {
-        const rColor = card.r === 1 ? '#059669' : (card.r === 2 ? '#2563eb' : '#d97706');
-        if (card.shape === 'CORNER_90') {
-            bodyVisual = `
-                <path d="M 0 49 Q 70 49 70 98" fill="none" stroke="${pipeColor}" stroke-width="${pipeWidth}"/>
-                <path d="M 0 49 Q 70 49 70 98" fill="none" stroke="${pipeStroke}" stroke-width="32" stroke-linecap="square"/>
-                <path d="M 0 49 Q 70 49 70 98" fill="none" stroke="${pipeColor}" stroke-width="${pipeWidth}"/>
-                <!-- Anel Cerâmico -->
-                <circle cx="56" cy="56" r="18" fill="#f8fafc" stroke="${pipeStroke}" stroke-width="3"/>
-                <circle cx="56" cy="56" r="12" fill="${rColor}"/>
-                <text x="56" y="60" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">${card.r}Ω</text>
-            `;
-        } else {
-            bodyVisual = `
-                <rect x="0" y="35" width="140" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-                <!-- Corpo Resistor Cerâmico -->
-                <rect x="42" y="27" width="56" height="44" rx="6" fill="#f8fafc" stroke="${pipeStroke}" stroke-width="3"/>
-                <rect x="52" y="27" width="8" height="44" fill="${rColor}"/>
-                <rect x="66" y="27" width="8" height="44" fill="#0f172a"/>
-                <rect x="80" y="27" width="8" height="44" fill="${pipeColor}"/>
-                <text x="70" y="20" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#fbbf24" text-anchor="middle">${card.r}Ω</text>
-            `;
+    function getTubes(shape) {
+        let svg = '';
+        if (['STRAIGHT', 'T_JUNCTION', 'CROSS_4WAY', 'DEAD_END'].includes(shape)) {
+            svg += `<rect x="0" y="35" width="70" height="28" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
         }
-    } else if (card.type === 'equipment') {
-        const vNom = card.vNom || 4;
-        const screenColor = card.isBurned ? '#7f1d1d' : '#020617';
-        const txtColor = card.isBurned ? '#ef4444' : '#38bdf8';
-        bodyVisual = `
-            <rect x="0" y="35" width="140" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-            <!-- Chassi do Aparelho -->
-            <rect x="30" y="20" width="80" height="58" rx="4" fill="#0f172a" stroke="${pipeStroke}" stroke-width="3"/>
-            <rect x="36" y="26" width="68" height="34" rx="2" fill="${screenColor}" stroke="${card.isBurned ? '#ef4444' : '#334155'}" stroke-width="1.5"/>
-            <text x="70" y="47" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="800" fill="${txtColor}" text-anchor="middle">${card.isBurned ? 'FALHA' : vNom + 'V'}</text>
-            <text x="70" y="72" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#94a3b8" text-anchor="middle">${card.name.split(' ')[0]}</text>
-        `;
-    } else if (card.type === 'gnd') {
-        bodyVisual = `
-            <!-- Trilha entrando pela esquerda e aterrando -->
-            <rect x="0" y="35" width="70" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-            <circle cx="70" cy="49" r="22" fill="#0f172a" stroke="${pipeStroke}" stroke-width="3"/>
-            <!-- Símbolo de GND -->
-            <line x1="70" y1="36" x2="70" y2="48" stroke="#22c55e" stroke-width="3"/>
-            <line x1="58" y1="48" x2="82" y2="48" stroke="#22c55e" stroke-width="3.5"/>
-            <line x1="62" y1="54" x2="78" y2="54" stroke="#22c55e" stroke-width="3"/>
-            <line x1="66" y1="60" x2="74" y2="60" stroke="#22c55e" stroke-width="2.5"/>
-            <text x="70" y="85" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#22c55e" text-anchor="middle">GND 0V</text>
-        `;
-    } else if (card.type === 'wire') {
-        if (card.shape === 'CORNER_90') {
-            bodyVisual = `
-                <path d="M 0 49 Q 70 49 70 98" fill="none" stroke="${pipeColor}" stroke-width="${pipeWidth}"/>
-                <path d="M 0 49 Q 70 49 70 98" fill="none" stroke="${pipeStroke}" stroke-width="32" stroke-linecap="square"/>
-                <path d="M 0 49 Q 70 49 70 98" fill="none" stroke="${pipeColor}" stroke-width="${pipeWidth}"/>
-            `;
-        } else if (card.shape === 'T_JUNCTION') {
-            bodyVisual = `
-                <rect x="0" y="35" width="140" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-                <rect x="56" y="49" width="28" height="49" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-                <circle cx="70" cy="49" r="10" fill="#04070e"/>
-            `;
-        } else if (card.shape === 'CROSS_4WAY') {
-            bodyVisual = `
-                <rect x="0" y="35" width="140" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-                <rect x="56" y="0" width="28" height="98" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-                <circle cx="70" cy="49" r="10" fill="#04070e"/>
-            `;
-        } else {
-            bodyVisual = `
-                <rect x="0" y="35" width="140" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-            `;
+        if (['STRAIGHT', 'T_JUNCTION', 'CROSS_4WAY'].includes(shape)) {
+            svg += `<rect x="70" y="35" width="70" height="28" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
         }
-    } else if (card.type === 'fuse') {
-        bodyVisual = `
-            <rect x="0" y="35" width="140" height="28" fill="${pipeColor}" stroke="${pipeStroke}" stroke-width="3"/>
-            <rect x="42" y="31" width="56" height="36" rx="4" fill="#1e293b" stroke="${pipeStroke}" stroke-width="3"/>
-            <rect x="48" y="35" width="44" height="28" fill="#020617"/>
-            <line x1="48" y1="49" x2="92" y2="49" stroke="#fbbf24" stroke-width="2"/>
-            <text x="70" y="24" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#fbbf24" text-anchor="middle">FUSÍVEL 1A</text>
-        `;
+        if (['CORNER_90', 'T_JUNCTION', 'CROSS_4WAY'].includes(shape)) {
+            svg += `<rect x="56" y="49" width="28" height="49" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
+        }
+        if (['CORNER_90'].includes(shape)) {
+            svg += `<rect x="0" y="35" width="70" height="28" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
+        }
+        if (['CROSS_4WAY', 'GENERATOR'].includes(shape)) {
+            svg += `<rect x="56" y="0" width="28" height="49" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
+        }
+        if (shape !== 'STRAIGHT') {
+            svg += `<circle cx="70" cy="49" r="14" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
+        }
+        return svg;
     }
 
-    return `
-    <svg width="${w}" height="${h}" viewBox="0 0 140 98" style="display:block; border-radius:4px; overflow:hidden; background:#08101e; border:1px solid ${card.isBurned ? '#ef4444' : '#1e293b'};">
-        <g transform="rotate(${rot} 70 49)">
-            <!-- Fundo da Placa -->
-            <rect width="140" height="98" fill="${card.isBurned ? '#1c1012' : '#08101e'}"/>
-            <!-- Malha milimétrica interna -->
-            <line x1="0" y1="49" x2="140" y2="49" stroke="${card.isBurned ? '#450a0a' : '#0f1c33'}" stroke-width="0.5"/>
-            <line x1="70" y1="0" x2="70" y2="98" stroke="${card.isBurned ? '#450a0a' : '#0f1c33'}" stroke-width="0.5"/>
-            ${bodyVisual}
+    let bodyVisual = '';
+
+    if (card.id === 'gen_12v') {
+        bodyVisual = getTubes('GENERATOR') + `
+            <circle cx="70" cy="49" r="32" fill="#0a0908"/>
+            <circle cx="70" cy="49" r="28" fill="#e07a1e" stroke="#fbb034" stroke-width="2"/>
+            <circle cx="70" cy="49" r="20" fill="#1e1b18" stroke="#0a0908" stroke-width="2"/>
+            <polygon points="70,36 61,50 68,50 65,62 79,46 72,46" fill="#fbb034" stroke="#0a0908" stroke-width="1.5"/>
+            <rect x="40" y="80" width="60" height="14" rx="2" fill="#0a0908"/>
+            <text x="70" y="90" font-family="'Rubik', sans-serif" font-size="8" font-weight="900" fill="#fbb034" text-anchor="middle">GERADOR 12V</text>
+        `;
+    } else if (card.type === 'resistor') {
+        const rColor = card.r === 1 ? '#2e7d32' : (card.r === 2 ? '#1565c0' : '#ea580c');
+        bodyVisual = getTubes(card.shape) + `
+            <rect x="40" y="27" width="60" height="44" rx="10" fill="#f5eedc" stroke="#0a0908" stroke-width="3"/>
+            <rect x="50" y="27" width="6" height="44" fill="${rColor}" stroke="#0a0908" stroke-width="1"/>
+            <rect x="62" y="27" width="6" height="44" fill="#0a0908"/>
+            <rect x="74" y="27" width="6" height="44" fill="#e07a1e" stroke="#0a0908" stroke-width="1"/>
+            <circle cx="70" cy="12" r="12" fill="#0a0908"/><circle cx="70" cy="12" r="10" fill="${rColor}"/>
+            <text x="70" y="16" font-family="'Rubik', sans-serif" font-size="10" font-weight="900" fill="#ffffff" text-anchor="middle">${card.r}Ω</text>
+        `;
+    } else if (card.type === 'equipment') {
+        const screenColor = card.isBurned ? '#ef4444' : '#fde047';
+        if (card.id.includes('led')) {
+            bodyVisual = getTubes('STRAIGHT') + `
+                <circle cx="70" cy="49" r="30" fill="#0a0908"/>
+                <circle cx="70" cy="49" r="26" fill="${screenColor}" stroke="#ca8a04" stroke-width="2"/>
+                <circle cx="70" cy="49" r="18" fill="#ffffff"/>
+                <rect x="40" y="80" width="60" height="14" rx="2" fill="#0a0908"/>
+                <text x="70" y="90" font-family="'Rubik', sans-serif" font-size="8" font-weight="900" fill="${screenColor}" text-anchor="middle">LED 3V // 1Ω</text>
+            `;
+        } else if (card.id.includes('servidor')) {
+            const svrColor = card.isBurned ? '#ef4444' : '#38bdf8';
+            bodyVisual = getTubes('STRAIGHT') + `
+                <rect x="35" y="20" width="70" height="58" rx="4" fill="#0a0908"/>
+                <rect x="40" y="24" width="60" height="50" rx="3" fill="#1e293b" stroke="#0a0908" stroke-width="2"/>
+                <rect x="45" y="30" width="50" height="10" rx="2" fill="#0f172a"/>
+                <circle cx="50" cy="35" r="2" fill="${svrColor}"/>
+                <rect x="40" y="80" width="60" height="14" rx="2" fill="#0a0908"/>
+                <text x="70" y="90" font-family="'Rubik', sans-serif" font-size="8" font-weight="900" fill="${svrColor}" text-anchor="middle">SERVER 4V // 1Ω</text>
+            `;
+        } else if (card.id.includes('sirene')) {
+            const sirColor = card.isBurned ? '#7f1d1d' : '#dc2626';
+            bodyVisual = getTubes('STRAIGHT') + `
+                <rect x="50" y="60" width="40" height="10" rx="2" fill="#0a0908"/>
+                <path d="M 54 60 C 54 20 86 20 86 60 Z" fill="#0a0908"/>
+                <path d="M 58 60 C 58 26 82 26 82 60 Z" fill="${sirColor}" stroke="#991b1b" stroke-width="1"/>
+                <circle cx="70" cy="45" r="8" fill="#ffffff" opacity="0.8"/>
+                <rect x="40" y="80" width="60" height="14" rx="2" fill="#0a0908"/>
+                <text x="70" y="90" font-family="'Rubik', sans-serif" font-size="8" font-weight="900" fill="#fca5a5" text-anchor="middle">SIRENE 6V // 1Ω</text>
+            `;
+        } else if (card.id.includes('bomba')) {
+            const pumpColor = card.isBurned ? '#475569' : '#0284c7';
+            bodyVisual = getTubes('STRAIGHT') + `
+                <circle cx="70" cy="49" r="28" fill="#0369a1" stroke="#0a0908" stroke-width="2"/>
+                <circle cx="70" cy="49" r="24" fill="${pumpColor}"/>
+                <circle cx="70" cy="49" r="8" fill="#f59e0b" stroke="#0a0908" stroke-width="1"/>
+                <rect x="40" y="80" width="60" height="14" rx="2" fill="#0a0908"/>
+                <text x="70" y="90" font-family="'Rubik', sans-serif" font-size="8" font-weight="900" fill="#bae6fd" text-anchor="middle">BOMBA 6V // 2Ω</text>
+            `;
+        } else if (card.id.includes('tomografo')) {
+            const tomoColor = card.isBurned ? '#ef4444' : '#ffffff';
+            bodyVisual = getTubes('STRAIGHT') + `
+                <circle cx="70" cy="49" r="34" fill="#0a0908"/>
+                <circle cx="70" cy="49" r="30" fill="${tomoColor}" stroke="#dc2626" stroke-width="2"/>
+                <circle cx="70" cy="49" r="18" fill="#0a0908"/>
+                <rect x="35" y="80" width="70" height="14" rx="2" fill="#0a0908"/>
+                <text x="70" y="90" font-family="'Rubik', sans-serif" font-size="8" font-weight="900" fill="${tomoColor}" text-anchor="middle">TOMO 12V // 4Ω</text>
+            `;
+        }
+    } else if (card.type === 'gnd') {
+        bodyVisual = getTubes('DEAD_END') + `
+            <rect x="68" y="20" width="56" height="58" rx="8" fill="#0a0908"/>
+            <rect x="72" y="24" width="48" height="50" rx="4" fill="#0d9488" stroke="#14b8a6" stroke-width="2"/>
+            <line x1="72" y1="49" x2="90" y2="49" stroke="#0a0908" stroke-width="4"/>
+            <line x1="90" y1="35" x2="90" y2="63" stroke="#0a0908" stroke-width="4"/>
+            <line x1="98" y1="40" x2="98" y2="58" stroke="#0a0908" stroke-width="3"/>
+            <rect x="68" y="80" width="56" height="14" rx="2" fill="#0a0908"/>
+            <text x="96" y="90" font-family="'Rubik', sans-serif" font-size="8" font-weight="900" fill="#2dd4bf" text-anchor="middle">GND 0V</text>
+        `;
+    } else if (card.type === 'fuse') {
+        const fuseStatusColor = card.isBurned ? '#ef4444' : '#fbbf24';
+        bodyVisual = getTubes('STRAIGHT') + `
+            <rect x="30" y="31" width="80" height="36" rx="10" fill="#0a0908"/>
+            <rect x="34" y="35" width="72" height="28" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+            <path d="M 50 49 Q 70 35 70 49 T 90 49" fill="none" stroke="${fuseStatusColor}" stroke-width="3"/>
+            <rect x="40" y="80" width="60" height="14" rx="2" fill="#0a0908"/>
+            <text x="70" y="90" font-family="'Rubik', sans-serif" font-size="8" font-weight="900" fill="#38bdf8" text-anchor="middle">${card.isBurned ? 'ROMPIDO' : 'FUSÍVEL 1A'}</text>
+        `;
+    } else if (card.type === 'wire') {
+        bodyVisual = getTubes(card.shape);
+    }
+
+    if (card.isBurned) {
+        bodyVisual += `<rect width="140" height="98" fill="#ef4444" opacity="0.3"/>
+        <line x1="0" y1="0" x2="140" y2="98" stroke="#dc2626" stroke-width="4" opacity="0.6"/>
+        <line x1="0" y1="98" x2="140" y2="0" stroke="#dc2626" stroke-width="4" opacity="0.6"/>`;
+    }
+
+    return \`
+    <svg width="\${w}" height="\${h}" viewBox="0 0 140 98" style="display:block; border-radius:6px; overflow:hidden; border:2px solid \${card.isBurned ? '#ef4444' : '#0a0908'};">
+        <g transform="rotate(\${rot} 70 49)">
+            \${baseVisual}
+            \${bodyVisual}
         </g>
     </svg>
-    `;
+    \`;
 }
 
 // -------------------------------------------------------------
