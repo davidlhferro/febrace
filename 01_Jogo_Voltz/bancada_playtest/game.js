@@ -890,6 +890,12 @@ class VoltzPlaytestEngine {
             const card = node.card;
             rTotal += (card.r || 0);
 
+            if (!card.telemetry) {
+                card.telemetry = {};
+            }
+            card.telemetry.rAccumulated = rTotal;
+            card.telemetry.projectedCurrent = rTotal > 0 ? (12 / rTotal) : 0;
+
             if (card.type === 'equipment') {
                 equipments.push({ ...card, nodeX: currX, nodeY: currY });
             }
@@ -969,6 +975,10 @@ class VoltzPlaytestEngine {
             } else {
                 verdict = 'NOMINAL';
                 explanation = `Malha fechada com resistência total de ${rTotal}Ω. Corrente de ${iTheoretical}A.`;
+            }
+        } else {
+            if (rTotal > 0) {
+                explanation = `Malha aberta em expansão. Resistência Acumulada (ΣR): ${rTotal}Ω. Projeção de Corrente se aterrar (GND): ${iTheoretical}A.`;
             }
         }
 

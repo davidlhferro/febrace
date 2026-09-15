@@ -545,14 +545,18 @@
                     hudStatus.className = 'hud-status';
                     if (telem.status === 'NOMINAL' || telem.status === 'FONTE_12V') {
                         hudStatus.classList.add('nominal');
-                        hudStatus.textContent = card.type === 'equipment' ? '🟢 OPERAÇÃO NOMINAL (SALVO)' : '⚡ FONTE 12V ATIVA';
+                        hudStatus.innerHTML = card.type === 'equipment' ? '🟢 OPERAÇÃO NOMINAL (SALVO)' : '⚡ FONTE 12V ATIVA';
                     } else if (telem.status === 'SOBRETENSAO' || card.isBurned) {
                         hudStatus.classList.add('overvoltage');
-                        hudStatus.textContent = '💥 SOBRETENSÃO / QUEIMADO';
+                        hudStatus.innerHTML = '💥 SOBRETENSÃO / QUEIMADO';
                     } else if (telem.current > 0.001) {
-                        hudStatus.textContent = `⚡ CORRENTE ATIVA (${(telem.current).toFixed(2)}A)`;
+                        hudStatus.innerHTML = `⚡ CORRENTE ATIVA (${(telem.current).toFixed(2)}A)`;
+                    } else if (telem.rAccumulated > 0 && card.type !== 'gnd') {
+                        hudStatus.style.backgroundColor = '#1e293b';
+                        hudStatus.style.color = '#38bdf8';
+                        hudStatus.innerHTML = `⚪ ABERTO | R.Acum: <b>${telem.rAccumulated}Ω</b> | Projeção I: <b>${telem.projectedCurrent.toFixed(2)}A</b>`;
                     } else {
-                        hudStatus.textContent = '⚪ MALHA ABERTA (0.00A)';
+                        hudStatus.innerHTML = '⚪ MALHA ABERTA (DESCONECTADA)';
                     }
                 }
 
