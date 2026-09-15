@@ -38,22 +38,23 @@
         .a4-page {
             width: 210mm; height: 297mm; /* A4 Retrato */
             background: #ffffff;
-            padding: 18.5mm 7.5mm; /* Margens para centralizar 195x260 no 210x297 */
+            padding: 27.5mm 17.5mm; /* Margens para centralizar 175x235 no 210x297 */
             margin-bottom: 20px;
             position: relative;
             display: grid;
-            grid-template-columns: repeat(3, 65mm);
-            grid-template-rows: repeat(4, 65mm);
-            gap: 0; /* Corte direto */
+            grid-template-columns: repeat(3, 55mm);
+            grid-template-rows: repeat(4, 55mm);
+            gap: 5mm; /* Espaço para recorte */
             page-break-after: always;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .card-container {
-            width: 65mm;
-            height: 65mm;
+            width: 55mm;
+            height: 55mm;
             position: relative;
-            border: 0.5px dashed #ccc; /* Linha de corte */
+            border: 1px solid #94a3b8; /* Borda de corte definida */
+            border-radius: 4px; /* Cantos arredondados na linha de corte */
             overflow: hidden;
         }
 
@@ -61,12 +62,12 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); /* Sem rotação imposta via CSS */
+            transform: translate(-50%, -50%) scale(0.85); /* Reduz a escala interna para caber no 55mm */
             transform-origin: center;
         }
 
         .page-header-tag {
-            position: absolute; top: 5mm; left: 15mm; right: 15mm;
+            position: absolute; top: 10mm; left: 15mm; right: 15mm;
             display: flex; justify-content: space-between;
             font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #94a3b8;
             font-weight: 900;
@@ -77,7 +78,7 @@
             body { background: none; padding: 0; margin: 0; }
             .no-print-bar { display: none; }
             .a4-page { margin: 0; box-shadow: none; border: none; }
-            .card-container { border: 0.5px dashed #666; }
+            .card-container { border: 1px solid #cbd5e1; }
         }
     </style>
 </head>
@@ -86,7 +87,7 @@
     <div class="no-print-bar">
         <div>
             <h1>🖨️ VOLTZ — Print and Play (Formato Quadrado Tático)</h1>
-            <p>Layout configurado para 12 cartas quadradas (65x65mm) por página A4 Retrato. Exatas 6 páginas (72 cartas).</p>
+            <p>Layout configurado para 12 cartas (55x55mm) por página A4, com espaçamento de 5mm para recorte seguro.</p>
         </div>
         <button class="btn-print" onclick="window.print()">Imprimir PDF (A4 Retrato)</button>
     </div>
