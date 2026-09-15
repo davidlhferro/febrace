@@ -112,8 +112,8 @@ function renderCardSVG(card, rotation = 0, options = {}) {
             fgPaths += `<path d="${path}" fill="none" stroke="${pipeCore}" stroke-width="28" stroke-linecap="butt"/>`;
         };
 
-        const addCurve = (x1, y1, lx, ly, cx, cy, x2, y2) => {
-            const path = `M ${x1} ${y1} L ${lx} ${ly} Q ${cx} ${cy} ${x2} ${y2}`;
+        const addCurve = (x1, y1, cx, cy, x2, y2) => {
+            const path = `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`;
             bgPaths += `<path d="${path}" fill="none" stroke="${pipeStroke}" stroke-width="34" stroke-linecap="butt"/>`;
             fgPaths += `<path d="${path}" fill="none" stroke="${pipeCore}" stroke-width="28" stroke-linecap="butt"/>`;
         };
@@ -126,22 +126,21 @@ function renderCardSVG(card, rotation = 0, options = {}) {
         if (shape === 'STRAIGHT') {
             addLine(0, 49, 140, 49);
         } else if (shape === 'CORNER_90') {
-            // Reta de 0 a 21, curva de 21 até o bottom (98) usando (70,49) como âncora
-            addCurve(0, 49, 21, 49, 70, 49, 70, 98);
+            addCurve(0, 49, 70, 49, 70, 119);
         } else if (shape === 'T_JUNCTION') {
             addLine(0, 49, 140, 49);
-            addLine(70, 49, 70, 98);
+            addLine(70, 49, 70, 119);
             addCenterJoint();
         } else if (shape === 'CROSS_4WAY') {
             addLine(0, 49, 140, 49);
-            addLine(70, 0, 70, 98);
+            addLine(70, -21, 70, 119);
             addCenterJoint();
         } else if (shape === 'DEAD_END') {
             addLine(0, 49, 70, 49);
             addCenterJoint();
         } else if (shape === 'GENERATOR') {
             addLine(0, 49, 140, 49);
-            addLine(70, 0, 70, 98);
+            addLine(70, -21, 70, 119);
             addCenterJoint();
         }
 
@@ -164,7 +163,7 @@ function renderCardSVG(card, rotation = 0, options = {}) {
         let resBody = '';
         if (card.shape === 'CORNER_90') {
             resBody = `
-                <g transform="translate(57.75, 61.25) rotate(45)">
+                <g transform="translate(52.5, 66.5) rotate(45)">
                     <rect x="-24" y="-15" width="48" height="30" rx="8" fill="#f5eedc" stroke="#0a0908" stroke-width="3"/>
                     <rect x="-14" y="-15" width="4" height="30" fill="${rColor}" stroke="#0a0908" stroke-width="1"/>
                     <rect x="-2" y="-15" width="4" height="30" fill="#0a0908"/>
