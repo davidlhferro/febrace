@@ -103,26 +103,49 @@ function renderCardSVG(card, rotation = 0, options = {}) {
     `;
 
     function getTubes(shape) {
-        let svg = '';
-        if (['STRAIGHT', 'T_JUNCTION', 'CROSS_4WAY', 'DEAD_END'].includes(shape)) {
-            svg += `<rect x="0" y="35" width="70" height="28" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
+        let bgPaths = '';
+        let fgPaths = '';
+
+        const addLine = (x1, y1, x2, y2) => {
+            const path = `M ${x1} ${y1} L ${x2} ${y2}`;
+            bgPaths += `<path d="${path}" fill="none" stroke="${pipeStroke}" stroke-width="34" stroke-linecap="butt"/>`;
+            fgPaths += `<path d="${path}" fill="none" stroke="${pipeCore}" stroke-width="28" stroke-linecap="butt"/>`;
+        };
+
+        const addCurve = (x1, y1, lx, ly, cx, cy, x2, y2) => {
+            const path = `M ${x1} ${y1} L ${lx} ${ly} Q ${cx} ${cy} ${x2} ${y2}`;
+            bgPaths += `<path d="${path}" fill="none" stroke="${pipeStroke}" stroke-width="34" stroke-linecap="butt"/>`;
+            fgPaths += `<path d="${path}" fill="none" stroke="${pipeCore}" stroke-width="28" stroke-linecap="butt"/>`;
+        };
+
+        const addCenterJoint = () => {
+            bgPaths += `<circle cx="70" cy="49" r="17" fill="${pipeStroke}"/>`;
+            fgPaths += `<circle cx="70" cy="49" r="14" fill="${pipeCore}"/>`;
+        };
+
+        if (shape === 'STRAIGHT') {
+            addLine(0, 49, 140, 49);
+        } else if (shape === 'CORNER_90') {
+            // Reta de 0 a 21, curva de 21 até o bottom (98) usando (70,49) como âncora
+            addCurve(0, 49, 21, 49, 70, 49, 70, 98);
+        } else if (shape === 'T_JUNCTION') {
+            addLine(0, 49, 140, 49);
+            addLine(70, 49, 70, 98);
+            addCenterJoint();
+        } else if (shape === 'CROSS_4WAY') {
+            addLine(0, 49, 140, 49);
+            addLine(70, 0, 70, 98);
+            addCenterJoint();
+        } else if (shape === 'DEAD_END') {
+            addLine(0, 49, 70, 49);
+            addCenterJoint();
+        } else if (shape === 'GENERATOR') {
+            addLine(0, 49, 140, 49);
+            addLine(70, 0, 70, 98);
+            addCenterJoint();
         }
-        if (['STRAIGHT', 'T_JUNCTION', 'CROSS_4WAY'].includes(shape)) {
-            svg += `<rect x="70" y="35" width="70" height="28" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
-        }
-        if (['CORNER_90', 'T_JUNCTION', 'CROSS_4WAY'].includes(shape)) {
-            svg += `<rect x="56" y="49" width="28" height="49" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
-        }
-        if (['CORNER_90'].includes(shape)) {
-            svg += `<rect x="0" y="35" width="70" height="28" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
-        }
-        if (['CROSS_4WAY', 'GENERATOR'].includes(shape)) {
-            svg += `<rect x="56" y="0" width="28" height="49" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
-        }
-        if (shape !== 'STRAIGHT') {
-            svg += `<circle cx="70" cy="49" r="14" fill="${pipeCore}" stroke="${pipeStroke}" stroke-width="3"/>`;
-        }
-        return svg;
+
+        return bgPaths + fgPaths;
     }
 
     let bodyVisual = '';
