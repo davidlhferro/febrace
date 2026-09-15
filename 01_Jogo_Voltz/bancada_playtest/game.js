@@ -41,9 +41,9 @@ const CARDS_CATALOG = [
     { id: 'res_3ohm_straight', type: 'resistor', name: 'Resistor 3Ω (Reta)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, r: 3, count: 5 },
     { id: 'res_3ohm_corner', type: 'resistor', name: 'Resistor 3Ω (Curva)', shape: 'CORNER_90', basePorts: TOPOLOGY_SHAPES.CORNER_90, r: 3, count: 3 },
 
-    // Condutores / Ramificações (14 cartas)
-    { id: 'wire_straight', type: 'wire', name: 'Trilha Condutora (Reta)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, r: 0, count: 4 },
-    { id: 'wire_corner', type: 'wire', name: 'Curva 90°', shape: 'CORNER_90', basePorts: TOPOLOGY_SHAPES.CORNER_90, r: 0, count: 4 },
+    // Condutores / Ramificações (20 cartas)
+    { id: 'wire_straight', type: 'wire', name: 'Trilha Condutora (Reta)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, r: 0, count: 7 },
+    { id: 'wire_corner', type: 'wire', name: 'Curva 90°', shape: 'CORNER_90', basePorts: TOPOLOGY_SHAPES.CORNER_90, r: 0, count: 7 },
     { id: 'wire_t', type: 'wire', name: 'Conector T (3 Saídas)', shape: 'T_JUNCTION', basePorts: TOPOLOGY_SHAPES.T_JUNCTION, r: 0, count: 4 },
     { id: 'wire_cross', type: 'wire', name: 'Cruzamento (4 Saídas)', shape: 'CROSS_4WAY', basePorts: TOPOLOGY_SHAPES.CROSS_4WAY, r: 0, count: 2 },
 
@@ -54,8 +54,8 @@ const CARDS_CATALOG = [
     { id: 'load_bomba_6v', type: 'equipment', name: 'Bomba Centrífuga (6V // 2Ω)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, vNom: 6, r: 2, count: 2 },
     { id: 'load_tomografo_12v', type: 'equipment', name: 'Tomógrafo UTI (12V // 4Ω)', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, vNom: 12, r: 4, count: 2 },
 
-    // Fechamento Nodal / Cabo Terra (14 cartas)
-    { id: 'gnd_cable', type: 'gnd', name: 'Cabo Terra (GND 0V)', shape: 'DEAD_END', basePorts: TOPOLOGY_SHAPES.DEAD_END, r: 0, count: 14 },
+    // Fechamento Nodal / Cabo Terra (8 cartas)
+    { id: 'gnd_cable', type: 'gnd', name: 'Cabo Terra (GND 0V)', shape: 'DEAD_END', basePorts: TOPOLOGY_SHAPES.DEAD_END, r: 0, count: 8 },
 
     // Fusíveis de Proteção (3 cartas)
     { id: 'fuse_1a', type: 'fuse', name: 'Fusível 1A', shape: 'STRAIGHT', basePorts: TOPOLOGY_SHAPES.STRAIGHT, iMax: 1.0, r: 0, count: 3 }
