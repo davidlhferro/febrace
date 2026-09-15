@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLTZ — Régua de Telemetria Física (PnP)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@800;900&family=Rubik:wght@800;900&display=swap');
+
+        :root {
+            --bg-mat: #1e1b18;
+            --copper: #e07a1e;
+            --copper-bright: #fbb034;
+            --dark: #0a0908;
+            --text-light: #f8fafc;
+            --safe-green: #22c55e;
+            --danger-red: #ef4444;
+            --panel-bg: #0f172a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #334155;
+            color: #ffffff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .no-print-bar {
+            background: #1e293b; width: 100%; max-width: 900px; padding: 16px 24px;
+            border-radius: 12px; margin-bottom: 24px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5); border: 2px solid #475569;
+        }
+
+        .no-print-bar h1 { font-size: 1.2rem; font-weight: 900; color: #38bdf8; }
+        .no-print-bar p { font-size: 0.8rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
+
+        .btn-print {
+            background: #38bdf8; color: #0f172a; font-weight: 900; padding: 10px 22px;
+            border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase;
+        }
+
+        .a4-page {
+            width: 297mm; height: 210mm; /* Paisagem */
+            background: #ffffff; padding: 10mm;
+            display: flex; flex-direction: column; gap: 10mm;
+            position: relative;
+        }
+
+        .player-mat {
+            width: 100%; height: 90mm; background: var(--bg-mat);
+            border-radius: 4mm; border: 2mm solid var(--dark);
+            padding: 4mm 6mm; display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+        }
+
+        .mat-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            border-bottom: 3px solid #332d27; padding-bottom: 4mm; margin-bottom: 6mm;
+        }
+
+        .mat-title {
+            font-size: 22px; font-weight: 900; color: var(--copper-bright);
+            letter-spacing: 1px;
+        }
+
+        .mat-subtitle {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #a89f91;
+            font-weight: 800;
+        }
+
+        /* TRILHA DE RESISTÊNCIA */
+        .track-container {
+            display: flex; width: 100%; gap: 2px;
+            background: var(--dark); padding: 4px; border-radius: 8px;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.8);
+        }
+
+        .track-slot {
+            flex: 1; display: flex; flex-direction: column; align-items: center;
+            background: var(--panel-bg); border: 2px solid #334155; border-radius: 6px;
+            padding: 6px 0; position: relative;
+        }
+
+        .track-slot.danger { background: #450a0a; border-color: #7f1d1d; }
+        .track-slot.warning { background: #422006; border-color: #78350f; }
+        .track-slot.safe { background: #064e3b; border-color: #065f46; }
+
+        .r-value {
+            font-size: 24px; font-weight: 900; color: #ffffff; margin-bottom: 4px;
+        }
+
+        .r-unit { font-size: 14px; color: #94a3b8; }
+
+        .i-calc {
+            background: var(--dark); width: 90%; text-align: center;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px;
+            font-weight: 800; padding: 4px 0; border-radius: 4px;
+            color: var(--copper-bright); margin-top: 4px;
+        }
+
+        .i-calc.inf { color: var(--danger-red); }
+
+        .instructions {
+            margin-top: auto; display: flex; gap: 4mm;
+        }
+        
+        .inst-box {
+            flex: 1; background: rgba(0,0,0,0.4); border: 1px dashed #475569;
+            padding: 4mm; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        @page { size: A4 landscape; margin: 0; }
+        @media print {
+            body { background: none; padding: 0; margin: 0; }
+            .no-print-bar { display: none; }
+            .a4-page { margin: 0; box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-bar">
+        <div>
+            <h1>🎛️ VOLTZ — Régua de Telemetria Física (Player Mat)</h1>
+            <p>Imprima e use no jogo de tabuleiro físico para ajudar a equipe com a matemática mental.</p>
+        </div>
+        <button class="btn-print" onclick="window.print()">Imprimir Régua</button>
+    </div>
+
+    <div class="a4-page">
+        <!-- MAT 1 (Cabe 2 por página) -->
+        <div class="player-mat">
+            <div class="mat-header">
+                <div>
+                    <div class="mat-title">PAINEL DE TELEMETRIA (MALHA PRINCIPAL)</div>
+                    <div class="mat-subtitle">SISTEMA VOLTZ - USO COM MARCADOR FÍSICO (MOEDA/PEÃO)</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:14px; color:#94a3b8; font-weight:900;">FONTE DE ALIMENTAÇÃO</div>
+                    <div style="font-size:20px; color:var(--safe-green); font-weight:900;">GERADOR 12V</div>
+                </div>
+            </div>
+
+            <div class="track-container">
+                <!-- 0 Ohms (Curto) -->
+                <div class="track-slot danger">
+                    <div class="r-value">0<span class="r-unit">Ω</span></div>
+                    <div class="i-calc inf">CURTO-CIRCUITO</div>
+                </div>
+                <!-- 1 Ohm -->
+                <div class="track-slot warning">
+                    <div class="r-value">1<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 12A</div>
+                </div>
+                <!-- 2 Ohms -->
+                <div class="track-slot warning">
+                    <div class="r-value">2<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 6A</div>
+                </div>
+                <!-- 3 Ohms -->
+                <div class="track-slot safe">
+                    <div class="r-value">3<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 4A</div>
+                </div>
+                <!-- 4 Ohms -->
+                <div class="track-slot safe">
+                    <div class="r-value">4<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 3A</div>
+                </div>
+                <!-- 5 Ohms -->
+                <div class="track-slot safe">
+                    <div class="r-value">5<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 2.4A</div>
+                </div>
+                <!-- 6 Ohms -->
+                <div class="track-slot safe">
+                    <div class="r-value">6<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 2A</div>
+                </div>
+                <!-- 8 Ohms -->
+                <div class="track-slot safe">
+                    <div class="r-value">8<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 1.5A</div>
+                </div>
+                <!-- 10 Ohms -->
+                <div class="track-slot safe">
+                    <div class="r-value">10<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 1.2A</div>
+                </div>
+                <!-- 12 Ohms -->
+                <div class="track-slot safe">
+                    <div class="r-value">12<span class="r-unit">Ω</span></div>
+                    <div class="i-calc">I = 1A</div>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <div class="inst-box">
+                    <strong style="color:var(--copper-bright);">1. COMO USAR A RÉGUA:</strong><br>
+                    Coloque um peão ou moeda no início (0Ω). Cada vez que sua equipe jogar uma carta de Resistor ou Aparelho na mesa conectada à malha aberta, avance o peão somando o valor (ex: jogou Resistor 3Ω, ande o peão para o 3Ω).
+                </div>
+                <div class="inst-box">
+                    <strong style="color:var(--copper-bright);">2. PREVENDO A CORRENTE (LEI DE OHM):</strong><br>
+                    Não precisa fazer cálculo de cabeça! Olhe para a casa onde o peão está parado. O valor em laranja embaixo (I = X) é exatamente a corrente elétrica que vai passar pelo circuito caso vocês baixem a carta do Cabo Terra (GND) agora.
+                </div>
+                <div class="inst-box">
+                    <strong style="color:var(--copper-bright);">3. PROTEGENDO APARELHOS:</strong><br>
+                    Se você baixar um aparelho (ex: LED 3V // 1Ω), ele puxa 3A. Para que a corrente total seja exata, o peão da malha deve terminar no 4Ω (pois I = 12V / 4Ω = 3A). Assim vocês sabem exatamente quantos resistores faltam.
+                </div>
+            </div>
+        </div>
+
+        <!-- MAT 2 (Cópia para outra equipe ou reserva) -->
+        <div class="player-mat">
+            <div class="mat-header">
+                <div>
+                    <div class="mat-title">PAINEL DE TELEMETRIA (MALHA PRINCIPAL)</div>
+                    <div class="mat-subtitle">SISTEMA VOLTZ - USO COM MARCADOR FÍSICO (MOEDA/PEÃO)</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:14px; color:#94a3b8; font-weight:900;">FONTE DE ALIMENTAÇÃO</div>
+                    <div style="font-size:20px; color:var(--safe-green); font-weight:900;">GERADOR 12V</div>
+                </div>
+            </div>
+
+            <div class="track-container">
+                <div class="track-slot danger"><div class="r-value">0<span class="r-unit">Ω</span></div><div class="i-calc inf">CURTO-CIRCUITO</div></div>
+                <div class="track-slot warning"><div class="r-value">1<span class="r-unit">Ω</span></div><div class="i-calc">I = 12A</div></div>
+                <div class="track-slot warning"><div class="r-value">2<span class="r-unit">Ω</span></div><div class="i-calc">I = 6A</div></div>
+                <div class="track-slot safe"><div class="r-value">3<span class="r-unit">Ω</span></div><div class="i-calc">I = 4A</div></div>
+                <div class="track-slot safe"><div class="r-value">4<span class="r-unit">Ω</span></div><div class="i-calc">I = 3A</div></div>
+                <div class="track-slot safe"><div class="r-value">5<span class="r-unit">Ω</span></div><div class="i-calc">I = 2.4A</div></div>
+                <div class="track-slot safe"><div class="r-value">6<span class="r-unit">Ω</span></div><div class="i-calc">I = 2A</div></div>
+                <div class="track-slot safe"><div class="r-value">8<span class="r-unit">Ω</span></div><div class="i-calc">I = 1.5A</div></div>
+                <div class="track-slot safe"><div class="r-value">10<span class="r-unit">Ω</span></div><div class="i-calc">I = 1.2A</div></div>
+                <div class="track-slot safe"><div class="r-value">12<span class="r-unit">Ω</span></div><div class="i-calc">I = 1A</div></div>
+            </div>
+
+            <div class="instructions">
+                <div class="inst-box">
+                    <strong style="color:var(--copper-bright);">1. COMO USAR A RÉGUA:</strong><br>
+                    Coloque um peão ou moeda no início (0Ω). Cada vez que sua equipe jogar uma carta de Resistor ou Aparelho, avance o peão somando o valor (ex: jogou Resistor 3Ω, ande o peão para o 3Ω).
+                </div>
+                <div class="inst-box">
+                    <strong style="color:var(--copper-bright);">2. PREVENDO A CORRENTE (LEI DE OHM):</strong><br>
+                    O valor em laranja embaixo (I = X) é exatamente a corrente que vai passar pelo circuito caso vocês baixem o GND neste momento.
+                </div>
+                <div class="inst-box">
+                    <strong style="color:var(--copper-bright);">3. PROTEGENDO APARELHOS:</strong><br>
+                    Se baixar um LED 3V // 1Ω, ele precisa de 3A de corrente. Para que a corrente seja 3A, a régua mostra que a resistência total (peão) deve terminar no 4Ω (I=3A). Planejem seus resistores!
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
