@@ -52,11 +52,17 @@
         .card-container {
             width: 60mm;
             height: 85mm;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative;
             border: 0.5px dashed #ccc; /* Linha de corte */
             overflow: hidden;
+        }
+
+        .card-container svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg) !important;
+            transform-origin: center;
         }
 
         .page-header-tag {
@@ -305,7 +311,7 @@
             }
 
             return `
-            <svg width="${w}" height="${h}" viewBox="0 0 140 98" style="display:block; transform: rotate(90deg); transform-origin: center;">
+            <svg width="${w}" height="${h}" viewBox="0 0 140 98" style="display:block; border-radius:6px; overflow:hidden; border:1px solid #1e1b18;">
                 <g transform="rotate(${rot} 70 49)">
                     ${baseVisual}
                     ${bodyVisual}
